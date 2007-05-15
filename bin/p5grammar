@@ -1,0 +1,167 @@
+#!/usr/bin/perl
+use strict; use warnings;
+
+use Getopt::Long;
+use Parse::RecDescent;
+#$::RD_TRACE = 1;
+
+# remember to purge comments if needed
+
+our $grammar = q(
+    <autotree>
+    comp_unit : comp_stmt
+                comp_unit_decl '{' body '}' {
+        my $retval = $item{ comp_unit_decl };
+        $retval->{ compiled_from } = "$item{ comp_stmt }.java";
+        $retval->{ contents      } = $item{ body };
+        $retval;
+    }
+              | <error>
+
+    comp_stmt : 'Compiled from "' NAME '.java"' { $item{NAME} }
+
+    comp_unit_decl : ACCESS class_qualifier(?)
+                     CLASS_OR_INTERFACE qualified_name
+                     extends_clause(?)
+                     implements_clause(?)
+    {
+        {
+            access             => $item{ ACCESS                 },
+            final              => $item{ 'class_qualifier(?)'   }[0],
+            class_or_interface => $item{ CLASS_OR_INTERFACE     },
+            implements         => $item{ 'implements_clause(?)' }[0],
+            parent             => $item{ 'extends_clause(?)'    }[0],
+            qualified_name     => $item{ qualified_name         },
+        }
+    }
+
+    class_qualifier   : 'final' { 'final' }
+
+    extends_clause    : 'extends' qualified_name { $item{ qualified_name } }
+    implements_clause : 'implements' comma_list  { $item{ comma_list } }
+
+    body : body_element(s) { $item[1] }
+    
+    body_element : constant { $item[1] }
+                 | 'static' '{' '}' ';'  { { body_element => 'static_block' } }
+                 | method   { $item[1] }
+
+    constant : ACCESS 'static' /(final)?/ qualified_name NAME ';' {
+        {
+            body_element => 'constant',
+            access       => $item[1],
+            final        => ( $item[3] eq 'final' ) ? 'final' : '',
+            type         => $item[4],
+            name         => $item[5],
+        }
+    }
+
+    method : ACCESS method_qualifier(s?)
+             arg NAME '(' arg_list(?) ')'
+             throws_clause(?) ';' {
+                 {
+                     body_element => 'method',
+                     access       => $item[1],
+                     attrs        => $item[2],
+                     returns      => $item[3],
+                     name         => $item[4],
+                     args         => $item{ 'arg_list(?)' }[0],
+                     throws       => $item{ 'throws_clause(?)' },
+                 }
+             }
+           | ACCESS /(native)?/ qualified_name '(' arg_list(?) ')'
+             throws_clause(?) ';' {
+                 {
+                     body_element => 'constructor',
+                     access       => $item[1],
+                     native       => ( $item[2] eq 'native' ) ? 'native' : '',
+                     args         => $item{ 'arg_list(?)' }[0],
+                     throws       => $item{ 'throws_clause(?)' },
+                 }
+             }
+
+    method_qualifier : 'abstract' { 'abstract' }
+                     | 'native'   { 'native'   }
+                     | 'static'   { 'static'   }
+
+    throws_clause  : 'throws' comma_list { $item{comma_list} }
+    qualified_name : NAME '.' qualified_name
+                     { "$item{NAME}.$item{qualified_name}" }
+                   | NAME '.' NAME { "$item[1].$item[3]" }
+                   | NAME { $item[1] }
+
+    comma_list : qualified_name ',' comma_list    {
+                    my @names = ( $item[1] );
+                    if ( ref( $item[3] ) eq 'ARRAY' ) {
+                        push @names, @{ $item[3] };
+                    }
+                    else {
+                        push @names, $item[3];
+                    }
+                    \@names;
+                 }
+               | qualified_name ',' qualified_name { [ $item[1], $item[3] ] }
+               | qualified_name                    { $item[1] }
+
+    arg_list : arg ',' arg_list { [ $item[1], $item[3] ] }
+             | arg ',' arg      { [ $item[1], $item[3] ] }
+             | arg              { $item[1] }
+
+    arg : qualified_name array_depth {
+        {
+            name        => $item[1],
+            array_depth => $item[2],
+        }
+    }
+
+    array_depth : ARRAY_LEVEL(s?) {
+                    my $depth = scalar @{ $item[1] };
+                    $depth;
+                  }
+
+    ARRAY_LEVEL : '[]' { 1 }
+
+    NAME : /^([\w\d]+)/ { $1 }
+
+    ACCESS : 'public'    { $item[1] }
+           | 'protected' { $item[1] }
+           | 'private'   { $item[1] }
+           |             { '' }
+
+    CLASS_OR_INTERFACE : 'class'     { $item[1] }
+                       | 'interface' { $item[1] }
+
+    comment : '/*' /[^*]*/ '*/' {}
+            |
+);
+
+my $jpcmd = '';
+
+GetOptions(
+    "jpcmd|j=s" => \$jpcmd,
+);
+
+our $parser = Parse::RecDescent->new($grammar);
+
+my $with_usage = "usage: $0 class\n";
+my $class_name = shift or die $with_usage;
+
+my $decomped   = `javap $jpcmd $class_name`;
+#my $decomped = <<'EO_Decomped';
+#Compiled from "String.java"
+#public final class java.lang.String extends java.lang.Object implements java.io.Serializable,java.lang.Comparable,java.lang.CharSequence{
+#    static {};
+#    public static final java.util.Comparator CASE_INSENSITIVE_ORDER;
+#    public java.lang.String();
+#    public java.lang.String(java.lang.String);
+#    public static java.lang.String valueOf(char[][], int[], int);
+#    public int someMethod(float);
+#    public int someMethod(java.lang.String[][], java.lang.String[]);
+#}
+#EO_Decomped
+
+#print "$decomped\n";
+
+my $parsed_value = $parser->comp_unit( $decomped );
+
+use Data::Dumper; warn Dumper( $parsed_value );
