@@ -1,79 +1,39 @@
 package Java::Javap;
-
-use 5.008006;
-use strict;
-use warnings;
-
-require Exporter;
-use AutoLoader qw(AUTOLOAD);
-
-our @ISA = qw(Exporter);
-
-# Items to export into callers namespace by default. Note: do not export
-# names by default without a very good reason. Use EXPORT_OK instead.
-# Do not simply export all your public functions/methods/constants.
-
-# This allows declaration	use Java::Javap ':all';
-# If you do not need this, moving things directly into @EXPORT or @EXPORT_OK
-# will save memory.
-our %EXPORT_TAGS = ( 'all' => [ qw(
-	
-) ] );
-
-our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
-
-our @EXPORT = qw(
-	
-);
+use strict; use warnings;
 
 our $VERSION = '0.01';
 
+use v6;
 
-# Preloaded methods go here.
+module Java::Javap;
 
-# Autoload methods go after =cut, and are processed by the autosplit program.
+sub javap( Str $class_name ) is export {
+    return `javap $class_name`;
+}
 
 1;
-__END__
-# Below is stub documentation for your module. You'd better edit it!
 
 =head1 NAME
 
-Java::Javap - Perl extension for blah blah blah
+Java::Javap - Java to Perl 6 API translator
 
 =head1 SYNOPSIS
 
   use Java::Javap;
-  blah blah blah
+
+This module is not ready for use yet.
 
 =head1 DESCRIPTION
 
-Stub documentation for Java::Javap, created by h2xs. It looks like the
-author of the extension was negligent enough to leave the stub
-unedited.
-
-Blah blah blah.
-
-=head2 EXPORT
-
-None by default.
-
-
+Not yet ready.
 
 =head1 SEE ALSO
 
-Mention other useful documentation such as the documentation of
-related modules or operating system documentation (such as man pages
-in UNIX), or any relevant external documentation such as RFCs or
-standards.
-
-If you have a mailing list set up for your module, mention it here.
-
-If you have a web site set up for your module, mention it here.
+C<Java::Javap::Grammar>
 
 =head1 AUTHOR
 
-Philip Crow, E<lt>phil@apple.comE<gt>
+Philip Crow, E<lt>crow.phil@gmail.comE<gt>
 
 =head1 COPYRIGHT AND LICENSE
 
