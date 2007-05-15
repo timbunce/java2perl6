@@ -1,6 +1,7 @@
 Changes
+lib/Java/Javap.pm
 Makefile.PL
 MANIFEST
+MANIFEST.SKIP
 README
-t/Java-Javap.t
-lib/Java/Javap.pm
+t/01_use.t
