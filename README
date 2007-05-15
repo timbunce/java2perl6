@@ -1,0 +1,32 @@
+Java-Javap version 0.01
+=======================
+
+Java::Javap is meant to be a Perl 6 equivalent to javah that ships with
+the Java development kit.  It will (when it is finished) translate
+compile Java APIs to corresponding Perl 6 APIs.
+
+INSTALLATION
+
+To install this module type the following:
+
+   perl Makefile.PL
+   make
+   make test
+   make install
+
+DEPENDENCIES
+
+This module requires these other modules and libraries:
+
+    a Java development kit with javap
+    Parse::RecDescent
+
+COPYRIGHT AND LICENCE
+
+Copyright (C) 2007 by Philip Crow
+
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself, either Perl version 5.8.6 or,
+at your option, any later version of Perl 5 you may have available.
+
+
