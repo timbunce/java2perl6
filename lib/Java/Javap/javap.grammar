@@ -1,3 +1,6 @@
+# To build this:
+#    perl -MParse::RecDescent - javap.grammar Java::Javap::Grammar
+
 comp_unit : comp_stmt
             comp_unit_decl '{' body '}' {
     my $retval = $item{ comp_unit_decl };
@@ -48,23 +51,27 @@ constant : ACCESS 'static' /(final)?/ qualified_name NAME ';' {
 method : ACCESS method_qualifier(s?)
          arg NAME '(' arg_list(?) ')'
          throws_clause(?) ';' {
+             my $args = $item{ 'arg_list(?)' }[0];
+             $args    = [] unless defined $args;
              {
                  body_element => 'method',
                  access       => $item[1],
                  attrs        => $item[2],
                  returns      => $item[3],
                  name         => $item[4],
-                 args         => $item{ 'arg_list(?)' }[0],
+                 args         => $args,
                  throws       => $item{ 'throws_clause(?)' },
              }
          }
        | ACCESS /(native)?/ qualified_name '(' arg_list(?) ')'
          throws_clause(?) ';' {
+             my $args = $item{ 'arg_list(?)' }[0];
+             $args    = [] unless defined $args;
              {
                  body_element => 'constructor',
                  access       => $item[1],
                  native       => ( $item[2] eq 'native' ) ? 'native' : '',
-                 args         => $item{ 'arg_list(?)' }[0],
+                 args         => $args,
                  throws       => $item{ 'throws_clause(?)' },
              }
          }
@@ -92,15 +99,17 @@ comma_list : qualified_name ',' comma_list    {
            | qualified_name ',' qualified_name { [ $item[1], $item[3] ] }
            | qualified_name                    { $item[1] }
 
-arg_list : arg ',' arg_list { [ $item[1], $item[3] ] }
-         | arg ',' arg      { [ $item[1], $item[3] ] }
+arg_list : arg ',' arg_list { [ @{ $item[1] }, @{ $item[3] } ] }
+         | arg ',' arg      { [ @{ $item[1] }, @{ $item[3] } ] }
          | arg              { $item[1] }
 
 arg : qualified_name array_depth {
-    {
-        name        => $item[1],
-        array_depth => $item[2],
-    }
+    [
+        {
+            name        => $item[1],
+            array_depth => $item[2],
+        }
+    ]
 }
 
 array_depth : ARRAY_LEVEL(s?) {
