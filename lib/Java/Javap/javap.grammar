@@ -57,7 +57,7 @@ method : ACCESS method_qualifier(s?)
                  body_element => 'method',
                  access       => $item[1],
                  attrs        => $item[2],
-                 returns      => $item[3],
+                 returns      => $item[3][0],
                  name         => $item[4],
                  args         => $args,
                  throws       => $item{ 'throws_clause(?)' },
