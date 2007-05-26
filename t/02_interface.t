@@ -98,7 +98,12 @@ my $expected_tree = {
                           }
                         ],
           'class_or_interface' => 'interface',
-          'implements' => undef
+          'methods' => {
+              'object_returner' => 2,
+              'array_returner' => 1,
+          },
+          constructors => undef,
+          'implements' => undef,
 };
 
 is_deeply( $tree, $expected_tree, 'interface' );

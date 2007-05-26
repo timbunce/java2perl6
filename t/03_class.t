@@ -84,6 +84,10 @@ my $expected_tree = {
                           }
                         ],
           'class_or_interface' => 'class',
+          'methods' => {
+              getGreet => 2,
+          },
+          'constructors' => 3,
           'implements' => undef
 };
 

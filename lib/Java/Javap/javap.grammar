@@ -1,11 +1,18 @@
 # To build this:
 #    perl -MParse::RecDescent - javap.grammar Java::Javap::Grammar
 
+{
+    my %methods;
+    my $constructors;
+}
+
 comp_unit : comp_stmt
             comp_unit_decl '{' body '}' {
     my $retval = $item{ comp_unit_decl };
     $retval->{ compiled_from } = "$item{ comp_stmt }.java";
     $retval->{ contents      } = $item{ body };
+    $retval->{ methods       } = \%methods;
+    $retval->{ constructors  } = $constructors;
     $retval;
 }
           | <error>
@@ -51,6 +58,7 @@ constant : ACCESS 'static' /(final)?/ qualified_name NAME ';' {
 method : ACCESS method_qualifier(s?)
          arg NAME '(' arg_list(?) ')'
          throws_clause(?) ';' {
+             $methods{ $item[4] }++;
              my $args = $item{ 'arg_list(?)' }[0];
              $args    = [] unless defined $args;
              {
@@ -65,6 +73,7 @@ method : ACCESS method_qualifier(s?)
          }
        | ACCESS /(native)?/ qualified_name '(' arg_list(?) ')'
          throws_clause(?) ';' {
+             $constructors++;
              my $args = $item{ 'arg_list(?)' }[0];
              $args    = [] unless defined $args;
              {
