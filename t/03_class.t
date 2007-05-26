@@ -31,6 +31,7 @@ my $expected_tree = {
                             'args' => [
                                         {
                                           'array_depth' => 1,
+                                          'array_text' => 'Array of ',
                                           'name' => 'java.lang.String'
                                         },
                                       ],
@@ -43,10 +44,12 @@ my $expected_tree = {
                             'args' => [
                                         {
                                           'array_depth' => 1,
+                                          'array_text' => 'Array of ',
                                           'name' => 'java.lang.String'
                                         },
                                         {
                                           'array_depth' => 0,
+                                          'array_text' => '',
                                           'name' => 'int'
                                         }
                                       ],
@@ -58,6 +61,7 @@ my $expected_tree = {
                             'body_element' => 'method',
                             'returns' => {
                                            'array_depth' => 0,
+                                           'array_text' => '',
                                            'name' => 'java.lang.String'
                                          },
                             'access' => 'public',
@@ -70,12 +74,14 @@ my $expected_tree = {
                             'body_element' => 'method',
                             'returns' => {
                                            'array_depth' => 0,
+                                           'array_text' => '',
                                            'name' => 'java.lang.String'
                                          },
                             'access' => 'public',
                             'args' => [
                                         {
                                           'array_depth' => 0,
+                                          'array_text' => '',
                                           'name' => 'int'
                                         },
                                       ],

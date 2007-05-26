@@ -113,10 +113,15 @@ arg_list : arg ',' arg_list { [ @{ $item[1] }, @{ $item[3] } ] }
          | arg              { $item[1] }
 
 arg : qualified_name array_depth {
+    my $array_text = '';
+    foreach my $i ( 1 .. $item[2] ) {
+        $array_text .= 'Array of ';
+    }
     [
         {
             name        => $item[1],
             array_depth => $item[2],
+            array_text  => $array_text,
         }
     ]
 }

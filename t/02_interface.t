@@ -31,24 +31,29 @@ my $expected_tree = {
                                        ],
                             'body_element' => 'method',
                             'returns' => {
+                                           'array_text' => 'Array of Array of ',
                                            'array_depth' => 2,
                                            'name' => 'int'
                                          },
                             'access' => 'public',
                             'args' => [
                                         {
+                                          'array_text' => '',
                                           'array_depth' => 0,
                                           'name' => 'java.lang.String'
                                         },
                                         {
+                                          'array_text' => '',
                                           'array_depth' => 0,
                                           'name' => 'int'
                                         },
                                         {
+                                          'array_text' => 'Array of ',
                                           'array_depth' => 1,
                                           'name' => 'float'
                                         },
                                         {
+                                          'array_text' => 'Array of Array of ',
                                           'array_depth' => 2,
                                           'name' => 'float'
                                         }
@@ -62,6 +67,7 @@ my $expected_tree = {
                                        ],
                             'body_element' => 'method',
                             'returns' => {
+                                           'array_text' => '',
                                            'array_depth' => 0,
                                            'name' => 'java.lang.String'
                                          },
@@ -81,12 +87,14 @@ my $expected_tree = {
                                        ],
                             'body_element' => 'method',
                             'returns' => {
+                                           'array_text' => '',
                                            'array_depth' => 0,
                                            'name' => 'java.lang.String'
                                          },
                             'access' => 'public',
                             'args' => [
                                         {
+                                          'array_text' => '',
                                           'array_depth' => 0,
                                           'name' => 'java.lang.String'
                                         },
@@ -102,12 +110,14 @@ my $expected_tree = {
                                        ],
                             'body_element' => 'method',
                             'returns' => {
+                                           'array_text' => '',
                                            'array_depth' => 0,
                                            'name' => 'void'
                                          },
                             'access' => 'public',
                             'args' => [
                                         {
+                                          'array_text' => '',
                                           'array_depth' => 0,
                                           'name' => 'int'
                                         }
