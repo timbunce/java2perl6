@@ -1,6 +1,6 @@
-# Note about how this is generated.  What java file gave rise to it?
-# When was it made?  With which command line switches?  By what version
-# of the generator?  etc.
+# This file was automatically generated Sat May 26 09:02:10 CDT 2007
+# by java2perl6 0.1 from decompiling IntTest.class using command line flags:
+#   --classpath testjavas
 
 role IntTest {
     method array_returner(
