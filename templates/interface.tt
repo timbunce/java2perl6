@@ -1,0 +1,33 @@
+# This file was automatically generated [% gen_time %]
+# by java2perl6 [% version %] from decompiling
+# [% class_file %] using command line flags:
+[% FOREACH flag IN command_line_flags %]
+#   [% flag %]
+[% END +%]
+
+role [% ast.qualified_name %] {
+[% FOREACH element IN ast.contents %]
+[% IF element.body_element == 'method' %]
+[% IF ast.methods.$element.name > 1 %]
+    multi method [% element.name %](
+[% ELSE %]
+    method [% element.name %](
+[% END %]
+    ) [% IF element.returns.name != 'void' %][% element.returns.array_text %][% element.returns.name %][% END %] { ... }
+[% END %]
+[% END %]
+
+    method array_returner(
+        Str v1,
+        Int v2,
+        Array of Num v3,
+        Array of Array of Num v4
+    ) returns Array of Array of Int { ... }
+
+    multi method object_returner(
+    ) returns Str { ... }
+
+    multi method object_returner(
+        String v1
+    ) returns Str { ... }
+}

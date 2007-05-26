@@ -5,6 +5,11 @@ use lib 'lib';
 
 use Test::More tests => 1;
 use Java::Javap::Grammar;
+use Java::Javap::Emit qw( emit );
+
+#--------------------------------------------------------------------
+# Grammar
+#--------------------------------------------------------------------
 
 my $parser = Java::Javap::Grammar->new();
 my $decomp = `javap -classpath testjavas IntTest`;
@@ -139,3 +144,11 @@ my $expected_tree = {
 is_deeply( $tree, $expected_tree, 'interface' );
 
 #use Data::Dumper; warn Dumper( $tree );
+
+#--------------------------------------------------------------------
+# Emission
+#--------------------------------------------------------------------
+
+my $perl_6 = emit( 'IntTest', $tree, 'interface.tt' );
+
+use Data::Dumper; warn Dumper( $perl_6 );
