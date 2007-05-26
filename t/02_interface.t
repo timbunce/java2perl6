@@ -95,15 +95,37 @@ my $expected_tree = {
                             'throws' => [
                                           'java.lang.NumberFormatException'
                                         ]
+                          },
+                          {
+                            'attrs' => [
+                                         'abstract'
+                                       ],
+                            'body_element' => 'method',
+                            'returns' => {
+                                           'array_depth' => 0,
+                                           'name' => 'void'
+                                         },
+                            'access' => 'public',
+                            'args' => [
+                                        {
+                                          'array_depth' => 0,
+                                          'name' => 'int'
+                                        }
+                                      ],
+                            'name' => 'void_returner',
+                            'throws' => []
                           }
                         ],
           'class_or_interface' => 'interface',
           'methods' => {
               'object_returner' => 2,
               'array_returner' => 1,
+              'void_returner' => 1,
           },
           constructors => undef,
           'implements' => undef,
 };
 
 is_deeply( $tree, $expected_tree, 'interface' );
+
+#use Data::Dumper; warn Dumper( $tree );

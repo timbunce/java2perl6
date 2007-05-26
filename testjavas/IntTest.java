@@ -6,6 +6,8 @@ public interface IntTest {
 
     public abstract java.lang.String object_returner()
         throws java.lang.NumberFormatException, java.lang.Exception;
-    public abstract java.lang.String object_returner(java.lang.String s)
+    public abstract java.lang.String object_returner( java.lang.String s )
         throws java.lang.NumberFormatException;
+
+    public abstract void void_returner( int i );
 }
