@@ -8,13 +8,14 @@
 role [% ast.qualified_name %] {
 [% FOREACH element IN ast.contents %]
 [% IF element.body_element == 'method' %]
-[% IF ast.methods.$element.name > 1 %]
+[% IF ast.methods.${ element.name } > 1 %]
     multi method [% element.name %](
 [% ELSE %]
     method [% element.name %](
 [% END %]
-    ) [% IF element.returns.name != 'void' %][% element.returns.array_text %][% element.returns.name %][% END %] { ... }
+    ) [% IF element.returns.name != 'void' %]returns [% element.returns.array_text %][% element.returns.name %][% END %] { ... }
 [% END %]
+
 [% END %]
 
     method array_returner(
