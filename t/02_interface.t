@@ -3,7 +3,7 @@ use warnings;
 
 use lib 'lib';
 
-use Test::More tests => 1;
+use Test::More tests => 2;
 use Java::Javap::Grammar;
 use Java::Javap::Emit qw( emit );
 
@@ -150,5 +150,31 @@ is_deeply( $tree, $expected_tree, 'interface' );
 #--------------------------------------------------------------------
 
 my $perl_6 = emit( 'IntTest', $tree, 'interface.tt' );
+$perl_6    =~ s/^#.*//gm;
 
-use Data::Dumper; warn Dumper( $perl_6 );
+my $correct_perl_6 = <<'EO_Correct_Perl_6';
+
+
+
+
+role IntTest {
+
+    method array_returner(
+        Str v1,
+        Int v2,
+        Array of Num v3,
+        Array of Array of Num v4
+    ) returns Array of Array of Int { ... }
+
+    multi method object_returner(
+    ) returns Str { ... }
+
+    multi method object_returner(
+        String v1
+    ) returns Str { ... }
+}
+EO_Correct_Perl_6
+
+is( $perl_6, $correct_perl_6, 'emission' );
+
+#use Data::Dumper; warn Dumper( $perl_6 );
