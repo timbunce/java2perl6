@@ -6,6 +6,7 @@ use base 'Exporter';
 our @EXPORT_OK = qw( emit );
 
 use Template;
+use Java::Javap::TypeCast;
 
 sub emit {
     my $class_file = shift;
@@ -22,6 +23,7 @@ sub emit {
         gen_time   => scalar localtime(),
         version    => '0.1',
         class_file => $class_file,
+        type_casts => Java::Javap::TypeCast->get_type_casts(),
         command_line_flags => [
             '--classpath testjavas',
         ],

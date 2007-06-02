@@ -164,15 +164,20 @@ role IntTest {
         Str v1,
         Int v2,
         Array of Num v3,
-        Array of Array of Num v4
+        Array of Array of Num v4,
     ) returns Array of Array of Int { ... }
 
     multi method object_returner(
     ) returns Str { ... }
 
     multi method object_returner(
-        String v1
+        Str v1,
     ) returns Str { ... }
+
+    method void_returner(
+        Int v1,
+    )  { ... }
+
 }
 EO_Correct_Perl_6
 
