@@ -23,7 +23,7 @@ sub emit {
         gen_time   => scalar localtime(),
         version    => '0.1',
         class_file => $class_file,
-        type_casts => Java::Javap::TypeCast->get_type_casts(),
+        type_caster=> Java::Javap::TypeCast->new(),
         command_line_flags => [
             '--classpath testjavas',
         ],

@@ -14,9 +14,9 @@ role [% ast.qualified_name %] {
     method [% element.name %](
 [% END %][% arg_counter = 0 %]
 [% FOREACH arg IN element.args %][% arg_counter = arg_counter + 1 %]
-        [% arg.array_text %][% type_casts.${arg.name} %] v[% arg_counter %],
+        [% arg.array_text %][% type_caster.cast( arg.name ) %] v[% arg_counter %],
 [% END %]
-    ) [% IF element.returns.name != 'void' %]returns [% element.returns.array_text %][% type_casts.${element.returns.name} %][% END %] { ... }
+    ) [% IF element.returns.name != 'void' %]returns [% element.returns.array_text %][% type_caster.cast( element.returns.name ) %][% END %] { ... }
 [% END %]
 
 [% END %]
