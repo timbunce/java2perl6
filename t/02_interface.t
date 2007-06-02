@@ -151,8 +151,9 @@ is_deeply( $tree, $expected_tree, 'interface' );
 
 my $perl_6 = emit( 'IntTest', $tree, 'interface.tt' );
 $perl_6    =~ s/^#.*//gm;
+my @perl_6 = split /\n/, $perl_6;
 
-my $correct_perl_6 = <<'EO_Correct_Perl_6';
+my @correct_perl_6 = split /\n/, <<'EO_Correct_Perl_6';
 
 
 
@@ -175,6 +176,6 @@ role IntTest {
 }
 EO_Correct_Perl_6
 
-is( $perl_6, $correct_perl_6, 'emission' );
+is_deeply( \@perl_6, \@correct_perl_6, 'emission' );
 
 #use Data::Dumper; warn Dumper( $perl_6 );
