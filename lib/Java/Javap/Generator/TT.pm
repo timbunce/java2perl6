@@ -1,14 +1,16 @@
-package Java::Javap::Emit;
+package Java::Javap::Generator::TT;
 use strict; use warnings;
-
-use base 'Exporter';
-
-our @EXPORT_OK = qw( emit );
 
 use Template;
 use Java::Javap::TypeCast;
 
-sub emit {
+sub new {
+    my $class = shift;
+    return bless {}, $class;
+}
+
+sub generate {
+    shift;  # no use for invocant
     my $class_file = shift;
     my $ast        = shift;
     my $template   = shift;
@@ -34,3 +36,5 @@ sub emit {
 
     return $retval;
 }
+
+1;

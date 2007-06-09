@@ -5,7 +5,7 @@ use lib 'lib';
 
 use Test::More tests => 2;
 use Java::Javap::Grammar;
-use Java::Javap::Emit qw( emit );
+use Java::Javap::Generator;
 
 #--------------------------------------------------------------------
 # Grammar
@@ -149,7 +149,10 @@ is_deeply( $tree, $expected_tree, 'interface' );
 # Emission
 #--------------------------------------------------------------------
 
-my $perl_6 = emit( 'IntTest', $tree, 'interface.tt' );
+my $generator = Java::Javap::Generator->get_generator( 'TT' );
+
+my $perl_6 = $generator->generate( 'IntTest', $tree, 'interface.tt' );
+#warn $perl_6;
 $perl_6    =~ s/^#.*//gm;
 my @perl_6 = split /\n/, $perl_6;
 

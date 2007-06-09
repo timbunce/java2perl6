@@ -5,6 +5,11 @@ use lib 'lib';
 
 use Test::More tests => 1;
 use Java::Javap::Grammar;
+#use Java::Javap::Generator;
+
+#--------------------------------------------------------------------
+# Grammar
+#--------------------------------------------------------------------
 
 my $parser = Java::Javap::Grammar->new();
 my $decomp = `javap -classpath testjavas ClassTest`;
@@ -98,3 +103,22 @@ my $expected_tree = {
 };
 
 is_deeply( $tree, $expected_tree, 'class' );
+
+#--------------------------------------------------------------------
+# Emission
+#--------------------------------------------------------------------
+
+#my $perl_6 = emit( 'ClassTest', $tree, 'interface.tt' );
+#warn $perl_6;
+#$perl_6    =~ s/^#.*//gm;
+#my @perl_6 = split /\n/, $perl_6;
+#
+#my @correct_perl_6 = split /\n/, <<'EO_Correct_Perl_6';
+#
+#
+#
+#
+#class? ClassTest {
+#
+#}
+#EO_Correct_Perl_6
