@@ -1,0 +1,32 @@
+use strict;
+use warnings;
+
+use Getopt::Long;
+
+use Java::Javap::Grammar;
+use Java::Javap::Generator;
+
+my $astas;   # none yet perl and YAML would be trivial
+my $genwith  = 'TT';
+my $jpcmd    = '';
+my $nest;    # output comes to screen at present
+my $outdir;  # output comes to screen at present
+my $recurse; # we can't even make classes yet, this will have to wait
+
+GetOptions(
+    'jpcmd|j=s'   => \$jpcmd,
+    'genwith|g=s' => \$genwith,
+);
+
+my $class_file = shift or die "usage: $0 [-j -g] class_file\n";
+
+my $parser = Java::Javap::Grammar->new();
+my $decomp = `javap $jpcmd $class_file`;
+
+my $tree   = $parser->comp_unit( $decomp );
+
+my $jenny  = Java::Javap::Generator->get_generator( 'TT' );
+
+my $output = $jenny->generate( $class_file, $tree, 'interface.tt' );
+
+print $output;
