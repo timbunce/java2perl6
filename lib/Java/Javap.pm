@@ -3,13 +3,13 @@ use strict; use warnings;
 
 our $VERSION = '0.01';
 
-use v6;
+#use v6;
 
-module Java::Javap;
+#module Java::Javap;
 
-sub javap( Str $class_name ) is export {
-    return `javap $class_name`;
-}
+#sub javap( Str $class_name ) is export {
+#    return `javap $class_name`;
+#}
 
 1;
 
@@ -20,8 +20,10 @@ Java::Javap - Java to Perl 6 API translator
 =head1 SYNOPSIS
 
   use Java::Javap;
+  print "$Java::Javap::VERSION\n";
 
-This module is not ready for use yet.
+This module is not ready for use yet.  It only has this little bit
+of POD and a version number.
 
 =head1 DESCRIPTION
 
@@ -30,6 +32,7 @@ Not yet ready.
 =head1 SEE ALSO
 
 C<Java::Javap::Grammar>
+C<java2perl6>
 
 =head1 AUTHOR
 
