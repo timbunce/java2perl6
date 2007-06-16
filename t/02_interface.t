@@ -149,9 +149,9 @@ is_deeply( $tree, $expected_tree, 'interface' );
 # Emission
 #--------------------------------------------------------------------
 
-my $generator = Java::Javap::Generator->get_generator( 'TT' );
+my $generator = Java::Javap::Generator->get_generator( 'Std' );
 
-my $perl_6 = $generator->generate( 'IntTest', $tree, 'interface.tt' );
+my $perl_6 = $generator->generate( 'IntTest', $tree );
 #warn $perl_6;
 $perl_6    =~ s/^#.*//gm;
 my @perl_6 = split /\n/, $perl_6;

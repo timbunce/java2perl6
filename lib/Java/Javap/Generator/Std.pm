@@ -1,4 +1,4 @@
-package Java::Javap::Generator::TT;
+package Java::Javap::Generator::Std;
 use strict; use warnings;
 
 use Template;
@@ -90,23 +90,22 @@ EO_Template
 }
 
 sub _get_template_for_class {
-    die "I don't handle classes yet\n";
+    die __PACKAGE__ . " doesn't handle classes yet\n";
 }
 
 1;
 
 =head1 NAME
 
-Java::Javap::Generator::TT - uses TT to spit out Perl 6
+Java::Javap::Generator::Std - uses TT to spit out Perl 6
 
 =head1 SYNOPSIS
 
     useJava::Javap::Generator; 
-    my $gen = Java::Javap::Generator->get_generator( 'TT', \%tt_args );
+    my $gen = Java::Javap::Generator->get_generator( 'Std', \%tt_args );
     my $output = $gen->generate(
             'com.example.InterfaceName',
-            $tree,
-            $template
+            $tree
     );
 
 where C<$tree> is a Java::Javap abstract syntax tree (AST).
@@ -122,7 +121,7 @@ This is a generator which uses TT to make output.
 =item get_generator
 
 Call this as a class method on C<Java::Javap::Generator>.  Pass it
-C<TT> to ask it for an instance of this class.  Also (optionally)
+C<Std> to ask it for an instance of this class.  Also (optionally)
 pass it a hash reference of Template Toolkit constructor arguments.
 These are passed directory to C<Template>'s C<new> method, so see
 its docs for what is allowed.

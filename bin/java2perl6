@@ -9,7 +9,7 @@ use Java::Javap::Grammar;
 use Java::Javap::Generator;
 
 my $astas;    # none yet perl and YAML would be trivial
-my $genwith   = 'TT';
+my $genwith   = 'Std';
 my $genoptstr = '';
 my $jpcmd     = '';
 my $nest;     # output comes to screen at present
@@ -47,7 +47,7 @@ where options are:
     --jpcmd or -j     a string of command line flags for javap, example:
                       -j '-classpath /some/path'
     --genwith or -g   the name of a Java::Javap::Generator:: module which
-                      will make the output, defaults to TT
+                      will make the output, defaults to Std
     --genopts or -p   strings to pass to your -g constructor
     --help or -h      this message
 EO_Help
