@@ -1,32 +1,55 @@
 use strict;
 use warnings;
 
+use lib 'lib';
+
 use Getopt::Long;
 
 use Java::Javap::Grammar;
 use Java::Javap::Generator;
 
-my $astas;   # none yet perl and YAML would be trivial
-my $genwith  = 'TT';
-my $jpcmd    = '';
-my $nest;    # output comes to screen at present
-my $outdir;  # output comes to screen at present
-my $recurse; # we can't even make classes yet, this will have to wait
+my $astas;    # none yet perl and YAML would be trivial
+my $genwith   = 'TT';
+my $genoptstr = '';
+my $jpcmd     = '';
+my $nest;     # output comes to screen at present
+my $outdir;   # output comes to screen at present
+my $recurse;  # we can't even make classes yet, this will have to wait
 
 GetOptions(
     'jpcmd|j=s'   => \$jpcmd,
     'genwith|g=s' => \$genwith,
+    'genopts|p=s' => \$genoptstr,
+    'help|h'      => \&help,
 );
 
-my $class_file = shift or die "usage: $0 [-j -g] class_file\n";
+my @genopts = split /\s+/, $genoptstr;
+
+my $class_file = shift or die "usage: $0 [options] class_file\n";
 
 my $parser = Java::Javap::Grammar->new();
 my $decomp = `javap $jpcmd $class_file`;
 
 my $tree   = $parser->comp_unit( $decomp );
 
-my $jenny  = Java::Javap::Generator->get_generator( 'TT' );
+my $jenny  = Java::Javap::Generator->get_generator( $genwith, @genopts );
 
-my $output = $jenny->generate( $class_file, $tree, 'interface.tt' );
+my $output = $jenny->generate( $class_file, $tree );
 
 print $output;
+
+sub help {
+    print <<'EO_Help';
+java2perl6 [options] class_file
+
+where options are:
+
+    --jpcmd or -j     a string of command line flags for javap, example:
+                      -j '-classpath /some/path'
+    --genwith or -g   the name of a Java::Javap::Generator:: module which
+                      will make the output, defaults to TT
+    --genopts or -p   strings to pass to your -g constructor
+    --help or -h      this message
+EO_Help
+    exit;
+}

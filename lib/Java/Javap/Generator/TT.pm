@@ -31,7 +31,7 @@ sub generate {
     my $self       = shift;
     my $class_file = shift;
     my $ast        = shift;
-    my $template   = shift;
+    my $template   = $self->_get_template( $ast );
 
     my $tt         = Template->new( $self->tt_args );
 
@@ -47,9 +47,50 @@ sub generate {
     };
 
     my $retval;
-    $tt->process( $template, $tt_vars, \$retval ) || die $tt->error();
+    $tt->process( \$template, $tt_vars, \$retval ) || die $tt->error();
 
     return $retval;
+}
+
+sub _get_template {
+    my $self = shift;
+    my $ast  = shift;
+
+    my $method = "_get_template_for_$ast->{ class_or_interface }";
+
+    return $self->$method( $ast );
+}
+
+sub _get_template_for_interface {
+    return << 'EO_Template';
+# This file was automatically generated [% gen_time %]
+# by java2perl6 [% version %] from decompiling
+# [% class_file %] using command line flags:
+[% FOREACH flag IN command_line_flags %]
+#   [% flag %]
+[% END +%]
+
+role [% ast.qualified_name %] {
+[% FOREACH element IN ast.contents %]
+[% IF element.body_element == 'method' %]
+[% IF ast.methods.${ element.name } > 1 %]
+    multi method [% element.name %](
+[% ELSE %]
+    method [% element.name %](
+[% END %][% arg_counter = 0 %]
+[% FOREACH arg IN element.args %][% arg_counter = arg_counter + 1 %]
+        [% arg.array_text %][% type_caster.cast( arg.name ) %] v[% arg_counter %],
+[% END %]
+    ) [% IF element.returns.name != 'void' %]returns [% element.returns.array_text %][% type_caster.cast( element.returns.name ) %][% END %] { ... }
+[% END %]
+
+[% END %]
+}
+EO_Template
+}
+
+sub _get_template_for_class {
+    die "I don't handle classes yet\n";
 }
 
 1;
