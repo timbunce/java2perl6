@@ -3,9 +3,13 @@ use warnings;
 
 use lib 'lib';
 
-use Test::More tests => 2;
+use Test::More;
 use Java::Javap::Grammar;
 use Java::Javap::Generator;
+
+`javap`;
+plan skip_all => 'javap from Java SDK required' if $!;
+plan tests    => 2;
 
 #--------------------------------------------------------------------
 # Grammar
@@ -157,6 +161,8 @@ $perl_6    =~ s/^#.*//gm;
 my @perl_6 = split /\n/, $perl_6;
 
 my @correct_perl_6 = split /\n/, <<'EO_Correct_Perl_6';
+
+
 
 
 

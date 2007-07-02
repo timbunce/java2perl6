@@ -63,11 +63,11 @@ sub _get_template {
 
 sub _get_template_for_interface {
     return << 'EO_Template';
-# This file was automatically generated [% gen_time %]
+# This file was automatically generated [% gen_time +%]
 # by java2perl6 [% version %] from decompiling
 # [% class_file %] using command line flags:
 [% FOREACH flag IN command_line_flags %]
-#   [% flag %]
+#   [% flag +%]
 [% END +%]
 
 role [% ast.qualified_name %] {
@@ -90,7 +90,34 @@ EO_Template
 }
 
 sub _get_template_for_class {
-    die __PACKAGE__ . " doesn't handle classes yet\n";
+    return << 'EO_Class_Template';
+# This file was automatically generated [% gen_time +%]
+# by java2perl6 [% version %] from decompliling
+# [% class_file %] using command line flags:
+[% FOREACH flag in command_line_flags %]
+#   [% flag +%]
+[% END %]
+
+class [% ast.qualified_name %] {
+[% FOREACH element IN ast.contents %]
+[%  IF element.body_element == 'method' %]
+[%      IF ast.methods.${ element.name } > 1 %]
+    multi method [% element.name %](
+[%      ELSE %]
+    method [% element.name %](
+[%      END %][% arg_counter = 0 %]
+[%      FOREACH arg IN element.args %][% arg_counter = arg_counter + 1 %]
+        [% arg.array_text %][% type_caster.cast( arg.name ) %] v[% arg_counter %],
+[%      END %]
+    ) [% IF element.returns.name != 'void' %]returns [% element.returns.array_text %][% type_caster.cast( element.returns.name ) %][% END %] { ... }
+[%  ELSE %]
+[%# I spy with my little eye, I spy a constructor %]
+[%  END %]
+
+[% END %]
+}
+EO_Class_Template
+#    die __PACKAGE__ . " doesn't handle classes yet\n";
 }
 
 1;

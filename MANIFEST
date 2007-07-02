@@ -1,7 +1,23 @@
+bin/java2perl6
+bin/p5grammar
 Changes
 lib/Java/Javap.pm
+lib/Java/Javap/Generator.pm
+lib/Java/Javap/Generator/Std.pm
+lib/Java/Javap/Grammar.pm
+lib/Java/Javap/javap.grammar
+lib/Java/Javap/TypeCast.pm
 Makefile.PL
 MANIFEST
 MANIFEST.SKIP
+META.yml			Module meta-data (added by MakeMaker)
 README
 t/01_use.t
+t/02_interface.t
+t/03_class.t
+testjavas/ClassTest.class
+testjavas/ClassTest.java
+testjavas/IntTest.class
+testjavas/IntTest.java
+testperls/IntTest.pm
+TODO
