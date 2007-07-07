@@ -113,12 +113,15 @@ is_deeply( $tree, $expected_tree, 'class' );
 #--------------------------------------------------------------------
 
 my $generator = Java::Javap::Generator->get_generator( 'Std' );
-my $perl_6 = $generator->generate( 'ClassTest', $tree, 'interface.tt' );
+my $perl_6    = $generator->generate(
+                    'ClassTest', $tree, '--classpath testjavas'
+                );
 #warn $perl_6;
 $perl_6    =~ s/^#.*//gm;
 my @perl_6 = split /\n/, $perl_6;
 
 my @correct_perl_6 = split /\n/, <<'EO_Correct_Perl_6';
+
 
 
 

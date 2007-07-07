@@ -31,6 +31,7 @@ sub generate {
     my $self       = shift;
     my $class_file = shift;
     my $ast        = shift;
+    my $javap_flags= shift;
     my $template   = $self->_get_template( $ast );
 
     my $tt         = Template->new( $self->tt_args );
@@ -41,9 +42,7 @@ sub generate {
         version    => $Java::Javap::VERSION,
         class_file => $class_file,
         type_caster=> Java::Javap::TypeCast->new(),
-        command_line_flags => [
-            '--classpath testjavas',
-        ],
+        javap_flags=> $javap_flags,
     };
 
     my $retval;
@@ -66,9 +65,7 @@ sub _get_template_for_interface {
 # This file was automatically generated [% gen_time +%]
 # by java2perl6 [% version %] from decompiling
 # [% class_file %] using command line flags:
-[% FOREACH flag IN command_line_flags %]
-#   [% flag +%]
-[% END +%]
+#   [% javap_flags +%]
 
 role [% ast.qualified_name %] {
 [% FOREACH element IN ast.contents %]
@@ -94,9 +91,7 @@ sub _get_template_for_class {
 # This file was automatically generated [% gen_time +%]
 # by java2perl6 [% version %] from decompliling
 # [% class_file %] using command line flags:
-[% FOREACH flag in command_line_flags %]
-#   [% flag +%]
-[% END %]
+#   [% javap_flags +%]
 
 class [% ast.qualified_name %] {
 [% FOREACH element IN ast.contents %]

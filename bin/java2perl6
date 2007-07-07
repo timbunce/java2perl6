@@ -8,7 +8,6 @@ use Getopt::Long;
 use Java::Javap::Grammar;
 use Java::Javap::Generator;
 
-my $astas;    # none yet perl and YAML would be trivial
 my $genwith   = 'Std';
 my $genoptstr = '';
 my $jpcmd     = '';
@@ -16,10 +15,18 @@ my $nest;     # output comes to screen at present
 my $outdir;   # output comes to screen at present
 my $recurse;  # we can't even make classes yet, this will have to wait
 
+# not yet done:
+#   astas - no, make this a Genterator,
+#           but do write the backends for YAML and Perl
+#   nest
+#   outdir
+#   recurse
+
 GetOptions(
     'jpcmd|j=s'   => \$jpcmd,
     'genwith|g=s' => \$genwith,
     'genopts|p=s' => \$genoptstr,
+    'nest|n'      => \$nest,
     'help|h'      => \&help,
 );
 
@@ -34,7 +41,7 @@ my $tree   = $parser->comp_unit( $decomp );
 
 my $jenny  = Java::Javap::Generator->get_generator( $genwith, @genopts );
 
-my $output = $jenny->generate( $class_file, $tree );
+my $output = $jenny->generate( $class_file, $tree, $jpcmd );
 
 print $output;
 
