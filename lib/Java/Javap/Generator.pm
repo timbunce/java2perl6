@@ -41,7 +41,7 @@ To use a particular generator, see its POD.
 
 =head1 KNOWN GENERATORS
 
-    Java::Javap::Generator::TT - uses TT templates
+    Java::Javap::Generator::Std - uses TT templates
 
 =head1 METHODS
 
@@ -54,9 +54,7 @@ Call C<get_generator> with the name of the generator you want to use.
 Pass any additional arguments expected by the C<new> method of your
 genertor's class.  Example:
 
-    my $generator = Java::Javap::Generator->get_generator(
-            'TT', \%tt_args
-    );
+    my $generator = Java::Javap::Generator->get_generator( 'Std' );
 
 =head2 EXPORT
 
