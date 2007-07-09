@@ -28,11 +28,14 @@ sub tt_args {
 }
 
 sub generate {
-    my $self       = shift;
-    my $class_file = shift;
-    my $ast        = shift;
-    my $javap_flags= shift;
-    my $template   = $self->_get_template( $ast );
+    my $self        = shift;
+    my $params      = shift;
+
+    my $class_file  = $params->{ class_file  };
+    my $ast         = $params->{ ast         };
+    my $javap_flags = $params->{ javap_flags };
+
+    my $template    = $self->_get_template( $ast );
 
     my $tt         = Template->new( $self->tt_args );
 
@@ -152,7 +155,7 @@ C<Std> to ask it for an instance of this class.
 This is the workhorse of this module.  It takes information about your
 java .class file and generates Perl 6 code.
 
-Parameters:
+Parameters (these are named, pass them in a hashref, see below):
 
 =over 4
 
@@ -171,6 +174,19 @@ for documentation, the flags used on the javap command line
 =back
 
 Use C<Java::Javap::Grammar> to generate the ast.
+
+Example:
+
+ my $parser = Java::Javap::Grammar->new();
+ my $decomp = `javap com.example.SomeInterface`;
+ my $tree   = $parser->comp_unit( $decomp );
+ my $jenny  = Java::Javap::Generator->get_generator( 'Std' );
+ my $output = $jenny->generate( 
+      {
+          class_file  => $class_file,
+          ast         => $tree,
+      }
+ );
 
 =item new
 

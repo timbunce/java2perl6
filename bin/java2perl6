@@ -41,7 +41,13 @@ my $tree   = $parser->comp_unit( $decomp );
 
 my $jenny  = Java::Javap::Generator->get_generator( $genwith, @genopts );
 
-my $output = $jenny->generate( $class_file, $tree, $jpcmd );
+my $output = $jenny->generate(
+    {
+        class_file  => $class_file,
+        ast         => $tree,
+        javap_flags => $jpcmd,
+    }
+);
 
 print $output;
 

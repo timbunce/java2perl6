@@ -114,8 +114,12 @@ is_deeply( $tree, $expected_tree, 'class' );
 
 my $generator = Java::Javap::Generator->get_generator( 'Std' );
 my $perl_6    = $generator->generate(
-                    'ClassTest', $tree, '--classpath testjavas'
-                );
+    {
+        class_file  => 'ClassTest',
+        ast         => $tree,
+        javap_flags =>'--classpath testjavas'
+    }
+);
 #warn $perl_6;
 $perl_6    =~ s/^#.*//gm;
 my @perl_6 = split /\n/, $perl_6;
