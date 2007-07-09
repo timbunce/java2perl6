@@ -11,8 +11,8 @@ use Java::Javap::Generator;
 my $genwith   = 'Std';
 my $genoptstr = '';
 my $jpcmd     = '';
-my $nest;     # output comes to screen at present
-my $outdir;   # output comes to screen at present
+my $nest;              # output comes to screen at present
+my $outdir    = '.';   # output comes to screen at present
 my $recurse;  # we can't even make classes yet, this will have to wait
 
 # not yet done:
@@ -27,6 +27,7 @@ GetOptions(
     'genwith|g=s' => \$genwith,
     'genopts|p=s' => \$genoptstr,
     'nest|n'      => \$nest,
+    'outdir|d=s'  => \$outdir,
     'help|h'      => \&help,
 );
 
@@ -62,6 +63,8 @@ where options are:
     --genwith or -g   the name of a Java::Javap::Generator:: module which
                       will make the output, defaults to Std
     --genopts or -p   strings to pass to your -g constructor
+    --nest or -n      flag indicates output should go in nested directories
+    --outdir or -d    top level directory for output
     --help or -h      this message
 EO_Help
     exit;

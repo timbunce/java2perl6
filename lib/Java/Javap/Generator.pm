@@ -56,6 +56,64 @@ genertor's class.  Example:
 
     my $generator = Java::Javap::Generator->get_generator( 'Std' );
 
+=head1 GENERATOR API
+
+Each generator must live in the Java::Javap::Generator:: namespace and
+must implement two methods:
+
+=head2 new
+
+A constructor called by C<get_generator> in this module.  Your constructor
+will receive all of the parameters passed to C<get_generator>, except
+the name of the subclass (but C<new> is invoked through the fully
+qualified subclass name, so you get that too).
+
+C<java2perl6> allows callers to supply these parameters as a string on the
+command line with the C<-p> (or C<--genopts>) flag, whose value is split
+on whitespace before the call.
+
+=head2 generate
+
+Parameters are supplied to your C<generate> in a single hash reference.
+These are the ones supplied by the C<java2perl6> command line tool:
+
+=over 4
+
+=item class_file
+
+The name of the Java .class file which was run through javap.
+
+=item ast
+
+The abstract syntax tree made from the class file by C<Java::Javap::Grammar>.
+
+=item javap_flags
+
+The command line flags passed to javap (like -classpath ...).  These
+are included so you can dump them into a comment in the generated output.
+
+=item output_dest
+
+This is either STDOUT or a directory name.  If it is STDOUT, send your
+output there.  If it is a directory, write your output to that directory,
+but see the C<nest> parameter for a tweak on that.
+
+Note that the default C<output_dest> for the C<java2perl6> command line
+tool is the current directory, not STDOUT.  Some tests do use STDOUT
+as their output destination.
+
+=item nest
+
+If the C<output_dest> is a directory, and this flag is set, you should
+make subdirectories in the output_dest according to the namespace of the
+generated module.  If you were planning to make a module (role or class)
+called com::example::Important::Project::Piece, you should make the
+com/example/Important/Project subdirectory of the output_dest and write
+Piece.pm there (of course, the path separators will vary depending on
+your platform).
+
+=back
+
 =head2 EXPORT
 
 None.  Call C<get_generator> as a class method.
