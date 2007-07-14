@@ -20,7 +20,6 @@ my $recurse;  # we can't even make classes yet, this will have to wait
 #   astas - no, make this a Genterator,
 #           but do write the backends for YAML and Perl
 #   nest
-#   outdir
 #   recurse
 
 GetOptions(
@@ -70,7 +69,7 @@ else { # put it in a directory
         }
     }
 
-    my $file_name = File::Spec->catfile( $module_dir, "$class_file.pm" );
+    my $file_name = File::Spec->catfile( $module_dir, "$class_name.pm" );
 
     open my $API_MODULE, '>', $file_name
             or die "Couldn't write to $file_name: $!\n";
