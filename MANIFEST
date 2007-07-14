@@ -15,6 +15,7 @@ README
 t/01_use.t
 t/02_interface.t
 t/03_class.t
+t/04_java2perl6.t
 testjavas/ClassTest.class
 testjavas/ClassTest.java
 testjavas/IntTest.class

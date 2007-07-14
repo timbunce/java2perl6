@@ -74,6 +74,11 @@ on whitespace before the call.
 
 =head2 generate
 
+This method returns a single string containing the full text of a Perl
+module corresponding to the abstract syntax tree of a Java module.
+Someone else will decide what to do with the output, all you need to do
+is make the string.
+
 Parameters are supplied to your C<generate> in a single hash reference.
 These are the ones supplied by the C<java2perl6> command line tool:
 
@@ -91,26 +96,6 @@ The abstract syntax tree made from the class file by C<Java::Javap::Grammar>.
 
 The command line flags passed to javap (like -classpath ...).  These
 are included so you can dump them into a comment in the generated output.
-
-=item output_dest
-
-This is either STDOUT or a directory name.  If it is STDOUT, send your
-output there.  If it is a directory, write your output to that directory,
-but see the C<nest> parameter for a tweak on that.
-
-Note that the default C<output_dest> for the C<java2perl6> command line
-tool is the current directory, not STDOUT.  Some tests do use STDOUT
-as their output destination.
-
-=item nest
-
-If the C<output_dest> is a directory, and this flag is set, you should
-make subdirectories in the output_dest according to the namespace of the
-generated module.  If you were planning to make a module (role or class)
-called com::example::Important::Project::Piece, you should make the
-com/example/Important/Project subdirectory of the output_dest and write
-Piece.pm there (of course, the path separators will vary depending on
-your platform).
 
 =back
 
