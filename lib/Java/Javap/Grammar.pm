@@ -1043,13 +1043,16 @@ sub Parse::RecDescent::Java::Javap::Grammar::comp_unit_decl
 		
 
 		$_tok = ($_noactions) ? 0 : do {
+    my $perl_qualified_name = $item{ qualified_name };
+    $perl_qualified_name    =~ s/\./::/g;
     {
-        access             => $item{ ACCESS                 },
-        final              => $item{ 'class_qualifier(?)'   }[0],
-        class_or_interface => $item{ CLASS_OR_INTERFACE     },
-        implements         => $item{ 'implements_clause(?)' }[0],
-        parent             => $item{ 'extends_clause(?)'    }[0],
-        qualified_name     => $item{ qualified_name         },
+        access              => $item{ ACCESS                 },
+        final               => $item{ 'class_qualifier(?)'   }[0],
+        class_or_interface  => $item{ CLASS_OR_INTERFACE     },
+        implements          => $item{ 'implements_clause(?)' }[0],
+        parent              => $item{ 'extends_clause(?)'    }[0],
+        java_qualified_name => $item{ qualified_name         },
+        perl_qualified_name => $perl_qualified_name,
     }
 };
 		unless (defined $_tok)
@@ -6166,7 +6169,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                             'implicit' => undef,
                                                                                             'argcode' => undef,
                                                                                             'lookahead' => 0,
-                                                                                            'line' => 115
+                                                                                            'line' => 118
                                                                                           }, 'Parse::RecDescent::Subrule' ),
                                                                                    bless( {
                                                                                             'subrule' => 'array_depth',
@@ -6174,12 +6177,12 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                             'implicit' => undef,
                                                                                             'argcode' => undef,
                                                                                             'lookahead' => 0,
-                                                                                            'line' => 115
+                                                                                            'line' => 118
                                                                                           }, 'Parse::RecDescent::Subrule' ),
                                                                                    bless( {
                                                                                             'hashname' => '__ACTION1__',
                                                                                             'lookahead' => 0,
-                                                                                            'line' => 115,
+                                                                                            'line' => 118,
                                                                                             'code' => '{
     my $array_text = \'\';
     foreach my $i ( 1 .. $item[2] ) {
@@ -6200,7 +6203,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                            ],
                                                 'name' => 'arg',
                                                 'vars' => '',
-                                                'line' => 115
+                                                'line' => 118
                                               }, 'Parse::RecDescent::Rule' ),
                               'arg_list' => bless( {
                                                      'impcount' => 0,
@@ -6226,14 +6229,14 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                  'implicit' => undef,
                                                                                                  'argcode' => undef,
                                                                                                  'lookahead' => 0,
-                                                                                                 'line' => 111
+                                                                                                 'line' => 114
                                                                                                }, 'Parse::RecDescent::Subrule' ),
                                                                                         bless( {
                                                                                                  'pattern' => ',',
                                                                                                  'hashname' => '__STRING1__',
                                                                                                  'description' => '\',\'',
                                                                                                  'lookahead' => 0,
-                                                                                                 'line' => 111
+                                                                                                 'line' => 114
                                                                                                }, 'Parse::RecDescent::Literal' ),
                                                                                         bless( {
                                                                                                  'subrule' => 'arg_list',
@@ -6241,12 +6244,12 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                  'implicit' => undef,
                                                                                                  'argcode' => undef,
                                                                                                  'lookahead' => 0,
-                                                                                                 'line' => 111
+                                                                                                 'line' => 114
                                                                                                }, 'Parse::RecDescent::Subrule' ),
                                                                                         bless( {
                                                                                                  'hashname' => '__ACTION1__',
                                                                                                  'lookahead' => 0,
-                                                                                                 'line' => 111,
+                                                                                                 'line' => 114,
                                                                                                  'code' => '{ [ @{ $item[1] }, @{ $item[3] } ] }'
                                                                                                }, 'Parse::RecDescent::Action' )
                                                                                       ],
@@ -6267,14 +6270,14 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                  'implicit' => undef,
                                                                                                  'argcode' => undef,
                                                                                                  'lookahead' => 0,
-                                                                                                 'line' => 112
+                                                                                                 'line' => 115
                                                                                                }, 'Parse::RecDescent::Subrule' ),
                                                                                         bless( {
                                                                                                  'pattern' => ',',
                                                                                                  'hashname' => '__STRING1__',
                                                                                                  'description' => '\',\'',
                                                                                                  'lookahead' => 0,
-                                                                                                 'line' => 112
+                                                                                                 'line' => 115
                                                                                                }, 'Parse::RecDescent::Literal' ),
                                                                                         bless( {
                                                                                                  'subrule' => 'arg',
@@ -6282,16 +6285,16 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                  'implicit' => undef,
                                                                                                  'argcode' => undef,
                                                                                                  'lookahead' => 0,
-                                                                                                 'line' => 112
+                                                                                                 'line' => 115
                                                                                                }, 'Parse::RecDescent::Subrule' ),
                                                                                         bless( {
                                                                                                  'hashname' => '__ACTION1__',
                                                                                                  'lookahead' => 0,
-                                                                                                 'line' => 112,
+                                                                                                 'line' => 115,
                                                                                                  'code' => '{ [ @{ $item[1] }, @{ $item[3] } ] }'
                                                                                                }, 'Parse::RecDescent::Action' )
                                                                                       ],
-                                                                           'line' => 112
+                                                                           'line' => 115
                                                                          }, 'Parse::RecDescent::Production' ),
                                                                   bless( {
                                                                            'number' => '2',
@@ -6308,21 +6311,21 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                  'implicit' => undef,
                                                                                                  'argcode' => undef,
                                                                                                  'lookahead' => 0,
-                                                                                                 'line' => 113
+                                                                                                 'line' => 116
                                                                                                }, 'Parse::RecDescent::Subrule' ),
                                                                                         bless( {
                                                                                                  'hashname' => '__ACTION1__',
                                                                                                  'lookahead' => 0,
-                                                                                                 'line' => 113,
+                                                                                                 'line' => 116,
                                                                                                  'code' => '{ $item[1] }'
                                                                                                }, 'Parse::RecDescent::Action' )
                                                                                       ],
-                                                                           'line' => 113
+                                                                           'line' => 116
                                                                          }, 'Parse::RecDescent::Production' )
                                                                 ],
                                                      'name' => 'arg_list',
                                                      'vars' => '',
-                                                     'line' => 111
+                                                     'line' => 114
                                                    }, 'Parse::RecDescent::Rule' ),
                               'body' => bless( {
                                                  'impcount' => 0,
@@ -6350,12 +6353,12 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                              'matchrule' => 0,
                                                                                              'repspec' => 's',
                                                                                              'lookahead' => 0,
-                                                                                             'line' => 42
+                                                                                             'line' => 45
                                                                                            }, 'Parse::RecDescent::Repetition' ),
                                                                                     bless( {
                                                                                              'hashname' => '__ACTION1__',
                                                                                              'lookahead' => 0,
-                                                                                             'line' => 42,
+                                                                                             'line' => 45,
                                                                                              'code' => '{ $item[1] }'
                                                                                            }, 'Parse::RecDescent::Action' )
                                                                                   ],
@@ -6364,7 +6367,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                             ],
                                                  'name' => 'body',
                                                  'vars' => '',
-                                                 'line' => 42
+                                                 'line' => 45
                                                }, 'Parse::RecDescent::Rule' ),
                               'comp_unit_decl' => bless( {
                                                            'impcount' => 0,
@@ -6450,13 +6453,16 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                        'lookahead' => 0,
                                                                                                        'line' => 26,
                                                                                                        'code' => '{
+    my $perl_qualified_name = $item{ qualified_name };
+    $perl_qualified_name    =~ s/\\./::/g;
     {
-        access             => $item{ ACCESS                 },
-        final              => $item{ \'class_qualifier(?)\'   }[0],
-        class_or_interface => $item{ CLASS_OR_INTERFACE     },
-        implements         => $item{ \'implements_clause(?)\' }[0],
-        parent             => $item{ \'extends_clause(?)\'    }[0],
-        qualified_name     => $item{ qualified_name         },
+        access              => $item{ ACCESS                 },
+        final               => $item{ \'class_qualifier(?)\'   }[0],
+        class_or_interface  => $item{ CLASS_OR_INTERFACE     },
+        implements          => $item{ \'implements_clause(?)\' }[0],
+        parent              => $item{ \'extends_clause(?)\'    }[0],
+        java_qualified_name => $item{ qualified_name         },
+        perl_qualified_name => $perl_qualified_name,
     }
 }'
                                                                                                      }, 'Parse::RecDescent::Action' )
@@ -6494,12 +6500,12 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                     'matchrule' => 0,
                                                                                                     'repspec' => 's?',
                                                                                                     'lookahead' => 0,
-                                                                                                    'line' => 129
+                                                                                                    'line' => 132
                                                                                                   }, 'Parse::RecDescent::Repetition' ),
                                                                                            bless( {
                                                                                                     'hashname' => '__ACTION1__',
                                                                                                     'lookahead' => 0,
-                                                                                                    'line' => 129,
+                                                                                                    'line' => 132,
                                                                                                     'code' => '{
                 my $depth = scalar @{ $item[1] };
                 $depth;
@@ -6511,7 +6517,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                    ],
                                                         'name' => 'array_depth',
                                                         'vars' => '',
-                                                        'line' => 129
+                                                        'line' => 132
                                                       }, 'Parse::RecDescent::Rule' ),
                               'ACCESS' => bless( {
                                                    'impcount' => 0,
@@ -6533,12 +6539,12 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                'hashname' => '__STRING1__',
                                                                                                'description' => '\'public\'',
                                                                                                'lookahead' => 0,
-                                                                                               'line' => 138
+                                                                                               'line' => 141
                                                                                              }, 'Parse::RecDescent::Literal' ),
                                                                                       bless( {
                                                                                                'hashname' => '__ACTION1__',
                                                                                                'lookahead' => 0,
-                                                                                               'line' => 138,
+                                                                                               'line' => 141,
                                                                                                'code' => '{ $item[1] }'
                                                                                              }, 'Parse::RecDescent::Action' )
                                                                                     ],
@@ -6558,16 +6564,16 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                'hashname' => '__STRING1__',
                                                                                                'description' => '\'protected\'',
                                                                                                'lookahead' => 0,
-                                                                                               'line' => 139
+                                                                                               'line' => 142
                                                                                              }, 'Parse::RecDescent::Literal' ),
                                                                                       bless( {
                                                                                                'hashname' => '__ACTION1__',
                                                                                                'lookahead' => 0,
-                                                                                               'line' => 139,
+                                                                                               'line' => 142,
                                                                                                'code' => '{ $item[1] }'
                                                                                              }, 'Parse::RecDescent::Action' )
                                                                                     ],
-                                                                         'line' => 139
+                                                                         'line' => 142
                                                                        }, 'Parse::RecDescent::Production' ),
                                                                 bless( {
                                                                          'number' => '2',
@@ -6583,16 +6589,16 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                'hashname' => '__STRING1__',
                                                                                                'description' => '\'private\'',
                                                                                                'lookahead' => 0,
-                                                                                               'line' => 140
+                                                                                               'line' => 143
                                                                                              }, 'Parse::RecDescent::Literal' ),
                                                                                       bless( {
                                                                                                'hashname' => '__ACTION1__',
                                                                                                'lookahead' => 0,
-                                                                                               'line' => 140,
+                                                                                               'line' => 143,
                                                                                                'code' => '{ $item[1] }'
                                                                                              }, 'Parse::RecDescent::Action' )
                                                                                     ],
-                                                                         'line' => 140
+                                                                         'line' => 143
                                                                        }, 'Parse::RecDescent::Production' ),
                                                                 bless( {
                                                                          'number' => '3',
@@ -6606,16 +6612,16 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                       bless( {
                                                                                                'hashname' => '__ACTION1__',
                                                                                                'lookahead' => 0,
-                                                                                               'line' => 141,
+                                                                                               'line' => 144,
                                                                                                'code' => '{ \'\' }'
                                                                                              }, 'Parse::RecDescent::Action' )
                                                                                     ],
-                                                                         'line' => 141
+                                                                         'line' => 144
                                                                        }, 'Parse::RecDescent::Production' )
                                                               ],
                                                    'name' => 'ACCESS',
                                                    'vars' => '',
-                                                   'line' => 138
+                                                   'line' => 141
                                                  }, 'Parse::RecDescent::Rule' ),
                               'method' => bless( {
                                                    'impcount' => 0,
@@ -6646,7 +6652,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                'implicit' => undef,
                                                                                                'argcode' => undef,
                                                                                                'lookahead' => 0,
-                                                                                               'line' => 58
+                                                                                               'line' => 61
                                                                                              }, 'Parse::RecDescent::Subrule' ),
                                                                                       bless( {
                                                                                                'subrule' => 'method_qualifier',
@@ -6657,7 +6663,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                'matchrule' => 0,
                                                                                                'repspec' => 's?',
                                                                                                'lookahead' => 0,
-                                                                                               'line' => 58
+                                                                                               'line' => 61
                                                                                              }, 'Parse::RecDescent::Repetition' ),
                                                                                       bless( {
                                                                                                'subrule' => 'arg',
@@ -6665,7 +6671,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                'implicit' => undef,
                                                                                                'argcode' => undef,
                                                                                                'lookahead' => 0,
-                                                                                               'line' => 59
+                                                                                               'line' => 62
                                                                                              }, 'Parse::RecDescent::Subrule' ),
                                                                                       bless( {
                                                                                                'subrule' => 'NAME',
@@ -6673,14 +6679,14 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                'implicit' => undef,
                                                                                                'argcode' => undef,
                                                                                                'lookahead' => 0,
-                                                                                               'line' => 59
+                                                                                               'line' => 62
                                                                                              }, 'Parse::RecDescent::Subrule' ),
                                                                                       bless( {
                                                                                                'pattern' => '(',
                                                                                                'hashname' => '__STRING1__',
                                                                                                'description' => '\'(\'',
                                                                                                'lookahead' => 0,
-                                                                                               'line' => 59
+                                                                                               'line' => 62
                                                                                              }, 'Parse::RecDescent::Literal' ),
                                                                                       bless( {
                                                                                                'subrule' => 'arg_list',
@@ -6691,14 +6697,14 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                'matchrule' => 0,
                                                                                                'repspec' => '?',
                                                                                                'lookahead' => 0,
-                                                                                               'line' => 59
+                                                                                               'line' => 62
                                                                                              }, 'Parse::RecDescent::Repetition' ),
                                                                                       bless( {
                                                                                                'pattern' => ')',
                                                                                                'hashname' => '__STRING2__',
                                                                                                'description' => '\')\'',
                                                                                                'lookahead' => 0,
-                                                                                               'line' => 59
+                                                                                               'line' => 62
                                                                                              }, 'Parse::RecDescent::Literal' ),
                                                                                       bless( {
                                                                                                'subrule' => 'throws_clause',
@@ -6709,19 +6715,19 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                'matchrule' => 0,
                                                                                                'repspec' => '?',
                                                                                                'lookahead' => 0,
-                                                                                               'line' => 60
+                                                                                               'line' => 63
                                                                                              }, 'Parse::RecDescent::Repetition' ),
                                                                                       bless( {
                                                                                                'pattern' => ';',
                                                                                                'hashname' => '__STRING3__',
                                                                                                'description' => '\';\'',
                                                                                                'lookahead' => 0,
-                                                                                               'line' => 60
+                                                                                               'line' => 63
                                                                                              }, 'Parse::RecDescent::Literal' ),
                                                                                       bless( {
                                                                                                'hashname' => '__ACTION1__',
                                                                                                'lookahead' => 0,
-                                                                                               'line' => 60,
+                                                                                               'line' => 63,
                                                                                                'code' => '{
              $methods{ $item[4] }++;
              my $args = $item{ \'arg_list(?)\' }[0];
@@ -6755,7 +6761,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                'implicit' => undef,
                                                                                                'argcode' => undef,
                                                                                                'lookahead' => 0,
-                                                                                               'line' => 74
+                                                                                               'line' => 77
                                                                                              }, 'Parse::RecDescent::Subrule' ),
                                                                                       bless( {
                                                                                                'pattern' => '(native)?',
@@ -6763,7 +6769,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                'description' => '/(native)?/',
                                                                                                'lookahead' => 0,
                                                                                                'rdelim' => '/',
-                                                                                               'line' => 74,
+                                                                                               'line' => 77,
                                                                                                'mod' => '',
                                                                                                'ldelim' => '/'
                                                                                              }, 'Parse::RecDescent::Token' ),
@@ -6773,14 +6779,14 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                'implicit' => undef,
                                                                                                'argcode' => undef,
                                                                                                'lookahead' => 0,
-                                                                                               'line' => 74
+                                                                                               'line' => 77
                                                                                              }, 'Parse::RecDescent::Subrule' ),
                                                                                       bless( {
                                                                                                'pattern' => '(',
                                                                                                'hashname' => '__STRING1__',
                                                                                                'description' => '\'(\'',
                                                                                                'lookahead' => 0,
-                                                                                               'line' => 74
+                                                                                               'line' => 77
                                                                                              }, 'Parse::RecDescent::Literal' ),
                                                                                       bless( {
                                                                                                'subrule' => 'arg_list',
@@ -6791,14 +6797,14 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                'matchrule' => 0,
                                                                                                'repspec' => '?',
                                                                                                'lookahead' => 0,
-                                                                                               'line' => 74
+                                                                                               'line' => 77
                                                                                              }, 'Parse::RecDescent::Repetition' ),
                                                                                       bless( {
                                                                                                'pattern' => ')',
                                                                                                'hashname' => '__STRING2__',
                                                                                                'description' => '\')\'',
                                                                                                'lookahead' => 0,
-                                                                                               'line' => 74
+                                                                                               'line' => 77
                                                                                              }, 'Parse::RecDescent::Literal' ),
                                                                                       bless( {
                                                                                                'subrule' => 'throws_clause',
@@ -6809,19 +6815,19 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                'matchrule' => 0,
                                                                                                'repspec' => '?',
                                                                                                'lookahead' => 0,
-                                                                                               'line' => 75
+                                                                                               'line' => 78
                                                                                              }, 'Parse::RecDescent::Repetition' ),
                                                                                       bless( {
                                                                                                'pattern' => ';',
                                                                                                'hashname' => '__STRING3__',
                                                                                                'description' => '\';\'',
                                                                                                'lookahead' => 0,
-                                                                                               'line' => 75
+                                                                                               'line' => 78
                                                                                              }, 'Parse::RecDescent::Literal' ),
                                                                                       bless( {
                                                                                                'hashname' => '__ACTION1__',
                                                                                                'lookahead' => 0,
-                                                                                               'line' => 75,
+                                                                                               'line' => 78,
                                                                                                'code' => '{
              $constructors++;
              my $args = $item{ \'arg_list(?)\' }[0];
@@ -6836,12 +6842,12 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
          }'
                                                                                              }, 'Parse::RecDescent::Action' )
                                                                                     ],
-                                                                         'line' => 74
+                                                                         'line' => 77
                                                                        }, 'Parse::RecDescent::Production' )
                                                               ],
                                                    'name' => 'method',
                                                    'vars' => '',
-                                                   'line' => 58
+                                                   'line' => 61
                                                  }, 'Parse::RecDescent::Rule' ),
                               'ARRAY_LEVEL' => bless( {
                                                         'impcount' => 0,
@@ -6863,12 +6869,12 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                     'hashname' => '__STRING1__',
                                                                                                     'description' => '\'[]\'',
                                                                                                     'lookahead' => 0,
-                                                                                                    'line' => 134
+                                                                                                    'line' => 137
                                                                                                   }, 'Parse::RecDescent::Literal' ),
                                                                                            bless( {
                                                                                                     'hashname' => '__ACTION1__',
                                                                                                     'lookahead' => 0,
-                                                                                                    'line' => 134,
+                                                                                                    'line' => 137,
                                                                                                     'code' => '{ 1 }'
                                                                                                   }, 'Parse::RecDescent::Action' )
                                                                                          ],
@@ -6877,7 +6883,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                    ],
                                                         'name' => 'ARRAY_LEVEL',
                                                         'vars' => '',
-                                                        'line' => 134
+                                                        'line' => 137
                                                       }, 'Parse::RecDescent::Rule' ),
                               'comp_unit' => bless( {
                                                       'impcount' => 0,
@@ -6997,14 +7003,14 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                              'description' => '/^([\\\\w\\\\d]+)/',
                                                                                              'lookahead' => 0,
                                                                                              'rdelim' => '/',
-                                                                                             'line' => 136,
+                                                                                             'line' => 139,
                                                                                              'mod' => '',
                                                                                              'ldelim' => '/'
                                                                                            }, 'Parse::RecDescent::Token' ),
                                                                                     bless( {
                                                                                              'hashname' => '__ACTION1__',
                                                                                              'lookahead' => 0,
-                                                                                             'line' => 136,
+                                                                                             'line' => 139,
                                                                                              'code' => '{ $1 }'
                                                                                            }, 'Parse::RecDescent::Action' )
                                                                                   ],
@@ -7013,7 +7019,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                             ],
                                                  'name' => 'NAME',
                                                  'vars' => '',
-                                                 'line' => 136
+                                                 'line' => 139
                                                }, 'Parse::RecDescent::Rule' ),
                               'throws_clause' => bless( {
                                                           'impcount' => 0,
@@ -7037,7 +7043,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                       'hashname' => '__STRING1__',
                                                                                                       'description' => '\'throws\'',
                                                                                                       'lookahead' => 0,
-                                                                                                      'line' => 92
+                                                                                                      'line' => 95
                                                                                                     }, 'Parse::RecDescent::Literal' ),
                                                                                              bless( {
                                                                                                       'subrule' => 'comma_list',
@@ -7045,12 +7051,12 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                       'implicit' => undef,
                                                                                                       'argcode' => undef,
                                                                                                       'lookahead' => 0,
-                                                                                                      'line' => 92
+                                                                                                      'line' => 95
                                                                                                     }, 'Parse::RecDescent::Subrule' ),
                                                                                              bless( {
                                                                                                       'hashname' => '__ACTION1__',
                                                                                                       'lookahead' => 0,
-                                                                                                      'line' => 92,
+                                                                                                      'line' => 95,
                                                                                                       'code' => '{ $item{comma_list} }'
                                                                                                     }, 'Parse::RecDescent::Action' )
                                                                                            ],
@@ -7059,7 +7065,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                      ],
                                                           'name' => 'throws_clause',
                                                           'vars' => '',
-                                                          'line' => 92
+                                                          'line' => 95
                                                         }, 'Parse::RecDescent::Rule' ),
                               'implements_clause' => bless( {
                                                               'impcount' => 0,
@@ -7083,7 +7089,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                           'hashname' => '__STRING1__',
                                                                                                           'description' => '\'implements\'',
                                                                                                           'lookahead' => 0,
-                                                                                                          'line' => 40
+                                                                                                          'line' => 43
                                                                                                         }, 'Parse::RecDescent::Literal' ),
                                                                                                  bless( {
                                                                                                           'subrule' => 'comma_list',
@@ -7091,12 +7097,12 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                           'implicit' => undef,
                                                                                                           'argcode' => undef,
                                                                                                           'lookahead' => 0,
-                                                                                                          'line' => 40
+                                                                                                          'line' => 43
                                                                                                         }, 'Parse::RecDescent::Subrule' ),
                                                                                                  bless( {
                                                                                                           'hashname' => '__ACTION1__',
                                                                                                           'lookahead' => 0,
-                                                                                                          'line' => 40,
+                                                                                                          'line' => 43,
                                                                                                           'code' => '{ $item{ comma_list } }'
                                                                                                         }, 'Parse::RecDescent::Action' )
                                                                                                ],
@@ -7105,7 +7111,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                          ],
                                                               'name' => 'implements_clause',
                                                               'vars' => '',
-                                                              'line' => 40
+                                                              'line' => 43
                                                             }, 'Parse::RecDescent::Rule' ),
                               'constant' => bless( {
                                                      'impcount' => 0,
@@ -7132,14 +7138,14 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                  'implicit' => undef,
                                                                                                  'argcode' => undef,
                                                                                                  'lookahead' => 0,
-                                                                                                 'line' => 48
+                                                                                                 'line' => 51
                                                                                                }, 'Parse::RecDescent::Subrule' ),
                                                                                         bless( {
                                                                                                  'pattern' => 'static',
                                                                                                  'hashname' => '__STRING1__',
                                                                                                  'description' => '\'static\'',
                                                                                                  'lookahead' => 0,
-                                                                                                 'line' => 48
+                                                                                                 'line' => 51
                                                                                                }, 'Parse::RecDescent::Literal' ),
                                                                                         bless( {
                                                                                                  'pattern' => '(final)?',
@@ -7147,7 +7153,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                  'description' => '/(final)?/',
                                                                                                  'lookahead' => 0,
                                                                                                  'rdelim' => '/',
-                                                                                                 'line' => 48,
+                                                                                                 'line' => 51,
                                                                                                  'mod' => '',
                                                                                                  'ldelim' => '/'
                                                                                                }, 'Parse::RecDescent::Token' ),
@@ -7157,7 +7163,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                  'implicit' => undef,
                                                                                                  'argcode' => undef,
                                                                                                  'lookahead' => 0,
-                                                                                                 'line' => 48
+                                                                                                 'line' => 51
                                                                                                }, 'Parse::RecDescent::Subrule' ),
                                                                                         bless( {
                                                                                                  'subrule' => 'NAME',
@@ -7165,19 +7171,19 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                  'implicit' => undef,
                                                                                                  'argcode' => undef,
                                                                                                  'lookahead' => 0,
-                                                                                                 'line' => 48
+                                                                                                 'line' => 51
                                                                                                }, 'Parse::RecDescent::Subrule' ),
                                                                                         bless( {
                                                                                                  'pattern' => ';',
                                                                                                  'hashname' => '__STRING2__',
                                                                                                  'description' => '\';\'',
                                                                                                  'lookahead' => 0,
-                                                                                                 'line' => 48
+                                                                                                 'line' => 51
                                                                                                }, 'Parse::RecDescent::Literal' ),
                                                                                         bless( {
                                                                                                  'hashname' => '__ACTION1__',
                                                                                                  'lookahead' => 0,
-                                                                                                 'line' => 48,
+                                                                                                 'line' => 51,
                                                                                                  'code' => '{
     {
         body_element => \'constant\',
@@ -7194,7 +7200,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                 ],
                                                      'name' => 'constant',
                                                      'vars' => '',
-                                                     'line' => 48
+                                                     'line' => 51
                                                    }, 'Parse::RecDescent::Rule' ),
                               'method_qualifier' => bless( {
                                                              'impcount' => 0,
@@ -7216,12 +7222,12 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                          'hashname' => '__STRING1__',
                                                                                                          'description' => '\'abstract\'',
                                                                                                          'lookahead' => 0,
-                                                                                                         'line' => 88
+                                                                                                         'line' => 91
                                                                                                        }, 'Parse::RecDescent::Literal' ),
                                                                                                 bless( {
                                                                                                          'hashname' => '__ACTION1__',
                                                                                                          'lookahead' => 0,
-                                                                                                         'line' => 88,
+                                                                                                         'line' => 91,
                                                                                                          'code' => '{ \'abstract\' }'
                                                                                                        }, 'Parse::RecDescent::Action' )
                                                                                               ],
@@ -7241,16 +7247,16 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                          'hashname' => '__STRING1__',
                                                                                                          'description' => '\'native\'',
                                                                                                          'lookahead' => 0,
-                                                                                                         'line' => 89
+                                                                                                         'line' => 92
                                                                                                        }, 'Parse::RecDescent::Literal' ),
                                                                                                 bless( {
                                                                                                          'hashname' => '__ACTION1__',
                                                                                                          'lookahead' => 0,
-                                                                                                         'line' => 89,
+                                                                                                         'line' => 92,
                                                                                                          'code' => '{ \'native\'   }'
                                                                                                        }, 'Parse::RecDescent::Action' )
                                                                                               ],
-                                                                                   'line' => 89
+                                                                                   'line' => 92
                                                                                  }, 'Parse::RecDescent::Production' ),
                                                                           bless( {
                                                                                    'number' => '2',
@@ -7266,21 +7272,21 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                          'hashname' => '__STRING1__',
                                                                                                          'description' => '\'static\'',
                                                                                                          'lookahead' => 0,
-                                                                                                         'line' => 90
+                                                                                                         'line' => 93
                                                                                                        }, 'Parse::RecDescent::Literal' ),
                                                                                                 bless( {
                                                                                                          'hashname' => '__ACTION1__',
                                                                                                          'lookahead' => 0,
-                                                                                                         'line' => 90,
+                                                                                                         'line' => 93,
                                                                                                          'code' => '{ \'static\'   }'
                                                                                                        }, 'Parse::RecDescent::Action' )
                                                                                               ],
-                                                                                   'line' => 90
+                                                                                   'line' => 93
                                                                                  }, 'Parse::RecDescent::Production' )
                                                                         ],
                                                              'name' => 'method_qualifier',
                                                              'vars' => '',
-                                                             'line' => 88
+                                                             'line' => 91
                                                            }, 'Parse::RecDescent::Rule' ),
                               'body_element' => bless( {
                                                          'impcount' => 0,
@@ -7306,12 +7312,12 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                      'implicit' => undef,
                                                                                                      'argcode' => undef,
                                                                                                      'lookahead' => 0,
-                                                                                                     'line' => 44
+                                                                                                     'line' => 47
                                                                                                    }, 'Parse::RecDescent::Subrule' ),
                                                                                             bless( {
                                                                                                      'hashname' => '__ACTION1__',
                                                                                                      'lookahead' => 0,
-                                                                                                     'line' => 44,
+                                                                                                     'line' => 47,
                                                                                                      'code' => '{ $item[1] }'
                                                                                                    }, 'Parse::RecDescent::Action' )
                                                                                           ],
@@ -7331,37 +7337,37 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                      'hashname' => '__STRING1__',
                                                                                                      'description' => '\'static\'',
                                                                                                      'lookahead' => 0,
-                                                                                                     'line' => 45
+                                                                                                     'line' => 48
                                                                                                    }, 'Parse::RecDescent::Literal' ),
                                                                                             bless( {
                                                                                                      'pattern' => '{',
                                                                                                      'hashname' => '__STRING2__',
                                                                                                      'description' => '\'\\{\'',
                                                                                                      'lookahead' => 0,
-                                                                                                     'line' => 45
+                                                                                                     'line' => 48
                                                                                                    }, 'Parse::RecDescent::Literal' ),
                                                                                             bless( {
                                                                                                      'pattern' => '}',
                                                                                                      'hashname' => '__STRING3__',
                                                                                                      'description' => '\'\\}\'',
                                                                                                      'lookahead' => 0,
-                                                                                                     'line' => 45
+                                                                                                     'line' => 48
                                                                                                    }, 'Parse::RecDescent::Literal' ),
                                                                                             bless( {
                                                                                                      'pattern' => ';',
                                                                                                      'hashname' => '__STRING4__',
                                                                                                      'description' => '\';\'',
                                                                                                      'lookahead' => 0,
-                                                                                                     'line' => 45
+                                                                                                     'line' => 48
                                                                                                    }, 'Parse::RecDescent::Literal' ),
                                                                                             bless( {
                                                                                                      'hashname' => '__ACTION1__',
                                                                                                      'lookahead' => 0,
-                                                                                                     'line' => 45,
+                                                                                                     'line' => 48,
                                                                                                      'code' => '{ { body_element => \'static_block\' } }'
                                                                                                    }, 'Parse::RecDescent::Action' )
                                                                                           ],
-                                                                               'line' => 45
+                                                                               'line' => 48
                                                                              }, 'Parse::RecDescent::Production' ),
                                                                       bless( {
                                                                                'number' => '2',
@@ -7378,21 +7384,21 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                      'implicit' => undef,
                                                                                                      'argcode' => undef,
                                                                                                      'lookahead' => 0,
-                                                                                                     'line' => 46
+                                                                                                     'line' => 49
                                                                                                    }, 'Parse::RecDescent::Subrule' ),
                                                                                             bless( {
                                                                                                      'hashname' => '__ACTION1__',
                                                                                                      'lookahead' => 0,
-                                                                                                     'line' => 46,
+                                                                                                     'line' => 49,
                                                                                                      'code' => '{ $item[1] }'
                                                                                                    }, 'Parse::RecDescent::Action' )
                                                                                           ],
-                                                                               'line' => 46
+                                                                               'line' => 49
                                                                              }, 'Parse::RecDescent::Production' )
                                                                     ],
                                                          'name' => 'body_element',
                                                          'vars' => '',
-                                                         'line' => 44
+                                                         'line' => 47
                                                        }, 'Parse::RecDescent::Rule' ),
                               'class_qualifier' => bless( {
                                                             'impcount' => 0,
@@ -7414,12 +7420,12 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                         'hashname' => '__STRING1__',
                                                                                                         'description' => '\'final\'',
                                                                                                         'lookahead' => 0,
-                                                                                                        'line' => 37
+                                                                                                        'line' => 40
                                                                                                       }, 'Parse::RecDescent::Literal' ),
                                                                                                bless( {
                                                                                                         'hashname' => '__ACTION1__',
                                                                                                         'lookahead' => 0,
-                                                                                                        'line' => 37,
+                                                                                                        'line' => 40,
                                                                                                         'code' => '{ \'final\' }'
                                                                                                       }, 'Parse::RecDescent::Action' )
                                                                                              ],
@@ -7428,7 +7434,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                        ],
                                                             'name' => 'class_qualifier',
                                                             'vars' => '',
-                                                            'line' => 37
+                                                            'line' => 40
                                                           }, 'Parse::RecDescent::Rule' ),
                               'comma_list' => bless( {
                                                        'impcount' => 0,
@@ -7454,14 +7460,14 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                    'implicit' => undef,
                                                                                                    'argcode' => undef,
                                                                                                    'lookahead' => 0,
-                                                                                                   'line' => 98
+                                                                                                   'line' => 101
                                                                                                  }, 'Parse::RecDescent::Subrule' ),
                                                                                           bless( {
                                                                                                    'pattern' => ',',
                                                                                                    'hashname' => '__STRING1__',
                                                                                                    'description' => '\',\'',
                                                                                                    'lookahead' => 0,
-                                                                                                   'line' => 98
+                                                                                                   'line' => 101
                                                                                                  }, 'Parse::RecDescent::Literal' ),
                                                                                           bless( {
                                                                                                    'subrule' => 'comma_list',
@@ -7469,12 +7475,12 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                    'implicit' => undef,
                                                                                                    'argcode' => undef,
                                                                                                    'lookahead' => 0,
-                                                                                                   'line' => 98
+                                                                                                   'line' => 101
                                                                                                  }, 'Parse::RecDescent::Subrule' ),
                                                                                           bless( {
                                                                                                    'hashname' => '__ACTION1__',
                                                                                                    'lookahead' => 0,
-                                                                                                   'line' => 98,
+                                                                                                   'line' => 101,
                                                                                                    'code' => '{
                 my @names = ( $item[1] );
                 if ( ref( $item[3] ) eq \'ARRAY\' ) {
@@ -7504,14 +7510,14 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                    'implicit' => undef,
                                                                                                    'argcode' => undef,
                                                                                                    'lookahead' => 0,
-                                                                                                   'line' => 108
+                                                                                                   'line' => 111
                                                                                                  }, 'Parse::RecDescent::Subrule' ),
                                                                                           bless( {
                                                                                                    'pattern' => ',',
                                                                                                    'hashname' => '__STRING1__',
                                                                                                    'description' => '\',\'',
                                                                                                    'lookahead' => 0,
-                                                                                                   'line' => 108
+                                                                                                   'line' => 111
                                                                                                  }, 'Parse::RecDescent::Literal' ),
                                                                                           bless( {
                                                                                                    'subrule' => 'qualified_name',
@@ -7519,16 +7525,16 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                    'implicit' => undef,
                                                                                                    'argcode' => undef,
                                                                                                    'lookahead' => 0,
-                                                                                                   'line' => 108
+                                                                                                   'line' => 111
                                                                                                  }, 'Parse::RecDescent::Subrule' ),
                                                                                           bless( {
                                                                                                    'hashname' => '__ACTION1__',
                                                                                                    'lookahead' => 0,
-                                                                                                   'line' => 108,
+                                                                                                   'line' => 111,
                                                                                                    'code' => '{ [ $item[1], $item[3] ] }'
                                                                                                  }, 'Parse::RecDescent::Action' )
                                                                                         ],
-                                                                             'line' => 108
+                                                                             'line' => 111
                                                                            }, 'Parse::RecDescent::Production' ),
                                                                     bless( {
                                                                              'number' => '2',
@@ -7545,21 +7551,21 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                    'implicit' => undef,
                                                                                                    'argcode' => undef,
                                                                                                    'lookahead' => 0,
-                                                                                                   'line' => 109
+                                                                                                   'line' => 112
                                                                                                  }, 'Parse::RecDescent::Subrule' ),
                                                                                           bless( {
                                                                                                    'hashname' => '__ACTION1__',
                                                                                                    'lookahead' => 0,
-                                                                                                   'line' => 109,
+                                                                                                   'line' => 112,
                                                                                                    'code' => '{ $item[1] }'
                                                                                                  }, 'Parse::RecDescent::Action' )
                                                                                         ],
-                                                                             'line' => 109
+                                                                             'line' => 112
                                                                            }, 'Parse::RecDescent::Production' )
                                                                   ],
                                                        'name' => 'comma_list',
                                                        'vars' => '',
-                                                       'line' => 98
+                                                       'line' => 101
                                                      }, 'Parse::RecDescent::Rule' ),
                               'comment' => bless( {
                                                     'impcount' => 0,
@@ -7581,7 +7587,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                 'hashname' => '__STRING1__',
                                                                                                 'description' => '\'/*\'',
                                                                                                 'lookahead' => 0,
-                                                                                                'line' => 146
+                                                                                                'line' => 149
                                                                                               }, 'Parse::RecDescent::Literal' ),
                                                                                        bless( {
                                                                                                 'pattern' => '[^*]*',
@@ -7589,7 +7595,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                 'description' => '/[^*]*/',
                                                                                                 'lookahead' => 0,
                                                                                                 'rdelim' => '/',
-                                                                                                'line' => 146,
+                                                                                                'line' => 149,
                                                                                                 'mod' => '',
                                                                                                 'ldelim' => '/'
                                                                                               }, 'Parse::RecDescent::Token' ),
@@ -7598,12 +7604,12 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                 'hashname' => '__STRING2__',
                                                                                                 'description' => '\'*/\'',
                                                                                                 'lookahead' => 0,
-                                                                                                'line' => 146
+                                                                                                'line' => 149
                                                                                               }, 'Parse::RecDescent::Literal' ),
                                                                                        bless( {
                                                                                                 'hashname' => '__ACTION1__',
                                                                                                 'lookahead' => 0,
-                                                                                                'line' => 146,
+                                                                                                'line' => 149,
                                                                                                 'code' => '{}'
                                                                                               }, 'Parse::RecDescent::Action' )
                                                                                      ],
@@ -7618,12 +7624,12 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                           'patcount' => 0,
                                                                           'actcount' => 0,
                                                                           'items' => [],
-                                                                          'line' => 147
+                                                                          'line' => 150
                                                                         }, 'Parse::RecDescent::Production' )
                                                                ],
                                                     'name' => 'comment',
                                                     'vars' => '',
-                                                    'line' => 146
+                                                    'line' => 149
                                                   }, 'Parse::RecDescent::Rule' ),
                               'comp_stmt' => bless( {
                                                       'impcount' => 0,
@@ -7700,7 +7706,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                        'hashname' => '__STRING1__',
                                                                                                        'description' => '\'extends\'',
                                                                                                        'lookahead' => 0,
-                                                                                                       'line' => 39
+                                                                                                       'line' => 42
                                                                                                      }, 'Parse::RecDescent::Literal' ),
                                                                                               bless( {
                                                                                                        'subrule' => 'qualified_name',
@@ -7708,12 +7714,12 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                        'implicit' => undef,
                                                                                                        'argcode' => undef,
                                                                                                        'lookahead' => 0,
-                                                                                                       'line' => 39
+                                                                                                       'line' => 42
                                                                                                      }, 'Parse::RecDescent::Subrule' ),
                                                                                               bless( {
                                                                                                        'hashname' => '__ACTION1__',
                                                                                                        'lookahead' => 0,
-                                                                                                       'line' => 39,
+                                                                                                       'line' => 42,
                                                                                                        'code' => '{ $item{ qualified_name } }'
                                                                                                      }, 'Parse::RecDescent::Action' )
                                                                                             ],
@@ -7722,7 +7728,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                       ],
                                                            'name' => 'extends_clause',
                                                            'vars' => '',
-                                                           'line' => 39
+                                                           'line' => 42
                                                          }, 'Parse::RecDescent::Rule' ),
                               'qualified_name' => bless( {
                                                            'impcount' => 0,
@@ -7748,14 +7754,14 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                        'implicit' => undef,
                                                                                                        'argcode' => undef,
                                                                                                        'lookahead' => 0,
-                                                                                                       'line' => 93
+                                                                                                       'line' => 96
                                                                                                      }, 'Parse::RecDescent::Subrule' ),
                                                                                               bless( {
                                                                                                        'pattern' => '.',
                                                                                                        'hashname' => '__STRING1__',
                                                                                                        'description' => '\'.\'',
                                                                                                        'lookahead' => 0,
-                                                                                                       'line' => 93
+                                                                                                       'line' => 96
                                                                                                      }, 'Parse::RecDescent::Literal' ),
                                                                                               bless( {
                                                                                                        'subrule' => 'qualified_name',
@@ -7763,12 +7769,12 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                        'implicit' => undef,
                                                                                                        'argcode' => undef,
                                                                                                        'lookahead' => 0,
-                                                                                                       'line' => 93
+                                                                                                       'line' => 96
                                                                                                      }, 'Parse::RecDescent::Subrule' ),
                                                                                               bless( {
                                                                                                        'hashname' => '__ACTION1__',
                                                                                                        'lookahead' => 0,
-                                                                                                       'line' => 94,
+                                                                                                       'line' => 97,
                                                                                                        'code' => '{ "$item{NAME}.$item{qualified_name}" }'
                                                                                                      }, 'Parse::RecDescent::Action' )
                                                                                             ],
@@ -7789,14 +7795,14 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                        'implicit' => undef,
                                                                                                        'argcode' => undef,
                                                                                                        'lookahead' => 0,
-                                                                                                       'line' => 95
+                                                                                                       'line' => 98
                                                                                                      }, 'Parse::RecDescent::Subrule' ),
                                                                                               bless( {
                                                                                                        'pattern' => '.',
                                                                                                        'hashname' => '__STRING1__',
                                                                                                        'description' => '\'.\'',
                                                                                                        'lookahead' => 0,
-                                                                                                       'line' => 95
+                                                                                                       'line' => 98
                                                                                                      }, 'Parse::RecDescent::Literal' ),
                                                                                               bless( {
                                                                                                        'subrule' => 'NAME',
@@ -7804,16 +7810,16 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                        'implicit' => undef,
                                                                                                        'argcode' => undef,
                                                                                                        'lookahead' => 0,
-                                                                                                       'line' => 95
+                                                                                                       'line' => 98
                                                                                                      }, 'Parse::RecDescent::Subrule' ),
                                                                                               bless( {
                                                                                                        'hashname' => '__ACTION1__',
                                                                                                        'lookahead' => 0,
-                                                                                                       'line' => 95,
+                                                                                                       'line' => 98,
                                                                                                        'code' => '{ "$item[1].$item[3]" }'
                                                                                                      }, 'Parse::RecDescent::Action' )
                                                                                             ],
-                                                                                 'line' => 95
+                                                                                 'line' => 98
                                                                                }, 'Parse::RecDescent::Production' ),
                                                                         bless( {
                                                                                  'number' => '2',
@@ -7830,21 +7836,21 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                        'implicit' => undef,
                                                                                                        'argcode' => undef,
                                                                                                        'lookahead' => 0,
-                                                                                                       'line' => 96
+                                                                                                       'line' => 99
                                                                                                      }, 'Parse::RecDescent::Subrule' ),
                                                                                               bless( {
                                                                                                        'hashname' => '__ACTION1__',
                                                                                                        'lookahead' => 0,
-                                                                                                       'line' => 96,
+                                                                                                       'line' => 99,
                                                                                                        'code' => '{ $item[1] }'
                                                                                                      }, 'Parse::RecDescent::Action' )
                                                                                             ],
-                                                                                 'line' => 96
+                                                                                 'line' => 99
                                                                                }, 'Parse::RecDescent::Production' )
                                                                       ],
                                                            'name' => 'qualified_name',
                                                            'vars' => '',
-                                                           'line' => 93
+                                                           'line' => 96
                                                          }, 'Parse::RecDescent::Rule' ),
                               'CLASS_OR_INTERFACE' => bless( {
                                                                'impcount' => 0,
@@ -7866,12 +7872,12 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                            'hashname' => '__STRING1__',
                                                                                                            'description' => '\'class\'',
                                                                                                            'lookahead' => 0,
-                                                                                                           'line' => 143
+                                                                                                           'line' => 146
                                                                                                          }, 'Parse::RecDescent::Literal' ),
                                                                                                   bless( {
                                                                                                            'hashname' => '__ACTION1__',
                                                                                                            'lookahead' => 0,
-                                                                                                           'line' => 143,
+                                                                                                           'line' => 146,
                                                                                                            'code' => '{ $item[1] }'
                                                                                                          }, 'Parse::RecDescent::Action' )
                                                                                                 ],
@@ -7891,21 +7897,21 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                            'hashname' => '__STRING1__',
                                                                                                            'description' => '\'interface\'',
                                                                                                            'lookahead' => 0,
-                                                                                                           'line' => 144
+                                                                                                           'line' => 147
                                                                                                          }, 'Parse::RecDescent::Literal' ),
                                                                                                   bless( {
                                                                                                            'hashname' => '__ACTION1__',
                                                                                                            'lookahead' => 0,
-                                                                                                           'line' => 144,
+                                                                                                           'line' => 147,
                                                                                                            'code' => '{ $item[1] }'
                                                                                                          }, 'Parse::RecDescent::Action' )
                                                                                                 ],
-                                                                                     'line' => 144
+                                                                                     'line' => 147
                                                                                    }, 'Parse::RecDescent::Production' )
                                                                           ],
                                                                'name' => 'CLASS_OR_INTERFACE',
                                                                'vars' => '',
-                                                               'line' => 143
+                                                               'line' => 146
                                                              }, 'Parse::RecDescent::Rule' )
                             }
                }, 'Parse::RecDescent' );

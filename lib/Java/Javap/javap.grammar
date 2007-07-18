@@ -24,13 +24,16 @@ comp_unit_decl : ACCESS class_qualifier(?)
                  extends_clause(?)
                  implements_clause(?)
 {
+    my $perl_qualified_name = $item{ qualified_name };
+    $perl_qualified_name    =~ s/\./::/g;
     {
-        access             => $item{ ACCESS                 },
-        final              => $item{ 'class_qualifier(?)'   }[0],
-        class_or_interface => $item{ CLASS_OR_INTERFACE     },
-        implements         => $item{ 'implements_clause(?)' }[0],
-        parent             => $item{ 'extends_clause(?)'    }[0],
-        qualified_name     => $item{ qualified_name         },
+        access              => $item{ ACCESS                 },
+        final               => $item{ 'class_qualifier(?)'   }[0],
+        class_or_interface  => $item{ CLASS_OR_INTERFACE     },
+        implements          => $item{ 'implements_clause(?)' }[0],
+        parent              => $item{ 'extends_clause(?)'    }[0],
+        java_qualified_name => $item{ qualified_name         },
+        perl_qualified_name => $perl_qualified_name,
     }
 }
 

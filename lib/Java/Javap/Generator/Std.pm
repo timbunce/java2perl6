@@ -70,7 +70,7 @@ sub _get_template_for_interface {
 # [% class_file %] using command line flags:
 #   [% javap_flags +%]
 
-role [% ast.qualified_name %] {
+role [% ast.perl_qualified_name %] {
 [% FOREACH element IN ast.contents %]
 [% IF element.body_element == 'method' %]
 [% IF ast.methods.${ element.name } > 1 %]
@@ -96,7 +96,7 @@ sub _get_template_for_class {
 # [% class_file %] using command line flags:
 #   [% javap_flags +%]
 
-class [% ast.qualified_name %] {
+class [% ast.perl_qualified_name %] {
 [% FOREACH element IN ast.contents %]
 [%  IF element.body_element == 'method' %]
 [%      IF ast.methods.${ element.name } > 1 %]

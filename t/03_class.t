@@ -24,7 +24,8 @@ my $expected_tree = {
           'compiled_from' => 'ClassTest.java',
           'parent' => 'java.lang.Object',
           'final' => undef,
-          'qualified_name' => 'ClassTest',
+          'perl_qualified_name' => 'ClassTest',
+          'java_qualified_name' => 'ClassTest',
           'access' => 'public',
           'contents' => [
                           {

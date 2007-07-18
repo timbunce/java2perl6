@@ -16,15 +16,16 @@ plan tests    => 2;
 #--------------------------------------------------------------------
 
 my $parser = Java::Javap::Grammar->new();
-my $decomp = `javap -classpath testjavas IntTest`;
+my $decomp = `javap -classpath testjavas com.example.NestedIntTest`;
 
 my $tree   = $parser->comp_unit( $decomp );
 
 my $expected_tree = {
-          'compiled_from' => 'IntTest.java',
+          'compiled_from' => 'NestedIntTest.java',
           'parent' => undef,
           'final' => undef,
-          'qualified_name' => 'IntTest',
+          'perl_qualified_name' => 'com::example::NestedIntTest',
+          'java_qualified_name' => 'com.example.NestedIntTest',
           'access' => 'public',
           'contents' => [
                           {
@@ -172,7 +173,7 @@ my @correct_perl_6 = split /\n/, <<'EO_Correct_Perl_6';
 
 
 
-role IntTest {
+role com::example::NestedIntTest {
 
     method array_returner(
         Str v1,
