@@ -34,8 +34,7 @@ Java::Javap::Generator - Factory for Perl 6 generators
 
 This is a factory class which returns a Java -> Perl 6 generator.
 All generators must live in the Java::Javap::Generator:: namespace.
-They must supply a C<new> method.  They should supply a C<generate>
-method.
+They must supply a C<new> and C<generate> methods.
 
 To use a particular generator, see its POD.
 
@@ -77,7 +76,8 @@ on whitespace before the call.
 This method returns a single string containing the full text of a Perl
 module corresponding to the abstract syntax tree of a Java module.
 Someone else will decide what to do with the output, all you need to do
-is make the string.
+is make the string.  See the test files C<t/02_interface.t> and
+C<t/03_class.t> for examples of the syntax tree data structure.
 
 Parameters are supplied to your C<generate> in a single hash reference.
 These are the ones supplied by the C<java2perl6> command line tool:
@@ -91,6 +91,7 @@ The name of the Java .class file which was run through javap.
 =item ast
 
 The abstract syntax tree made from the class file by C<Java::Javap::Grammar>.
+Again, see the tests for examples of the tree data structure.
 
 =item javap_flags
 

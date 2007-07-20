@@ -128,18 +128,21 @@ Java::Javap::Generator::Std - uses TT to spit out Perl 6
     useJava::Javap::Generator; 
     my $gen = Java::Javap::Generator->get_generator( 'Std' );
     my $output = $gen->generate(
-            'com.example.InterfaceName',
-            $tree,
-            $javap_flags,
+        {
+            $class_file  => 'com.example.InterfaceName',
+            $ast         => $tree,
+            $javap_flags => $javap_flags,
+        }
     );
 
-where C<$tree> is a Java::Javap abstract syntax tree (AST).
+where C<$tree> is a Java::Javap abstract syntax tree (AST).  Note that
+parameters are named.
 
 =head1 DESCRIPTION
 
 This is a generator which uses TT to make output.  It's templates are
 strings inside this module.  To change templates, subclass and override
-C<_get_template_for_interface> and C<_get_template_for_class>.
+C<_get_template_for_interface> and/or C<_get_template_for_class>.
 
 =head1 METHODS
 
@@ -222,6 +225,7 @@ Nothing, it's all OO
     Java::Javap::Generator
     Java::Javap
     Java::Javap::Grammar
+    java2perl6
 
 =head1 AUTHOR
 
