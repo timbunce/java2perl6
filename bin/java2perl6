@@ -10,15 +10,13 @@ use Java::Javap::Generator;
 my $genwith   = 'Std';
 my $genoptstr = '';
 my $jpcmd     = '';
-my $nest;              # output comes to screen at present
-my $outdir    = '.';   # output comes to screen at present
-my $recurse;  # we can't even make classes yet, this will have to wait
+my $nest;
+my $outdir    = '.';
+my $recurse;
 
 # not yet done:
 #   astas - no, make this a Genterator,
 #           but do write the backends for YAML and Perl
-#   nest
-#   recurse
 
 GetOptions(
     'jpcmd|j=s'   => \$jpcmd,
@@ -26,6 +24,7 @@ GetOptions(
     'genopts|p=s' => \$genoptstr,
     'nest|n'      => \$nest,
     'outdir|d=s'  => \$outdir,
+    'recurse|r'   => \$recurse,
     'help|h'      => \&help,
 );
 
@@ -36,45 +35,51 @@ my $class_file = shift or die "usage: $0 [options] class_file\n";
 my $parser = Java::Javap::Grammar->new();
 my $jenny  = Java::Javap::Generator->get_generator( $genwith, @genopts );
 
-my $decomp = `javap $jpcmd $class_file`;
+process_one_file( $class_file );
 
-my $tree   = $parser->comp_unit( $decomp );
+sub process_one_file {
+    my $class_file = shift;
 
-my $output = $jenny->generate(
-    {
-        class_file  => $class_file,
-        ast         => $tree,
-        javap_flags => $jpcmd,
+    my $decomp = `javap $jpcmd $class_file`;
+
+    my $tree   = $parser->comp_unit( $decomp );
+
+    my $output = $jenny->generate(
+            {
+            class_file  => $class_file,
+            ast         => $tree,
+            javap_flags => $jpcmd,
+            }
+            );
+
+    if ( $outdir eq 'STDOUT' ) {
+        print $output;
     }
-);
+    else { # put it in a directory
 
-if ( $outdir eq 'STDOUT' ) {
-    print $output;
-}
-else { # put it in a directory
+        my $module_dir = $outdir;
+        my @subdirs    = split /\./, $class_file;
+        my $class_name = pop @subdirs;
 
-    my $module_dir = $outdir;
-    my @subdirs    = split /\./, $class_file;
-    my $class_name = pop @subdirs;
+        mkdir $module_dir;
 
-    mkdir $module_dir;
-
-    my $file;
-    if ( $nest ) {
-        foreach my $subdir ( @subdirs ) {
-            $module_dir = File::Spec->catdir( $module_dir, $subdir );
-            mkdir $module_dir;
+        my $file;
+        if ( $nest ) {
+            foreach my $subdir ( @subdirs ) {
+                $module_dir = File::Spec->catdir( $module_dir, $subdir );
+                mkdir $module_dir;
+            }
         }
-    }
 
-    my $file_name = File::Spec->catfile( $module_dir, "$class_name.pm" );
+        my $file_name = File::Spec->catfile( $module_dir, "$class_name.pm" );
 
-    open my $API_MODULE, '>', $file_name
+        open my $API_MODULE, '>', $file_name
             or die "Couldn't write to $file_name: $!\n";
 
-    print $API_MODULE $output;
+        print $API_MODULE $output;
 
-    close $API_MODULE;
+        close $API_MODULE;
+    }
 }
 
 sub help {

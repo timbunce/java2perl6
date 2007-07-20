@@ -134,13 +134,29 @@ my $expected_tree = {
                                       ],
                             'name' => 'void_returner',
                             'throws' => []
-                          }
+                          },
+                          {
+                            'attrs' => [
+                                         'abstract'
+                                       ],
+                            'body_element' => 'method',
+                            'returns' => {
+                                           'array_text' => '',
+                                           'array_depth' => 0,
+                                           'name' => 'com.example.Second'
+                                         },
+                            'access' => 'public',
+                            'args' => [],
+                            'name' => 'recurse_for_me',
+                            'throws' => []
+                          },
                         ],
           'class_or_interface' => 'interface',
           'methods' => {
               'object_returner' => 2,
               'array_returner' => 1,
               'void_returner' => 1,
+              'recurse_for_me' => 1,
           },
           constructors => undef,
           'implements' => undef,
@@ -192,6 +208,9 @@ role com::example::NestedIntTest {
     method void_returner(
         Int v1,
     )  { ... }
+
+    method recurse_for_me(
+    ) returns com::example::Second { ... }
 
 }
 EO_Correct_Perl_6

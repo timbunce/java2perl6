@@ -11,4 +11,6 @@ public interface NestedIntTest {
         throws java.lang.NumberFormatException;
 
     public abstract void void_returner( int i );
+
+    public abstract com.example.Second recurse_for_me();
 }

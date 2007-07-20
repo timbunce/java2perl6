@@ -18,9 +18,9 @@ t/03_class.t
 t/04_java2perl6.t
 testjavas/ClassTest.class
 testjavas/ClassTest.java
-testjavas/IntTest.class
-testjavas/IntTest.java
 testjavas/com/example/NestedIntTest.class
 testjavas/com/example/NestedIntTest.java
+testjavas/IntTest.class
+testjavas/IntTest.java
 testperls/IntTest.pm
 TODO
