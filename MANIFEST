@@ -20,5 +20,7 @@ testjavas/ClassTest.class
 testjavas/ClassTest.java
 testjavas/IntTest.class
 testjavas/IntTest.java
+testjavas/com/example/NestedIntTest.class
+testjavas/com/example/NestedIntTest.java
 testperls/IntTest.pm
 TODO

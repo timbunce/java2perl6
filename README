@@ -1,9 +1,9 @@
-Java-Javap version 0.01
+Java-Javap version 0.03
 =======================
 
 Java::Javap is meant to be a Perl 6 equivalent to javah that ships with
 the Java development kit.  It will (when it is finished) translate
-compile Java APIs to corresponding Perl 6 APIs.
+compiled Java APIs to corresponding Perl 6 APIs.
 
 INSTALLATION
 
@@ -14,11 +14,16 @@ To install this module type the following:
    make test
    make install
 
+USAGE
+
+See the POD in java2perl6 (in the bin directory of the distribution) for
+information on how to use this module.
+
 DEPENDENCIES
 
 This module requires these other modules and libraries:
 
-    a Java development kit with javap
+    a Java development kit with javap in your path
     Parse::RecDescent
 
 COPYRIGHT AND LICENCE

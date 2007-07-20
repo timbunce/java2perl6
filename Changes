@@ -1,5 +1,12 @@
 Revision history for Perl extension Java::Javap.
 
+0.02 Wed Jul 18 17:41:38 CDT 2007
+    - Completed initial work on class generation (constructors are missing).
+    - Guarded tests so they don't run if you don't have javap in your path.
+    - Fixed bug in qualified names, now there is a dot separated java
+      name and a double colon separated perl name.
+    - Made java2perl6 usable.  Only recursive work remains.
+
 0.01  Tue May 15 17:51:40 2007
 	- original version; created by h2xs 1.23 with options
 		-Xn Java::Javap
