@@ -19,20 +19,21 @@ Java::Javap - Java to Perl 6 API translator
 
 =head1 SYNOPSIS
 
-  use Java::Javap;
-  print "$Java::Javap::VERSION\n";
-
-This module is not ready for use yet.  It only has this little bit
-of POD and a version number.
+    java2perl6 java.somepackage.Module
 
 =head1 DESCRIPTION
 
-Not yet ready.
+See C<java2perl6> for instructions and advice on use of this module.
+
+This particular module is only a place holder for the version number
+of this project (see below).
 
 =head1 SEE ALSO
 
-C<Java::Javap::Grammar>
 C<java2perl6>
+C<Java::Javap::Generator>
+C<Java::Javap::Generator::Std>
+C<javap.grammar>
 
 =head1 AUTHOR
 
@@ -45,6 +46,5 @@ Copyright (C) 2007 by Philip Crow
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself, either Perl version 5.8.6 or,
 at your option, any later version of Perl 5 you may have available.
-
 
 =cut
