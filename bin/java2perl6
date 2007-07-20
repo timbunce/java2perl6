@@ -1,8 +1,6 @@
 use strict;
 use warnings;
 
-use lib 'lib';
-
 use Getopt::Long;
 use File::Spec;
 
@@ -96,3 +94,126 @@ where options are:
 EO_Help
     exit;
 }
+
+=head1 NAME
+
+java2perl6 - a Java to Perl 6 API translator
+
+=head1 SYNOPSIS
+
+ java2perl6 [options] class_file
+
+where options are:
+
+ --jpcmd or -j     a string of command line flags for javap, example:
+                   -j '-classpath /some/path'
+ --genwith or -g   the name of a Java::Javap::Generator:: module
+                   which will make the output, defaults to Std
+ --genopts or -p   strings to pass to your -g constructor
+ --nest or -n      flag indicates output should go in
+                   nested directories
+ --outdir or -d    top level directory for output
+ --help or -h      this message
+
+=head1 DESCRIPTION
+
+This script is the driver for the C<Java::Javap> module which reads compiled
+Java files, parses them into a tree, and generates output in Perl 6.
+Note that output could be in other forms if you write a generator,
+see C<Java::Javap::Generator> for instructions on how to write one
+and use the C<-g> command line flag once yours is installed.  This module
+ships with only one generator: C<Java::Javap::Generator::Std>.
+
+If you write your own generator, you could have it do anything you like
+including outputing APIs in Perl 5, Python, etc.  I plan to add generators
+for tree dumps using Data::Dumper and YAML.
+
+=head1 EXAMPLES
+
+To get a single Perl module in the java/sql subdirectory of the current
+directory with an API translation of java.sql.Connection:
+
+    java2perl6 -n java.sql.Connection
+
+To get a single Perl module in the current directory with an API for
+com.example.YourModule whose class file is in /usr/lib/yourjavas:
+
+    java2perl6 -j '-classpath /usr/lib/yourjavas' com.example.YourModule
+
+To put the output from the previous example into the /usr/local/javaapis
+directory:
+
+    java2perl6 -j '-classpath /usr/lib/yourjavas' \
+        -d /usr/local/javaapis com.example.YourModule
+
+To choose your own generator called C<Java::Javap::Generator::MyGen>
+for the first example:
+
+    java2perl6 -n -g MyGen java.sql.Connection
+
+=head1 OPTIONS
+
+=over 4
+
+=item --help or -h
+
+Prints a short help message (the same as the L<SYNOPSIS> above).
+
+=item --jpcmd or -j
+
+This option takes a single value, you need to quote it.  That value
+is passed directly to C<javap>.  C<-classpath /some/path> is the most
+common value.  Be aware that C<Java::Javap> parses the output of
+C<javap> with a grammar, so some C<javap> flags will cause fatal errors.
+
+=item --genwith or -g
+
+C<Java::Javap> uses a factory approach to generation.  Basically, any
+module in the Java::Javap::Generator:: namespace can be used here.  Give
+the module's short name, so to get the default behavior explicitly type:
+
+    java2perl6 -g Std ...
+
+which will load and use C<Java::Javap::Generator::Std> to make
+the output.  See C<Java::Javap::Generator> for the API your module
+must respond to.
+
+=item --genopts or -p
+
+Not yet useful.
+
+Any value given to this option will be passed to the generator's constructor.
+These can obviously only be strings.  The Std generator does not support
+any options, but future genertors may.
+
+=item --outdir or -d
+
+By default, all output is written in the current directory (or one of
+its subdirectories, if you use C<--nest>).  Use this flag to specify
+an alternate top level directory in which to place output.  It may
+be relative to the current directory or absolute.  Remember that the
+invoking user will need write permission on the directory.
+
+=item --nest or -n
+
+By default all output is generated at the top level of the C<--outdir>.
+Use this flag to make the normal subdirectories based on the namespace
+of the Java package.  Thus, since com.example.Module will be called
+com::example::Module, you probably want to use this flag so the output
+will go into the com/example subdirectory of the output directory.
+
+=back
+
+=head1 AUTHOR
+
+Phil Crow E<lt>crow.phil@gmail.comE<gt>
+
+=head1 COPYRIGHT and LICENSE
+
+Copyright (c) 2007, Phil Crow
+
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself, either Perl version 5.8.6 or,
+at your option, any later version of Perl 5 you may have available.
+
+=cut
