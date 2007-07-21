@@ -55,10 +55,13 @@ if ( $recurse ) {
 
             $we_did_something++;
 
-            my $included_classes = process_one_file( $class );
-            foreach my $included_class ( @{ $included_classes } ) {
-                $seen{ $included_class }++;
-            }
+            eval {
+                my $included_classes = process_one_file( $class );
+                foreach my $included_class ( @{ $included_classes } ) {
+                    $seen{ $included_class }++;
+                }
+            };
+            warn $@ if ( $@ );
 
             $seen{ $class }++;
         }
