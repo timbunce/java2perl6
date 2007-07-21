@@ -10,9 +10,14 @@ my $caster   = Java::Javap::TypeCast->new();
 sub get_included_types {
     shift; # invoked through this class, discard our name
     my $tree     = shift;
-    my $contents = $tree->{ contents };
-
     my %answers;
+
+    # first, get parent type
+    my $parent   = $tree->{ parent };
+    $answers{ $parent }++ unless ( _skip_it( $parent ) );
+
+    # now get types from the children
+    my $contents = $tree->{ contents };
 
     ELEMENT:
     foreach my $element ( @{ $contents } ) {
@@ -35,12 +40,18 @@ sub get_included_types {
 
 sub _skip_it {
     my $type    = shift;
+
+    return 1 unless defined $type;
+
     my $cast    = $caster->cast( $type );
     $cast       =~ s/::/./g;
 
     my $skip_it = 0;
 
     $skip_it++ if ( $type ne $cast ) or ( $type eq 'void' );
+
+#    $skip_it++ if $type =~ /^java\.util/;
+#    $skip_it++ if $type =~ /^java\.math/;
 
     return $skip_it;
 }
