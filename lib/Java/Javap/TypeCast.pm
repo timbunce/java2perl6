@@ -4,6 +4,7 @@ my $type_casts = {
     int                => 'Int',
     float              => 'Num',
     double             => 'Num',
+    boolean            => 'Bool',
     'java.lang.String' => 'Str',
 };
 

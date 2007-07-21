@@ -57,6 +57,13 @@ constant : ACCESS 'static' /(final)?/ qualified_name NAME ';' {
         name         => $item[5],
     }
 }
+         | 'transient' qualified_name NAME ';' {
+    {
+        body_element => 'transient',
+        type         => $item[2],
+        name         => $item[3],
+    }
+}
 
 method : ACCESS method_qualifier(s?)
          arg NAME '(' arg_list(?) ')'
@@ -88,9 +95,11 @@ method : ACCESS method_qualifier(s?)
              }
          }
 
-method_qualifier : 'abstract' { 'abstract' }
-                 | 'native'   { 'native'   }
-                 | 'static'   { 'static'   }
+method_qualifier : 'abstract'     { 'abstract'     }
+                 | 'native'       { 'native'       }
+                 | 'static'       { 'static'       }
+                 | 'synchronized' { 'synchronized' }
+                 | 'final'        { 'final'        }
 
 throws_clause  : 'throws' comma_list { $item{comma_list} }
 qualified_name : NAME '.' qualified_name

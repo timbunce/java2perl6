@@ -1,5 +1,10 @@
 Revision history for Perl extension Java::Javap.
 
+0.03
+    - Added support for recurse flag at the command line.  It now tries
+      to process any types it encounters but doesn't recognize.
+    - Added a lot of POD and expanded the README.
+
 0.02 Wed Jul 18 17:41:38 CDT 2007
     - Completed initial work on class generation (constructors are missing).
     - Guarded tests so they don't run if you don't have javap in your path.

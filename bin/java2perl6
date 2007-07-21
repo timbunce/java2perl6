@@ -15,6 +15,7 @@ my $jpcmd     = '';
 my $nest;
 my $outdir    = '.';
 my $recurse;
+my $verbose   = 0;
 
 # not yet done:
 #   astas - no, make this a Genterator,
@@ -27,6 +28,7 @@ GetOptions(
     'nest|n'      => \$nest,
     'outdir|d=s'  => \$outdir,
     'recurse|r'   => \$recurse,
+    'verbose|v'   => \$verbose,
     'help|h'      => \&help,
 );
 
@@ -66,6 +68,8 @@ else {
 
 sub process_one_file {
     my $class_file = shift;
+
+    warn "processing $class_file\n" if $verbose;
 
     my $decomp = `javap $jpcmd $class_file`;
     my $tree   = $parser->comp_unit( $decomp );
@@ -146,6 +150,7 @@ where options are:
  --nest or -n      flag indicates output should go in
                    nested directories
  --outdir or -d    top level directory for output
+ --verbose or -v   sends chatter to the screen
  --help or -h      this message
 
 =head1 DESCRIPTION
@@ -234,6 +239,11 @@ Use this flag to make the normal subdirectories based on the namespace
 of the Java package.  Thus, since com.example.Module will be called
 com::example::Module, you probably want to use this flag so the output
 will go into the com/example subdirectory of the output directory.
+
+=item --verbose or -v
+
+Turn this on to get chatter about what the script is doing.  Currently it
+is a boolean flag.
 
 =back
 
