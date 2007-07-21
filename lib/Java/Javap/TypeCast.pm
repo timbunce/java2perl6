@@ -2,6 +2,10 @@ package Java::Javap::TypeCast;
 
 my $type_casts = {
     int                => 'Int',
+    long               => 'Int',
+    short              => 'Int',
+    byte               => 'Int',
+    char               => 'Int',
     float              => 'Num',
     double             => 'Num',
     boolean            => 'Bool',
