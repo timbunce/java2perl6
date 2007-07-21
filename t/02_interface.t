@@ -4,12 +4,13 @@ use warnings;
 use lib 'lib';
 
 use Test::More;
+use Java::Javap;
 use Java::Javap::Grammar;
 use Java::Javap::Generator;
 
 `javap`;
 plan skip_all => 'javap from Java SDK required' if $!;
-plan tests    => 2;
+plan tests    => 3;
 
 #--------------------------------------------------------------------
 # Grammar
@@ -165,6 +166,13 @@ my $expected_tree = {
 is_deeply( $tree, $expected_tree, 'interface' );
 
 #use Data::Dumper; warn Dumper( $tree );
+
+#--------------------------------------------------------------------
+# Finding unique types we need to traverse
+#--------------------------------------------------------------------
+my $unique_types = Java::Javap->get_included_types( $tree );
+
+is_deeply( $unique_types, [ 'com.example.Second' ], 'unique_types' );
 
 #--------------------------------------------------------------------
 # Emission

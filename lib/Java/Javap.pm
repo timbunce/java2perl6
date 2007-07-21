@@ -3,13 +3,47 @@ use strict; use warnings;
 
 our $VERSION = '0.03';
 
-#use v6;
+use Java::Javap::TypeCast;
 
-#module Java::Javap;
+my $caster   = Java::Javap::TypeCast->new();
 
-#sub javap( Str $class_name ) is export {
-#    return `javap $class_name`;
-#}
+sub get_included_types {
+    shift; # invoked through this class, discard our name
+    my $tree     = shift;
+    my $contents = $tree->{ contents };
+
+    my %answers;
+
+    ELEMENT:
+    foreach my $element ( @{ $contents } ) {
+        next ELEMENT unless $element->{ body_element } eq 'method';
+
+        # check return value
+        my $return_type = $element->{ returns }{ name };
+
+        $answers{ $return_type }++ unless ( _skip_it( $return_type ) );
+
+        # check args
+        foreach my $arg ( @{ $element->{ args } } ) {
+            my $arg_type = $element->{ returns }{ name };
+            $answers{ $return_type }++ unless ( _skip_it( $arg_type ) );
+        }
+    }
+
+    return [ keys %answers ];
+}
+
+sub _skip_it {
+    my $type    = shift;
+    my $cast    = $caster->cast( $type );
+    $cast       =~ s/::/./g;
+
+    my $skip_it = 0;
+
+    $skip_it++ if ( $type ne $cast ) or ( $type eq 'void' );
+
+    return $skip_it;
+}
 
 1;
 
@@ -27,6 +61,20 @@ See C<java2perl6> for instructions and advice on use of this module.
 
 This particular module is only a place holder for the version number
 of this project (see below).
+
+=head1 METHODS
+
+For script writers, there is one method:
+
+=head2 get_included_types
+
+Call this as a class method.
+
+Parameters: an abstract syntax tree you got from calling comp_unit
+an a C<Java::Javap::Grammar> object.
+
+Returns: an array reference of the types in arguments to methods, or
+return values (thrown types are not reported).
 
 =head1 SEE ALSO
 
