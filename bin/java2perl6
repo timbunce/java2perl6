@@ -1,9 +1,11 @@
+#!/usr/bin/perl
 use strict;
 use warnings;
 
 use Getopt::Long;
 use File::Spec;
 
+use Java::Javap;
 use Java::Javap::Grammar;
 use Java::Javap::Generator;
 
@@ -35,22 +37,45 @@ my $class_file = shift or die "usage: $0 [options] class_file\n";
 my $parser = Java::Javap::Grammar->new();
 my $jenny  = Java::Javap::Generator->get_generator( $genwith, @genopts );
 
-process_one_file( $class_file );
+if ( $recurse ) {
+    my %seen             = ( $class_file => 1 );
+    my $we_did_something = 1;
+
+    while ( $we_did_something ) {
+        $we_did_something = 0;
+
+        CLASS:
+        foreach my $class ( keys %seen ) {
+
+            next CLASS if $seen{ $class } > 1;
+
+            $we_did_something++;
+
+            my $included_classes = process_one_file( $class );
+            foreach my $included_class ( @{ $included_classes } ) {
+                $seen{ $included_class }++;
+            }
+
+            $seen{ $class }++;
+        }
+    }
+}
+else {
+    my $included_classes = process_one_file( $class_file );
+}
 
 sub process_one_file {
     my $class_file = shift;
 
     my $decomp = `javap $jpcmd $class_file`;
-
     my $tree   = $parser->comp_unit( $decomp );
-
     my $output = $jenny->generate(
-            {
+        {
             class_file  => $class_file,
             ast         => $tree,
             javap_flags => $jpcmd,
-            }
-            );
+        }
+    );
 
     if ( $outdir eq 'STDOUT' ) {
         print $output;
@@ -80,6 +105,9 @@ sub process_one_file {
 
         close $API_MODULE;
     }
+
+    # tell them which types we saw
+    return Java::Javap->get_included_types( $tree );
 }
 
 sub help {
