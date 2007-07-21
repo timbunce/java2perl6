@@ -17,6 +17,8 @@ my $outdir    = '.';
 my $recurse;
 my $verbose   = 0;
 
+#use Parse::RecDescent; $::RD_TRACE = 1;
+
 # not yet done:
 #   astas - no, make this a Genterator,
 #           but do write the backends for YAML and Perl
