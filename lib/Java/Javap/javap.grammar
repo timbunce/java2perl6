@@ -157,7 +157,7 @@ array_depth : ARRAY_LEVEL(s?) {
 
 ARRAY_LEVEL : '[]' { 1 }
 
-NAME : /^([\w\d]+)/ { $1 }
+NAME : /^([\w$\d]+)/ { $1 }
 
 ACCESS : 'public'    { $item[1] }
        | 'protected' { $item[1] }
