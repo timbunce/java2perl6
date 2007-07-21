@@ -48,6 +48,7 @@ body : body_element(s) { $item[1] }
 body_element : constant { $item[1] }
              | 'static' '{' '}' ';'  { { body_element => 'static_block' } }
              | method   { $item[1] }
+             | variable { $item[1] }
 
 constant : ACCESS 'static' /(final)?/ qualified_name NAME ';' {
     {
@@ -103,6 +104,16 @@ method_qualifier : 'abstract'     { 'abstract'     }
                  | 'final'        { 'final'        }
 
 throws_clause  : 'throws' comma_list { $item{comma_list} }
+
+variable : ACCESS qualified_name NAME ';' {
+    {
+        body_element => 'variable',
+        access       => $item{ACCESS},
+        name         => $item{NAME},
+        type         => $item{qualified_name},
+    }
+}
+
 qualified_name : NAME '.' qualified_name
                  { "$item{NAME}.$item{qualified_name}" }
                | NAME '.' NAME { "$item[1].$item[3]" }
