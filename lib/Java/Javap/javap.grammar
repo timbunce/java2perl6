@@ -19,7 +19,7 @@ comp_unit : comp_stmt
 
 comp_stmt : 'Compiled from "' NAME '.java"' { $item{NAME} }
 
-comp_unit_decl : ACCESS class_qualifier(?)
+comp_unit_decl : ACCESS class_qualifier(s?)
                  CLASS_OR_INTERFACE qualified_name
                  extends_clause(?)
                  implements_clause(?)
@@ -28,7 +28,7 @@ comp_unit_decl : ACCESS class_qualifier(?)
     $perl_qualified_name    =~ s/\./::/g;
     {
         access              => $item{ ACCESS                 },
-        final               => $item{ 'class_qualifier(?)'   }[0],
+        qualifiers          => $item{ 'class_qualifier(s?)'  },
         class_or_interface  => $item{ CLASS_OR_INTERFACE     },
         implements          => $item{ 'implements_clause(?)' }[0],
         parent              => $item{ 'extends_clause(?)'    }[0],
@@ -38,6 +38,7 @@ comp_unit_decl : ACCESS class_qualifier(?)
 }
 
 class_qualifier   : 'final' { 'final' }
+                  | 'abstract' { 'status' }
 
 extends_clause    : 'extends' qualified_name { $item{ qualified_name } }
 implements_clause : 'implements' comma_list  { $item{ comma_list } }
