@@ -66,6 +66,13 @@ constant : ACCESS 'static' /(final)?/ qualified_name NAME ';' {
         name         => $item[3],
     }
 }
+         | 'static' 'transient' qualified_name NAME ';' {
+    {
+        body_element => 'transient_constant',
+        type         => $item{ qualified_name },
+        name         => $item{ NAME },
+    }
+}
 
 method : ACCESS method_qualifier(s?)
          arg NAME '(' arg_list(?) ')'
