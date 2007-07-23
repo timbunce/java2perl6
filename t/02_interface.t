@@ -34,7 +34,11 @@ my $expected_tree = {
                             'final' => 'final',
                             'access' => 'public',
                             'name' => 'USELESS_CONSTANT',
-                            'type' => 'int'
+                            'type' => {
+                                name => 'int',
+                                array_depth => 0,
+                                array_text => '',
+                            },
                           },
                           {
                             'attrs' => [

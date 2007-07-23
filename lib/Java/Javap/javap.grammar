@@ -50,26 +50,26 @@ body_element : constant { $item[1] }
              | method   { $item[1] }
              | variable { $item[1] }
 
-constant : ACCESS 'static' /(final)?/ qualified_name NAME ';' {
+constant : ACCESS 'static' /(final)?/ arg NAME ';' {
     {
         body_element => 'constant',
-        access       => $item[1],
+        access       => $item{ ACCESS },
         final        => ( $item[3] eq 'final' ) ? 'final' : '',
-        type         => $item[4],
-        name         => $item[5],
+        type         => $item{ arg }[0],
+        name         => $item{ NAME },
     }
 }
-         | 'transient' qualified_name NAME ';' {
+         | 'transient' arg NAME ';' {
     {
         body_element => 'transient',
-        type         => $item[2],
-        name         => $item[3],
+        type         => $item{ arg }[0],
+        name         => $item{ NAME },
     }
 }
-         | 'static' 'transient' qualified_name NAME ';' {
+         | 'static' 'transient' arg NAME ';' {
     {
         body_element => 'transient_constant',
-        type         => $item{ qualified_name },
+        type         => $item{ arg }[0],
         name         => $item{ NAME },
     }
 }
