@@ -3066,7 +3066,7 @@ sub Parse::RecDescent::Java::Javap::Grammar::NAME
 	while (!$_matched && !$commit)
 	{
 		
-		Parse::RecDescent::_trace(q{Trying production: [/^([\\w\\d]+)/]},
+		Parse::RecDescent::_trace(q{Trying production: [/^([\\w\\d\\$]+)/]},
 					  Parse::RecDescent::_tracefirst($_[1]),
 					  q{NAME},
 					  $tracelevel)
@@ -3079,7 +3079,7 @@ sub Parse::RecDescent::Java::Javap::Grammar::NAME
 		my $repcount = 0;
 
 
-		Parse::RecDescent::_trace(q{Trying terminal: [/^([\\w\\d]+)/]}, Parse::RecDescent::_tracefirst($text),
+		Parse::RecDescent::_trace(q{Trying terminal: [/^([\\w\\d\\$]+)/]}, Parse::RecDescent::_tracefirst($text),
 					  q{NAME},
 					  $tracelevel)
 						if defined $::RD_TRACE;
@@ -3087,7 +3087,7 @@ sub Parse::RecDescent::Java::Javap::Grammar::NAME
 		$expectation->is(q{})->at($text);
 		
 
-		unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ s/\A(?:^([\w\d]+))//)
+		unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ s/\A(?:^([\w\d\$]+))//)
 		{
 			
 			$expectation->failed();
@@ -3127,7 +3127,7 @@ sub Parse::RecDescent::Java::Javap::Grammar::NAME
 		
 
 
-		Parse::RecDescent::_trace(q{>>Matched production: [/^([\\w\\d]+)/]<<},
+		Parse::RecDescent::_trace(q{>>Matched production: [/^([\\w\\d\\$]+)/]<<},
 					  Parse::RecDescent::_tracefirst($text),
 					  q{NAME},
 					  $tracelevel)
@@ -7974,9 +7974,9 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                        'actcount' => 1,
                                                                        'items' => [
                                                                                     bless( {
-                                                                                             'pattern' => '^([\\w\\d]+)',
+                                                                                             'pattern' => '^([\\w\\d\\$]+)',
                                                                                              'hashname' => '__PATTERN1__',
-                                                                                             'description' => '/^([\\\\w\\\\d]+)/',
+                                                                                             'description' => '/^([\\\\w\\\\d\\\\$]+)/',
                                                                                              'lookahead' => 0,
                                                                                              'rdelim' => '/',
                                                                                              'line' => 167,
