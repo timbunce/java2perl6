@@ -50,18 +50,11 @@ body_element : constant { $item[1] }
              | method   { $item[1] }
              | variable { $item[1] }
 
-constant : ACCESS 'static' /(final)?/ arg NAME ';' {
+constant : ACCESS 'static' constant_modifier(s?) arg NAME ';' {
     {
         body_element => 'constant',
         access       => $item{ ACCESS },
-        final        => ( $item[3] eq 'final' ) ? 'final' : '',
-        type         => $item{ arg }[0],
-        name         => $item{ NAME },
-    }
-}
-         | 'transient' arg NAME ';' {
-    {
-        body_element => 'transient',
+        modifiers    => $item{ 'constant_modifier(s?)' },
         type         => $item{ arg }[0],
         name         => $item{ NAME },
     }
@@ -73,6 +66,8 @@ constant : ACCESS 'static' /(final)?/ arg NAME ';' {
         name         => $item{ NAME },
     }
 }
+
+constant_modifier : 'final' | 'transient' | 'volatile'
 
 method : ACCESS method_qualifier(s?)
          arg NAME '(' arg_list(?) ')'
@@ -112,7 +107,7 @@ method_qualifier : 'abstract'     { 'abstract'     }
 
 throws_clause  : 'throws' comma_list { $item{comma_list} }
 
-variable : ACCESS /(volatile|final)?/ arg NAME ';' {
+variable : ACCESS var_modifier(s?) arg NAME ';' {
     {
         body_element => 'variable',
         access       => $item{ ACCESS },
@@ -120,6 +115,8 @@ variable : ACCESS /(volatile|final)?/ arg NAME ';' {
         type         => $item{ arg }[0],
     }
 }
+
+var_modifier : 'volatile' | 'final' | 'transient'
 
 qualified_name : NAME '.' qualified_name
                  { "$item{NAME}.$item{qualified_name}" }

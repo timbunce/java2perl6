@@ -31,7 +31,7 @@ my $expected_tree = {
           'contents' => [
                           {
                             'body_element' => 'constant',
-                            'final' => 'final',
+                            'modifiers' => [ 'final' ],
                             'access' => 'public',
                             'name' => 'USELESS_CONSTANT',
                             'type' => {
