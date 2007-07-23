@@ -112,12 +112,12 @@ method_qualifier : 'abstract'     { 'abstract'     }
 
 throws_clause  : 'throws' comma_list { $item{comma_list} }
 
-variable : ACCESS /(final)?/ arg NAME ';' {
+variable : ACCESS /(volatile|final)?/ arg NAME ';' {
     {
         body_element => 'variable',
         access       => $item{ ACCESS },
         name         => $item{ NAME },
-        type         => $item{ arg },
+        type         => $item{ arg }[0],
     }
 }
 

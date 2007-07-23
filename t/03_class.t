@@ -30,19 +30,31 @@ my $expected_tree = {
           'contents' => [
                           {
                               'body_element' => 'variable',
-                              'type' => 'java.lang.String',
+                              'type' => {
+                                  name => 'java.lang.String',
+                                  array_depth => 0,
+                                  array_text => '',
+                              },
                               'access' => 'public',
                               'name' => 'var1',
                           },
                           {
                               'body_element' => 'variable',
-                              'type' => 'java.lang.String',
+                              'type' => {
+                                  name => 'java.lang.String',
+                                  array_depth => 0,
+                                  array_text => '',
+                              },
                               'access' => 'protected',
                               'name' => 'var2',
                           },
                           {
                               'body_element' => 'variable',
-                              'type' => 'java.lang.String',
+                              'type' => {
+                                  name => 'java.lang.String',
+                                  array_depth => 0,
+                                  array_text => '',
+                              },
                               'access' => '',
                               'name' => 'var3',
                           },
