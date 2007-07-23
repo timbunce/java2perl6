@@ -10,6 +10,8 @@ my $type_casts = {
     double             => 'Num',
     boolean            => 'Bool',
     'java.lang.String' => 'Str',
+    'java.net.URI'     => 'Str',
+    'java.net.URL'     => 'Str',
 };
 
 sub set_type_casts {

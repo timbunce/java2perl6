@@ -69,7 +69,7 @@ sub Parse::RecDescent::Java::Javap::Grammar::variable
 	while (!$_matched && !$commit)
 	{
 		
-		Parse::RecDescent::_trace(q{Trying production: [ACCESS qualified_name NAME ';']},
+		Parse::RecDescent::_trace(q{Trying production: [ACCESS /(final)?/ arg NAME ';']},
 					  Parse::RecDescent::_tracefirst($_[1]),
 					  q{variable},
 					  $tracelevel)
@@ -112,17 +112,42 @@ sub Parse::RecDescent::Java::Javap::Grammar::variable
 		
 		}
 
-		Parse::RecDescent::_trace(q{Trying subrule: [qualified_name]},
+		Parse::RecDescent::_trace(q{Trying terminal: [/(final)?/]}, Parse::RecDescent::_tracefirst($text),
+					  q{variable},
+					  $tracelevel)
+						if defined $::RD_TRACE;
+		$lastsep = "";
+		$expectation->is(q{/(final)?/})->at($text);
+		
+
+		unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ s/\A(?:(final)?)//)
+		{
+			
+			$expectation->failed();
+			Parse::RecDescent::_trace(q{<<Didn't match terminal>>},
+						  Parse::RecDescent::_tracefirst($text))
+					if defined $::RD_TRACE;
+
+			last;
+		}
+		Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
+						. $& . q{])},
+						  Parse::RecDescent::_tracefirst($text))
+					if defined $::RD_TRACE;
+		push @item, $item{__PATTERN1__}=$&;
+		
+
+		Parse::RecDescent::_trace(q{Trying subrule: [arg]},
 				  Parse::RecDescent::_tracefirst($text),
 				  q{variable},
 				  $tracelevel)
 					if defined $::RD_TRACE;
 		if (1) { no strict qw{refs};
-		$expectation->is(q{qualified_name})->at($text);
-		unless (defined ($_tok = Parse::RecDescent::Java::Javap::Grammar::qualified_name($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
+		$expectation->is(q{arg})->at($text);
+		unless (defined ($_tok = Parse::RecDescent::Java::Javap::Grammar::arg($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
 		{
 			
-			Parse::RecDescent::_trace(q{<<Didn't match subrule: [qualified_name]>>},
+			Parse::RecDescent::_trace(q{<<Didn't match subrule: [arg]>>},
 						  Parse::RecDescent::_tracefirst($text),
 						  q{variable},
 						  $tracelevel)
@@ -130,14 +155,14 @@ sub Parse::RecDescent::Java::Javap::Grammar::variable
 			$expectation->failed();
 			last;
 		}
-		Parse::RecDescent::_trace(q{>>Matched subrule: [qualified_name]<< (return value: [}
+		Parse::RecDescent::_trace(q{>>Matched subrule: [arg]<< (return value: [}
 					. $_tok . q{]},
 					  
 					  Parse::RecDescent::_tracefirst($text),
 					  q{variable},
 					  $tracelevel)
 						if defined $::RD_TRACE;
-		$item{q{qualified_name}} = $_tok;
+		$item{q{arg}} = $_tok;
 		push @item, $_tok;
 		
 		}
@@ -207,9 +232,9 @@ sub Parse::RecDescent::Java::Javap::Grammar::variable
 		$_tok = ($_noactions) ? 0 : do {
     {
         body_element => 'variable',
-        access       => $item{ACCESS},
-        name         => $item{NAME},
-        type         => $item{qualified_name},
+        access       => $item{ ACCESS },
+        name         => $item{ NAME },
+        type         => $item{ arg },
     }
 };
 		unless (defined $_tok)
@@ -227,7 +252,7 @@ sub Parse::RecDescent::Java::Javap::Grammar::variable
 		
 
 
-		Parse::RecDescent::_trace(q{>>Matched production: [ACCESS qualified_name NAME ';']<<},
+		Parse::RecDescent::_trace(q{>>Matched production: [ACCESS /(final)?/ arg NAME ';']<<},
 					  Parse::RecDescent::_tracefirst($text),
 					  q{variable},
 					  $tracelevel)
@@ -7054,7 +7079,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                      'impcount' => 0,
                                                      'calls' => [
                                                                   'ACCESS',
-                                                                  'qualified_name',
+                                                                  'arg',
                                                                   'NAME'
                                                                 ],
                                                      'changed' => 0,
@@ -7066,7 +7091,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                            'dircount' => 0,
                                                                            'uncommit' => undef,
                                                                            'error' => undef,
-                                                                           'patcount' => 0,
+                                                                           'patcount' => 1,
                                                                            'actcount' => 1,
                                                                            'items' => [
                                                                                         bless( {
@@ -7078,7 +7103,17 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                  'line' => 115
                                                                                                }, 'Parse::RecDescent::Subrule' ),
                                                                                         bless( {
-                                                                                                 'subrule' => 'qualified_name',
+                                                                                                 'pattern' => '(final)?',
+                                                                                                 'hashname' => '__PATTERN1__',
+                                                                                                 'description' => '/(final)?/',
+                                                                                                 'lookahead' => 0,
+                                                                                                 'rdelim' => '/',
+                                                                                                 'line' => 115,
+                                                                                                 'mod' => '',
+                                                                                                 'ldelim' => '/'
+                                                                                               }, 'Parse::RecDescent::Token' ),
+                                                                                        bless( {
+                                                                                                 'subrule' => 'arg',
                                                                                                  'matchrule' => 0,
                                                                                                  'implicit' => undef,
                                                                                                  'argcode' => undef,
@@ -7107,9 +7142,9 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                  'code' => '{
     {
         body_element => \'variable\',
-        access       => $item{ACCESS},
-        name         => $item{NAME},
-        type         => $item{qualified_name},
+        access       => $item{ ACCESS },
+        name         => $item{ NAME },
+        type         => $item{ arg },
     }
 }'
                                                                                                }, 'Parse::RecDescent::Action' )

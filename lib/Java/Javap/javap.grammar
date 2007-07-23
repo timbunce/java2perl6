@@ -112,12 +112,12 @@ method_qualifier : 'abstract'     { 'abstract'     }
 
 throws_clause  : 'throws' comma_list { $item{comma_list} }
 
-variable : ACCESS qualified_name NAME ';' {
+variable : ACCESS /(final)?/ arg NAME ';' {
     {
         body_element => 'variable',
-        access       => $item{ACCESS},
-        name         => $item{NAME},
-        type         => $item{qualified_name},
+        access       => $item{ ACCESS },
+        name         => $item{ NAME },
+        type         => $item{ arg },
     }
 }
 
