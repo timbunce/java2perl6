@@ -21,8 +21,11 @@ WriteMakefile(
 );
 
 sub MY::postamble {
+    return unless -d ".svn"; # ignore for non-developers
 return <<'MAKE_FRAG';
-all ::
+all :: lib/Java/Javap/Grammar.pm
+
+lib/Java/Javap/Grammar.pm: lib/Java/Javap/javap.grammar
 	cd lib/Java/Javap && perl -MParse::RecDescent - javap.grammar Java::Javap::Grammar
 
 MAKE_FRAG
