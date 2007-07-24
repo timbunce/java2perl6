@@ -15,6 +15,7 @@ my $jpcmd     = '';
 my $nest;
 my $outdir    = '.';
 my $recurse;
+my $quiet     = 0;
 my $verbose   = 0;
 
 #use Parse::RecDescent; $::RD_TRACE = 1;
@@ -30,57 +31,57 @@ GetOptions(
     'nest|n'      => \$nest,
     'outdir|d=s'  => \$outdir,
     'recurse|r'   => \$recurse,
+    'quiet|q'     => \$quiet,
     'verbose|v'   => \$verbose,
     'help|h'      => \&help,
 );
 
 my @genopts = split /\s+/, $genoptstr;
 
-my $class_file = shift or die "usage: $0 [options] class_file\n";
+my @classes = @ARGV or die "usage: $0 [options] class [ class ... ]\n";
 
 my $parser = Java::Javap::Grammar->new();
 my $jenny  = Java::Javap::Generator->get_generator( $genwith, @genopts );
 
-if ( $recurse ) {
-    my %seen             = ( $class_file => 1 );
-    my $we_did_something = 1;
+my %seen             = map { $_ => 1 } @classes;
+my $we_did_something = 1;
 
-    while ( $we_did_something ) {
-        $we_did_something = 0;
+while ( $we_did_something ) {
+    $we_did_something = 0;
 
-        CLASS:
-        foreach my $class ( keys %seen ) {
+    CLASS:
+    foreach my $class ( sort keys %seen ) {
 
-            next CLASS if $seen{ $class } > 1;
+        next CLASS if $seen{ $class } >= 2;  # seen -and- processed
 
-            $we_did_something++;
+        $we_did_something++;
 
-            eval {
-                my $included_classes = process_one_file( $class );
-                foreach my $included_class ( @{ $included_classes } ) {
-                    $seen{ $included_class }++;
-                }
-            };
-            warn $@ if ( $@ );
+        my $included_classes = eval { process_one_file( $class ) } || [];
+        warn $@ if $@;
 
-            $seen{ $class }++;
+        $seen{ $class }++;
+
+        if ($recurse) {
+            foreach my $included_class ( @{ $included_classes } ) {
+                $seen{ $included_class } ||= 1;
+            }
         }
     }
 }
-else {
-    my $included_classes = process_one_file( $class_file );
-}
+
 
 sub process_one_file {
-    my $class_file = shift;
+    my $class = shift;
 
-    warn "processing $class_file\n" if $verbose;
+    my $cmd = "javap $jpcmd $class";
+    warn "$cmd\n" if $verbose;
+    my $decomp = `javap $jpcmd $class`;
+    my $tree   = $parser->comp_unit( $decomp )
+        or die "Error parsing output of '$cmd'\n";
 
-    my $decomp = `javap $jpcmd $class_file`;
-    my $tree   = $parser->comp_unit( $decomp );
     my $output = $jenny->generate(
         {
-            class_file  => $class_file,
+            class_file  => $class,
             ast         => $tree,
             javap_flags => $jpcmd,
         }
@@ -92,16 +93,18 @@ sub process_one_file {
     else { # put it in a directory
 
         my $module_dir = $outdir;
-        my @subdirs    = split /\./, $class_file;
+        my @subdirs    = split /\./, $class;
         my $class_name = pop @subdirs;
 
-        mkdir $module_dir;
+        mkdir $module_dir or -d $module_dir
+            or die "Can't mkdir $module_dir: $!\n";
 
         my $file;
         if ( $nest ) {
             foreach my $subdir ( @subdirs ) {
                 $module_dir = File::Spec->catdir( $module_dir, $subdir );
-                mkdir $module_dir;
+                mkdir $module_dir or -d $module_dir
+                    or die "Can't mkdir $module_dir: $!\n";
             }
         }
 
@@ -113,11 +116,13 @@ sub process_one_file {
         print $API_MODULE $output;
 
         close $API_MODULE;
+        warn "$class: $file_name\n" unless $quiet;
     }
 
     # tell them which types we saw
     return Java::Javap->get_included_types( $tree );
 }
+
 
 sub help {
     print <<'EO_Help';
@@ -136,6 +141,7 @@ where options are:
 EO_Help
     exit;
 }
+
 
 =head1 NAME
 
