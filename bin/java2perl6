@@ -44,6 +44,7 @@ my $parser = Java::Javap::Grammar->new();
 my $jenny  = Java::Javap::Generator->get_generator( $genwith, @genopts );
 
 my %seen             = map { $_ => 1 } @classes;
+my %done;
 my $we_did_something = 1;
 
 while ( $we_did_something ) {
@@ -52,14 +53,14 @@ while ( $we_did_something ) {
     CLASS:
     foreach my $class ( sort keys %seen ) {
 
-        next CLASS if $seen{ $class } >= 2;  # seen -and- processed
+        next CLASS if $done{ $class };
 
         $we_did_something++;
 
         my $included_classes = eval { process_one_file( $class ) } || [];
         warn $@ if $@;
 
-        $seen{ $class }++;
+        $done{ $class } = 1;
 
         if ($recurse) {
             foreach my $included_class ( @{ $included_classes } ) {
@@ -126,7 +127,7 @@ sub process_one_file {
 
 sub help {
     print <<'EO_Help';
-java2perl6 [options] class_file
+java2perl6 [options] class_file [class_file...]
 
 where options are:
 
