@@ -1224,7 +1224,7 @@ sub Parse::RecDescent::Java::Javap::Grammar::body
 					if defined $::RD_TRACE;
 		$expectation->is(q{})->at($text);
 		
-		unless (defined ($_tok = $thisparser->_parserepeat($text, \&Parse::RecDescent::Java::Javap::Grammar::body_element, 1, 100000000, $_noactions,$expectation,undef))) 
+		unless (defined ($_tok = $thisparser->_parserepeat($text, \&Parse::RecDescent::Java::Javap::Grammar::body_element, 0, 100000000, $_noactions,$expectation,undef))) 
 		{
 			Parse::RecDescent::_trace(q{<<Didn't match repeated subrule: [body_element]>>},
 						  Parse::RecDescent::_tracefirst($text),
@@ -1240,7 +1240,7 @@ sub Parse::RecDescent::Java::Javap::Grammar::body
 					  q{body},
 					  $tracelevel)
 						if defined $::RD_TRACE;
-		$item{q{body_element(s)}} = $_tok;
+		$item{q{body_element(s?)}} = $_tok;
 		push @item, $_tok;
 		
 
@@ -7737,11 +7737,11 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                     bless( {
                                                                                              'subrule' => 'body_element',
                                                                                              'expected' => undef,
-                                                                                             'min' => 1,
+                                                                                             'min' => 0,
                                                                                              'argcode' => undef,
                                                                                              'max' => 100000000,
                                                                                              'matchrule' => 0,
-                                                                                             'repspec' => 's',
+                                                                                             'repspec' => 's?',
                                                                                              'lookahead' => 0,
                                                                                              'line' => 46
                                                                                            }, 'Parse::RecDescent::Repetition' ),

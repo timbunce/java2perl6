@@ -43,7 +43,7 @@ class_qualifier   : 'final' { 'final' }
 extends_clause    : 'extends' qualified_name { $item{ qualified_name } }
 implements_clause : 'implements' comma_list  { $item{ comma_list } }
 
-body : body_element(s) { $item[1] }
+body : body_element(s?) { $item[1] }
 
 body_element : constant { $item[1] }
              | 'static' '{' '}' ';'  { { body_element => 'static_block' } }
