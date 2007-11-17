@@ -1,13 +1,16 @@
 Revision history for Perl extension Java::Javap.
 
-0.04
+0.05
+    - Simplified grammar for arg_lists and similar constructs, removed
+      middle production which was not needed.
+
+0.04 Wed Jul 25 16:47:30 CDT 2007
     - Improved the grammar so java.net.URL can be recursively parsed without
       error.  This included:
         allow $ as a legal character in identifier names
         allowing constants to have array type
         allowing transient, native, and synchronized in various places.
-      Remaining known issue: volatile is not in the grammar and I will
-      have to consult a Java book to know where it is legal.
+    - Corrected error in recursion.
 
 0.03 Sat Jul 21 08:29:53 CDT 2007
     - Added support for recurse flag at the command line.  It now tries
