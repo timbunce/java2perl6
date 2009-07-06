@@ -38,7 +38,7 @@ GetOptions(
 
 my @genopts = split /\s+/, $genoptstr;
 
-my @classes = @ARGV or die "usage: $0 [options] class [ class ... ]\n";
+my @classes = @ARGV or die "usage: $0 [options] class [ class ... ]\nUse $0 --help for help\n";
 
 my $parser = Java::Javap::Grammar->new();
 my $jenny  = Java::Javap::Generator->get_generator( $genwith, @genopts );

@@ -15,9 +15,8 @@ WriteMakefile(
         Parse::RecDescent => '1.0',
     }, # e.g., Module::Name => 1.1
     EXE_FILES         => [ $java2perl6 ],
-    ($] >= 5.005 ?     ## Add these new keywords supported since 5.005
-      (ABSTRACT_FROM  => 'lib/Java/Javap.pm', # retrieve abstract from module
-       AUTHOR         => 'Philip Crow <phil@apple.com>') : ()),
+    ABSTRACT_FROM     => 'lib/Java/Javap.pm', # retrieve abstract from module
+    AUTHOR            => 'Philip Crow <phil@apple.com>',
 );
 
 sub MY::postamble {

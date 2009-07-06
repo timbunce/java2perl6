@@ -57,7 +57,7 @@ To adjust the type cast table:
 
     my $current_types = $type_caster->get_types();
 
-    $current_types->{ com.example.ShouldBeInt } = 'Int';
+    $current_types->{ 'com.example.ShouldBeInt' } = 'Int';
 
 To replace the whole table:
 
