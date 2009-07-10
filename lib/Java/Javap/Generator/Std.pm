@@ -1,5 +1,6 @@
 package Java::Javap::Generator::Std;
 use strict; use warnings;
+our $VERSION = 0.0.5;
 
 use Template;
 use Java::Javap;
@@ -38,7 +39,7 @@ sub generate {
     my $template    = $self->_get_template( $ast );
 
     my $tt         = Template->new( $self->tt_args );
-
+    my @modules    = $self->_get_modules($ast);
     my $tt_vars = {
         ast        => $ast,
         gen_time   => scalar localtime(),
@@ -46,6 +47,7 @@ sub generate {
         class_file => $class_file,
         type_caster=> Java::Javap::TypeCast->new(),
         javap_flags=> $javap_flags,
+        modules    => \@modules,
     };
 
     my $retval;
@@ -63,12 +65,42 @@ sub _get_template {
     return $self->$method( $ast );
 }
 
+sub _get_modules {
+    my $self = shift;
+    my $ast  = shift;
+    
+    my %mod;
+    my %ignore = ( Str => 1, Int => 1, Bool => 1, void => 1);
+    
+    use Data::Dumper::Simple;
+    #print STDERR Dumper($ast);
+    my $target;
+    foreach my $element (@{$ast->{contents}}) {
+        #print STDERR Dumper($element);
+        next unless $element->{body_element} eq 'method';
+        $target = Java::Javap::TypeCast->new()->cast($element->{returns}->{name});
+        next if $ignore{$target};
+        next if $target =~ /^$ast->{perl_qualified_name}\s*$/;
+        $mod{$target}++;
+        
+        foreach my $arg (@{$element->{args}}) {
+            $target = Java::Javap::TypeCast->new()->cast($arg->{name});
+            next if $ignore{$target};
+            $mod{$target}++;
+        }       
+    }
+    return keys %mod;
+}
+
 sub _get_template_for_interface {
     return << 'EO_Template';
 # This file was automatically generated [% gen_time +%]
 # by java2perl6 [% version %] from decompiling
 # [% class_file %] using command line flags:
 #   [% javap_flags +%]
+[% FOREACH package IN modules %]
+use [% package -%];
+[% END %]
 
 role [% ast.perl_qualified_name %] {
 [% FOREACH element IN ast.contents %]
@@ -79,9 +111,9 @@ role [% ast.perl_qualified_name %] {
     method [% element.name %](
 [% END %][% arg_counter = 0 %]
 [% FOREACH arg IN element.args %][% arg_counter = arg_counter + 1 %]
-        [% arg.array_text %][% type_caster.cast( arg.name ) %] v[% arg_counter %],
+        [% arg.array_text %][% type_caster.cast( arg.name ) %] [% arg.array_text.search('Array of') ? '@' : '$' %]v[% arg_counter %], 
 [% END %]
-    ) [% IF element.returns.name != 'void' %]returns [% element.returns.array_text %][% type_caster.cast( element.returns.name ) %][% END %] { ... }
+    [% IF element.returns.name != 'void' %] --> [% element.returns.array_text %][% type_caster.cast( element.returns.name ) %][% END %] ) { ... }
 [% END %]
 
 [% END %]
@@ -96,6 +128,10 @@ sub _get_template_for_class {
 # [% class_file %] using command line flags:
 #   [% javap_flags +%]
 
+[% FOREACH package IN modules %]
+use [% package -%];
+[% END %]
+
 class [% ast.perl_qualified_name %] {
 [% FOREACH element IN ast.contents %]
 [%  IF element.body_element == 'method' %]
@@ -105,9 +141,9 @@ class [% ast.perl_qualified_name %] {
     method [% element.name %](
 [%      END %][% arg_counter = 0 %]
 [%      FOREACH arg IN element.args %][% arg_counter = arg_counter + 1 %]
-        [% arg.array_text %][% type_caster.cast( arg.name ) %] v[% arg_counter %],
+        [% arg.array_text %][% type_caster.cast( arg.name ) %] [% arg.array_text.search('Array of') ? '@' : '$' %]v[% arg_counter %], 
 [%      END %]
-    ) [% IF element.returns.name != 'void' %]returns [% element.returns.array_text %][% type_caster.cast( element.returns.name ) %][% END %] { ... }
+    [% IF element.returns.name != 'void' %] --> [% element.returns.array_text %][% type_caster.cast( element.returns.name ) %][% END %] ) { ... }
 [%  ELSE %]
 [%# I spy with my little eye, I spy a constructor %]
 [%  END %]
