@@ -94,7 +94,7 @@ sub _get_modules {
 
 sub _get_template_for_interface {
     return << 'EO_Template';
-# This file was automatically generated [% gen_time +%]
+# THIS FILE WAS AUTOMATICALLY GENERATED (EDITS MAY BE LOST)
 # by java2perl6 [% version %] from decompiling
 # [% class_file %] using command line flags:
 #   [% javap_flags +%]
