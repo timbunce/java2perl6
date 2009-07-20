@@ -40,6 +40,7 @@ my @genopts = split /\s+/, $genoptstr;
 
 my @classes = @ARGV or die "usage: $0 [options] class [ class ... ]\nUse $0 --help for help\n";
 
+
 my $parser = Java::Javap::Grammar->new();
 my $jenny  = Java::Javap::Generator->get_generator( $genwith, @genopts );
 
@@ -74,6 +75,7 @@ while ( $we_did_something ) {
 sub process_one_file {
     my $class = shift;
 
+    my $caster = Java::Javap::TypeCast->new();
     my $cmd = "javap $jpcmd $class";
     warn "$cmd\n" if $verbose;
     my $decomp = `javap $jpcmd $class`;
@@ -121,7 +123,7 @@ sub process_one_file {
     }
 
     # tell them which types we saw
-    return Java::Javap->get_included_types( $tree );
+    return Java::Javap->get_included_types( $tree, $caster );
 }
 
 

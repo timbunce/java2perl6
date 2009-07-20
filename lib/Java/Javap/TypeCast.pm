@@ -31,12 +31,14 @@ sub new {
 sub cast {
     my $self      = shift;
     my $java_type = shift;
-
+  
     return $type_casts->{ $java_type } if $type_casts->{ $java_type };
 
+    #print "WARNING: No mapping for '$java_type' default to class 'Any'\n";
     $java_type    =~ s/\./::/g;
 
     return $java_type;
+    #return 'Any';
 }
 
 =head1 NAME

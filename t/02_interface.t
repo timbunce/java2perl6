@@ -8,6 +8,8 @@ use Java::Javap;
 use Java::Javap::Grammar;
 use Java::Javap::Generator;
 
+#use Data::Dumper::Simple;
+
 `javap`;
 plan skip_all => 'javap from Java SDK required' if $!;
 plan tests    => 3;
@@ -16,11 +18,12 @@ plan tests    => 3;
 # Grammar
 #--------------------------------------------------------------------
 
+
 my $parser = Java::Javap::Grammar->new();
 my $decomp = `javap -classpath testjavas com.example.NestedIntTest`;
 
 my $tree   = $parser->comp_unit( $decomp );
-
+#diag("tree=", Dumper($tree));
 my $expected_tree = {
           'compiled_from' => 'NestedIntTest.java',
           'parent' => undef,
@@ -174,7 +177,8 @@ is_deeply( $tree, $expected_tree, 'interface' );
 #--------------------------------------------------------------------
 # Finding unique types we need to traverse
 #--------------------------------------------------------------------
-my $unique_types = Java::Javap->get_included_types( $tree );
+my $caster = Java::Javap::TypeCast->new();
+my $unique_types = Java::Javap->get_included_types( $tree, $caster );
 
 is_deeply( $unique_types, [ 'com.example.Second' ], 'unique_types' );
 
@@ -193,6 +197,7 @@ my $perl_6 = $generator->generate(
 );
 #warn $perl_6;
 $perl_6    =~ s/^#.*//gm;
+#diag($perl_6);
 my @perl_6 = split /\n/, $perl_6;
 
 my @correct_perl_6 = split /\n/, <<'EO_Correct_Perl_6';
@@ -201,30 +206,36 @@ my @correct_perl_6 = split /\n/, <<'EO_Correct_Perl_6';
 
 
 
+use com::example::Second;
+
 role com::example::NestedIntTest {
+    method array_returner(  
+        Str $v1, 
+        Int $v2, 
+        Num @v3, 
+        Num @v4, 
+     --> Array     # Array of Array of  Int
+    ) { ... }
 
-    method array_returner(
-        Str v1,
-        Int v2,
-        Array of Num v3,
-        Array of Array of Num v4,
-    ) returns Array of Array of Int { ... }
+    multi method object_returner(  
+        Str $v1, 
+     --> Str    #  Str
+    ) { ... }
 
-    multi method object_returner(
-    ) returns Str { ... }
+    multi method object_returner(  
+     --> Str    #  Str
+    ) { ... }
 
-    multi method object_returner(
-        Str v1,
-    ) returns Str { ... }
+    method recurse_for_me(  
+     --> com::example::Second    #  com::example::Second
+    ) { ... }
 
-    method void_returner(
-        Int v1,
-    )  { ... }
+    method void_returner(  
+        Int $v1, 
+    
+    ) { ... }
 
-    method recurse_for_me(
-    ) returns com::example::Second { ... }
-
-}
+};
 EO_Correct_Perl_6
 
 is_deeply( \@perl_6, \@correct_perl_6, 'emission' );

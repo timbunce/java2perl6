@@ -1,18 +1,24 @@
 package Java::Javap::Generator::Std;
 use strict; use warnings;
-our $VERSION = 0.0.5;
 
 use Template;
 use Java::Javap;
 use Java::Javap::TypeCast;
 
+use Data::Dumper::Simple;
+
 sub new {
     my $class   = shift;
+    my $debug   = shift;
+        
     my $tt_args = { POST_CHOMP => 1 };
 
     my $self    = bless { }, $class;
-    $self->tt_args_set( $tt_args );
 
+    $self->{debug} = defined $debug ? $debug : 0;
+    
+    $self->tt_args_set( $tt_args );
+    
     return $self;
 }
 
@@ -34,26 +40,133 @@ sub generate {
 
     my $class_file  = $params->{ class_file  };
     my $ast         = $params->{ ast         };
+    my $debug       = defined $params->{debug} ? $params->{debug} : 0;
+        
+    my $type_caster  = Java::Javap::TypeCast->new();
+    if (defined $params->{type_file}) {
+        $type_caster->set_type_casts( $self->_get_type_casts($params->{type_file}) );
+    }
+    $self->{type_caster} = $type_caster;
+    $self->_cast_names( $ast );
+    
+    $ast->{method_list} = $self->_get_unique_methods( $ast );
+    #print STDERR Dumper($ast->{method_list});
+    
     my $javap_flags = $params->{ javap_flags };
 
     my $template    = $self->_get_template( $ast );
 
-    my $tt         = Template->new( $self->tt_args );
-    my @modules    = $self->_get_modules($ast);
+    my $tt          = Template->new( $self->tt_args );
+    
+    my @modules     = $self->_get_modules($ast, $type_caster);
+    
     my $tt_vars = {
         ast        => $ast,
         gen_time   => scalar localtime(),
         version    => $Java::Javap::VERSION,
         class_file => $class_file,
-        type_caster=> Java::Javap::TypeCast->new(),
+        type_caster=> $type_caster,
         javap_flags=> $javap_flags,
         modules    => \@modules,
     };
-
     my $retval;
     $tt->process( \$template, $tt_vars, \$retval ) || die $tt->error();
 
     return $retval;
+}
+
+sub _cast_names {
+    my $self    = shift;
+    my $ast     = shift;
+    
+    my $type_caster = $self->{type_caster};
+    $ast->{cast_parent} = defined $ast->{parent} ? $type_caster->cast($ast->{parent}) : '';
+    foreach my $element (@{$ast->{contents}}) {
+        #$element->{name} =~ s/\$/_/g	if defined $element->{name};
+            next unless $element->{body_element} eq 'method';
+            
+            foreach my $arg (@{$element->{args}}) {
+                $arg->{cast_name} = $type_caster->cast($arg->{name});
+        }
+        $element->{returns}->{cast_name} = $type_caster->cast($element->{returns}->{name});
+    }
+}   
+
+sub _get_unique_methods {
+    my $self    = shift;
+    my $ast     = shift;
+
+    # sort the methods to more easily identify duplicate signatures resulting
+    # from TypeCast operation
+    # retain only the methods
+    my @methods =  sort { $a->{name} cmp $b->{name} }  grep { $_->{body_element} eq 'method' } @{$ast->{contents}} ;
+    #print STDERR "methods: ", Dumper(@methods);
+    my %meth;
+    foreach my $element (@methods) {
+            #$element->{name} =~ s/\$/_/g	if defined $element->{name};
+
+            $element->{signature} = "$element->{name} ";
+
+            foreach my $arg (@{$element->{args}}) {
+            $element->{signature} .= (($arg->{array_text} =~ /Array of/) ? '@' : '$') .  "$arg->{cast_name}, ";
+        }
+        $element->{signature} .= " --> " . ($element->{returns}->{array_text} =~ /Array of/) ? 'Array' : $element->{returns}->{cast_name};
+#       print STDERR "signature: '$element->{signature}'\n"   if $debug;
+        # de-dup via hash
+        $meth{$element->{signature}} = $element;
+    }
+    #print STDERR Dumper(%meth);
+    @methods = sort {$a->{name} cmp $b->{name} } values %meth;
+    #print STDERR Dumper(@methods);
+    return \@methods;
+}
+
+sub _get_type_casts {
+    my $self = shift;
+    my $type_file = shift;
+
+  # XXX TODO    
+}
+
+sub _get_modules {
+    my $self = shift;
+    my $ast  = shift;
+    my $type_caster = shift;
+    
+    my %mod;
+    my %ignore = ( Str => 1, Int => 1, Bool => 1, Num => 1, Any => 1, void => 1, qq{$ast->{perl_qualified_name}} => 1);
+    
+    #print STDERR "class/role='$ast->{perl_qualified_name}' ignore ='", join(', ', keys %ignore), "\n", Dumper($ast);
+
+    my $target;
+    if (defined $ast->{parent}) {
+        $target = $type_caster->cast($ast->{parent});
+        $mod{$target}++ unless $ignore{$target};
+    }
+    
+    foreach my $element (@{$ast->{contents}}) {
+
+        next unless $element->{body_element} eq 'method';
+        $target = $type_caster->cast($element->{returns}->{name});
+ 
+        next if $ignore{$target};
+ 
+        # at the moment rakudo does not support 'Array of' so don't include the 
+        # dependency on the class as it will just return Array at the moment.
+        next if $element->{returns}->{array_text} =~ /Array of/;
+        next if $target =~ /\$/;
+        $mod{$target}++;
+    }
+    
+    foreach my $element (@{$ast->{contents}}) {
+        next unless $element->{body_element} eq 'method';
+        foreach my $arg (@{$element->{args}}) {
+            $target = $type_caster->cast($arg->{name});
+            next if $ignore{$target};
+            $mod{$target}++;
+        }       
+    }
+    return keys %mod;
 }
 
 sub _get_template {
@@ -65,59 +178,32 @@ sub _get_template {
     return $self->$method( $ast );
 }
 
-sub _get_modules {
-    my $self = shift;
-    my $ast  = shift;
-    
-    my %mod;
-    my %ignore = ( Str => 1, Int => 1, Bool => 1, void => 1);
-    
-    use Data::Dumper::Simple;
-    #print STDERR Dumper($ast);
-    my $target;
-    foreach my $element (@{$ast->{contents}}) {
-        #print STDERR Dumper($element);
-        next unless $element->{body_element} eq 'method';
-        $target = Java::Javap::TypeCast->new()->cast($element->{returns}->{name});
-        next if $ignore{$target};
-        next if $target =~ /^$ast->{perl_qualified_name}\s*$/;
-        $mod{$target}++;
-        
-        foreach my $arg (@{$element->{args}}) {
-            $target = Java::Javap::TypeCast->new()->cast($arg->{name});
-            next if $ignore{$target};
-            $mod{$target}++;
-        }       
-    }
-    return keys %mod;
-}
-
 sub _get_template_for_interface {
     return << 'EO_Template';
-# THIS FILE WAS AUTOMATICALLY GENERATED (EDITS MAY BE LOST)
+# This file was automatically generated [% gen_time +%]
 # by java2perl6 [% version %] from decompiling
 # [% class_file %] using command line flags:
 #   [% javap_flags +%]
+
 [% FOREACH package IN modules %]
 use [% package -%];
 [% END %]
 
 role [% ast.perl_qualified_name %] {
-[% FOREACH element IN ast.contents %]
-[% IF element.body_element == 'method' %]
-[% IF ast.methods.${ element.name } > 1 %]
-    multi method [% element.name %](
-[% ELSE %]
-    method [% element.name %](
-[% END %][% arg_counter = 0 %]
+[% FOREACH element IN ast.method_list %]
+    [% ast.methods.${ element.name } > 1 ? 'multi ' : '' %]method [% element.name %](  
+[% arg_counter = 0 %]
 [% FOREACH arg IN element.args %][% arg_counter = arg_counter + 1 %]
-        [% arg.array_text %][% type_caster.cast( arg.name ) %] [% arg.array_text.search('Array of') ? '@' : '$' %]v[% arg_counter %], 
+        [% arg.cast_name %] [% arg.array_text.search('Array of') ? '@' : '$' %]v[% arg_counter %], 
 [% END %]
-    [% IF element.returns.name != 'void' %] --> [% element.returns.array_text %][% type_caster.cast( element.returns.name ) %][% END %] ) { ... }
+    [% IF element.returns.name != 'void' %] --> [% element.returns.array_text.search('Array of') ? 'Array ' : element.returns.cast_name %]
+    # [%  element.returns.array_text %] [% element.returns.cast_name %]
 [% END %]
 
+    ) { ... }
+
 [% END %]
-}
+};
 EO_Template
 }
 
@@ -132,24 +218,21 @@ sub _get_template_for_class {
 use [% package -%];
 [% END %]
 
-class [% ast.perl_qualified_name %] {
-[% FOREACH element IN ast.contents %]
-[%  IF element.body_element == 'method' %]
-[%      IF ast.methods.${ element.name } > 1 %]
-    multi method [% element.name %](
-[%      ELSE %]
-    method [% element.name %](
-[%      END %][% arg_counter = 0 %]
-[%      FOREACH arg IN element.args %][% arg_counter = arg_counter + 1 %]
-        [% arg.array_text %][% type_caster.cast( arg.name ) %] [% arg.array_text.search('Array of') ? '@' : '$' %]v[% arg_counter %], 
-[%      END %]
-    [% IF element.returns.name != 'void' %] --> [% element.returns.array_text %][% type_caster.cast( element.returns.name ) %][% END %] ) { ... }
-[%  ELSE %]
-[%# I spy with my little eye, I spy a constructor %]
-[%  END %]
+class [% ast.perl_qualified_name %]  [% ast.cast_parent == '' ? '' : 'is' %] [% ast.cast_parent %] {
+[% FOREACH element IN ast.method_list %]
+    [% ast.methods.${ element.name } > 1 ? 'multi ' : '' %]method [% element.name %](
+[% arg_counter = 0 %]
+[% FOREACH arg IN element.args %][% arg_counter = arg_counter + 1 %]
+        [% arg.cast_name %] [% arg.array_text.search('Array of') ? '@' : '$' %]v[% arg_counter %], 
+[% END %]
+    [% IF element.returns.name != 'void' %] --> [% element.returns.array_text.search('Array of') ? 'Array ' : element.returns.cast_name %]
+    # [%  element.returns.array_text %] [% element.returns.cast_name %]
+[% END %]
+
+    ) { ... }
 
 [% END %]
-}
+};
 EO_Class_Template
 }
 

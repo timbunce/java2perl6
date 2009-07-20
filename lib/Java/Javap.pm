@@ -5,16 +5,16 @@ our $VERSION = '0.04';
 
 use Java::Javap::TypeCast;
 
-my $caster   = Java::Javap::TypeCast->new();
-
 sub get_included_types {
     shift; # invoked through this class, discard our name
     my $tree     = shift;
+    my $caster   = shift;
+    
     my %answers;
 
     # first, get parent type
     my $parent   = $tree->{ parent };
-    $answers{ $parent }++ unless ( _skip_it( $parent ) );
+    $answers{ $parent }++ unless ( _skip_it( $parent, $caster ) );
 
     # now get types from the children
     my $contents = $tree->{ contents };
@@ -26,12 +26,12 @@ sub get_included_types {
         # check return value
         my $return_type = $element->{ returns }{ name };
 
-        $answers{ $return_type }++ unless ( _skip_it( $return_type ) );
+        $answers{ $return_type }++ unless ( _skip_it( $return_type, $caster ) );
 
         # check args
         foreach my $arg ( @{ $element->{ args } } ) {
             my $arg_type = $element->{ returns }{ name };
-            $answers{ $return_type }++ unless ( _skip_it( $arg_type ) );
+            $answers{ $return_type }++ unless ( _skip_it( $arg_type, $caster ) );
         }
     }
 
@@ -40,7 +40,8 @@ sub get_included_types {
 
 sub _skip_it {
     my $type    = shift;
-
+    my $caster  = shift;
+    
     return 1 unless defined $type;
 
     my $cast    = $caster->cast( $type );
