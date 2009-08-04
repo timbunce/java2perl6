@@ -100,6 +100,10 @@ sub _get_unique_methods {
     # from TypeCast operation
     # retain only the methods
     my @methods =  sort { $a->{name} cmp $b->{name} }  grep { $_->{body_element} eq 'method' } @{$ast->{contents}} ;
+
+    # discard method names containing '$'
+    @methods = grep { $_->{name} !~ m/\$/ } @methods;
+
     #print STDERR "methods: ", Dumper(@methods);
     my %meth;
     foreach my $element (@methods) {

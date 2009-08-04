@@ -1,5 +1,7 @@
 #!/usr/bin/env perl
 
+# process and check the classes related to JDBC (listed in jdbc_classes.txt)
+
 use strict;
 use warnings;
 use autodie;
@@ -7,8 +9,7 @@ use Cwd qw(getcwd);
 
 my $outdir = 'jdbclib';
 
-my $perl6 = shift || "$ENV{HOME}/perl6/rakudo/perl6";
-$ENV{PERL6LIB} .= ":$outdir";
+$ENV{PERL6LIB} .= ":$outdir"; # XXX %Config pathsep
 
 system qq{make};
 

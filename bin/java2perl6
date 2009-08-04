@@ -41,17 +41,28 @@ my @genopts = split /\s+/, $genoptstr;
 
 my @classes = @ARGV or die "usage: $0 [options] class [ class ... ]\nUse $0 --help for help\n";
 
-
 my $parser = Java::Javap::Grammar->new();
 my $caster = Java::Javap::TypeCast->new();
 my $jenny  = Java::Javap::Generator->get_generator( $genwith, @genopts );
 
 my %process_class_tried;
+my %check_status;
 
 foreach my $class ( @classes  ) {
     eval { process_class( $class, $recurse ) };
 }
 
+if (%check_status) {
+    my $passed = 0;
+    for my $file_name (sort keys %check_status) {
+        my $ok = $check_status{$file_name};
+        printf "%6s: %s\n", ($ok ? "ok" : "FAILED"), $file_name;
+        ++$passed if $ok;
+    }
+    printf "%d ok, %d failed.\n", $passed, keys(%check_status)-$passed;
+}
+
+exit 0;
 
 sub process_class {
     my ($class, $recurse) = @_;
@@ -73,7 +84,15 @@ sub process_class {
     );
 
     # include the decompiled java for reference
-    $output .= "\n__END__\n$decomp";
+    $output .= <<"EOS";
+=begin pod
+
+=head1 Java
+
+$decomp
+
+=end pod
+EOS
 
     my $file_name;
     if ( $outdir eq 'STDOUT' ) {
@@ -101,7 +120,7 @@ sub process_class {
 
     if ($opt_check && $file_name) {
         warn "$class: checking $file_name\n";
-        system "perl6", "-c", $file_name;
+        $check_status{$file_name} = (system("perl6", "-c", $file_name) == 0);
     }
 
     return $referenced_classes;

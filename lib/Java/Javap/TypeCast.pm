@@ -1,5 +1,7 @@
 package Java::Javap::TypeCast;
 
+# http://perlcabal.org/syn/S02.html#Built-In_Data_Types
+
 my $type_casts = {
     int                => 'Int',
     long               => 'Int',
@@ -9,9 +11,14 @@ my $type_casts = {
     float              => 'Num',
     double             => 'Num',
     boolean            => 'Bool',
+    'java.lang.Object' => 'Any',
     'java.lang.String' => 'Str',
+    'java.lang.Number'  => 'Float',
+    'java.math.BigInteger' => 'Int',
+    'java.math.BigNumber' => 'Int',
     'java.net.URI'     => 'Str',
     'java.net.URL'     => 'Str',
+    'java.io.InputStream' => 'IO',
 };
 
 sub set_type_casts {
@@ -34,8 +41,14 @@ sub cast {
   
     return $type_casts->{ $java_type } if $type_casts->{ $java_type };
 
+    # special cases
+    return 'Any' if $java_type =~ m/^sun\.reflect\./;
+    return 'Any' if $java_type =~ m/^sun\.lang\.annotation/;
+    return 'Any' if $java_type =~ m/^sun\.lang\.reflect/;
+
     #print "WARNING: No mapping for '$java_type' default to class 'Any'\n";
     $java_type    =~ s/\./::/g;
+    $java_type    =~ s/\$/_PRIVATE_/g; # handle '$' in type names
 
     return $java_type;
     #return 'Any';
