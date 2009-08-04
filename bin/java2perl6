@@ -34,6 +34,7 @@ GetOptions(
     'quiet|q'     => \$quiet,
     'verbose|v'   => \$verbose,
     'help|h'      => \&help,
+    'check|c!'    => \my $opt_check,
 );
 
 my @genopts = split /\s+/, $genoptstr;
@@ -42,43 +43,24 @@ my @classes = @ARGV or die "usage: $0 [options] class [ class ... ]\nUse $0 --he
 
 
 my $parser = Java::Javap::Grammar->new();
+my $caster = Java::Javap::TypeCast->new();
 my $jenny  = Java::Javap::Generator->get_generator( $genwith, @genopts );
 
-my %seen             = map { $_ => 1 } @classes;
-my %done;
-my $we_did_something = 1;
+my %process_class_tried;
 
-while ( $we_did_something ) {
-    $we_did_something = 0;
-
-    CLASS:
-    foreach my $class ( sort keys %seen ) {
-
-        next CLASS if $done{ $class };
-
-        $we_did_something++;
-
-        my $included_classes = eval { process_one_file( $class ) } || [];
-        warn $@ if $@;
-
-        $done{ $class } = 1;
-
-        if ($recurse) {
-            foreach my $included_class ( @{ $included_classes } ) {
-                $seen{ $included_class } ||= 1;
-            }
-        }
-    }
+foreach my $class ( @classes  ) {
+    eval { process_class( $class, $recurse ) };
 }
 
 
-sub process_one_file {
-    my $class = shift;
+sub process_class {
+    my ($class, $recurse) = @_;
 
-    my $caster = Java::Javap::TypeCast->new();
+    return undef if $process_class_tried{$class}++;
+
     my $cmd = "javap $jpcmd $class";
     warn "$cmd\n" if $verbose;
-    my $decomp = `javap $jpcmd $class`;
+    my $decomp = `javap $jpcmd $class`; # XXX check exit status
     my $tree   = $parser->comp_unit( $decomp )
         or die "Error parsing output of '$cmd'\n";
 
@@ -93,40 +75,56 @@ sub process_one_file {
     # include the decompiled java for reference
     $output .= "\n__END__\n$decomp";
 
+    my $file_name;
     if ( $outdir eq 'STDOUT' ) {
         print $output;
     }
     else { # put it in a directory
 
-        my $module_dir = $outdir;
-        my @subdirs    = split /\./, $class;
-        my $class_name = pop @subdirs;
-
-        mkdir $module_dir or -d $module_dir
-            or die "Can't mkdir $module_dir: $!\n";
-
-        my $file;
-        if ( $nest ) {
-            foreach my $subdir ( @subdirs ) {
-                $module_dir = File::Spec->catdir( $module_dir, $subdir );
-                mkdir $module_dir or -d $module_dir
-                    or die "Can't mkdir $module_dir: $!\n";
-            }
-        }
-
-        my $file_name = File::Spec->catfile( $module_dir, "$class_name.pm" );
+        $file_name = output_filename_for_class($class, 1);
 
         open my $API_MODULE, '>', $file_name
             or die "Couldn't write to $file_name: $!\n";
-
         print $API_MODULE $output;
-
-        close $API_MODULE;
+        close $API_MODULE or die "Error writing $file_name: $!\n";
         warn "$class: $file_name\n" unless $quiet;
     }
 
     # tell them which types we saw
-    return Java::Javap->get_included_types( $tree, $caster );
+    my $referenced_classes = Java::Javap->get_included_types( $tree, $caster );
+
+    if ($recurse) {
+        for my $ref_class (sort @$referenced_classes) {
+            process_class( $ref_class, $recurse+1 );
+        }
+    }
+
+    if ($opt_check && $file_name) {
+        warn "$class: checking $file_name\n";
+        system "perl6", "-c", $file_name;
+    }
+
+    return $referenced_classes;
+}
+
+
+sub output_filename_for_class {
+    my ($class, $mkdir) = @_;
+
+    my @subdirs    = split /\./, $class;
+    my $class_name = pop @subdirs;
+
+    my $module_dir = $outdir;
+    mkdir $module_dir or -d $module_dir
+        or die "Can't mkdir $module_dir: $!\n";
+    if ( $nest ) {
+        foreach my $subdir ( @subdirs ) {
+            $module_dir = File::Spec->catdir( $module_dir, $subdir );
+            mkdir $module_dir or -d $module_dir
+                or die "Can't mkdir $module_dir: $!\n";
+        }
+    }
+    return File::Spec->catfile( $module_dir, "$class_name.pm" );
 }
 
 
