@@ -90,6 +90,9 @@ sub process_one_file {
         }
     );
 
+    # include the decompiled java for reference
+    $output .= "\n__END__\n$decomp";
+
     if ( $outdir eq 'STDOUT' ) {
         print $output;
     }

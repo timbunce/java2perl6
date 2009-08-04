@@ -180,7 +180,8 @@ sub _get_template {
 
 sub _get_template_for_interface {
     return << 'EO_Template';
-# This file was automatically generated [% gen_time +%]
+# *** DO NOT EDIT *** CHANGES WILL BE LOST ***
+# This file was automatically generated
 # by java2perl6 [% version %] from decompiling
 # [% class_file %] using command line flags:
 #   [% javap_flags +%]
@@ -209,7 +210,8 @@ EO_Template
 
 sub _get_template_for_class {
     return << 'EO_Class_Template';
-# This file was automatically generated [% gen_time +%]
+# *** DO NOT EDIT *** CHANGES WILL BE LOST ***
+# This file was automatically generated
 # by java2perl6 [% version %] from decompliling
 # [% class_file %] using command line flags:
 #   [% javap_flags +%]
@@ -330,7 +332,7 @@ make via this method will apply to subsequent calls.
 
 =item tt_args
 
-Accessr for getting the TT constructor arguments.  Mainly for internal
+Accessor for getting the TT constructor arguments.  Mainly for internal
 use.
 
 =back
@@ -341,10 +343,10 @@ Nothing, it's all OO
 
 =head2 SEE ALSO
 
-    Java::Javap::Generator
-    Java::Javap
-    Java::Javap::Grammar
-    java2perl6
+L<Java::Javap::Generator>
+L<Java::Javap>
+L<Java::Javap::Grammar>
+L<java2perl6>
 
 =head1 AUTHOR
 

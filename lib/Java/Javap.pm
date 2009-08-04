@@ -21,38 +21,40 @@ sub get_included_types {
 
     ELEMENT:
     foreach my $element ( @{ $contents } ) {
-        next ELEMENT unless $element->{ body_element } eq 'method';
+        if ($element->{ body_element } ne 'method') {
+            next ELEMENT;
+        }
 
-        # check return value
-        my $return_type = $element->{ returns }{ name };
+        foreach my $item (
+            $element->{ returns },
+            @{ $element->{ args } }
+        ) {
+            my $type_name = $item->{ name };
+            next if _skip_it( $type_name, $caster );
 
-        $answers{ $return_type }++ unless ( _skip_it( $return_type, $caster ) );
-
-        # check args
-        foreach my $arg ( @{ $element->{ args } } ) {
-            my $arg_type = $element->{ returns }{ name };
-            $answers{ $return_type }++ unless ( _skip_it( $arg_type, $caster ) );
+            $answers{ $type_name }++;
+            #warn "Noted $element->{name} type $type_name\n";
         }
     }
 
     return [ keys %answers ];
 }
 
+# returns true if type casts to a builtin perl6 type
 sub _skip_it {
-    my $type    = shift;
+    my $type_name    = shift;
     my $caster  = shift;
     
-    return 1 unless defined $type;
+    return 1 if not defined $type_name;
+    return 1 if $type_name eq 'void';
 
-    my $cast    = $caster->cast( $type );
-    $cast       =~ s/::/./g;
+    my $cast = $caster->cast( $type_name );
+    $cast    =~ s/::/./g;
 
     my $skip_it = 0;
 
-    $skip_it++ if ( $type ne $cast ) or ( $type eq 'void' );
-
-#    $skip_it++ if $type =~ /^java\.util/;
-#    $skip_it++ if $type =~ /^java\.math/;
+    $skip_it++ if ( $type_name ne $cast );
+    #warn "Skipping $type_name ($cast)\n" if $skip_it;
 
     return $skip_it;
 }
