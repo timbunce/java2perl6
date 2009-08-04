@@ -13,7 +13,8 @@ my $type_casts = {
     boolean            => 'Bool',
     'java.lang.Object' => 'Any',
     'java.lang.String' => 'Str',
-    'java.lang.Number'  => 'Float',
+    'java.lang.Number'  => 'Num',
+    'java.lang.Class'  => 'Any',
     'java.math.BigInteger' => 'Int',
     'java.math.BigNumber' => 'Int',
     'java.net.URI'     => 'Str',
@@ -45,6 +46,7 @@ sub cast {
     return 'Any' if $java_type =~ m/^sun\.reflect\./;
     return 'Any' if $java_type =~ m/^sun\.lang\.annotation/;
     return 'Any' if $java_type =~ m/^sun\.lang\.reflect/;
+    return 'Any' if $java_type =~ m/\$/;
 
     #print "WARNING: No mapping for '$java_type' default to class 'Any'\n";
     $java_type    =~ s/\./::/g;

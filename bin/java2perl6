@@ -66,6 +66,7 @@ exit 0;
 
 sub process_class {
     my ($class, $recurse) = @_;
+    my $pad = $recurse ? (". " x ($recurse-1)) : "";
 
     return undef if $process_class_tried{$class}++;
 
@@ -106,7 +107,7 @@ EOS
             or die "Couldn't write to $file_name: $!\n";
         print $API_MODULE $output;
         close $API_MODULE or die "Error writing $file_name: $!\n";
-        warn "$class: $file_name\n" unless $quiet;
+        warn "$pad$class: $file_name\n" unless $quiet;
     }
 
     # tell them which types we saw
@@ -119,7 +120,7 @@ EOS
     }
 
     if ($opt_check && $file_name) {
-        warn "$class: checking $file_name\n";
+        warn "$pad$class: checking $file_name\n";
         $check_status{$file_name} = (system("perl6", "-c", $file_name) == 0);
     }
 
