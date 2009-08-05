@@ -48,8 +48,12 @@ my $jenny  = Java::Javap::Generator->get_generator( $genwith, @genopts );
 my %process_class_tried;
 my %check_status;
 
+my %top_types;
 foreach my $class ( @classes  ) {
-    eval { process_class( $class, $recurse ) };
+    eval {
+        my $types = process_class( $class, $recurse ) || [];
+        $top_types{$_}++ for @$types;
+    };
 }
 
 if (%check_status) {
@@ -60,6 +64,11 @@ if (%check_status) {
         ++$passed if $ok;
     }
     printf "%d ok, %d failed.\n", $passed, keys(%check_status)-$passed;
+}
+
+if (not $quiet) {
+    print "Types used by specified classes:\n";
+    printf "%s\n", $_ for sort keys %top_types;
 }
 
 exit 0;
