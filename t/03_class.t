@@ -153,15 +153,11 @@ my $perl_6    = $generator->generate(
 );
 #warn $perl_6;
 $perl_6    =~ s/^#.*//gm;
+$perl_6    =~ s/^\s+//;
 my @perl_6 = split /\n/, $perl_6;
 #use Data::Dumper::Simple;
 #diag($perl_6);
 my @correct_perl_6 = split /\n/, <<'EO_Correct_Perl_6';
-
-
-
-
-
 use java::lang::Object;
 
 class ClassTest  is java::lang::Object {
@@ -199,14 +195,10 @@ is_deeply( \@perl_6, \@correct_perl_6, 'emission' );
   );
   #warn $perl_6;
   $perl_6    =~ s/^#.*//gm;
+  $perl_6    =~ s/^\s+//;
   my @perl_6 = split /\n/, $perl_6;
 #  diag("got: $perl_6");
   my @correct_perl_6 = split /\n/, <<'EO_Correct_Perl_6_a';
-
-
-
-
-
 use java::lang::Object;
 
 class dupMethodTest  is java::lang::Object {
