@@ -20,6 +20,11 @@ my $type_casts = {
     'java.net.URI'     => 'Str',
     'java.net.URL'     => 'Str',
     'java.io.InputStream' => 'IO',
+
+    # XXX hacks
+    # java.security.Permission has recursive dependency with java.security.PermissionCollection
+    'java.security.Permission' => 'Object',
+    'java.security.BasicPermission' => 'Object',
 };
 
 sub set_type_casts {

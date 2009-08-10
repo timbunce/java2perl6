@@ -45,13 +45,12 @@ my $parser = Java::Javap::Grammar->new();
 my $caster = Java::Javap::TypeCast->new();
 my $jenny  = Java::Javap::Generator->get_generator( $genwith, @genopts );
 
-my %process_class_tried;
 my %check_status;
 
 my %top_types;
 foreach my $class ( @classes  ) {
     eval {
-        my $types = process_class( $class, $recurse ) || [];
+        my $types = process_java_class( $class, $recurse ) || [];
         $top_types{$_}++ for @$types;
     };
 }
@@ -73,17 +72,18 @@ if (not $quiet) {
 
 exit 0;
 
-sub process_class {
+sub process_java_class {
     my ($class, $recurse) = @_;
     my $pad = $recurse ? (". " x ($recurse-1)) : "";
 
-    return undef if $process_class_tried{$class}++;
+    return undef if our $process_java_class_tried->{$class}++;
 
     my $cmd = "javap $jpcmd $class";
     warn "$cmd\n" if $verbose;
     my $decomp = `javap $jpcmd $class`; # XXX check exit status
     my $tree   = $parser->comp_unit( $decomp )
         or die "Error parsing output of '$cmd'\n";
+    my $kind = $tree->{class_or_interface};
 
     my $output = $jenny->generate(
         {
@@ -116,7 +116,7 @@ EOS
             or die "Couldn't write to $file_name: $!\n";
         print $API_MODULE $output;
         close $API_MODULE or die "Error writing $file_name: $!\n";
-        warn "$pad$class: $file_name\n" unless $quiet;
+        warn "$pad$kind $class: $file_name\n" unless $quiet;
     }
 
     # tell them which types we saw
@@ -124,12 +124,12 @@ EOS
 
     if ($recurse) {
         for my $ref_class (sort @$referenced_classes) {
-            process_class( $ref_class, $recurse+1 );
+            process_java_class( $ref_class, $recurse+1 );
         }
     }
 
     if ($opt_check && $file_name) {
-        warn "$pad$class: checking $file_name\n";
+        warn "$pad$kind $class: checking $file_name\n";
         $check_status{$file_name} = (system("perl6", "-c", $file_name) == 0);
     }
 
