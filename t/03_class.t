@@ -155,7 +155,6 @@ my $perl_6    = $generator->generate(
 $perl_6    =~ s/^#.*//gm;
 $perl_6    =~ s/^\s+//;
 my @perl_6 = split /\n/, $perl_6;
-#use Data::Dumper::Simple;
 #diag($perl_6);
 my @correct_perl_6 = split /\n/, <<'EO_Correct_Perl_6';
 class ClassTest {

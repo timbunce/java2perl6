@@ -5,7 +5,7 @@ use Template;
 use Java::Javap;
 use Java::Javap::TypeCast;
 
-use Data::Dumper::Simple;
+# use Data::Dumper;
 
 # http://perlcabal.org/syn/S02.html#Built-In_Data_Types
 # XXX having this info here is suboptimal

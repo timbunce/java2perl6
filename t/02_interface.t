@@ -8,8 +8,6 @@ use Java::Javap;
 use Java::Javap::Grammar;
 use Java::Javap::Generator;
 
-#use Data::Dumper::Simple;
-
 `javap`;
 plan skip_all => 'javap from Java SDK required' if $!;
 plan tests    => 3;
@@ -234,5 +232,3 @@ role com::example::NestedIntTest {
 EO_Correct_Perl_6
 
 is_deeply( \@perl_6, \@correct_perl_6, 'emission' );
-
-#use Data::Dumper; warn Dumper( $perl_6 );
