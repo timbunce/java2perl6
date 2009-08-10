@@ -28,14 +28,14 @@ GetOptions(
     'jpcmd|j=s'   => \$jpcmd,
     'genwith|g=s' => \$genwith,
     'genopts|p=s' => \$genoptstr,
-    'nest|n'      => \$nest,
+    'nest|n!'     => \$nest,
     'outdir|d=s'  => \$outdir,
-    'recurse|r'   => \$recurse,
-    'quiet|q'     => \$quiet,
-    'verbose|v'   => \$verbose,
-    'help|h'      => \&help,
+    'recurse|r!'  => \$recurse,
+    'quiet|q!'    => \$quiet,
+    'verbose|v!'  => \$verbose,
+    'help|h!'     => \&help,
     'check|c!'    => \my $opt_check,
-);
+) or exit 1;
 
 my @genopts = split /\s+/, $genoptstr;
 
