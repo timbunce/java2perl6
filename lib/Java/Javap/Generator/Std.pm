@@ -7,6 +7,15 @@ use Java::Javap::TypeCast;
 
 use Data::Dumper::Simple;
 
+# http://perlcabal.org/syn/S02.html#Built-In_Data_Types
+# XXX having this info here is suboptimal
+# should at least be integrated with TypeCaster
+my $perl_builtin_types = { map { $_=>1 } qw(
+    Any Object
+    Bool Int Num Complex Rat Str Bit Regex Set Block List Seq
+    Scalar Array Hash Buf Routine Module
+) };
+
 sub new {
     my $class   = shift;
     my $debug   = shift;
@@ -80,7 +89,8 @@ sub _cast_names {
     my $ast     = shift;
     
     my $type_caster = $self->{type_caster};
-    $ast->{cast_parent} = defined $ast->{parent} ? $type_caster->cast($ast->{parent}) : '';
+    my $class_parent = defined $ast->{parent} ? $type_caster->cast($ast->{parent}) : '';
+    $ast->{cast_parent} = ($class_parent eq 'Object') ? '' : $class_parent;
     foreach my $element (@{$ast->{contents}}) {
         #$element->{name} =~ s/\$/_/g	if defined $element->{name};
             next unless $element->{body_element} eq 'method';
@@ -137,41 +147,46 @@ sub _get_modules {
     my $ast  = shift;
     my $type_caster = shift;
     
-    my %mod;
-    my %ignore = ( Str => 1, Int => 1, Bool => 1, Num => 1, Any => 1, void => 1, qq{$ast->{perl_qualified_name}} => 1);
-    
-    #print STDERR "class/role='$ast->{perl_qualified_name}' ignore ='", join(', ', keys %ignore), "\n", Dumper($ast);
-
-    my $target;
+    my %perl_types;
     if (defined $ast->{parent}) {
-        $target = $type_caster->cast($ast->{parent});
-        $mod{$target}++ unless $ignore{$target};
+        my $target = $type_caster->cast($ast->{parent});
+        $perl_types{$target}++;
     }
     
     foreach my $element (@{$ast->{contents}}) {
 
         next unless $element->{body_element} eq 'method';
-        $target = $type_caster->cast($element->{returns}->{name});
- 
-        next if $ignore{$target};
- 
-        # at the moment rakudo does not support 'Array of' so don't include the 
-        # dependency on the class as it will just return Array at the moment.
-        next if $element->{returns}->{array_text} =~ /Array of/;
-        next if $target =~ /\$/;
-        $mod{$target}++;
-    }
-    
-    foreach my $element (@{$ast->{contents}}) {
-        next unless $element->{body_element} eq 'method';
+
+        my $target = $type_caster->cast($element->{returns}->{name});
+        $perl_types{$target}++;
+
         foreach my $arg (@{$element->{args}}) {
-            $target = $type_caster->cast($arg->{name});
-            next if $ignore{$target};
-            $mod{$target}++;
+            my $target = $type_caster->cast($arg->{name});
+            $perl_types{$target}++;
         }       
     }
-    return keys %mod;
+    #warn "$ast->{perl_qualified_name} references types: @{[ keys %perl_types ]}\n";
+
+    for my $perl_type (keys %perl_types) {
+ 
+        delete $perl_types{$perl_type}
+            if $perl_builtin_types->{$perl_type}
+            # our own class name
+            or $perl_type eq $ast->{perl_qualified_name}
+            # private java class
+            or $perl_type =~ /\$/
+            # void java class
+            or $perl_type eq 'void'
+            # at the moment rakudo does not support 'Array of' so don't include the 
+            # dependency on the class as it will just return Array at the moment.
+            #or $element->{returns}->{array_text} =~ /Array of/;
+            ;
+    }
+    #warn "$ast->{perl_qualified_name} needs to load: @{[ keys %perl_types ]}\n";
+
+    return (sort keys %perl_types);
 }
+
 
 sub _get_template {
     my $self = shift;
@@ -224,7 +239,7 @@ sub _get_template_for_class {
 use [% package -%];
 [% END %]
 
-class [% ast.perl_qualified_name %]  [% ast.cast_parent == '' ? '' : 'is' %] [% ast.cast_parent %] {
+class [% ast.perl_qualified_name %] [%- ast.cast_parent == '' ? '' : 'is' %][% ast.cast_parent -%] {
 [% FOREACH element IN ast.method_list %]
     [% ast.methods.${ element.name } > 1 ? 'multi ' : '' %]method [% element.name %](
 [% arg_counter = 0 %]
