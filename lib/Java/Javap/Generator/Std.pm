@@ -239,7 +239,7 @@ sub _get_template_for_class {
 use [% package -%];
 [% END %]
 
-class [% ast.perl_qualified_name %] [%- ast.cast_parent == '' ? '' : 'is' %][% ast.cast_parent -%] {
+class [% ast.perl_qualified_name %] [%- ast.cast_parent == '' ? '' : ' is ' %][% ast.cast_parent -%] {
 [% FOREACH element IN ast.method_list %]
     [% ast.methods.${ element.name } > 1 ? 'multi ' : '' %]method [% element.name %](
 [% arg_counter = 0 %]
