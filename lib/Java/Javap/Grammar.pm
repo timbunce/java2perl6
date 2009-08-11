@@ -3109,35 +3109,33 @@ sub Parse::RecDescent::Java::Javap::Grammar::comp_unit
 		my $repcount = 0;
 
 
-		Parse::RecDescent::_trace(q{Trying subrule: [comp_stmt]},
+		Parse::RecDescent::_trace(q{Trying repeated subrule: [comp_stmt]},
 				  Parse::RecDescent::_tracefirst($text),
 				  q{comp_unit},
 				  $tracelevel)
 					if defined $::RD_TRACE;
-		if (1) { no strict qw{refs};
 		$expectation->is(q{})->at($text);
-		unless (defined ($_tok = Parse::RecDescent::Java::Javap::Grammar::comp_stmt($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
+		
+		unless (defined ($_tok = $thisparser->_parserepeat($text, \&Parse::RecDescent::Java::Javap::Grammar::comp_stmt, 0, 1, $_noactions,$expectation,undef))) 
 		{
-			
-			Parse::RecDescent::_trace(q{<<Didn't match subrule: [comp_stmt]>>},
+			Parse::RecDescent::_trace(q{<<Didn't match repeated subrule: [comp_stmt]>>},
 						  Parse::RecDescent::_tracefirst($text),
 						  q{comp_unit},
 						  $tracelevel)
 							if defined $::RD_TRACE;
-			$expectation->failed();
 			last;
 		}
-		Parse::RecDescent::_trace(q{>>Matched subrule: [comp_stmt]<< (return value: [}
-					. $_tok . q{]},
+		Parse::RecDescent::_trace(q{>>Matched repeated subrule: [comp_stmt]<< (}
+					. @$_tok . q{ times)},
 					  
 					  Parse::RecDescent::_tracefirst($text),
 					  q{comp_unit},
 					  $tracelevel)
 						if defined $::RD_TRACE;
-		$item{q{comp_stmt}} = $_tok;
+		$item{q{comp_stmt(?)}} = $_tok;
 		push @item, $_tok;
 		
-		}
+
 
 		Parse::RecDescent::_trace(q{Trying subrule: [comp_unit_decl]},
 				  Parse::RecDescent::_tracefirst($text),
@@ -7921,12 +7919,15 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                             'items' => [
                                                                                          bless( {
                                                                                                   'subrule' => 'comp_stmt',
-                                                                                                  'matchrule' => 0,
-                                                                                                  'implicit' => undef,
+                                                                                                  'expected' => undef,
+                                                                                                  'min' => 0,
                                                                                                   'argcode' => undef,
+                                                                                                  'max' => 1,
+                                                                                                  'matchrule' => 0,
+                                                                                                  'repspec' => '?',
                                                                                                   'lookahead' => 0,
                                                                                                   'line' => 9
-                                                                                                }, 'Parse::RecDescent::Subrule' ),
+                                                                                                }, 'Parse::RecDescent::Repetition' ),
                                                                                          bless( {
                                                                                                   'subrule' => 'comp_unit_decl',
                                                                                                   'matchrule' => 0,
