@@ -20,7 +20,9 @@ my $type_casts = {
 
     'java.math.BigInteger'  => 'Int',
     'java.math.BigNumber'   => 'Num',
-    'java.math.BigDecimal'  => 'Rat',
+    'java.math.BigDecimal'  => 'Num', # XXX should be Rat when available
+
+    'java.util.Map'         => 'Mapping',
 
     'java.net.URI'          => 'Str',
     'java.net.URL'          => 'Str',
@@ -34,6 +36,9 @@ my $type_casts = {
     # java.security.Permission has recursive dependency with java.security.PermissionCollection
     'java.security.Permission'      => 'Object',
     'java.security.BasicPermission' => 'Object',
+    'java.sql.Array' => 'Object', # recursive-use with java::sql::ResultSet
+    'java.sql.SQLOutput' => 'Object',
+    'java.sql.SQLInput'  => 'Object',
 };
 
 sub set_type_casts {

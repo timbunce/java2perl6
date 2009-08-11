@@ -83,7 +83,7 @@ sub process_java_class {
     return undef if our $process_java_class_tried->{$class}++;
 
     my $cmd = "javap $jpcmd $class";
-    warn "$cmd\n" if $opt_trace >= 2;
+    warn "$cmd\n" if $opt_trace >= 3;
     my $decomp = `$cmd`; # XXX check exit status
     warn $decomp if $opt_trace >= 3;
     my $tree   = $parser->comp_unit( $decomp )
