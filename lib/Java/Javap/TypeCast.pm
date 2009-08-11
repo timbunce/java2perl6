@@ -11,19 +11,27 @@ my $type_casts = {
     float              => 'Num',
     double             => 'Num',
     boolean            => 'Bool',
-    'java.lang.Object' => 'Object',
-    'java.lang.String' => 'Str',
-    'java.lang.Number'  => 'Num',
-    'java.lang.Class'  => 'Any',
-    'java.math.BigInteger' => 'Int',
-    'java.math.BigNumber' => 'Int',
-    'java.net.URI'     => 'Str',
-    'java.net.URL'     => 'Str',
-    'java.io.InputStream' => 'IO',
+    'java.lang.Object'      => 'Object',
+    'java.lang.String'      => 'Str',
+    'java.lang.Number'      => 'Num',
+    'java.lang.Class'       => 'Any',
+    'java.lang.CharSequence'=> 'Str',
+    'java.lang.Appendable'  => 'Object',
+
+    'java.math.BigInteger'  => 'Int',
+    'java.math.BigNumber'   => 'Int',
+
+    'java.net.URI'          => 'Str',
+    'java.net.URL'          => 'Str',
+
+    'java.io.InputStream'   => 'IO',
+
+    'java.nio.ByteBuffer'   => 'Buf',
+    'java.nio.CharBuffer'   => 'Str',
 
     # XXX hacks
     # java.security.Permission has recursive dependency with java.security.PermissionCollection
-    'java.security.Permission' => 'Object',
+    'java.security.Permission'      => 'Object',
     'java.security.BasicPermission' => 'Object',
 };
 

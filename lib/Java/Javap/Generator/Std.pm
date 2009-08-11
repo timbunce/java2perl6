@@ -7,25 +7,59 @@ use Java::Javap::TypeCast;
 
 # use Data::Dumper;
 
-# http://perlcabal.org/syn/S02.html#Built-In_Data_Types
 # XXX having this info here is suboptimal
 # should at least be integrated with TypeCaster
-my $perl_builtin_types = { map { $_=>1 } qw(
-    Any Object
-    Bool Int Num Complex Rat Str Bit Regex Set Block List Seq
-    Scalar Array Hash Buf Routine Module
-) };
+# http://perlcabal.org/syn/S02.html#Immutable_types
+my @perl_builtin_immutable = qw(
+    Bit        
+    Int       
+    Str       
+    Num       
+    Rat       
+    Complex   
+    Bool      
+    Exception 
+    Block     
+    List      
+    Seq      
+    Range   
+    Set     
+    Bag     
+    Signature
+    Capture
+    Blob      
+    Instant   
+    Duration  
+);
+# http://perlcabal.org/syn/S02.html#Mutable_types
+my @perl_builtin_mutable = qw(
+    Scalar Array Hash KeyHash KeySet KeyBag Pair
+    Mapping   
+    Buf      
+    IO       
+    Routine  
+    Sub      
+    Method   
+    Submethod
+    Macro    
+    Regex    
+    Match    
+    Package  
+    Module   
+    Class    
+    Role     
+    Grammar  
+    Any      
+    Object   
+);
+my $perl_builtin_types = { map { $_=>1 } (@perl_builtin_immutable, @perl_builtin_mutable) };
 
 sub new {
-    my $class   = shift;
-    my $debug   = shift;
-        
+    my $class = shift;
+
+    my $self = bless { @_ }, $class;
+
     my $tt_args = { POST_CHOMP => 1 };
-
-    my $self    = bless { }, $class;
-
-    $self->{debug} = defined $debug ? $debug : 0;
-    
     $self->tt_args_set( $tt_args );
     
     return $self;
@@ -47,9 +81,9 @@ sub generate {
     my $self        = shift;
     my $params      = shift;
 
-    my $class_file  = $params->{ class_file  };
-    my $ast         = $params->{ ast         };
-    my $debug       = defined $params->{debug} ? $params->{debug} : 0;
+    my $class_file  = $params->{class_file};
+    my $ast         = $params->{ast};
+    my $trace_level = defined $params->{trace_level} ? $params->{trace_level} : $self->{trace_level};
         
     my $type_caster  = Java::Javap::TypeCast->new();
     if (defined $params->{type_file}) {
@@ -61,25 +95,23 @@ sub generate {
     $ast->{method_list} = $self->_get_unique_methods( $ast );
     #print STDERR Dumper($ast->{method_list});
     
-    my $javap_flags = $params->{ javap_flags };
-
     my $template    = $self->_get_template( $ast );
 
-    my $tt          = Template->new( $self->tt_args );
-    
     my @modules     = $self->_get_modules($ast, $type_caster);
     
+    my $tt = Template->new( $self->tt_args );
     my $tt_vars = {
         ast        => $ast,
         gen_time   => scalar localtime(),
         version    => $Java::Javap::VERSION,
         class_file => $class_file,
         type_caster=> $type_caster,
-        javap_flags=> $javap_flags,
+        javap_flags=> $params->{javap_flags},
         modules    => \@modules,
     };
     my $retval;
-    $tt->process( \$template, $tt_vars, \$retval ) || die $tt->error();
+    $tt->process( \$template, $tt_vars, \$retval )
+        or die "Error processing template: ".$tt->error();
 
     return $retval;
 }
@@ -165,7 +197,8 @@ sub _get_modules {
             $perl_types{$target}++;
         }       
     }
-    #warn "$ast->{perl_qualified_name} references types: @{[ keys %perl_types ]}\n";
+    warn "$ast->{perl_qualified_name} references types: @{[ keys %perl_types ]}\n"
+        if $self->{trace_level} >= 3;
 
     for my $perl_type (keys %perl_types) {
  
@@ -182,7 +215,8 @@ sub _get_modules {
             #or $element->{returns}->{array_text} =~ /Array of/;
             ;
     }
-    #warn "$ast->{perl_qualified_name} needs to load: @{[ keys %perl_types ]}\n";
+    warn "$ast->{perl_qualified_name} needs to load: @{[ keys %perl_types ]}\n"
+        if $self->{trace_level} >= 3;
 
     return (sort keys %perl_types);
 }

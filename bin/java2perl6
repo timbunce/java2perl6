@@ -10,13 +10,10 @@ use Java::Javap::Grammar;
 use Java::Javap::Generator;
 
 my $genwith   = 'Std';
-my $genoptstr = '';
 my $jpcmd     = '';
 my $nest;
 my $outdir    = '.';
 my $recurse;
-my $quiet     = 0;
-my $verbose   = 0;
 
 #use Parse::RecDescent; $::RD_TRACE = 1;
 
@@ -24,26 +21,32 @@ my $verbose   = 0;
 #   astas - no, make this a Genterator,
 #           but do write the backends for YAML and Perl
 
+# XXX nest and recurse should default on
+
 GetOptions(
     'jpcmd|j=s'   => \$jpcmd,
     'genwith|g=s' => \$genwith,
-    'genopts|p=s' => \$genoptstr,
+    'genopts|p=s' => \my $opt_genopts,
     'nest|n!'     => \$nest,
     'outdir|d=s'  => \$outdir,
     'recurse|r!'  => \$recurse,
-    'quiet|q!'    => \$quiet,
-    'verbose|v!'  => \$verbose,
-    'help|h!'     => \&help,
     'check|c!'    => \my $opt_check,
+    'trace|t=i'   => \(my $opt_trace = 1),
+    'help|h!'     => \&help,
 ) or exit 1;
-
-my @genopts = split /\s+/, $genoptstr;
 
 my @classes = @ARGV or die "usage: $0 [options] class [ class ... ]\nUse $0 --help for help\n";
 
+$::RD_WARN  = 1;
+$::RD_TRACE = 1 if $opt_trace >= 9;
+
 my $parser = Java::Javap::Grammar->new();
 my $caster = Java::Javap::TypeCast->new();
-my $jenny  = Java::Javap::Generator->get_generator( $genwith, @genopts );
+my $jenny  = Java::Javap::Generator->get_generator(
+    $genwith,
+    trace_level => $opt_trace,
+    split(/\s+/, $opt_genopts||''),
+);
 
 my %check_status;
 
@@ -65,12 +68,13 @@ if (%check_status) {
     printf "%d ok, %d failed.\n", $passed, keys(%check_status)-$passed;
 }
 
-if (not $quiet) {
+if ($opt_trace >= 2) {
     print "Types used by specified classes:\n";
     printf "%s\n", $_ for sort keys %top_types;
 }
 
 exit 0;
+
 
 sub process_java_class {
     my ($class, $recurse) = @_;
@@ -79,8 +83,9 @@ sub process_java_class {
     return undef if our $process_java_class_tried->{$class}++;
 
     my $cmd = "javap $jpcmd $class";
-    warn "$cmd\n" if $verbose;
-    my $decomp = `javap $jpcmd $class`; # XXX check exit status
+    warn "$cmd\n" if $opt_trace >= 2;
+    my $decomp = `$cmd`; # XXX check exit status
+    warn $decomp if $opt_trace >= 3;
     my $tree   = $parser->comp_unit( $decomp )
         or die "Error parsing output of '$cmd'\n";
     my $kind = $tree->{class_or_interface};
@@ -108,7 +113,7 @@ sub process_java_class {
             or die "Couldn't write to $file_name: $!\n";
         print $API_MODULE $output;
         close $API_MODULE or die "Error writing $file_name: $!\n";
-        warn "$pad$kind $class: $file_name\n" unless $quiet;
+        warn "$pad$kind $class: $file_name\n" if $opt_trace;
     }
 
     # tell them which types we saw
@@ -122,6 +127,7 @@ sub process_java_class {
 
     if ($opt_check && $file_name) {
         warn "$pad$kind $class: checking $file_name\n";
+        local $ENV{PERL6LIB} = join(":",grep { $_ } $outdir,$ENV{PERL6LIB});
         $check_status{$file_name} = (system("perl6", "-c", $file_name) == 0);
     }
 
@@ -176,18 +182,21 @@ java2perl6 - a Java to Perl 6 API translator
 
  java2perl6 [options] class_file
 
-where options are:
+where the most frequently used options are:
 
+ --nest or -n      place output files in nested directories
+ --outdir or -d    top level directory for output
+ --check           check the generated code compiles using perl6
+
+other options
+
+ --help or -h      this message
+ --verbose or -v   sends chatter to the screen
  --jpcmd or -j     a string of command line flags for javap, example:
                    -j '-classpath /some/path'
  --genwith or -g   the name of a Java::Javap::Generator:: module
                    which will make the output, defaults to Std
  --genopts or -p   strings to pass to your -g constructor
- --nest or -n      flag indicates output should go in
-                   nested directories
- --outdir or -d    top level directory for output
- --verbose or -v   sends chatter to the screen
- --help or -h      this message
 
 =head1 DESCRIPTION
 
