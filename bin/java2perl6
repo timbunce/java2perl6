@@ -94,15 +94,7 @@ sub process_java_class {
     );
 
     # include the decompiled java for reference
-    $output .= <<"EOS";
-=begin pod
-
-=head1 Java
-
-$decomp
-
-=end pod
-EOS
+    $output .= "=begin pod\n\n=head1 Java\n\n$decomp\n\n=end pod\n";
 
     my $file_name;
     if ( $outdir eq 'STDOUT' ) {
