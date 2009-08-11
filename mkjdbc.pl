@@ -37,6 +37,6 @@ system qq{rm -rf $outdir.prev; mv -f $outdir $outdir.prev};
 
 system qq{time perl -Mblib blib/script/java2perl6 --outdir $outdir --recurse --nest --check @ARGV `cat jdbc_classes.txt`};
 
-system qq{diff -r -u $outdir.prev $outdir} || warn "Output differs\n"
+system qq{diff -r --exclude=*.pir -u $outdir.prev $outdir} || warn "Output differs\n"
     if -d "$outdir.prev";
 

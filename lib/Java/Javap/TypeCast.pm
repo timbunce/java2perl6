@@ -17,6 +17,7 @@ my $type_casts = {
     'java.lang.Class'       => 'Any',
     'java.lang.CharSequence'=> 'Str',
     'java.lang.Appendable'  => 'Object',
+    'java.lang.Exception'   => 'Object', # XXX Failure?
 
     'java.math.BigInteger'  => 'Int',
     'java.math.BigNumber'   => 'Num',
