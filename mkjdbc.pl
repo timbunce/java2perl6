@@ -4,7 +4,7 @@
 
 use strict;
 use warnings;
-use autodie;
+use autodie qw(:all);
 use Cwd qw(getcwd);
 
 my $outdir = 'jdbclib';
@@ -15,7 +15,7 @@ system qq{make};
 
 system qq{rm -rf $outdir.prev; mv -f $outdir $outdir.prev};
 
-system qq{perl -Mblib blib/script/java2perl6 --outdir $outdir --recurse --nest --check `cat jdbc_classes.txt`};
+system qq{time perl -Mblib blib/script/java2perl6 --outdir $outdir --recurse --nest --check @ARGV `cat jdbc_classes.txt`};
 
 system qq{diff -r -u $outdir.prev $outdir} if -d "$outdir.prev";
 
