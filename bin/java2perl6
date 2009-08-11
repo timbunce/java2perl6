@@ -128,7 +128,9 @@ sub process_java_class {
     if ($opt_check && $file_name) {
         warn "$pad$kind $class: checking $file_name\n";
         (my $pirfile = $file_name) =~ s/\.pm$/.pir/;
-        my @perl6cmd = ("perl6", "-c", "--target=PIR", "--output=$pirfile", $file_name);
+        # we're effectively doing perl6 -c here but we don't use -c
+        # because it's noisy and we know we're only compiling modules
+        my @perl6cmd = ("perl6", "--target=PIR", "--output=$pirfile", $file_name);
         local $ENV{PERL6LIB} = join(":",grep { $_ } $outdir,$ENV{PERL6LIB});
         $check_status{$file_name} = (system(@perl6cmd) == 0);
     }

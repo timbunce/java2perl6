@@ -19,7 +19,8 @@ my $type_casts = {
     'java.lang.Appendable'  => 'Object',
 
     'java.math.BigInteger'  => 'Int',
-    'java.math.BigNumber'   => 'Int',
+    'java.math.BigNumber'   => 'Num',
+    'java.math.BigDecimal'  => 'Rat',
 
     'java.net.URI'          => 'Str',
     'java.net.URL'          => 'Str',
