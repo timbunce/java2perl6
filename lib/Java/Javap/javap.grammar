@@ -6,7 +6,7 @@
     my $constructors;
 }
 
-comp_unit : comp_stmt
+comp_unit : comp_stmt(?)
             comp_unit_decl '{' body '}' {
     my $retval = $item{ comp_unit_decl };
     $retval->{ compiled_from } = "$item{ comp_stmt }.java";
