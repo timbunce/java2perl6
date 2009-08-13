@@ -281,6 +281,11 @@ an alternate top level directory in which to place output.  It may
 be relative to the current directory or absolute.  Remember that the
 invoking user will need write permission on the directory.
 
+=item --check or -c
+
+Check the validity of the generated Perl 6 code by running it through
+the C<perl6> binary.  Note C<perl6> must be in the PATH.
+
 =item --nest or -n
 
 By default all output is generated at the top level of the C<--outdir>.
