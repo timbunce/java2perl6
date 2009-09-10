@@ -7,8 +7,8 @@ use Test::More;
 use Java::Javap::Grammar;
 use Java::Javap::Generator;
 
-`javap`;
-plan skip_all => 'javap from Java SDK required' if $!;
+system('javap');
+plan skip_all => "javap from Java SDK required: $!" if $!;
 plan tests    => 3;
 
 #--------------------------------------------------------------------

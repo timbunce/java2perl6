@@ -8,20 +8,21 @@ use Java::Javap;
 use Java::Javap::Grammar;
 use Java::Javap::Generator;
 
-`javap`;
-plan skip_all => 'javap from Java SDK required' if $!;
+system('javap');
+plan skip_all => "javap from Java SDK required: $!" if $!;
 plan tests    => 3;
 
 #--------------------------------------------------------------------
 # Grammar
 #--------------------------------------------------------------------
 
-
 my $parser = Java::Javap::Grammar->new();
 my $decomp = `javap -classpath testjavas com.example.NestedIntTest`;
+#diag("decomp=$decomp");
 
 my $tree   = $parser->comp_unit( $decomp );
 #diag("tree=", Dumper($tree));
+
 my $expected_tree = {
           'compiled_from' => 'NestedIntTest.java',
           'parent' => undef,

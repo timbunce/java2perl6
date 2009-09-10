@@ -6,8 +6,8 @@ use lib 'lib';
 use Test::More;
 use File::Spec;
 
-`javap`;
-plan skip_all => 'javap from Java SDK required' if $!;
+system('javap');
+plan skip_all => "javap from Java SDK required: $!" if $!;
 plan tests    => 5;
 
 my $perl       = $^X;
