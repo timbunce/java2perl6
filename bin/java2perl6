@@ -31,11 +31,17 @@ GetOptions(
     'outdir|d=s'  => \$outdir,
     'recurse|r!'  => \$recurse,
     'check|c!'    => \my $opt_check,
+	'quiet|q!'    => \my $quiet,
     'trace|t=i'   => \(my $opt_trace = 1),
     'help|h!'     => \&help,
 ) or exit 1;
 
 my @classes = @ARGV or die "usage: $0 [options] class [ class ... ]\nUse $0 --help for help\n";
+
+# --quiet overrides trace level option
+if ($quiet) {
+	$opt_trace = 0;
+}
 
 $::RD_WARN  = 1;
 $::RD_TRACE = 1 if $opt_trace >= 9;
@@ -62,10 +68,10 @@ if (%check_status) {
     my $passed = 0;
     for my $file_name (sort keys %check_status) {
         my $ok = $check_status{$file_name};
-        printf "%6s: %s\n", ($ok ? "ok" : "FAILED"), $file_name;
+		printf "%6s: %s\n", ($ok ? "ok" : "FAILED"), $file_name;
         ++$passed if $ok;
     }
-    printf "%d ok, %d failed.\n", $passed, keys(%check_status)-$passed;
+	printf "%d ok, %d failed.\n", $passed, keys(%check_status)-$passed;
 }
 
 if ($opt_trace >= 2) {
@@ -172,6 +178,11 @@ where options are:
     --genopts or -p   strings to pass to your -g constructor
     --nest or -n      flag indicates output should go in nested directories
     --outdir or -d    top level directory for output
+	--quiet or -q     silences any output. Overrides --trace
+	--trace or -t     defines the trace level (integer value), where:
+	                  0 means silence, no trace,
+					  1 is minimum trace messages,
+	                  >= 9 for full trace
     --help or -h      this message
 EO_Help
     exit;
@@ -195,12 +206,16 @@ where the most frequently used options are:
 other options
 
  --help or -h      this message
- --verbose or -v   sends chatter to the screen
  --jpcmd or -j     a string of command line flags for javap, example:
                    -j '-classpath /some/path'
  --genwith or -g   the name of a Java::Javap::Generator:: module
                    which will make the output, defaults to Std
  --genopts or -p   strings to pass to your -g constructor
+ --quiet or -q     silences any output. Overrides --trace
+ --trace or -t     defines the trace level (integer value), where:
+                   0 means silence, no trace,
+                   1 is minimum trace messages,
+                   >= 9 for full trace
 
 =head1 DESCRIPTION
 
@@ -294,10 +309,17 @@ of the Java package.  Thus, since com.example.Module will be called
 com::example::Module, you probably want to use this flag so the output
 will go into the com/example subdirectory of the output directory.
 
-=item --verbose or -v
+=item --quiet or -q
 
-Turn this on to get chatter about what the script is doing.  Currently it
-is a boolean flag.
+Turn this on to silence any output about what the script is doing. Currently it
+is a boolean flag and overrides any trace level specified. See --trace
+option.
+
+=item --trace or -t
+
+Integer value. Assign zero to it (--trace=0) to silence all messages from
+the script. 1 is the minimum trace level. An integer >= 9 will emit full
+trace messages.
 
 =back
 
