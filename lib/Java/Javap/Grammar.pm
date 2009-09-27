@@ -6,6 +6,7 @@ use Parse::RecDescent;
 
 package Parse::RecDescent::Java::Javap::Grammar;
 use strict;
+use Carp ();
 use vars qw($skip $AUTOLOAD  );
 $skip = '\s*';
 
@@ -3132,9 +3133,16 @@ sub Parse::RecDescent::Java::Javap::Grammar::comp_unit
 					  q{comp_unit},
 					  $tracelevel)
 						if defined $::RD_TRACE;
-		$item{q{comp_stmt(?)}} = $_tok;
+
+		# Not sure why this was failing, but it appears to be matching only arrays
+		#$item{q{comp_stmt(?)}} = $_tok;
+
+		# Assert comp_stmt result is array
+		if (ref $_tok ne 'ARRAY') {
+			Carp::croak "comp_stmt should match an array?";
+		}
+		$item{q{comp_stmt}} = $_tok->[0];
 		push @item, $_tok;
-		
 
 
 		Parse::RecDescent::_trace(q{Trying subrule: [comp_unit_decl]},
