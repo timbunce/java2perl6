@@ -9,7 +9,9 @@
 comp_unit : comp_stmt(?)
             comp_unit_decl '{' body '}' {
     my $retval = $item{ comp_unit_decl };
-    $retval->{ compiled_from } = "$item{ comp_stmt }.java";
+    # Match of subrule X(?) always generates an array
+    my $comp_stmt = $item{ q{comp_stmt(?)} }->[0];
+    $retval->{ compiled_from } = "${comp_stmt}.java";
     $retval->{ contents      } = $item{ body };
     $retval->{ methods       } = \%methods;
     $retval->{ constructors  } = $constructors;
