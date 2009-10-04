@@ -1,7 +1,11 @@
 package Java::Javap;
-use strict; use warnings;
 
-our $VERSION = '0.04';
+use strict;
+use warnings;
+use Carp;
+
+our $VERSION = '0.05';
+our $JAVAP_EXECUTABLE = 'javap';
 
 use Java::Javap::TypeCast;
 
@@ -9,7 +13,7 @@ sub get_included_types {
     shift; # invoked through this class, discard our name
     my $tree     = shift;
     my $caster   = shift;
-    
+   
     my %answers;
 
     # first, get parent type
@@ -40,7 +44,42 @@ sub get_included_types {
     return [ keys %answers ];
 }
 
-# returns true if type casts to a builtin perl6 type
+sub invoke_javap {
+	my ($self, $classes, $options) = @_;
+
+	if (! $classes) {
+		croak "No classes to be parsed";
+	}
+
+	if (! ref $classes) {
+		$classes = [ $classes ];
+	}
+
+	$options ||= {};
+
+	open(my $javap_fh, '-|', $JAVAP_EXECUTABLE, %$options, @$classes)
+		or croak "Couldn't open $JAVAP_EXECUTABLE subprocess: $!";
+
+	my $javap_output = q{};
+	while (<$javap_fh>) {
+		$javap_output .= $_;
+	}
+	close $javap_fh;
+
+	return $javap_output;
+}
+
+*javap = *invoke_javap;
+
+# Shortcut for the test suite
+sub javap_test {
+	my ($self) = @_;
+	my $output;
+	eval { $output = $self->invoke_javap(['java.lang.String']) };
+	return $output ? 1 : 0;
+}
+
+# Returns true if type casts to a builtin perl6 type
 sub _skip_it {
     my $type_name    = shift;
     my $caster  = shift;
@@ -90,16 +129,57 @@ an a C<Java::Javap::Grammar> object.
 Returns: an array reference of the types in arguments to methods, or
 return values (thrown types are not reported).
 
+=head2 invoke_javap
+
+=head2 javap
+
+Invokes the C<javap> process and return the output.
+Throws an exception if something goes wrong, like C<javap> is
+not found.
+
+=head3 Parameters
+
+=over
+
+=item \@classes
+
+List of classes to be decompiled. It can also be supplied as a string,
+if a single class should be decompiled.
+
+=item \%options
+
+Options to be passed to the C<javap> process.
+
+=back
+
+=head3 Example
+
+    my @classes = ('java.lang.String');
+    my %options = ();
+    my $output = Java::Javap->javap(\@classes, \%options);
+
+	# or ...
+
+    my $output = Java::Javap->javap('java.lang.String');
+
 =head1 SEE ALSO
 
-C<java2perl6>
-C<Java::Javap::Generator>
-C<Java::Javap::Generator::Std>
-C<javap.grammar>
+=over
 
-=head1 AUTHOR
+=item C<java2perl6>
+
+=item C<Java::Javap::Generator>
+
+=item C<Java::Javap::Generator::Std>
+
+=item C<javap.grammar>
+
+=back
+
+=head1 AUTHORS
 
 Philip Crow, E<lt>crow.phil@gmail.comE<gt>
+Cosimo Streppone, E<lt>cosimo@cpan.orgE<gt>
 
 =head1 COPYRIGHT AND LICENSE
 

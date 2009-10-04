@@ -8,8 +8,9 @@ use Java::Javap;
 use Java::Javap::Grammar;
 use Java::Javap::Generator;
 
-system('javap');
-plan skip_all => "javap from Java SDK required: $!" if $!;
+plan skip_all => "javap from Java SDK required: $!"
+	unless Java::Javap->javap_test();
+
 plan tests    => 3;
 
 #--------------------------------------------------------------------
@@ -17,7 +18,7 @@ plan tests    => 3;
 #--------------------------------------------------------------------
 
 my $parser = Java::Javap::Grammar->new();
-my $decomp = `javap -classpath testjavas com.example.NestedIntTest`;
+my $decomp = Java::Javap->javap('com.example.NestedIntTest', {-classpath => 'testjavas'});
 #diag("decomp=$decomp");
 
 my $tree   = $parser->comp_unit( $decomp );

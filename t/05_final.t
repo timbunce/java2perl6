@@ -4,11 +4,13 @@ use warnings;
 use lib 'lib';
 
 use Test::More;
-use Java::Javap::Grammar;
+use Java::Javap;
 use Java::Javap::Generator;
+use Java::Javap::Grammar;
 
-system('javap');
-plan skip_all => "javap from Java SDK required: $!" if $!;
+plan skip_all => "javap from Java SDK required: $!"
+	unless Java::Javap->javap_test();
+
 plan tests    => 1;
 
 #--------------------------------------------------------------------
@@ -16,7 +18,7 @@ plan tests    => 1;
 #--------------------------------------------------------------------
 
 my $parser = Java::Javap::Grammar->new();
-my $decomp = `javap -classpath testjavas FinalClassTest`;
+my $decomp = Java::Javap->javap('FinalClassTest', {-classpath => 'testjavas'});
 
 my $tree   = $parser->comp_unit( $decomp );
 
