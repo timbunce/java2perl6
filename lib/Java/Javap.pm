@@ -58,7 +58,7 @@ sub invoke_javap {
 	$options ||= {};
 
 	open(my $javap_fh, '-|', $JAVAP_EXECUTABLE, %$options, @$classes)
-		or croak "Couldn't open $JAVAP_EXECUTABLE subprocess: $!";
+		or croak "'$JAVAP_EXECUTABLE @{[ %$options ]} @$classes' failed: $!";
 
 	my $javap_output = q{};
 	while (<$javap_fh>) {
