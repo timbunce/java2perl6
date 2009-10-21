@@ -178,7 +178,9 @@ sub _get_modules {
     my $self = shift;
     my $ast  = shift;
     my $type_caster = shift;
-    
+
+    my $trace_level = defined $self->{trace_level} ? $self->{trace_level} : 0;
+
     my %perl_types;
     if (defined $ast->{parent}) {
         my $target = $type_caster->cast($ast->{parent});
@@ -198,7 +200,7 @@ sub _get_modules {
         }       
     }
     warn "$ast->{perl_qualified_name} references types: @{[ keys %perl_types ]}\n"
-        if $self->{trace_level} >= 3;
+        if $trace_level >= 3;
 
     for my $perl_type (keys %perl_types) {
  
@@ -216,7 +218,7 @@ sub _get_modules {
             ;
     }
     warn "$ast->{perl_qualified_name} needs to load: @{[ keys %perl_types ]}\n"
-        if $self->{trace_level} >= 3;
+        if $trace_level >= 3;
 
     return (sort keys %perl_types);
 }
