@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use Carp;
 
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 our $JAVAP_EXECUTABLE = 'javap';
 
 use Java::Javap::TypeCast;
@@ -57,14 +57,19 @@ sub invoke_javap {
 
 	$options ||= {};
 
+	# Open the real javap executable and read output from it
 	open(my $javap_fh, '-|', $JAVAP_EXECUTABLE, %$options, @$classes)
 		or croak "'$JAVAP_EXECUTABLE @{[ %$options ]} @$classes' failed: $!";
 
 	my $javap_output = q{};
+
 	while (<$javap_fh>) {
 		$javap_output .= $_;
 	}
-	close $javap_fh;
+
+	# When dealing with a pipe, we also want to get errors from close
+	close $javap_fh
+		or croak "'$JAVAP_EXECUTABLE @{[ %$options ]} @$classes' failed: $!";
 
 	return $javap_output;
 }
