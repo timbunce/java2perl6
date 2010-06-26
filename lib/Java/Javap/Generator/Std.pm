@@ -69,6 +69,8 @@ my @perl_builtin_mutable = qw(
     Match    
     Stash
     SoftRoutine
+
+    DateTime
 );
 my $perl_builtin_types = { map { $_=>1 } (
         @perl_builtin_undefined,
