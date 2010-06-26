@@ -11,19 +11,19 @@ my $type_casts = {
     float              => 'Num',
     double             => 'Num',
     boolean            => 'Bool',
-    'java.lang.Object'      => 'Object',
+    'java.lang.Object'      => 'Mu',
     'java.lang.String'      => 'Str',
     'java.lang.Number'      => 'Num',
     'java.lang.Class'       => 'Any',
     'java.lang.CharSequence'=> 'Str',
-    'java.lang.Appendable'  => 'Object',
-    'java.lang.Exception'   => 'Object', # XXX Failure?
+    'java.lang.Appendable'  => 'Mu',
+    'java.lang.Exception'   => 'Mu', # XXX Failure?
 
     'java.math.BigInteger'  => 'Int',
     'java.math.BigNumber'   => 'Num',
     'java.math.BigDecimal'  => 'Num', # XXX should be Rat when available
 
-    'java.util.Map'         => 'Mapping',
+    'java.util.Map'         => 'KeyHash',
 
     'java.net.URI'          => 'Str',
     'java.net.URL'          => 'Str',
@@ -35,11 +35,11 @@ my $type_casts = {
 
     # XXX hacks
     # java.security.Permission has recursive dependency with java.security.PermissionCollection
-    'java.security.Permission'      => 'Object',
-    'java.security.BasicPermission' => 'Object',
-    'java.sql.Array' => 'Object', # recursive-use with java::sql::ResultSet
-    'java.sql.SQLOutput' => 'Object',
-    'java.sql.SQLInput'  => 'Object',
+    'java.security.Permission'      => 'Mu',
+    'java.security.BasicPermission' => 'Mu',
+    'java.sql.Array' => 'Mu', # recursive-use with java::sql::ResultSet
+    'java.sql.SQLOutput' => 'Mu',
+    'java.sql.SQLInput'  => 'Mu',
 };
 
 sub set_type_casts {

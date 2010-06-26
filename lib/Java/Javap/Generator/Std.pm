@@ -9,33 +9,56 @@ use Java::Javap::TypeCast;
 
 # XXX having this info here is suboptimal
 # should at least be integrated with TypeCaster
+# http://perlcabal.org/syn/S02.html#Undefined_types
+my @perl_builtin_undefined = qw(
+    Mu
+    Failure
+    Any
+    Cool
+);
 # http://perlcabal.org/syn/S02.html#Immutable_types
 my @perl_builtin_immutable = qw(
+    Str
     Bit        
     Int       
-    Str       
     Num       
     Rat       
+    FatRat
     Complex   
-    Bool      
+    Bool
+
     Exception 
     Block     
-    List      
     Seq      
     Range   
+
     Set     
     Bag     
+    Enum
+    EnumMap
     Signature
+    Parcel
+    Slicel
     Capture
     Blob      
     Instant   
     Duration  
+    HardRoutine
 );
 # http://perlcabal.org/syn/S02.html#Mutable_types
 my @perl_builtin_mutable = qw(
-    Scalar Array Hash KeyHash KeySet KeyBag Pair
-    Mapping   
-    Buf      
+    Iterator
+    SeqIter
+    RangeIter
+    Scalar
+    Array
+    Hash
+    KeySet
+    KeyBag
+    KeyHash
+    Pair
+    PairSeq
+    Buf
     IO       
     Routine  
     Sub      
@@ -44,15 +67,14 @@ my @perl_builtin_mutable = qw(
     Macro    
     Regex    
     Match    
-    Package  
-    Module   
-    Class    
-    Role     
-    Grammar  
-    Any      
-    Object   
+    Stash
+    SoftRoutine
 );
-my $perl_builtin_types = { map { $_=>1 } (@perl_builtin_immutable, @perl_builtin_mutable) };
+my $perl_builtin_types = { map { $_=>1 } (
+        @perl_builtin_undefined,
+        @perl_builtin_immutable,
+        @perl_builtin_mutable
+    ) };
 
 sub new {
     my $class = shift;
@@ -124,7 +146,7 @@ sub _cast_names {
     my $class_parent = defined $ast->{parent} ? $type_caster->cast($ast->{parent}) : '';
     $ast->{cast_parent} = ($class_parent eq 'Object') ? '' : $class_parent;
     foreach my $element (@{$ast->{contents}}) {
-        #$element->{name} =~ s/\$/_/g	if defined $element->{name};
+        #$element->{name} =~ s/\$/_/g if defined $element->{name};
             next unless $element->{body_element} eq 'method';
             
             foreach my $arg (@{$element->{args}}) {
@@ -149,7 +171,7 @@ sub _get_unique_methods {
     #print STDERR "methods: ", Dumper(@methods);
     my %meth;
     foreach my $element (@methods) {
-            #$element->{name} =~ s/\$/_/g	if defined $element->{name};
+            #$element->{name} =~ s/\$/_/g if defined $element->{name};
 
             $element->{signature} = "$element->{name} ";
 
@@ -295,6 +317,8 @@ EO_Class_Template
 
 1;
 
+__END__
+
 =head1 NAME
 
 Java::Javap::Generator::Std - uses TT to spit out Perl 6
@@ -414,3 +438,4 @@ it under the same terms as Perl itself, either Perl version 5.8.6 or,
 at your option, any later version of Perl 5 you may have available.
 
 =cut
+vim: ts=8:sw=4:et
