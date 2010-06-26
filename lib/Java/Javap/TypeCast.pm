@@ -23,7 +23,15 @@ my $type_casts = {
     'java.math.BigNumber'   => 'Num',
     'java.math.BigDecimal'  => 'Num', # XXX should be Rat when available
 
-    'java.util.Map'         => 'KeyHash',
+    'java.util.Map'         => 'Hash', # KeyHash?
+    'java.util.Hashtable'   => 'Hash', # KeyHash?
+    'java.util.Properties'  => 'Hash', # persistent Hashtable
+    'java.util.Set'         => 'Set',
+    'java.util.Collection'  => 'Bag',
+    'java.util.Calendar'    => 'DateTime',
+    'java.util.Date'        => 'DateTime',
+    'java.util.Time'        => 'DateTime',
+    'java.util.TimeStamp'   => 'DateTime',
 
     'java.net.URI'          => 'Str',
     'java.net.URL'          => 'Str',
