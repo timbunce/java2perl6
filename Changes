@@ -5,6 +5,7 @@ Revision history for Perl extension Java::Javap.
       middle production which was not needed.
     - Added mkjdbc.pl script that runs java2perl6 on the JDBC classes
       and then runs perl6 on each to validate them.
+    - Repository moved to http://github.com/timbunce/java2perl6
 
 0.04 Wed Jul 25 16:47:30 CDT 2007
     - Improved the grammar so java.net.URL can be recursively parsed without
