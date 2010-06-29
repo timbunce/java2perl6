@@ -11,6 +11,8 @@ WriteMakefile(
     NAME              => 'Java::Javap',
     VERSION_FROM      => 'lib/Java/Javap.pm', # finds $VERSION
     PREREQ_PM         => {
+        'Test::Most' => '0',
+        'Test::Differences' => '0',
         Template => '2.0',
         Parse::RecDescent => '1.0',
     }, # e.g., Module::Name => 1.1

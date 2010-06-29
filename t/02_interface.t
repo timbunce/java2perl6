@@ -3,7 +3,7 @@ use warnings;
 
 use lib 'lib';
 
-use Test::More;
+use Test::Most;
 use Java::Javap;
 use Java::Javap::Grammar;
 use Java::Javap::Generator;
@@ -233,4 +233,4 @@ role com::example::NestedIntTest {
 };
 EO_Correct_Perl_6
 
-is_deeply( \@perl_6, \@correct_perl_6, 'emission' );
+eq_or_diff( \@perl_6, \@correct_perl_6, 'emission' );
