@@ -15,6 +15,8 @@ my $nest;
 my $outdir    = '.';
 my $recurse;
 
+my %java_class_info;
+
 #use Parse::RecDescent; $::RD_TRACE = 1;
 
 # not yet done:
@@ -59,9 +61,43 @@ my %check_status;
 my %top_types;
 foreach my $class ( @classes  ) {
     eval {
-        my $types = process_java_class( $class, $recurse ) || [];
+        my $types = load_java_class_info( $class, $recurse ) || [];
         $top_types{$_}++ for @$types;
     };
+}
+
+for my $class (sort keys %java_class_info) {
+    my $info = $java_class_info{$class};
+
+    my $file_name = generate_output_file( {
+        class_file  => $class,
+        ast         => $info->{tree},
+        javap_flags => $jpcmd,
+        # include the decompiled java for reference
+        epilogue => "=begin pod\n\n=head1 Java\n\n$info->{decomp}\n\n=end pod\n",
+    });
+    $info->{output_filename} = $file_name;
+    warn "$info->{kind} $class: $file_name\n" if $opt_trace && $file_name;
+}
+
+for my $class (sort keys %java_class_info) {
+    next unless $opt_check;
+
+    my $info = $java_class_info{$class};
+    my $file_name = $info->{output_filename}
+        or next;
+
+    warn "$info->{kind} $class: checking $file_name\n";
+    warn "\t uses @{ $info->{ref_class_names} }\n"
+        if $opt_trace && @{ $info->{ref_class_names} };
+
+    (my $pirfile = $file_name) =~ s/\.pm$/.pir/;
+    # we're effectively doing perl6 -c here but we don't use -c
+    # because it's noisy and we know we're only compiling modules
+    my @perl6cmd = ("perl6", "--target=PIR", "--output=$pirfile", $file_name);
+    local $ENV{PERL6LIB} = join(":",grep { $_ } $outdir,$ENV{PERL6LIB});
+    warn "\t @perl6cmd\n" if $opt_trace;
+    $check_status{$file_name} = (system(@perl6cmd) == 0);
 }
 
 if (%check_status) {
@@ -82,11 +118,13 @@ if ($opt_trace >= 2) {
 exit 0;
 
 
-sub process_java_class {
+sub load_java_class_info {
     my ($class, $recurse) = @_;
     my $pad = $recurse ? (". " x ($recurse-1)) : "";
 
-    return undef if our $process_java_class_tried->{$class}++;
+    return undef if $java_class_info{$class};
+
+    warn "$pad$class: loading\n";
 
     my $cmd = "javap $jpcmd $class";
     warn "$cmd\n" if $opt_trace >= 3;
@@ -94,55 +132,52 @@ sub process_java_class {
     warn $decomp if $opt_trace >= 3;
     my $tree   = $parser->comp_unit( $decomp )
         or die "Error parsing output of '$cmd'\n";
-    my $kind = $tree->{class_or_interface};
-
-    my $output = $jenny->generate(
-        {
-            class_file  => $class,
-            ast         => $tree,
-            javap_flags => $jpcmd,
-        }
-    );
-
-    # include the decompiled java for reference
-    $output .= "=begin pod\n\n=head1 Java\n\n$decomp\n\n=end pod\n";
-
-    my $file_name;
-    if ( $outdir eq 'STDOUT' ) {
-        print $output;
-    }
-    else { # put it in a directory
-
-        $file_name = output_filename_for_class($class, 1);
-
-        open my $API_MODULE, '>', $file_name
-            or die "Couldn't write to $file_name: $!\n";
-        print $API_MODULE $output;
-        close $API_MODULE or die "Error writing $file_name: $!\n";
-        warn "$pad$kind $class: $file_name\n" if $opt_trace;
-    }
 
     # tell them which types we saw
     my $referenced_classes = Java::Javap->get_included_types( $tree, $caster );
 
+    $java_class_info{$class} = {
+        decomp => $decomp,
+        tree => $tree,
+        ref_class_names => $referenced_classes,
+        first_seen_at_depth => $recurse,
+        kind => $tree->{class_or_interface},
+    };
+
     if ($recurse) {
         for my $ref_class (sort @$referenced_classes) {
-            process_java_class( $ref_class, $recurse+1 );
+            load_java_class_info( $ref_class, $recurse+1 );
         }
-    }
-
-    if ($opt_check && $file_name) {
-        warn "$pad$kind $class: checking $file_name\n";
-        (my $pirfile = $file_name) =~ s/\.pm$/.pir/;
-        # we're effectively doing perl6 -c here but we don't use -c
-        # because it's noisy and we know we're only compiling modules
-        my @perl6cmd = ("perl6", "--target=PIR", "--output=$pirfile", $file_name);
-        local $ENV{PERL6LIB} = join(":",grep { $_ } $outdir,$ENV{PERL6LIB});
-        $check_status{$file_name} = (system(@perl6cmd) == 0);
     }
 
     return $referenced_classes;
 }
+
+
+
+sub generate_output_file {
+    my $params      = shift;
+    my $epilogue = delete $params->{epilogue};
+
+    my $output = $jenny->generate( $params );
+        
+    $output .= $epilogue if $epilogue;
+
+    my $file_name;
+    if ( $outdir eq 'STDOUT' ) {
+        print $output; 
+    }   
+    else { # put it in a directory
+        my $class = $params->{class_file};
+        $file_name = output_filename_for_class($class, 1);
+        open my $API_MODULE, '>', $file_name
+            or die "Couldn't write to $file_name: $!\n";
+        print $API_MODULE $output;
+        close $API_MODULE or die "Error writing $file_name: $!\n";
+    }
+    
+    return $file_name;
+}       
 
 
 sub output_filename_for_class {
