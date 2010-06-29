@@ -124,7 +124,7 @@ sub load_java_class_info {
 
     return undef if $java_class_info{$class};
 
-    warn "$pad$class: loading\n";
+    warn "$pad$class: loading\n" if $opt_trace;
 
     my $cmd = "javap $jpcmd $class";
     warn "$cmd\n" if $opt_trace >= 3;
