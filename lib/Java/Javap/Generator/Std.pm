@@ -146,7 +146,7 @@ sub _cast_names {
     
     my $type_caster = $self->{type_caster};
     my $class_parent = defined $ast->{parent} ? $type_caster->cast($ast->{parent}) : '';
-    $ast->{cast_parent} = ($class_parent eq 'Object') ? '' : $class_parent;
+    $ast->{cast_parent} = ($class_parent eq 'Mu') ? '' : $class_parent;
     foreach my $element (@{$ast->{contents}}) {
         #$element->{name} =~ s/\$/_/g if defined $element->{name};
             next unless $element->{body_element} eq 'method';
