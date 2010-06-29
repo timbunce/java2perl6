@@ -36,7 +36,8 @@ sub get_included_types {
             my $type_name = $item->{ name };
             next if _skip_it( $type_name, $caster );
 
-            $answers{ $type_name }++;
+            $answers{ $type_name }++
+                unless $type_name eq $tree->{java_qualified_name};
             #warn "Noted $element->{name} type $type_name\n";
         }
     }
