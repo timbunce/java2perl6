@@ -121,7 +121,7 @@ sub generate {
     
     my $template    = $self->_get_template( $ast );
 
-    my @modules     = $self->_get_modules($ast, $type_caster);
+    my @prologue    = $self->_get_prologue($ast, $type_caster);
     
     my $tt = Template->new( $self->tt_args );
     my $tt_vars = {
@@ -131,7 +131,7 @@ sub generate {
         class_file => $class_file,
         type_caster=> $type_caster,
         javap_flags=> $params->{javap_flags},
-        modules    => \@modules,
+        prologue   => \@prologue,
     };
     my $retval;
     $tt->process( \$template, $tt_vars, \$retval )
@@ -198,7 +198,7 @@ sub _get_type_casts {
   # XXX TODO    
 }
 
-sub _get_modules {
+sub _get_prologue {
     my $self = shift;
     my $ast  = shift;
     my $type_caster = shift;
@@ -244,7 +244,7 @@ sub _get_modules {
     warn "$ast->{perl_qualified_name} needs to load: @{[ keys %perl_types ]}\n"
         if $trace_level >= 3;
 
-    return (sort keys %perl_types);
+    return map { "use $_;" } sort keys %perl_types;
 }
 
 
@@ -265,8 +265,8 @@ sub _get_template_for_interface {
 # [% class_file %] using command line flags:
 #   [% javap_flags +%]
 
-[% FOREACH package IN modules %]
-use [% package -%];
+[% FOREACH prologue_item IN prologue %]
+[% prologue_item +%]
 [% END %]
 
 role [% ast.perl_qualified_name %] {
@@ -295,8 +295,8 @@ sub _get_template_for_class {
 # [% class_file %] using command line flags:
 #   [% javap_flags +%]
 
-[% FOREACH package IN modules %]
-use [% package -%];
+[% FOREACH prologue_item IN prologue %]
+[% prologue_item %]
 [% END %]
 
 class [% ast.perl_qualified_name %] [%- ast.cast_parent == '' ? '' : ' is ' %][% ast.cast_parent -%] {
