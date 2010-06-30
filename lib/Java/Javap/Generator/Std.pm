@@ -244,7 +244,11 @@ sub _get_prologue {
     warn "$ast->{perl_qualified_name} needs to load: @{[ keys %perl_types ]}\n"
         if $trace_level >= 3;
 
-    return map { "use $_;" } sort keys %perl_types;
+    # XXX ideally we'd use the class or role as appropriate but we don't need
+    # to (at least for now) because: essentially  "class Foo { ... }"  simply
+    # declares Foo as a package-ish identifier -- per pmichaud.
+    # So we can get away with this cheat.
+    return map { "class $_ { ... };" } sort keys %perl_types;
 }
 
 
