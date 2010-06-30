@@ -11,6 +11,7 @@ my $type_casts = {
     float              => 'Num',
     double             => 'Num',
     boolean            => 'Bool',
+
     'java.lang.Object'      => 'Mu',
     'java.lang.String'      => 'Str',
     'java.lang.Number'      => 'Num',
@@ -40,14 +41,6 @@ my $type_casts = {
 
     'java.nio.ByteBuffer'   => 'Buf',
     'java.nio.CharBuffer'   => 'Str',
-
-    # XXX hacks
-    # java.security.Permission has recursive dependency with java.security.PermissionCollection
-    'java.security.Permission'      => 'Mu',
-    'java.security.BasicPermission' => 'Mu',
-    'java.sql.Array' => 'Mu', # recursive-use with java::sql::ResultSet
-    'java.sql.SQLOutput' => 'Mu',
-    'java.sql.SQLInput'  => 'Mu',
 };
 
 sub set_type_casts {
