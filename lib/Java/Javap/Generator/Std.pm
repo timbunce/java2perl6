@@ -276,7 +276,7 @@ sub _get_template_for_interface {
 use v6;
 
 [% FOREACH prologue_item IN prologue %]
-[% prologue_item +%]
+[%+ prologue_item +%]
 [% END %]
 
 role [% ast.perl_qualified_name %] {

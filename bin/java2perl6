@@ -77,10 +77,12 @@ for my $class (sort keys %java_class_info) {
     if (my $refs = $info->{referred_to_by_classes}) {
         push @epilogue, "=head1 Referenced By\n";
         push @epilogue, "  $_" for sort @$refs;
+        push @epilogue, "\n(Among the set of classes processed at the same time.)\n";
     }
     if (my @decomp = split /\n/, $info->{decomp}) {
         push @epilogue, "=head1 Java\n";
         push @epilogue, "  $_" for @decomp;
+        push @epilogue, "\n";
     }
     push @epilogue, "=end pod\n";
 
@@ -88,7 +90,7 @@ for my $class (sort keys %java_class_info) {
         class_file  => $class,
         ast         => $info->{tree},
         javap_flags => $jpcmd,
-        epilogue    => join("\n", @epilogue),
+        epilogue    => join("\n", '', @epilogue),
     });
     $info->{output_filename} = $file_name;
     warn "$info->{kind} $class: $file_name\n" if $opt_trace && $file_name;
@@ -106,7 +108,7 @@ for my $class (sort keys %java_class_info) {
         warn "\t uses @{ $info->{refers_to_classes} }\n"
             if @{ $info->{refers_to_classes} };
         warn "\t used by @{ $info->{referred_to_by_classes} }\n"
-            if @{ $info->{referred_to_by_classes} };
+            if @{ $info->{referred_to_by_classes} || [] };
     }
 
     (my $pirfile = $file_name) =~ s/\.pm6$/.pir/;
