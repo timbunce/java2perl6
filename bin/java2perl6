@@ -4,6 +4,7 @@ use warnings;
 
 use Getopt::Long;
 use File::Spec;
+use Data::Dumper;
 
 use Java::Javap;
 use Java::Javap::Grammar;
@@ -68,13 +69,26 @@ foreach my $class ( @classes  ) {
 
 for my $class (sort keys %java_class_info) {
     my $info = $java_class_info{$class};
+    # ignore clases just vivified for referred_to_by_classes
+    next unless $info->{tree};
+
+    # include the decompiled java for reference
+    my @epilogue = ("=begin pod\n");
+    if (my $refs = $info->{referred_to_by_classes}) {
+        push @epilogue, "=head1 Referenced By\n";
+        push @epilogue, "  $_" for sort @$refs;
+    }
+    if (my @decomp = split /\n/, $info->{decomp}) {
+        push @epilogue, "=head1 Java\n";
+        push @epilogue, "  $_" for @decomp;
+    }
+    push @epilogue, "=end pod\n";
 
     my $file_name = generate_output_file( {
         class_file  => $class,
         ast         => $info->{tree},
         javap_flags => $jpcmd,
-        # include the decompiled java for reference
-        epilogue => "=begin pod\n\n=head1 Java\n\n$info->{decomp}\n\n=end pod\n",
+        epilogue    => join("\n", @epilogue),
     });
     $info->{output_filename} = $file_name;
     warn "$info->{kind} $class: $file_name\n" if $opt_trace && $file_name;
@@ -88,8 +102,12 @@ for my $class (sort keys %java_class_info) {
         or next;
 
     warn "$info->{kind} $class: checking $file_name\n";
-    warn "\t uses @{ $info->{ref_class_names} }\n"
-        if $opt_trace && @{ $info->{ref_class_names} };
+    if ($opt_trace) {
+        warn "\t uses @{ $info->{refers_to_classes} }\n"
+            if @{ $info->{refers_to_classes} };
+        warn "\t used by @{ $info->{referred_to_by_classes} }\n"
+            if @{ $info->{referred_to_by_classes} };
+    }
 
     (my $pirfile = $file_name) =~ s/\.pm6$/.pir/;
     # we're effectively doing perl6 -c here but we don't use -c
@@ -122,7 +140,7 @@ sub load_java_class_info {
     my ($class, $recurse) = @_;
     my $pad = $recurse ? (". " x ($recurse-1)) : "";
 
-    return undef if $java_class_info{$class};
+    return undef if $java_class_info{$class}->{decomp};
 
     warn "$pad$class: loading\n" if $opt_trace;
 
@@ -133,16 +151,19 @@ sub load_java_class_info {
     my $tree   = $parser->comp_unit( $decomp )
         or die "Error parsing output of '$cmd'\n";
 
-    # tell them which types we saw
+    # tell them which types are used by this class
     my $referenced_classes = Java::Javap->get_included_types( $tree, $caster );
 
     $java_class_info{$class} = {
+        %{ $java_class_info{$class} || {} },
         decomp => $decomp,
         tree => $tree,
-        ref_class_names => $referenced_classes,
-        first_seen_at_depth => $recurse,
+        refers_to_classes => $referenced_classes,
         kind => $tree->{class_or_interface},
     };
+
+    push @{$java_class_info{$_}->{referred_to_by_classes}}, $class
+        for @$referenced_classes;
 
     if ($recurse) {
         for my $ref_class (sort @$referenced_classes) {
