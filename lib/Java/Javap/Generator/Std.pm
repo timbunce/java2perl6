@@ -269,6 +269,8 @@ sub _get_template_for_interface {
 # [% class_file %] using command line flags:
 #   [% javap_flags +%]
 
+use v6;
+
 [% FOREACH prologue_item IN prologue %]
 [% prologue_item +%]
 [% END %]
@@ -298,6 +300,8 @@ sub _get_template_for_class {
 # by java2perl6 [% version %] from decompliling
 # [% class_file %] using command line flags:
 #   [% javap_flags +%]
+
+use v6;
 
 [% FOREACH prologue_item IN prologue %]
 [% prologue_item %]

@@ -3,7 +3,7 @@ use warnings;
 
 use lib 'lib';
 
-use Test::More;
+use Test::Most;
 use Java::Javap;
 use Java::Javap::Generator;
 use Java::Javap::Grammar;
@@ -159,6 +159,9 @@ $perl_6    =~ s/^\s+//;
 my @perl_6 = split /\n/, $perl_6;
 #diag($perl_6);
 my @correct_perl_6 = split /\n/, <<'EO_Correct_Perl_6';
+use v6;
+
+
 class ClassTest {
     multi method getGreet(
         Int $v1, 
@@ -172,7 +175,7 @@ class ClassTest {
 };
 EO_Correct_Perl_6
 
-is_deeply( \@perl_6, \@correct_perl_6, 'emission' );
+eq_or_diff( \@perl_6, \@correct_perl_6, 'emission' );
 
 #--------------------------------------------------------------------
 # Emission - duplicate method removal
@@ -198,6 +201,9 @@ is_deeply( \@perl_6, \@correct_perl_6, 'emission' );
   my @perl_6 = split /\n/, $perl_6;
 #  diag("got: $perl_6");
   my @correct_perl_6 = split /\n/, <<'EO_Correct_Perl_6_a';
+use v6;
+
+
 class dupMethodTest {
     multi method dupMethod(
         Str @v1, 
@@ -217,5 +223,5 @@ class dupMethodTest {
 };
 EO_Correct_Perl_6_a
 
-  is_deeply( \@perl_6, \@correct_perl_6, 'emission - duplicate method signatures removed' );
+  eq_or_diff( \@perl_6, \@correct_perl_6, 'emission - duplicate method signatures removed' );
 }

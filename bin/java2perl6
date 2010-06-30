@@ -91,7 +91,7 @@ for my $class (sort keys %java_class_info) {
     warn "\t uses @{ $info->{ref_class_names} }\n"
         if $opt_trace && @{ $info->{ref_class_names} };
 
-    (my $pirfile = $file_name) =~ s/\.pm$/.pir/;
+    (my $pirfile = $file_name) =~ s/\.pm6$/.pir/;
     # we're effectively doing perl6 -c here but we don't use -c
     # because it's noisy and we know we're only compiling modules
     my @perl6cmd = ("perl6", "--target=PIR", "--output=$pirfile", $file_name);
@@ -196,7 +196,7 @@ sub output_filename_for_class {
                 or die "Can't mkdir $module_dir: $!\n";
         }
     }
-    return File::Spec->catfile( $module_dir, "$class_name.pm" );
+    return File::Spec->catfile( $module_dir, "$class_name.pm6" );
 }
 
 
