@@ -18,7 +18,7 @@ my $decomp = Java::Javap->javap(
 	{-classpath=>'testjavas'}
 );
 
-diag($decomp);
+note($decomp);
 
 ok($decomp, 'received some output from javap');
 like($decomp, qr{Compiled from}m, 'javap output contains a "Compiled from" statement');
