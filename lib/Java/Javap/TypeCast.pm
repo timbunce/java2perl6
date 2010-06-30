@@ -2,7 +2,11 @@ package Java::Javap::TypeCast;
 
 # http://perlcabal.org/syn/S02.html#Built-In_Data_Types
 
+# XXX these are all quite vague and liable to change XXX
+#
 my $type_casts = {
+    # http://java.sun.com/docs/books/tutorial/java/nutsandbolts/datatypes.html
+    # these may change to perl6's native types at some point
     int                => 'Int',
     long               => 'Int',
     short              => 'Int',
@@ -13,22 +17,25 @@ my $type_casts = {
     boolean            => 'Bool',
 
     'java.lang.Object'      => 'Mu',
+    'java.lang.Class'       => 'Any',
     'java.lang.String'      => 'Str',
     'java.lang.Number'      => 'Num',
-    'java.lang.Class'       => 'Any',
     'java.lang.CharSequence'=> 'Str',
-    'java.lang.Appendable'  => 'Mu',
     'java.lang.Exception'   => 'Mu', # XXX Failure?
 
     'java.math.BigInteger'  => 'Int',
     'java.math.BigNumber'   => 'Num',
     'java.math.BigDecimal'  => 'Num', # XXX should be Rat when available
 
+    # java.util interfaces:
+    'java.util.Collection'  => 'Bag',
+    'java.util.Enumeration' => 'Iterable',
+    'java.util.Iterator'    => 'Any',
     'java.util.Map'         => 'Hash', # KeyHash?
+    'java.util.Set'         => 'Set',
+    # java.util classes:
     'java.util.Hashtable'   => 'Hash', # KeyHash?
     'java.util.Properties'  => 'Hash', # persistent Hashtable
-    'java.util.Set'         => 'Set',
-    'java.util.Collection'  => 'Bag',
     'java.util.Calendar'    => 'DateTime',
     'java.util.Date'        => 'DateTime',
     'java.util.Time'        => 'DateTime',

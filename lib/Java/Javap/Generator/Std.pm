@@ -72,10 +72,14 @@ my @perl_builtin_mutable = qw(
 
     DateTime
 );
+my @perl_builtin_roles = qw(
+    Iterable
+);
 my $perl_builtin_types = { map { $_=>1 } (
         @perl_builtin_undefined,
         @perl_builtin_immutable,
-        @perl_builtin_mutable
+        @perl_builtin_mutable,
+        @perl_builtin_roles,
     ) };
 
 sub new {
