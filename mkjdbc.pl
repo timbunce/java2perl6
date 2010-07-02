@@ -8,7 +8,7 @@ mkjdbc.pl - generate the perl6 translation of the classes related to JDBC
 
     perl mkjdbc.pl
 
-=head
+=head1 DESCRIPTION
 
 This is just a quick hack to exercise java2perl6 with the use case that
 interests us most: JDBC.
