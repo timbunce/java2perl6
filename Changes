@@ -1,6 +1,6 @@
 Revision history for Perl extension Java::Javap.
 
-0.05
+0.05 July 2nd 2010
     - Simplified grammar for arg_lists and similar constructs, removed
       middle production which was not needed.
     - Added mkjdbc.pl script that runs java2perl6 on the JDBC classes

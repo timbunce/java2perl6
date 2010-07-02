@@ -1,10 +1,6 @@
 A quick rough list in no particular order:
 
-Move multi-line strings used for comparison tests out from the test script
-into separate text files. Then if a test fails write the new output to a
-different file (same name, extra extension). That way when the code
-generation is changed the tests can be sync'd just by renaming the new file
-over the old one. (This approach has worked well for the NYTProf tests.)
+Add way to specify extra/overriding type mappings externally.
 
 Improve test coverage.
 
@@ -19,6 +15,8 @@ translation and document the issues/tradeoffs.
 
 Write some tests that run perl6 code that consumes a generated role.
 
-Polish Makefile.PL/META.yml etc. for release.
-
-Add way to specify extra/overriding type mappings externally.
+Move multi-line strings used for comparison tests out from the test script
+into separate text files. Then if a test fails write the new output to a
+different file (same name, extra extension). That way when the code
+generation is changed the tests can be sync'd just by renaming the new file
+over the old one. (This approach has worked well for the NYTProf tests.)
