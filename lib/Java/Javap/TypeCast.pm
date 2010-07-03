@@ -4,7 +4,7 @@ package Java::Javap::TypeCast;
 
 # XXX these are all quite vague and liable to change XXX
 #
-my $type_casts = {
+my $default_type_casts = {
     # http://java.sun.com/docs/books/tutorial/java/nutsandbolts/datatypes.html
     # these may change to perl6's native types at some point
     int                => 'Int',
@@ -51,37 +51,40 @@ my $type_casts = {
 };
 
 sub set_type_casts {
-    my $class   = shift;
-    $type_casts = shift;
+    my ($self, $casts) = @_;
+    $self->{casts} = { %$casts };
+    return;
 }
 
 sub get_type_casts {
-    return $type_casts;
+    my $casts = shift->{casts};
+    return { %$casts };
 }
 
 sub new {
     my $class = shift;
-    return bless {}, $class;
+    my $self = bless { }, $class;
+    $self->set_type_casts($default_type_casts);
+    return $self;
 }
 
 sub cast {
     my $self      = shift;
     my $java_type = shift;
   
-    return $type_casts->{ $java_type } if $type_casts->{ $java_type };
+    my $casts = $self->{casts};
+    return $casts->{ $java_type } if $casts->{ $java_type };
 
-    # special cases
+    # fallback handling of special cases if there's no explicit mapping
     return 'Any' if $java_type =~ m/^sun\.reflect\./;
     return 'Any' if $java_type =~ m/^sun\.lang\.annotation/;
     return 'Any' if $java_type =~ m/^sun\.lang\.reflect/;
     return 'Any' if $java_type =~ m/\$/;
 
-    #print "WARNING: No mapping for '$java_type' default to class 'Any'\n";
-    $java_type    =~ s/\./::/g;
-    $java_type    =~ s/\$/_PRIVATE_/g; # handle '$' in type names
+    (my $perl6_type = $java_type) =~ s/\./::/g;
+    $perl6_type =~ s/\$/_PRIVATE_/g; # handle '$' in type names
 
-    return $java_type;
-    #return 'Any';
+    return $perl6_type;
 }
 
 =head1 NAME
