@@ -41,25 +41,16 @@ my $default_type_casts = {
     'java.util.Time'        => 'DateTime',
     'java.util.TimeStamp'   => 'DateTime',
 
-    'java.net.URI'          => 'Str',
-    'java.net.URL'          => 'Str',
-
     'java.io.InputStream'   => 'IO',
 
     'java.nio.ByteBuffer'   => 'Buf',
     'java.nio.CharBuffer'   => 'Str',
+
+    'sun.reflect.*' => 'Any',
+    'sun.lang.annotation.*' => 'Any',
+    'sun.lang.reflect.*' => 'Any',
 };
 
-sub set_type_casts {
-    my ($self, $casts) = @_;
-    $self->{casts} = { %$casts };
-    return;
-}
-
-sub get_type_casts {
-    my $casts = shift->{casts};
-    return { %$casts };
-}
 
 sub new {
     my $class = shift;
@@ -68,18 +59,50 @@ sub new {
     return $self;
 }
 
+sub set_type_casts {
+    my ($self, $new_casts) = @_;
+    $self->{casts} = { %$new_casts };
+    return;
+}
+
+sub add_type_casts {
+    my ($self, $new_casts) = @_;
+    $self->{casts}{$_} = $new_casts->{$_}
+        for keys %$new_casts;
+    return;
+}
+
+
 sub cast {
     my $self      = shift;
     my $java_type = shift;
   
     my $casts = $self->{casts};
-    return $casts->{ $java_type } if $casts->{ $java_type };
 
-    # fallback handling of special cases if there's no explicit mapping
-    return 'Any' if $java_type =~ m/^sun\.reflect\./;
-    return 'Any' if $java_type =~ m/^sun\.lang\.annotation/;
-    return 'Any' if $java_type =~ m/^sun\.lang\.reflect/;
-    return 'Any' if $java_type =~ m/\$/;
+    my $perl6_type = $casts->{ $java_type };
+
+    if (not defined $perl6_type) {
+        # no specific type cast so look for wildcard ones
+        my @parts = split /\./, $java_type;
+        while (@parts) {
+            $parts[-1] = '*'; # replace last word with *
+            $perl6_type = $casts->{ join '.', @parts };
+            last if defined $perl6_type;
+            pop @parts;
+        }
+    }
+
+    if (not defined $perl6_type) {
+        $perl6_type = $self->fallback_cast($java_type);
+    }
+
+    return $perl6_type;
+}
+
+
+sub fallback_cast {
+    my $self      = shift;
+    my $java_type = shift;
 
     (my $perl6_type = $java_type) =~ s/\./::/g;
     $perl6_type =~ s/\$/_PRIVATE_/g; # handle '$' in type names
@@ -87,74 +110,88 @@ sub cast {
     return $perl6_type;
 }
 
+
 =head1 NAME
 
-Java::Javap::TypeCast - hash mapping common Java types to Perl 6 equivalents
+Java::Javap::TypeCast - map Java types to Perl 6 equivalents
 
 =head1 SYNOPSIS
 
-In a C<Java::Javap::Generator::> module:
-
     use Java::Javap::TypeCast;
 
-    my $type_caster = Java::Javap::TypeCast->new();
+    $type_caster = Java::Javap::TypeCast->new();
 
-    my $perl_type   = $type_caster->cast( $java_type );
-
-To adjust the type cast table:
-
-    my $current_types = $type_caster->get_types();
-
-    $current_types->{ 'com.example.ShouldBeInt' } = 'Int';
-
-To replace the whole table:
-
-    $type_caster->set_types( { ... } );
+    $perl_type   = $type_caster->cast( $java_type );
 
 =head1 DESCRIPTION
 
-This is a convenience module for C<Java::Javap::Generator::> modules.
-They can use it to have a common place to keep conversions of Java
-type to Perl 6 types.  But, generators are under no obligation to use
-this module.
+Provides a mechanism to map java type names (classes and interfaces) into
+corresponding perl type names (typically roles).
 
 =head1 METHODS
 
-=over 4
+=head2 new
 
-=item new
+    $type_caster = Java::Javap::TypeCast->new();
 
-Constructs a type caster.
+Returns a new type caster instance with a default set of type casts.
 
-Parameters: none
+The default set of type mappings should I<not> be relied upon as it's likely to
+change over time with unpredictable results for your application.
 
-Returns: a TypeCaster object.
+=head2 cast
 
-=item cast
+    $perl_type = $type_caster->cast( $java_type );
 
-Parameter: a Java type name
+Returns a perl type for the corresponding java type argument.
 
-Returns: the Perl conversion, if one is in the hash, or the original
-Java type, with dots replaced by double colons, if not.
+Firstly java type is looked up in the type mapping. If a defined value is found
+then it's returned.
 
-=item get_type_casts
+If there's no explicit match for the full type name then cast() checks for
+wildcard matches by removing trailing words and appending a '*'. For example,
+if there's no entry for 'sun.lang.annotation.foo' the cast() would look for
+each of these in turn:
 
-Returns: the current hash (reference).  Note that this is a class attribute,
-so there is only one for all users.
+    sun.lang.annotation.foo
+    sun.lang.annotation.*
+    sun.lang.*
+    sun.*
+    *
 
-=item set_type_casts
+If no match is found then cast() calls fallback_cast().
 
-Parameter: a hash reference to use in all future casts.  Again, note that
-this is a class attribute, so all instaces share it.
+=head2 fallback_cast()
 
-=back
+    $perl_type = $type_caster->cast( $java_type );
+
+Returns a perl type for the corresponding java type argument by editing the
+java type name, without consulting the type mapping.
+ 
+ - dots are changed to double colons
+ - dollar symbols are changed to _PRIVATE_
+
+=head2 set_type_casts
+
+    $self->set_type_casts(\%hash)
+
+Replaces the current set of type casts with the specified set.
+
+=head2 add_type_casts
+
+    $self->add_type_casts(\%hash)
+
+Adds the specified set of type casts to the current set, overriding any that
+have the same names.
 
 =head1 AUTHOR
 
+Tim Bunce, E<lt>tim.bunce@pobox.comE<gt>,
 Phil Crow, E<lt>crow.phil@gmail.comE<gt>
 
 =head1 COPYRIGHT AND LICENSE
 
+Copyright (C) 2010, Tim Bunce
 Copyright (C) 2007, Phil Crow
 
 This library is free software; you can redistribute it and/or modify
