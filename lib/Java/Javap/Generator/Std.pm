@@ -113,11 +113,7 @@ sub generate {
     my $ast         = $params->{ast};
     my $trace_level = defined $params->{trace_level} ? $params->{trace_level} : $self->{trace_level};
         
-    my $type_caster  = Java::Javap::TypeCast->new();
-    if (defined $params->{type_file}) {
-        $type_caster->set_type_casts( $self->_get_type_casts($params->{type_file}) );
-    }
-    $self->{type_caster} = $type_caster;
+    $self->{type_caster} = $params->{type_caster} || Java::Javap::TypeCast->new();
     $self->_cast_names( $ast );
     
     $ast->{method_list} = $self->_get_unique_methods( $ast );
@@ -125,7 +121,7 @@ sub generate {
     
     my $template    = $self->_get_template( $ast );
 
-    my @prologue    = $self->_get_prologue($ast, $type_caster);
+    my @prologue    = $self->_get_prologue( $ast );
     
     my $tt = Template->new( $self->tt_args );
     my $tt_vars = {
@@ -133,7 +129,7 @@ sub generate {
         gen_time   => scalar localtime(),
         version    => $Java::Javap::VERSION,
         class_file => $class_file,
-        type_caster=> $type_caster,
+        type_caster=> $self->{type_caster},
         javap_flags=> $params->{javap_flags},
         prologue   => \@prologue,
     };
@@ -205,8 +201,8 @@ sub _get_type_casts {
 sub _get_prologue {
     my $self = shift;
     my $ast  = shift;
-    my $type_caster = shift;
 
+    my $type_caster = $self->{type_caster};
     my $trace_level = defined $self->{trace_level} ? $self->{trace_level} : 0;
 
     my %perl_types;

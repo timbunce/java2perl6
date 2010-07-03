@@ -86,10 +86,13 @@ for my $class (sort keys %java_class_info) {
     }
     push @epilogue, "=end pod\n";
 
+    my $type_caster = Java::Javap::TypeCast->new();
+
     my $file_name = generate_output_file( {
         class_file  => $class,
         ast         => $info->{tree},
         javap_flags => $jpcmd,
+        type_caster => $type_caster,
         epilogue    => join("\n", '', @epilogue),
     });
     $info->{output_filename} = $file_name;
