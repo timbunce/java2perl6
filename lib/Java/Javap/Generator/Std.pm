@@ -87,7 +87,9 @@ sub new {
 
     my $self = bless { @_ }, $class;
 
-    my $tt_args = { POST_CHOMP => 1 };
+    my $tt_args = {
+        POST_CHOMP => 1,
+    };
     $self->tt_args_set( $tt_args );
     
     return $self;
@@ -256,13 +258,15 @@ sub _get_template {
     my $self = shift;
     my $ast  = shift;
 
-    my $method = "_get_template_for_$ast->{ class_or_interface }";
-
-    return $self->$method( $ast );
+    my $prologue = $self->_get_template_prologue;
+    my $method = "_get_template_for_".$ast->{ class_or_interface };
+    return $prologue . $self->$method( $ast );
 }
 
-sub _get_template_for_interface {
+sub _get_template_prologue {
     return << 'EO_Template';
+
+[% BLOCK file_header %]
 # *** DO NOT EDIT *** CHANGES WILL BE LOST ***
 # This file was automatically generated
 # by java2perl6 [% version %] from decompiling
@@ -271,6 +275,14 @@ sub _get_template_for_interface {
 
 use v6;
 
+[% END %]
+
+EO_Template
+}
+
+sub _get_template_for_interface {
+    return << 'EO_Template';
+[% PROCESS file_header %]
 [% FOREACH prologue_item IN prologue %]
 [%+ prologue_item +%]
 [% END %]
@@ -295,14 +307,7 @@ EO_Template
 
 sub _get_template_for_class {
     return << 'EO_Class_Template';
-# *** DO NOT EDIT *** CHANGES WILL BE LOST ***
-# This file was automatically generated
-# by java2perl6 [% version %] from decompliling
-# [% class_file %] using command line flags:
-#   [% javap_flags +%]
-
-use v6;
-
+[% PROCESS file_header %]
 [% FOREACH prologue_item IN prologue %]
 [% prologue_item %]
 [% END %]
