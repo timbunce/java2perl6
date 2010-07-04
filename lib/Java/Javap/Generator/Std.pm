@@ -277,6 +277,12 @@ use v6;
 
 [% END %]
 
+[% BLOCK method_returns %]
+    [% IF ret.name != 'void' %] --> [% ret.array_text.search('Array of') ? 'Array ' : ret.cast_name %]
+    # [%  ret.array_text %] [% ret.cast_name %]
+    [% END %]
+[% END %]
+
 EO_Template
 }
 
@@ -294,9 +300,7 @@ role [% ast.perl_qualified_name %] {
 [% FOREACH arg IN element.args %][% arg_counter = arg_counter + 1 %]
         [% arg.cast_name %] [% arg.array_text.search('Array of') ? '@' : '$' %]v[% arg_counter %], 
 [% END %]
-    [% IF element.returns.name != 'void' %] --> [% element.returns.array_text.search('Array of') ? 'Array ' : element.returns.cast_name %]
-    # [%  element.returns.array_text %] [% element.returns.cast_name %]
-[% END %]
+[% INCLUDE method_returns ret = element.returns %]
 
     ) { ... }
 
@@ -319,9 +323,7 @@ class [% ast.perl_qualified_name %] [%- ast.cast_parent == '' ? '' : ' is ' %][%
 [% FOREACH arg IN element.args %][% arg_counter = arg_counter + 1 %]
         [% arg.cast_name %] [% arg.array_text.search('Array of') ? '@' : '$' %]v[% arg_counter %], 
 [% END %]
-    [% IF element.returns.name != 'void' %] --> [% element.returns.array_text.search('Array of') ? 'Array ' : element.returns.cast_name %]
-    # [%  element.returns.array_text %] [% element.returns.cast_name %]
-[% END %]
+[% INCLUDE method_returns ret = element.returns %]
 
     ) { ... }
 
