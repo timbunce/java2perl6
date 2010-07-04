@@ -269,7 +269,6 @@ sub _get_template {
 
 sub _get_template_prologue {
     return << 'EO_Template';
-
 [% BLOCK file_header %]
 # *** DO NOT EDIT *** CHANGES WILL BE LOST ***
 # This file was automatically generated
@@ -280,24 +279,20 @@ sub _get_template_prologue {
 use v6;
 
 [% END %]
-
 [% BLOCK method_arg %]
-        [% arg.cast_name %] [% arg.array_text.search('Array of') ? '@' : '$' %]v[% arg_counter %], # [% arg.name %],
+        [% arg.cast_name %] [% arg.array_text.search('Array of') ? '@' : '$' %]v[% arg_counter %],  # [% arg.name +%]
 [% END %]
-
 [% BLOCK method_all_args %]
 [% arg_counter = 0 %]
 [% FOREACH arg IN elem.args %][% arg_counter = arg_counter + 1 %]
 [% INCLUDE method_arg %]
 [% END %]
 [% END %]
-
 [% BLOCK method_returns %]
-    [% IF ret.name != 'void' %] --> [% ret.array_text.search('Array of') ? 'Array ' : ret.cast_name %]
-    # [%  ret.array_text %] [% ret.name %]
-    [% END +%]
+[%- IF ret.name != 'void' %]    --> [% ret.array_text.search('Array of') ? 'Array ' : ret.cast_name %]
+   # [%  ret.array_text %] [% ret.name +%]
 [% END %]
-
+[% END %]
 EO_Template
 }
 
@@ -308,7 +303,7 @@ sub _get_template_for_interface {
 [%+ prologue_item +%]
 [% END %]
 
-role [% ast.perl_qualified_name %] {
+role [% ast.perl_qualified_name %] { # [%- ast.cast_parent == '' ? '' : ' is ' %][% ast.cast_parent -%] {
 [% FOREACH element IN ast.method_list %]
     [% ast.methods.${ element.name } > 1 ? 'multi ' : '' %]method [% element.name %](  
 [% INCLUDE method_all_args elem = element %]
