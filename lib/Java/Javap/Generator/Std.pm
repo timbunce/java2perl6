@@ -164,22 +164,23 @@ sub _get_unique_methods {
     my $self    = shift;
     my $ast     = shift;
 
-    # sort the methods to more easily identify duplicate signatures resulting
-    # from TypeCast operation
-    # retain only the methods
-    my @methods =  sort { $a->{name} cmp $b->{name} }  grep { $_->{body_element} eq 'method' } @{$ast->{contents}} ;
+    # identify duplicate signatures resulting from TypeCast operation
+    # ie if both foo(javatype1) and foo(javatype2) get mapped to foo(perl_type)
+    # then we only want to output foo once
 
-    # discard method names containing '$'
-    @methods = grep { $_->{name} !~ m/\$/ } @methods;
+    # retain only the methods
+    my @methods =  grep { $_->{body_element} eq 'method' } @{$ast->{contents}} ;
 
     #print STDERR "methods: ", Dumper(@methods);
     my %meth;
     foreach my $element (@methods) {
-            #$element->{name} =~ s/\$/_/g if defined $element->{name};
+        # discard method names containing '$' XXX why?
+        next if $element->{name} =~ /\$/;
+        #$element->{name} =~ s/\$/_/g if defined $element->{name};
 
-            $element->{signature} = "$element->{name} ";
+        $element->{signature} = "$element->{name} ";
 
-            foreach my $arg (@{$element->{args}}) {
+        foreach my $arg (@{$element->{args}}) {
             $element->{signature} .= (($arg->{array_text} =~ /Array of/) ? '@' : '$') .  "$arg->{cast_name}, ";
         }
         $element->{signature} .= " --> " . ($element->{returns}->{array_text} =~ /Array of/) ? 'Array' : $element->{returns}->{cast_name};
@@ -188,7 +189,10 @@ sub _get_unique_methods {
         $meth{$element->{signature}} = $element;
     }
     #print STDERR Dumper(%meth);
-    @methods = sort {$a->{name} cmp $b->{name} } values %meth;
+    @methods = sort {
+        $a->{name} cmp $b->{name} or # order by names first
+        @{$a->{args}} <=> @{$b->{args}}   # and increasing arg count second
+    } values %meth;
     #print STDERR Dumper(@methods);
     return \@methods;
 }
@@ -277,6 +281,17 @@ use v6;
 
 [% END %]
 
+[% BLOCK method_arg %]
+        [% arg.cast_name %] [% arg.array_text.search('Array of') ? '@' : '$' %]v[% arg_counter %], 
+[% END %]
+
+[% BLOCK method_all_args %]
+[% arg_counter = 0 %]
+[% FOREACH arg IN elem.args %][% arg_counter = arg_counter + 1 %]
+[% INCLUDE method_arg %]
+[% END %]
+[% END %]
+
 [% BLOCK method_returns %]
     [% IF ret.name != 'void' %] --> [% ret.array_text.search('Array of') ? 'Array ' : ret.cast_name %]
     # [%  ret.array_text %] [% ret.cast_name %]
@@ -296,10 +311,7 @@ sub _get_template_for_interface {
 role [% ast.perl_qualified_name %] {
 [% FOREACH element IN ast.method_list %]
     [% ast.methods.${ element.name } > 1 ? 'multi ' : '' %]method [% element.name %](  
-[% arg_counter = 0 %]
-[% FOREACH arg IN element.args %][% arg_counter = arg_counter + 1 %]
-        [% arg.cast_name %] [% arg.array_text.search('Array of') ? '@' : '$' %]v[% arg_counter %], 
-[% END %]
+[% INCLUDE method_all_args elem = element %]
 [% INCLUDE method_returns ret = element.returns %]
 
     ) { ... }
@@ -319,12 +331,8 @@ sub _get_template_for_class {
 class [% ast.perl_qualified_name %] [%- ast.cast_parent == '' ? '' : ' is ' %][% ast.cast_parent -%] {
 [% FOREACH element IN ast.method_list %]
     [% ast.methods.${ element.name } > 1 ? 'multi ' : '' %]method [% element.name %](
-[% arg_counter = 0 %]
-[% FOREACH arg IN element.args %][% arg_counter = arg_counter + 1 %]
-        [% arg.cast_name %] [% arg.array_text.search('Array of') ? '@' : '$' %]v[% arg_counter %], 
-[% END %]
+[% INCLUDE method_all_args elem = element %]
 [% INCLUDE method_returns ret = element.returns %]
-
     ) { ... }
 
 [% END %]
