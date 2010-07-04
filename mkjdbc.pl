@@ -34,8 +34,8 @@ $ENV{PERL6LIB} .= ":$outdir"; # XXX %Config pathsep
 system qq{rm -rf $outdir.prev} if -d "$outdir.prev";
 system qq{mv -f $outdir $outdir.prev} if -d $outdir;
 
-system qq{time perl -Mlib bin/java2perl6 --outdir $outdir @ARGV `cat jdbc_classes.txt`};
+system qq{time perl -Mlib=lib bin/java2perl6 --outdir $outdir @ARGV `cat jdbc_classes.txt`};
 
-system qq{diff -r --exclude=*.pir -u $outdir.prev $outdir} || warn "Output differs\n"
+system qq{diff -wr --exclude=*.pir -u $outdir.prev $outdir} || warn "Output differs\n"
     if -d "$outdir.prev";
 
