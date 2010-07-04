@@ -295,7 +295,7 @@ use v6;
 [% BLOCK method_returns %]
     [% IF ret.name != 'void' %] --> [% ret.array_text.search('Array of') ? 'Array ' : ret.cast_name %]
     # [%  ret.array_text %] [% ret.cast_name %]
-    [% END %]
+    [% END -%]
 [% END %]
 
 EO_Template
