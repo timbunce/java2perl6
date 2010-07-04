@@ -31,12 +31,10 @@ my $outdir = 'jdbclib';
 
 $ENV{PERL6LIB} .= ":$outdir"; # XXX %Config pathsep
 
-system qq{make};
-
 system qq{rm -rf $outdir.prev} if -d "$outdir.prev";
 system qq{mv -f $outdir $outdir.prev} if -d $outdir;
 
-system qq{time perl -Mblib blib/script/java2perl6 --outdir $outdir --recurse --nest --check @ARGV `cat jdbc_classes.txt`};
+system qq{time perl -Mlib bin/java2perl6 --outdir $outdir @ARGV `cat jdbc_classes.txt`};
 
 system qq{diff -r --exclude=*.pir -u $outdir.prev $outdir} || warn "Output differs\n"
     if -d "$outdir.prev";

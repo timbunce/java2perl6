@@ -9,34 +9,33 @@ use Data::Dumper;
 use Java::Javap;
 use Java::Javap::Grammar;
 use Java::Javap::Generator;
-
-my $genwith   = 'Std';
-my $jpcmd     = '';
-my $nest;
-my $outdir    = '.';
-my $recurse;
+use Java::Javap::TypeCast;
 
 my %java_class_info;
 
+my $type_caster = Java::Javap::TypeCast->new();
+
+
 #use Parse::RecDescent; $::RD_TRACE = 1;
 
-# not yet done:
-#   astas - no, make this a Genterator,
-#           but do write the backends for YAML and Perl
-
-# XXX nest and recurse should default on
-
 GetOptions(
-    'jpcmd|j=s'   => \$jpcmd,
-    'genwith|g=s' => \$genwith,
-    'genopts|p=s' => \my $opt_genopts,
-    'nest|n!'     => \$nest,
-    'outdir|d=s'  => \$outdir,
-    'recurse|r!'  => \$recurse,
-    'check|c!'    => \my $opt_check,
-    'quiet|q!'    => \my $quiet,
-    'trace|t=i'   => \(my $opt_trace = 1),
-    'help|h!'     => \&help,
+    'jpcmd=s'     => \(my $opt_jpcmd = ''),
+    'genwith=s'   => \(my $opt_genwith = 'Std'),
+    'genopts=s'   => \my $opt_genopts,
+    'outdir=s'    => \(my $opt_outdir = '.'),
+    'nest!'       => \(my $opt_nest = 1),
+    'recurse!'    => \(my $opt_recurse = 1),
+    'check!'      => \(my $opt_check = 1),
+    'set_types=s'  => sub {
+        $type_caster->set_type_casts({});
+        $type_caster->add_type_casts_from_file( $_[1] );
+    },
+    'add_types=s'  => sub {
+        $type_caster->add_type_casts_from_file( $_[1] );
+    },
+    'quiet!'      => \my $quiet,
+    'trace=i'     => \(my $opt_trace = 1),
+    'help!'       => \&help,
 ) or exit 1;
 
 my @classes = @ARGV or die "usage: $0 [options] class [ class ... ]\nUse $0 --help for help\n";
@@ -45,14 +44,23 @@ my @classes = @ARGV or die "usage: $0 [options] class [ class ... ]\nUse $0 --he
 if ($quiet) {
     $opt_trace = 0;
 }
+if ($opt_check) {
+    my $perl6_ver = qx{perl6 --version 2>&1};
+    undef $perl6_ver;
+    if ($perl6_ver) {
+        print "Will check using: $perl6_ver\n";
+    }
+    else {
+        $opt_check = 0;
+    }
+}
 
 $::RD_WARN  = 1;
 $::RD_TRACE = 1 if $opt_trace >= 9;
 
 my $parser = Java::Javap::Grammar->new();
-my $caster = Java::Javap::TypeCast->new();
 my $jenny  = Java::Javap::Generator->get_generator(
-    $genwith,
+    $opt_genwith,
     trace_level => $opt_trace,
     split(/\s+/, $opt_genopts||''),
 );
@@ -62,7 +70,7 @@ my %check_status;
 my %top_types;
 foreach my $class ( @classes  ) {
     eval {
-        my $types = load_java_class_info( $class, $recurse ) || [];
+        my $types = load_java_class_info( $class, $opt_recurse ) || [];
         $top_types{$_}++ for @$types;
     };
 }
@@ -86,12 +94,10 @@ for my $class (sort keys %java_class_info) {
     }
     push @epilogue, "=end pod\n";
 
-    my $type_caster = Java::Javap::TypeCast->new();
-
     my $file_name = generate_output_file( {
         class_file  => $class,
         ast         => $info->{tree},
-        javap_flags => $jpcmd,
+        javap_flags => $opt_jpcmd,
         type_caster => $type_caster,
         epilogue    => join("\n", '', @epilogue),
     });
@@ -118,7 +124,7 @@ for my $class (sort keys %java_class_info) {
     # we're effectively doing perl6 -c here but we don't use -c
     # because it's noisy and we know we're only compiling modules
     my @perl6cmd = ("perl6", "--target=PIR", "--output=$pirfile", $file_name);
-    local $ENV{PERL6LIB} = join(":",grep { $_ } $outdir,$ENV{PERL6LIB});
+    local $ENV{PERL6LIB} = join(":",grep { $_ } $opt_outdir,$ENV{PERL6LIB});
     warn "\t @perl6cmd\n" if $opt_trace;
     $check_status{$file_name} = (system(@perl6cmd) == 0);
 }
@@ -149,7 +155,7 @@ sub load_java_class_info {
 
     warn "$pad$class: loading\n" if $opt_trace;
 
-    my $cmd = "javap $jpcmd $class";
+    my $cmd = "javap $opt_jpcmd $class";
     warn "$cmd\n" if $opt_trace >= 3;
     my $decomp = `$cmd`; # XXX check exit status
     warn $decomp if $opt_trace >= 3;
@@ -157,7 +163,7 @@ sub load_java_class_info {
         or die "Error parsing output of '$cmd'\n";
 
     # tell them which types are used by this class
-    my $referenced_classes = Java::Javap->get_included_types( $tree, $caster );
+    my $referenced_classes = Java::Javap->get_included_types( $tree, $type_caster );
 
     $java_class_info{$class} = {
         %{ $java_class_info{$class} || {} },
@@ -190,7 +196,7 @@ sub generate_output_file {
     $output .= $epilogue if $epilogue;
 
     my $file_name;
-    if ( $outdir eq 'STDOUT' ) {
+    if ( $opt_outdir eq 'STDOUT' ) {
         print $output; 
     }   
     else { # put it in a directory
@@ -212,10 +218,10 @@ sub output_filename_for_class {
     my @subdirs    = split /\./, $class;
     my $class_name = pop @subdirs;
 
-    my $module_dir = $outdir;
+    my $module_dir = $opt_outdir;
     mkdir $module_dir or -d $module_dir
         or die "Can't mkdir $module_dir: $!\n";
-    if ( $nest ) {
+    if ( $opt_nest ) {
         foreach my $subdir ( @subdirs ) {
             $module_dir = File::Spec->catdir( $module_dir, $subdir );
             mkdir $module_dir or -d $module_dir
@@ -232,19 +238,19 @@ java2perl6 [options] class_file [class_file...]
 
 where options are:
 
-    --jpcmd or -j     a string of command line flags for javap, example:
-                      -j '-classpath /some/path'
-    --genwith or -g   the name of a Java::Javap::Generator:: module which
+    --jpcmd     a string of command line flags for javap, example:
+                      -jpcmd '-classpath /some/path'
+    --genwith   the name of a Java::Javap::Generator:: module which
                       will make the output, defaults to Std
-    --genopts or -p   strings to pass to your -g constructor
-    --nest or -n      flag indicates output should go in nested directories
-    --outdir or -d    top level directory for output
-    --quiet or -q     silences any output. Overrides --trace
-    --trace or -t     defines the trace level (integer value), where:
+    --genopts   strings to pass to your -g constructor
+    --outdir    top level directory for output, default '.'
+    --nonest    write files into outdir, not nested subdirectories of it
+    --quiet     silences any output. Overrides --trace
+    --trace     defines the trace level (integer value), where:
                         0 means silence, no trace
                         1 is minimum trace messages (the default)
                         2..9 for more detail
-    --help or -h      this message
+    --help      this message
 EO_Help
     exit;
 }
