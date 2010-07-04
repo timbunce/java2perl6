@@ -303,7 +303,7 @@ sub _get_template_for_interface {
 [%+ prologue_item +%]
 [% END %]
 
-role [% ast.perl_qualified_name %] { # [%- ast.cast_parent == '' ? '' : ' is ' %][% ast.cast_parent -%] {
+role [% ast.perl_qualified_name %][% IF ast.cast_parent != '' %] does [% ast.cast_parent %] [% END %] {
 [% FOREACH element IN ast.method_list %]
     [% ast.methods.${ element.name } > 1 ? 'multi ' : '' %]method [% element.name %](  
 [% INCLUDE method_all_args elem = element %]
