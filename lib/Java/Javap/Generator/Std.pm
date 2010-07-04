@@ -190,7 +190,7 @@ sub _get_unique_methods {
     }
     #print STDERR Dumper(%meth);
     @methods = sort {
-        $a->{name} cmp $b->{name} or # order by names first
+        $a->{name} cmp $b->{name} or      # order by names first
         @{$a->{args}} <=> @{$b->{args}}   # and increasing arg count second
     } values %meth;
     #print STDERR Dumper(@methods);
@@ -282,7 +282,7 @@ use v6;
 [% END %]
 
 [% BLOCK method_arg %]
-        [% arg.cast_name %] [% arg.array_text.search('Array of') ? '@' : '$' %]v[% arg_counter %], 
+        [% arg.cast_name %] [% arg.array_text.search('Array of') ? '@' : '$' %]v[% arg_counter %], # [% arg.name %],
 [% END %]
 
 [% BLOCK method_all_args %]
@@ -294,8 +294,8 @@ use v6;
 
 [% BLOCK method_returns %]
     [% IF ret.name != 'void' %] --> [% ret.array_text.search('Array of') ? 'Array ' : ret.cast_name %]
-    # [%  ret.array_text %] [% ret.cast_name %]
-    [% END -%]
+    # [%  ret.array_text %] [% ret.name %]
+    [% END +%]
 [% END %]
 
 EO_Template
@@ -313,7 +313,6 @@ role [% ast.perl_qualified_name %] {
     [% ast.methods.${ element.name } > 1 ? 'multi ' : '' %]method [% element.name %](  
 [% INCLUDE method_all_args elem = element %]
 [% INCLUDE method_returns ret = element.returns %]
-
     ) { ... }
 
 [% END %]
