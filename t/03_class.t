@@ -163,19 +163,22 @@ use v6;
 
 
 class ClassTest {
+
     multi method getGreet(
-        Int $v1, 
-     --> Str    #  Str
+    --> Str   #  java.lang.String
     ) { ... }
 
     multi method getGreet(
-     --> Str    #  Str
+        Int $v1,  # int
+    --> Str   #  java.lang.String
     ) { ... }
 
 };
+
 EO_Correct_Perl_6
 
-eq_or_diff( \@perl_6, \@correct_perl_6, 'emission' );
+eq_or_diff( \@perl_6, \@correct_perl_6, 'emission' )
+    or print "---vvv---\n$perl_6\n---^^^---\n";
 
 #--------------------------------------------------------------------
 # Emission - duplicate method removal
@@ -205,23 +208,26 @@ use v6;
 
 
 class dupMethodTest {
+
     multi method dupMethod(
-        Str @v1, 
-     --> Str    #  Str
+        Str @v1,  # java.lang.String
+    --> Str   #  java.lang.String
     ) { ... }
 
     multi method dupMethod(
-        Int $v1, 
-     --> Str    #  Str
+        Int $v1,  # char
+    --> Str   #  java.lang.String
     ) { ... }
 
     method nonDupedMethod(
-        Int $v1, 
-     --> Int    #  Int
+        Int $v1,  # char
+    --> Int   #  int
     ) { ... }
 
 };
+
 EO_Correct_Perl_6_a
 
-  eq_or_diff( \@perl_6, \@correct_perl_6, 'emission - duplicate method signatures removed' );
+  eq_or_diff( \@perl_6, \@correct_perl_6, 'emission - duplicate method signatures removed' )
+    or print "---vvv---\n$perl_6\n---^^^---\n";
 }

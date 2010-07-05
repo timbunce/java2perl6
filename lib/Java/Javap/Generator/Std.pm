@@ -310,7 +310,7 @@ sub _get_template_for_interface {
 
 role [% ast.perl_qualified_name %]
     [%- IF ast.cast_parent != '' %] does [% ast.cast_parent %] [% END -%]
-{
+ {
 [% FOREACH element IN ast.method_list %]
     [% ast.methods.${ element.name } > 1 ? 'multi ' : '' %]method [% element.name %](  
 [% INCLUDE method_all_args elem = element %]
@@ -332,7 +332,7 @@ sub _get_template_for_class {
 class [% ast.perl_qualified_name %]
     [%- ast.cast_parent == '' ? '' : ' is ' %][% ast.cast_parent -%]
     [%- IF ast.cast_implements != '' %] does [% ast.cast_implements %] [% END -%]
-{
+ {
 
 [% FOREACH element IN ast.method_list %]
     [% ast.methods.${ element.name } > 1 ? 'multi ' : '' %]method [% element.name %](

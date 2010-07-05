@@ -207,32 +207,34 @@ class com::example::Second { ... };
 
 role com::example::NestedIntTest {
     method array_returner(  
-        Str $v1, 
-        Int $v2, 
-        Num @v3, 
-        Num @v4, 
-     --> Array     # Array of Array of  Int
+        Str $v1,  # java.lang.String
+        Int $v2,  # int
+        Num @v3,  # float
+        Num @v4,  # float
+    --> Array    # Array of Array of  int
     ) { ... }
 
     multi method object_returner(  
-        Str $v1, 
-     --> Str    #  Str
+    --> Str   #  java.lang.String
     ) { ... }
 
     multi method object_returner(  
-     --> Str    #  Str
+        Str $v1,  # java.lang.String
+    --> Str   #  java.lang.String
     ) { ... }
 
     method recurse_for_me(  
-     --> com::example::Second    #  com::example::Second
+    --> com::example::Second   #  com.example.Second
     ) { ... }
 
     method void_returner(  
-        Int $v1, 
-    
+        Int $v1,  # int
     ) { ... }
 
 };
+
 EO_Correct_Perl_6
 
-eq_or_diff( \@perl_6, \@correct_perl_6, 'emission' );
+eq_or_diff( \@perl_6, \@correct_perl_6, 'emission' )
+    or print "---vvv---\n$perl_6\n---^^^---\n";
+
