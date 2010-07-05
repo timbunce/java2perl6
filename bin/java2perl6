@@ -56,7 +56,7 @@ if ($opt_check) {
 }
 
 $::RD_WARN  = 1;
-$::RD_TRACE = 1 if $opt_trace >= 9;
+$::RD_TRACE = 1 if $opt_trace >= 10;
 
 my $parser = Java::Javap::Grammar->new();
 my $jenny  = Java::Javap::Generator->get_generator(
@@ -172,6 +172,8 @@ sub load_java_class_info {
         refers_to_classes => $referenced_classes,
         kind => $tree->{class_or_interface},
     };
+
+    warn "$class: ".Dumper($java_class_info{$class}) if $opt_trace >= 9;
 
     push @{$java_class_info{$_}->{referred_to_by_classes}}, $class
         for @$referenced_classes;
