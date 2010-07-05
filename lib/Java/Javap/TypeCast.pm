@@ -240,13 +240,29 @@ __DATA__
 # --- java native types ---
 # http://java.sun.com/docs/books/tutorial/java/nutsandbolts/datatypes.html
 # these will change to perl6's native types when rakudo supports them
-int                Int
-long               Int
-short              Int
+
+# byte: The byte data type is an 8-bit signed two's complement integer.
 byte               Int
+
+# char: The char data type is a single 16-bit Unicode character.
 char               Int
+
+# short: The short data type is a 16-bit signed two's complement integer.
+short              Int
+
+# int: The int data type is a 32-bit signed two's complement integer.
+int                Int
+
+# long: The long data type is a 64-bit signed two's complement integer.
+long               Int
+
+# float: The float data type is a single-precision 32-bit IEEE 754 floating point.
 float              Num
+
+# double: The double data type is a double-precision 64-bit IEEE 754 floating point.
 double             Num
+
+# boolean: The boolean data type has only two possible values: true and false.
 boolean            Bool
 
 # --- java.lang ---
