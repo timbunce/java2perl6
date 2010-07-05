@@ -97,6 +97,7 @@ method : ACCESS method_qualifier(s?)
        | ACCESS /(native)?/ qualified_name '(' arg_list(?) ')'
          throws_clause(?) ';' {
              $constructors++;
+             $methods{ 'new' }++;
              my $args = $item{ 'arg_list(?)' }[0];
              $args    = [] unless defined $args;
              {
@@ -106,7 +107,7 @@ method : ACCESS method_qualifier(s?)
                  args         => $args,
                  throws       => $item{ 'throws_clause(?)' },
                  # add name and returns so constructor data is like a method
-                 name         => $item[3],
+                 name         => 'new',
                  returns      => {
                     array_depth => 0,
                     array_text => '',

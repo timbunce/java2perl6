@@ -310,7 +310,9 @@ use v6;
 [% END %]
 [% END %]
 [% BLOCK method_whole %]
-    [% ast.methods.${ elem.name } > 1 ? 'multi ' : '' %]method [% elem.name %](
+    [% ast.methods.${ elem.name } > 1 ? 'multi ' : '' -%]
+method [% elem.name -%]
+(
 [% INCLUDE method_all_args elem = elem %]
 [% INCLUDE method_returns ret = elem.returns %]
     ) { ... }
@@ -340,7 +342,7 @@ sub _get_template_for_class {
     return << 'EO_Class_Template';
 [% PROCESS file_header %]
 [% FOREACH prologue_item IN prologue %]
-[% prologue_item %]
+[%+ prologue_item +%]
 [% END %]
 
 class [% ast.perl_qualified_name %]

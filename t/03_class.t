@@ -70,7 +70,7 @@ my $expected_tree = {
                                            'array_text' => ''
                                          },
                             'access' => 'public',
-                            'name' => 'ClassTest',
+                            'name' => 'new',
                             'args' => [],
                             'throws' => [],
                             'native' => ''
@@ -83,7 +83,7 @@ my $expected_tree = {
                                            'array_text' => ''
                                          },
                             'access' => 'public',
-                            'name' => 'ClassTest',
+                            'name' => 'new',
                             'args' => [
                                         {
                                           'array_depth' => 1,
@@ -102,7 +102,7 @@ my $expected_tree = {
                                            'array_text' => ''
                                          },
                             'access' => 'public',
-                            'name' => 'ClassTest',
+                            'name' => 'new',
                             'args' => [
                                         {
                                           'array_depth' => 1,
@@ -155,11 +155,12 @@ my $expected_tree = {
           'compiled_from' => 'ClassTest.java',
           'java_qualified_name' => 'ClassTest',
           'methods' => {
-                         'getGreet' => 2
+                         'getGreet' => 2,
+                         'new' => 3
                        },
           'constructors' => 3,
           'implements' => undef
-};
+        };
 
 is_deeply( $tree, $expected_tree, 'class' )
     or print "---vvv---\n".Dumper($tree)."---^^^---\n";
@@ -187,16 +188,16 @@ use v6;
 
 class ClassTest {
 
-    method ClassTest(
+    multi method new(
     --> ClassTest   #  ClassTest
     ) { ... }
 
-    method ClassTest(
+    multi method new(
         Str @v1,  # java.lang.String
     --> ClassTest   #  ClassTest
     ) { ... }
 
-    method ClassTest(
+    multi method new(
         Str @v1,  # java.lang.String
         Int $v2,  # int
     --> ClassTest   #  ClassTest
@@ -247,7 +248,7 @@ use v6;
 
 class dupMethodTest {
 
-    method dupMethodTest(
+    method new(
     --> dupMethodTest   #  dupMethodTest
     ) { ... }
 
