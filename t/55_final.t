@@ -4,6 +4,8 @@ use warnings;
 use lib 'lib';
 
 use Test::More;
+use Data::Dumper;
+
 use Java::Javap;
 use Java::Javap::Generator;
 use Java::Javap::Grammar;
@@ -31,11 +33,17 @@ my $expected_tree = {
           'access' => 'public',
           'contents' => [
                           {
-                              'body_element' => 'constructor',
-                              'access' => 'public',
-                              'args' => [],
-                              'throws' => [],
-                              'native' => ''
+                            'body_element' => 'constructor',
+                            'returns' => {
+                                           'array_depth' => 0,
+                                           'name' => 'FinalClassTest',
+                                           'array_text' => ''
+                                         },
+                            'access' => 'public',
+                            'name' => 'FinalClassTest',
+                            'args' => [],
+                            'throws' => [],
+                            'native' => ''
                           },
                           {
                             'attrs' => [ 'final' ],
@@ -59,5 +67,6 @@ my $expected_tree = {
           'implements' => undef
 };
 
-is_deeply( $tree, $expected_tree, 'final class' );
+is_deeply( $tree, $expected_tree, 'final class' )
+    or print "---vvv---\n".Dumper($tree)."---^^^---\n";
 

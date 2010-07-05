@@ -4,6 +4,8 @@ use warnings;
 use lib 'lib';
 
 use Test::Most;
+use Data::Dumper;
+
 use Java::Javap;
 use Java::Javap::Generator;
 use Java::Javap::Grammar;
@@ -12,6 +14,8 @@ plan skip_all => "javap from Java SDK required: $!"
 	unless Java::Javap->javap_test();
 
 plan tests    => 3;
+
+# $SIG{__WARN__} = \&Carp::confess;
 
 #--------------------------------------------------------------------
 # Grammar
@@ -23,66 +27,82 @@ my $decomp = Java::Javap->javap('ClassTest', {-classpath=>'testjavas'});
 my $tree   = $parser->comp_unit( $decomp );
 
 my $expected_tree = {
-          'compiled_from' => 'ClassTest.java',
           'parent' => 'java.lang.Object',
-          'qualifiers' => [],
           'perl_qualified_name' => 'ClassTest',
-          'java_qualified_name' => 'ClassTest',
+          'qualifiers' => [],
           'access' => 'public',
           'contents' => [
                           {
-                              'body_element' => 'variable',
-                              'type' => {
-                                  name => 'java.lang.String',
-                                  array_depth => 0,
-                                  array_text => '',
-                              },
-                              'access' => 'public',
-                              'name' => 'var1',
+                            'body_element' => 'variable',
+                            'access' => 'public',
+                            'name' => 'var1',
+                            'type' => {
+                                        'array_depth' => 0,
+                                        'array_text' => '',
+                                        'name' => 'java.lang.String'
+                                      }
                           },
                           {
-                              'body_element' => 'variable',
-                              'type' => {
-                                  name => 'java.lang.String',
-                                  array_depth => 0,
-                                  array_text => '',
-                              },
-                              'access' => 'protected',
-                              'name' => 'var2',
+                            'body_element' => 'variable',
+                            'access' => 'protected',
+                            'name' => 'var2',
+                            'type' => {
+                                        'array_depth' => 0,
+                                        'array_text' => '',
+                                        'name' => 'java.lang.String'
+                                      }
                           },
                           {
-                              'body_element' => 'variable',
-                              'type' => {
-                                  name => 'java.lang.String',
-                                  array_depth => 0,
-                                  array_text => '',
-                              },
-                              'access' => '',
-                              'name' => 'var3',
+                            'body_element' => 'variable',
+                            'access' => '',
+                            'name' => 'var3',
+                            'type' => {
+                                        'array_depth' => 0,
+                                        'array_text' => '',
+                                        'name' => 'java.lang.String'
+                                      }
                           },
                           {
                             'body_element' => 'constructor',
+                            'returns' => {
+                                           'array_depth' => 0,
+                                           'name' => 'ClassTest',
+                                           'array_text' => ''
+                                         },
                             'access' => 'public',
+                            'name' => 'ClassTest',
                             'args' => [],
                             'throws' => [],
                             'native' => ''
                           },
                           {
                             'body_element' => 'constructor',
+                            'returns' => {
+                                           'array_depth' => 0,
+                                           'name' => 'ClassTest',
+                                           'array_text' => ''
+                                         },
                             'access' => 'public',
+                            'name' => 'ClassTest',
                             'args' => [
                                         {
                                           'array_depth' => 1,
                                           'array_text' => 'Array of ',
                                           'name' => 'java.lang.String'
-                                        },
+                                        }
                                       ],
                             'throws' => [],
                             'native' => ''
                           },
                           {
                             'body_element' => 'constructor',
+                            'returns' => {
+                                           'array_depth' => 0,
+                                           'name' => 'ClassTest',
+                                           'array_text' => ''
+                                         },
                             'access' => 'public',
+                            'name' => 'ClassTest',
                             'args' => [
                                         {
                                           'array_depth' => 1,
@@ -125,21 +145,24 @@ my $expected_tree = {
                                           'array_depth' => 0,
                                           'array_text' => '',
                                           'name' => 'int'
-                                        },
+                                        }
                                       ],
                             'name' => 'getGreet',
                             'throws' => []
                           }
                         ],
           'class_or_interface' => 'class',
+          'compiled_from' => 'ClassTest.java',
+          'java_qualified_name' => 'ClassTest',
           'methods' => {
-              getGreet => 2,
-          },
+                         'getGreet' => 2
+                       },
           'constructors' => 3,
           'implements' => undef
 };
 
-is_deeply( $tree, $expected_tree, 'class' );
+is_deeply( $tree, $expected_tree, 'class' )
+    or print "---vvv---\n".Dumper($tree)."---^^^---\n";
 
 #--------------------------------------------------------------------
 # Emission
@@ -163,6 +186,21 @@ use v6;
 
 
 class ClassTest {
+
+    method ClassTest(
+    --> ClassTest   #  ClassTest
+    ) { ... }
+
+    method ClassTest(
+        Str @v1,  # java.lang.String
+    --> ClassTest   #  ClassTest
+    ) { ... }
+
+    method ClassTest(
+        Str @v1,  # java.lang.String
+        Int $v2,  # int
+    --> ClassTest   #  ClassTest
+    ) { ... }
 
     multi method getGreet(
     --> Str   #  java.lang.String
@@ -209,13 +247,17 @@ use v6;
 
 class dupMethodTest {
 
-    multi method dupMethod(
-        Str @v1,  # java.lang.String
-    --> Str   #  java.lang.String
+    method dupMethodTest(
+    --> dupMethodTest   #  dupMethodTest
     ) { ... }
 
     multi method dupMethod(
         Int $v1,  # char
+    --> Str   #  java.lang.String
+    ) { ... }
+
+    multi method dupMethod(
+        Str @v1,  # java.lang.String
     --> Str   #  java.lang.String
     ) { ... }
 

@@ -1,11 +1,16 @@
 package Java::Javap::Generator::Std;
-use strict; use warnings;
+
+use strict;
+use warnings;
 
 use Template;
 use Java::Javap;
 use Java::Javap::TypeCast;
 
-# use Data::Dumper;
+use Data::Dumper;
+
+# XXX This generator has way too much data processing in it
+# It should be focussed on producing output from precomputed data.
 
 # XXX having this info here is suboptimal
 # should at least be integrated with TypeCaster
@@ -155,8 +160,8 @@ sub _cast_names {
     $ast->{cast_implements} = ($class_implements eq 'Mu') ? '' : $class_implements;
 
     foreach my $element (@{$ast->{contents}}) {
+        next unless $element->{body_element} =~ /^(method|constructor)/;
         #$element->{name} =~ s/\$/_/g if defined $element->{name};
-        next unless $element->{body_element} eq 'method';
 
         foreach my $arg (@{$element->{args}}) {
             $arg->{cast_name} = $type_caster->cast($arg->{name});
@@ -173,31 +178,37 @@ sub _get_unique_methods {
     # ie if both foo(javatype1) and foo(javatype2) get mapped to foo(perl_type)
     # then we only want to output foo once
 
-    # retain only the methods
-    my @methods =  grep { $_->{body_element} eq 'method' } @{$ast->{contents}} ;
-
     #print STDERR "methods: ", Dumper(@methods);
     my %meth;
-    foreach my $element (@methods) {
-        # discard method names containing '$' XXX why?
-        next if $element->{name} =~ /\$/;
-        #$element->{name} =~ s/\$/_/g if defined $element->{name};
+    foreach my $element (@{$ast->{contents}}) {
+        next unless $element->{body_element} =~ /^(method|constructor)$/;
 
-        $element->{signature} = "$element->{name} ";
+        my $signature = $element->{name};
+        # discard method names containing '$' XXX why?
+        next if $signature =~ /\$/;
 
         foreach my $arg (@{$element->{args}}) {
-            $element->{signature} .= (($arg->{array_text} =~ /Array of/) ? '@' : '$') .  "$arg->{cast_name}, ";
+            $signature .= (($arg->{array_text} =~ /Array of/) ? '@' : '$') . "$arg->{cast_name}, ";
         }
-        $element->{signature} .= " --> " . ($element->{returns}->{array_text} =~ /Array of/) ? 'Array' : $element->{returns}->{cast_name};
-#       print STDERR "signature: '$element->{signature}'\n"   if $debug;
+        $signature .= " --> " . ($element->{returns}->{array_text} =~ /Array of/)
+            ? 'Array'
+            : $element->{returns}->{cast_name};
+
+#       print STDERR "signature: '$signature'\n"   if $debug;
         # de-dup via hash
-        $meth{$element->{signature}} = $element;
+        $meth{$signature} = $element;
     }
-    #print STDERR Dumper(%meth);
-    @methods = sort {
-        $a->{name} cmp $b->{name} or      # order by names first
-        @{$a->{args}} <=> @{$b->{args}}   # and increasing arg count second
+    #die Dumper(\%meth);
+
+    my @methods = sort {
+        # constructors first
+        ($b->{body_element} eq 'constructor') <=> ($a->{body_element} eq 'constructor') or
+        # then by method name
+        $a->{name} cmp $b->{name} or
+        # then by increasing arg count
+        @{$a->{args}} <=> @{$b->{args}}
     } values %meth;
+
     #print STDERR Dumper(@methods);
     return \@methods;
 }
@@ -224,7 +235,7 @@ sub _get_prologue {
     
     foreach my $element (@{$ast->{contents}}) {
 
-        next unless $element->{body_element} eq 'method';
+        next unless $element->{body_element} =~ /^(method|constructor)/;
 
         my $target = $type_caster->cast($element->{returns}->{name});
         $perl_types{$target}++;

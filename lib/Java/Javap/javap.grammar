@@ -2,6 +2,10 @@
 #
 # AFTER EDITING THIS FILE YOU MUST UPDATE THE PARSER BY RUNNING:
 #   cd lib/Java/Javap && perl -MParse::RecDescent - javap.grammar Java::Javap::Grammar
+#
+# http://java.sun.com/docs/books/jls/third_edition/html/syntax.html
+# http://www.cmis.brighton.ac.uk/staff/rnb/bosware/javaSyntax/Java1_6GrammarCorrected.html
+# http://www.cmis.brighton.ac.uk/staff/rnb/bosware/javaSyntax/rulesLinked.html
 
 {
     my %methods;
@@ -101,6 +105,13 @@ method : ACCESS method_qualifier(s?)
                  native       => ( $item[2] eq 'native' ) ? 'native' : '',
                  args         => $args,
                  throws       => $item{ 'throws_clause(?)' },
+                 # add name and returns so constructor data is like a method
+                 name         => $item[3],
+                 returns      => {
+                    array_depth => 0,
+                    array_text => '',
+                    name => $item[3],
+                 },
              }
          }
 
