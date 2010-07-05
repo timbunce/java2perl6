@@ -1,0 +1,15 @@
+\bpm_to_blib$
+\bblibdirs$
+^MANIFEST\.SKIP$
+
+# Avoid temp and backup files.
+~$
+\.tmp$
+\.old$
+\.bak$
+\#$
+\b\.#
+\.swp$
+
+jdbclib
+jdbclib.prev
