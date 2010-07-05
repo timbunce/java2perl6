@@ -322,7 +322,10 @@ sub _get_template_for_class {
 [% prologue_item %]
 [% END %]
 
-class [% ast.perl_qualified_name %] [%- ast.cast_parent == '' ? '' : ' is ' %][% ast.cast_parent -%] {
+class [% ast.perl_qualified_name %]
+    [%- ast.cast_parent == '' ? '' : ' is ' %][% ast.cast_parent -%]
+    [%- IF ast.implements != '' %] does [% ast.implements %] [% END -%]
+{
 [% FOREACH element IN ast.method_list %]
     [% ast.methods.${ element.name } > 1 ? 'multi ' : '' %]method [% element.name %](
 [% INCLUDE method_all_args elem = element %]
