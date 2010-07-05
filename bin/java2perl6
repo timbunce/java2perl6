@@ -55,6 +55,7 @@ if ($opt_check) {
     }
 }
 
+$| = 1 if $opt_trace;
 $::RD_WARN  = 1;
 $::RD_TRACE = 1 if $opt_trace >= 10;
 
@@ -69,10 +70,8 @@ my %check_status;
 
 my %top_types;
 foreach my $class ( @classes  ) {
-    eval {
-        my $types = load_java_class_info( $class, $opt_recurse ) || [];
-        $top_types{$_}++ for @$types;
-    };
+    my $types = load_java_class_info( $class, $opt_recurse ) || [];
+    $top_types{$_}++ for @$types;
 }
 
 for my $class (sort keys %java_class_info) {
