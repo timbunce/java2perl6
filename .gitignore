@@ -2,5 +2,3 @@ Java-Javap-*
 .build
 jdbclib
 jdbclib.prev
-pm_to_blib
-blib

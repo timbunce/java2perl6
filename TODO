@@ -1,14 +1,16 @@
 A quick rough list in no particular order:
 
-Add way to specify extra/overriding type mappings externally.
-
-Improve test coverage.
-
-Handle constants in class/interface definitions. For example:
+Handle class variables / constants in class/interface definitions. For example:
     public static final int CONCUR_READ_ONLY;
 
 Find a way to extract the actual constant value from Java and embed
 into the generated class/role?
+
+Handle multiple implements
+
+Only add comments to types that have non-default mappings
+
+Improve test coverage.
 
 Someone with reasonable knowledge of perl6 and java should sanity check the
 translation and document the issues/tradeoffs.
@@ -20,3 +22,5 @@ into separate text files. Then if a test fails write the new output to a
 different file (same name, extra extension). That way when the code
 generation is changed the tests can be sync'd just by renaming the new file
 over the old one. (This approach has worked well for the NYTProf tests.)
+
+Add thrown exceptions as comments
