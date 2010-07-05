@@ -147,14 +147,19 @@ sub _cast_names {
     my $ast     = shift;
     
     my $type_caster = $self->{type_caster};
+
     my $class_parent = defined $ast->{parent} ? $type_caster->cast($ast->{parent}) : '';
     $ast->{cast_parent} = ($class_parent eq 'Mu') ? '' : $class_parent;
+
+    my $class_implements = defined $ast->{implements} ? $type_caster->cast($ast->{implements}) : '';
+    $ast->{cast_implements} = ($class_implements eq 'Mu') ? '' : $class_implements;
+
     foreach my $element (@{$ast->{contents}}) {
         #$element->{name} =~ s/\$/_/g if defined $element->{name};
-            next unless $element->{body_element} eq 'method';
-            
-            foreach my $arg (@{$element->{args}}) {
-                $arg->{cast_name} = $type_caster->cast($arg->{name});
+        next unless $element->{body_element} eq 'method';
+
+        foreach my $arg (@{$element->{args}}) {
+            $arg->{cast_name} = $type_caster->cast($arg->{name});
         }
         $element->{returns}->{cast_name} = $type_caster->cast($element->{returns}->{name});
     }
@@ -303,7 +308,9 @@ sub _get_template_for_interface {
 [%+ prologue_item +%]
 [% END %]
 
-role [% ast.perl_qualified_name %][% IF ast.cast_parent != '' %] does [% ast.cast_parent %] [% END %] {
+role [% ast.perl_qualified_name %]
+    [%- IF ast.cast_parent != '' %] does [% ast.cast_parent %] [% END -%]
+{
 [% FOREACH element IN ast.method_list %]
     [% ast.methods.${ element.name } > 1 ? 'multi ' : '' %]method [% element.name %](  
 [% INCLUDE method_all_args elem = element %]
@@ -324,8 +331,9 @@ sub _get_template_for_class {
 
 class [% ast.perl_qualified_name %]
     [%- ast.cast_parent == '' ? '' : ' is ' %][% ast.cast_parent -%]
-    [%- IF ast.implements != '' %] does [% ast.implements %] [% END -%]
+    [%- IF ast.cast_implements != '' %] does [% ast.cast_implements %] [% END -%]
 {
+
 [% FOREACH element IN ast.method_list %]
     [% ast.methods.${ element.name } > 1 ? 'multi ' : '' %]method [% element.name %](
 [% INCLUDE method_all_args elem = element %]
