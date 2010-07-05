@@ -5,6 +5,7 @@ use lib 'lib';
 
 use Test::More;
 use File::Spec;
+use File::Path qw(rmtree);
 use Java::Javap;
 
 plan skip_all => "javap from Java SDK required: $!"
@@ -39,8 +40,7 @@ my $output_file = File::Spec->catfile( 'newdir', "$testclass.pm6" );
 
 if ( -f $output_file ) {
     ok( "$testclass.pm6 in new dir" );
-    unlink $output_file;
-    rmdir 'newdir';
+    rmtree 'newdir', 1;
 }
 else {
     fail( "$testclass.pm6 in new dir" );
@@ -59,9 +59,7 @@ my $nested_location = File::Spec->catfile(
 
 if ( -f $nested_location ) {
     ok( "$nested_location under current dir" );
-    unlink $nested_location;
-    rmdir  File::Spec->catdir( 'com', 'example' );
-    rmdir  'com';
+    rmtree 'com', 1;
 }
 else {
     fail( "$nested_location under current dir" );
@@ -78,10 +76,7 @@ $nested_location = File::Spec->catfile(
 
 if ( -f $nested_location ) {
     ok( "$nested_location under alternate dir" );
-    unlink $nested_location;
-    rmdir  File::Spec->catdir( 'newdir', 'com', 'example' );
-    rmdir  File::Spec->catdir( 'newdir', 'com' );
-    rmdir  'newdir';
+    rmtree 'newdir', 1;
 }
 else {
     fail( "$nested_location under alternate dir" );
@@ -101,10 +96,7 @@ my $second_nested_location = File::Spec->catfile(
 
 if ( -f $second_nested_location ) {
     ok( "$second_nested_location under current dir" );
-    unlink $second_nested_location;
-    unlink $original_nested_location;
-    rmdir  File::Spec->catdir( 'com', 'example' );
-    rmdir  'com';
+    rmtree 'com';
 }
 else {
     fail( "$second_nested_location under current dir" );
