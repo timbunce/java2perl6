@@ -29,8 +29,6 @@ use Cwd qw(getcwd);
 
 my $outdir = 'jdbclib';
 
-$ENV{PERL6LIB} .= ":$outdir"; # XXX %Config pathsep
-
 system qq{rm -rf $outdir.prev} if -d "$outdir.prev";
 system qq{mv -f $outdir $outdir.prev} if -d $outdir;
 
