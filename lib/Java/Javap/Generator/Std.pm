@@ -164,9 +164,9 @@ sub _cast_names {
         #$element->{name} =~ s/\$/_/g if defined $element->{name};
 
         foreach my $arg (@{$element->{args}}) {
-            $arg->{cast_name} = $type_caster->cast($arg->{name});
+            $arg->{perl_type_name} = $type_caster->cast($arg->{name});
         }
-        $element->{returns}->{cast_name} = $type_caster->cast($element->{returns}->{name});
+        $element->{returns}->{perl_type_name} = $type_caster->cast($element->{returns}->{name});
     }
 }   
 
@@ -188,11 +188,11 @@ sub _get_unique_methods {
         next if $signature =~ /\$/;
 
         foreach my $arg (@{$element->{args}}) {
-            $signature .= (($arg->{array_text} =~ /Array of/) ? '@' : '$') . "$arg->{cast_name}, ";
+            $signature .= (($arg->{array_text} =~ /Array of/) ? '@' : '$') . "$arg->{perl_type_name}, ";
         }
         $signature .= " --> " . ($element->{returns}->{array_text} =~ /Array of/)
             ? 'Array'
-            : $element->{returns}->{cast_name};
+            : $element->{returns}->{perl_type_name};
 
 #       print STDERR "signature: '$signature'\n"   if $debug;
         # de-dup via hash
@@ -296,7 +296,7 @@ use v6;
 
 [% END %]
 [% BLOCK method_arg %]
-        [% arg.cast_name %] [% arg.array_text.search('Array of') ? '@' : '$' %]v[% arg_counter %],  # [% arg.name +%]
+        [% arg.perl_type_name %] [% arg.array_text.search('Array of') ? '@' : '$' %]v[% arg_counter %],  # [% arg.name +%]
 [% END %]
 [% BLOCK method_all_args %]
 [% arg_counter = 0 %]
@@ -305,9 +305,16 @@ use v6;
 [% END %]
 [% END %]
 [% BLOCK method_returns %]
-[%- IF ret.name != 'void' %]    --> [% ret.array_text.search('Array of') ? 'Array ' : ret.cast_name %]
+[%- IF ret.name != 'void' %]    --> [% ret.array_text.search('Array of') ? 'Array ' : ret.perl_type_name %]
    # [%  ret.array_text %] [% ret.name +%]
 [% END %]
+[% END %]
+[% BLOCK method_whole %]
+    [% ast.methods.${ elem.name } > 1 ? 'multi ' : '' %]method [% elem.name %](
+[% INCLUDE method_all_args elem = elem %]
+[% INCLUDE method_returns ret = elem.returns %]
+    ) { ... }
+
 [% END %]
 EO_Template
 }
@@ -323,11 +330,7 @@ role [% ast.perl_qualified_name %]
     [%- IF ast.cast_parent != '' %] does [% ast.cast_parent %] [% END -%]
  {
 [% FOREACH element IN ast.method_list %]
-    [% ast.methods.${ element.name } > 1 ? 'multi ' : '' %]method [% element.name %](  
-[% INCLUDE method_all_args elem = element %]
-[% INCLUDE method_returns ret = element.returns %]
-    ) { ... }
-
+[% INCLUDE method_whole elem = element %]
 [% END %]
 };
 EO_Template
@@ -346,11 +349,7 @@ class [% ast.perl_qualified_name %]
  {
 
 [% FOREACH element IN ast.method_list %]
-    [% ast.methods.${ element.name } > 1 ? 'multi ' : '' %]method [% element.name %](
-[% INCLUDE method_all_args elem = element %]
-[% INCLUDE method_returns ret = element.returns %]
-    ) { ... }
-
+[% INCLUDE method_whole elem = element %]
 [% END %]
 };
 EO_Class_Template
@@ -473,6 +472,7 @@ L<java2perl6>
 =head1 COPYRIGHT AND LICENSE
 
 Copyright (C) 2007, Phil Crow
+Copyright (C) 2010, Tim Bunce
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself, either Perl version 5.8.6 or,
