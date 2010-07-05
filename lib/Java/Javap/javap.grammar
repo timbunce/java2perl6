@@ -1,5 +1,7 @@
-# To build this:
-#    perl -MParse::RecDescent - javap.grammar Java::Javap::Grammar
+# Source grammar for Java class parser.
+#
+# AFTER EDITING THIS FILE YOU MUST UPDATE THE PARSER BY RUNNING:
+#   cd lib/Java/Javap && perl -MParse::RecDescent - javap.grammar Java::Javap::Grammar
 
 {
     my %methods;
@@ -7,14 +9,15 @@
 }
 
 comp_unit : comp_stmt(?)
-            comp_unit_decl '{' body '}' {
+    comp_unit_decl '{' body '}'
+{
     my $retval = $item{ comp_unit_decl };
     # Match of subrule X(?) always generates an array
     my $comp_stmt = $item{ q{comp_stmt(?)} }->[0];
     $retval->{ compiled_from } = "${comp_stmt}.java";
     $retval->{ contents      } = $item{ body };
-    $retval->{ methods       } = \%methods;
-    $retval->{ constructors  } = $constructors;
+    $retval->{ methods       } = { %methods };  %methods = ();
+    $retval->{ constructors  } = $constructors; $constructors = 0;
     $retval;
 }
           | <error>
