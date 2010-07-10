@@ -188,26 +188,26 @@ use v6;
 
 class ClassTest {
 
-    multi method new(
+    multi method new (
     --> ClassTest   #  ClassTest
     ) { ... }
 
-    multi method new(
+    multi method new (
         Str @v1,  # java.lang.String
     --> ClassTest   #  ClassTest
     ) { ... }
 
-    multi method new(
+    multi method new (
         Str @v1,  # java.lang.String
         Int $v2,  # int
     --> ClassTest   #  ClassTest
     ) { ... }
 
-    multi method getGreet(
+    multi method getGreet (
     --> Str   #  java.lang.String
     ) { ... }
 
-    multi method getGreet(
+    multi method getGreet (
         Int $v1,  # int
     --> Str   #  java.lang.String
     ) { ... }
@@ -251,21 +251,21 @@ class dupMethodTest {
     # our Int $USELESS_CONSTANT = ...; # int
     method USELESS_CONSTANT (--> Int) is export { ... }
 
-    method new(
+    method new (
     --> dupMethodTest   #  dupMethodTest
     ) { ... }
 
-    multi method dupMethod(
+    multi method dupMethod (
         Int $v1,  # char
     --> Str   #  java.lang.String
     ) { ... }
 
-    multi method dupMethod(
+    multi method dupMethod (
         Str @v1,  # java.lang.String
     --> Str   #  java.lang.String
     ) { ... }
 
-    method nonDupedMethod(
+    method nonDupedMethod (
         Int $v1,  # char
     --> Int   #  int
     ) { ... }

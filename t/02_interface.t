@@ -212,7 +212,7 @@ role com::example::NestedIntTest {
     # our Int $USELESS_CONSTANT = ...; # int
     method USELESS_CONSTANT (--> Int) is export { ... }
 
-    method array_returner(
+    method array_returner (
         Str $v1,  # java.lang.String
         Int $v2,  # int
         Num @v3,  # float
@@ -220,20 +220,20 @@ role com::example::NestedIntTest {
     --> Array    # Array of Array of  int
     ) { ... }
 
-    multi method object_returner(
+    multi method object_returner (
     --> Str   #  java.lang.String
     ) { ... }
 
-    multi method object_returner(
+    multi method object_returner (
         Str $v1,  # java.lang.String
     --> Str   #  java.lang.String
     ) { ... }
 
-    method recurse_for_me(
+    method recurse_for_me (
     --> com::example::Second   #  com.example.Second
     ) { ... }
 
-    method void_returner(
+    method void_returner (
         Int $v1,  # int
     ) { ... }
 

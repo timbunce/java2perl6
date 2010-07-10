@@ -314,7 +314,7 @@ use v6;
 [% BLOCK method_whole %]
     [% ast.methods.${ elem.name } > 1 ? 'multi ' : '' -%]
 method [% elem.name -%]
-(
+ (
 [% INCLUDE method_all_args elem = elem %]
 [% INCLUDE method_returns ret = elem.type %]
     ) { ... }
