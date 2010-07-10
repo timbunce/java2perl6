@@ -149,7 +149,9 @@ comma_list : qualified_name ',' comma_list    {
                 }
                 \@names;
              }
-           | qualified_name                    { $item[1] }
+           | qualified_name {
+                [ $item[1] ]
+            }
 
 arg_list : arg ',' arg_list { [ @{ $item[1] }, @{ $item[3] } ] }
          | arg              { $item[1] }
