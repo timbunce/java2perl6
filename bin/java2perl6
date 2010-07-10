@@ -101,7 +101,7 @@ for my $class (sort keys %java_class_info) {
         epilogue    => join("\n", '', @epilogue),
     });
     $info->{output_filename} = $file_name;
-    warn "$info->{kind} $class: $file_name\n" if $opt_trace && $file_name;
+    warn "wrote $file_name - $info->{kind} $class\n" if $opt_trace && $file_name;
 }
 
 for my $class (sort keys %java_class_info) {
@@ -111,7 +111,7 @@ for my $class (sort keys %java_class_info) {
     my $file_name = $info->{output_filename}
         or next;
 
-    warn "$info->{kind} $class: checking $file_name\n";
+    warn "checking $file_name - $info->{kind} $class\n";
     if ($opt_trace) {
         warn "\t uses @{ $info->{refers_to_classes} }\n"
             if @{ $info->{refers_to_classes} };
@@ -152,7 +152,7 @@ sub load_java_class_info {
 
     return undef if $java_class_info{$class}->{decomp};
 
-    warn "$pad$class: loading\n" if $opt_trace;
+    warn "loading $pad$class\n" if $opt_trace;
 
     my $cmd = "javap $opt_jpcmd $class";
     warn "$cmd\n" if $opt_trace >= 3;
