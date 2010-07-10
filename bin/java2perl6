@@ -46,11 +46,11 @@ if ($quiet) {
 }
 if ($opt_check) {
     my $perl6_ver = qx{perl6 --version 2>&1};
-    undef $perl6_ver;
     if ($perl6_ver) {
-        print "Will check using: $perl6_ver\n";
+        print "perl6: $perl6_ver\n";
     }
     else {
+        warn "perl6 not available: $perl6_ver\n";
         $opt_check = 0;
     }
 }
