@@ -24,30 +24,30 @@ my @perl_builtin_undefined = qw(
 # http://perlcabal.org/syn/S02.html#Immutable_types
 my @perl_builtin_immutable = qw(
     Str
-    Bit        
-    Int       
-    Num       
-    Rat       
+    Bit
+    Int
+    Num
+    Rat
     FatRat
-    Complex   
+    Complex
     Bool
 
-    Exception 
-    Block     
-    Seq      
-    Range   
+    Exception
+    Block
+    Seq
+    Range
 
-    Set     
-    Bag     
+    Set
+    Bag
     Enum
     EnumMap
     Signature
     Parcel
     Slicel
     Capture
-    Blob      
-    Instant   
-    Duration  
+    Blob
+    Instant
+    Duration
     HardRoutine
 );
 # http://perlcabal.org/syn/S02.html#Mutable_types
@@ -64,14 +64,14 @@ my @perl_builtin_mutable = qw(
     Pair
     PairSeq
     Buf
-    IO       
-    Routine  
-    Sub      
-    Method   
+    IO
+    Routine
+    Sub
+    Method
     Submethod
-    Macro    
-    Regex    
-    Match    
+    Macro
+    Regex
+    Match
     Stash
     SoftRoutine
 
@@ -96,7 +96,7 @@ sub new {
         POST_CHOMP => 1,
     };
     $self->tt_args_set( $tt_args );
-    
+
     return $self;
 }
 
@@ -119,19 +119,19 @@ sub generate {
     my $class_file  = $params->{class_file};
     my $ast         = $params->{ast};
     my $trace_level = defined $params->{trace_level} ? $params->{trace_level} : $self->{trace_level};
-        
+
     $self->{type_caster} = $params->{type_caster} || Java::Javap::TypeCast->new();
     $self->_cast_names( $ast );
-    
+
     $ast->{method_list} = $self->_get_unique_methods( $ast );
     #print STDERR Dumper($ast->{method_list});
     $ast->{constant_list} = [ grep { $_->{body_element} eq 'constant' } @{$ast->{contents}} ];
     #warn Dumper($ast->{constant_list});
-    
+
     my $template    = $self->_get_template( $ast );
 
     my @prologue    = $self->_get_prologue( $ast );
-    
+
     my $tt = Template->new( $self->tt_args );
     my $tt_vars = {
         ast        => $ast,
@@ -152,7 +152,7 @@ sub generate {
 sub _cast_names {
     my $self    = shift;
     my $ast     = shift;
-    
+
     my $type_caster = $self->{type_caster};
 
     my $class_parent = defined $ast->{parent} ? $type_caster->cast($ast->{parent}) : '';
@@ -222,7 +222,7 @@ sub _get_type_casts {
     my $self = shift;
     my $type_file = shift;
 
-  # XXX TODO    
+  # XXX TODO
 }
 
 sub _get_prologue {
@@ -265,7 +265,7 @@ sub _get_prologue {
             or $perl_type =~ /\$/
             # void java class
             or $perl_type eq 'void'
-            # at the moment rakudo does not support 'Array of' so don't include the 
+            # at the moment rakudo does not support 'Array of' so don't include the
             # dependency on the class as it will just return Array at the moment.
             #or $element->{type}->{array_text} =~ /Array of/;
             ;
@@ -445,7 +445,7 @@ Example:
  my $decomp = `javap com.example.SomeInterface`;
  my $tree   = $parser->comp_unit( $decomp );
  my $jenny  = Java::Javap::Generator->get_generator( 'Std' );
- my $output = $jenny->generate( 
+ my $output = $jenny->generate(
       {
           class_file  => $class_file,
           ast         => $tree,
