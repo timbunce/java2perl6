@@ -233,7 +233,7 @@ sub _get_prologue {
     my %perl_types;
 
     $perl_types{ $ast->{cast_parent} }++ if $ast->{cast_parent};
-    $perl_types{$_}++ for @{ $ast->{cast_implements} };
+    $perl_types{ $_ }++ for @{ $ast->{cast_implements} };
 
     foreach my $element (@{$ast->{contents}}) {
 
@@ -340,6 +340,7 @@ role [% ast.perl_qualified_name %]
  {
 
 [% FOREACH element IN ast.constant_list %]
+[% NEXT IF element.name.search('\$') %]
 [% INCLUDE constant_whole elem = element %]
 [% END %]
 [% FOREACH element IN ast.method_list %]
@@ -362,6 +363,7 @@ class [% ast.perl_qualified_name %]
  {
 
 [% FOREACH element IN ast.constant_list %]
+[% NEXT IF element.name.search('\$') %]
 [% INCLUDE constant_whole elem = element %]
 [% END %]
 [% FOREACH element IN ast.method_list %]
