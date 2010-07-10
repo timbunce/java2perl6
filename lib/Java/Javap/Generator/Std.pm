@@ -167,13 +167,11 @@ sub _cast_names {
             foreach my $arg (@{$element->{args}}) {
                 $arg->{perl_type_name} = $type_caster->cast($arg->{name});
             }
-            $element->{type}->{perl_type_name} = $type_caster->cast($element->{type}->{name});
         }
-        elsif ($element->{body_element} =~ /^(constant)$/) {
-            $element->{type}->{perl_type_name} = $type_caster->cast($element->{type}->{name});
-        }
-    }   
-}   
+        $element->{type}->{perl_type_name} = $type_caster->cast($element->{type}->{name})
+            if ref $element->{type};
+    }
+}
 
 sub _get_unique_methods {
     my $self    = shift;
@@ -233,30 +231,27 @@ sub _get_prologue {
     my $trace_level = defined $self->{trace_level} ? $self->{trace_level} : 0;
 
     my %perl_types;
-    if (defined $ast->{parent}) {
-        my $target = $type_caster->cast($ast->{parent});
-        $perl_types{$target}++;
-    }
 
+    $perl_types{ $ast->{cast_parent} }++ if $ast->{cast_parent};
     $perl_types{$_}++ for @{ $ast->{cast_implements} };
-    
+
     foreach my $element (@{$ast->{contents}}) {
 
-        next unless $element->{body_element} =~ /^(method|constructor)/;
+        if ($element->{body_element} =~ /^(method|constructor)/) {
+            foreach my $arg (@{$element->{args}}) {
+                $perl_types{$arg->{perl_type_name}}++;
+            }
+        }
 
-        my $target = $type_caster->cast($element->{type}->{name});
-        $perl_types{$target}++;
-
-        foreach my $arg (@{$element->{args}}) {
-            my $target = $type_caster->cast($arg->{name});
-            $perl_types{$target}++;
-        }       
+        $perl_types{ $element->{type}->{perl_type_name} }++
+            if ref $element->{type};
     }
+
     warn "$ast->{perl_qualified_name} references types: @{[ keys %perl_types ]}\n"
         if $trace_level >= 3;
 
     for my $perl_type (keys %perl_types) {
- 
+
         delete $perl_types{$perl_type}
             if $perl_builtin_types->{$perl_type}
             # our own class name
@@ -382,11 +377,11 @@ __END__
 
 =head1 NAME
 
-Java::Javap::Generator::Std - uses TT to spit out Perl 6
+Java::Javap::Generator::Std - uses Template Toolkit to spit out Perl 6
 
 =head1 SYNOPSIS
 
-    useJava::Javap::Generator; 
+    use Java::Javap::Generator;
     my $gen = Java::Javap::Generator->get_generator( 'Std' );
     my $output = $gen->generate(
         {
