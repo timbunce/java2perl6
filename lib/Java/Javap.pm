@@ -29,10 +29,7 @@ sub get_included_types {
             next ELEMENT;
         }
 
-        foreach my $item (
-            $element->{ returns },
-            @{ $element->{ args } }
-        ) {
+        foreach my $item ( $element->{ type }, @{ $element->{ args } }) {
             my $type_name = $item->{ name };
             next if _skip_it( $type_name, $caster );
 

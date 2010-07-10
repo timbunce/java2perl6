@@ -2595,7 +2595,7 @@ sub Parse::RecDescent::Java::Javap::Grammar::method
                  body_element => 'method',
                  access       => $item[1],
                  attrs        => $item[2],
-                 returns      => $item[3][0],
+                 type         => $item[3][0],
                  name         => $item[4],
                  args         => $args,
                  throws       => $item{ 'throws_clause(?)' },
@@ -2886,7 +2886,7 @@ sub Parse::RecDescent::Java::Javap::Grammar::method
                  throws       => $item{ 'throws_clause(?)' },
                  # add name and returns so constructor data is like a method
                  name         => 'new',
-                 returns      => {
+                 type         => {
                     array_depth => 0,
                     array_text => '',
                     name => $item[3],
@@ -7878,7 +7878,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                  body_element => \'method\',
                  access       => $item[1],
                  attrs        => $item[2],
-                 returns      => $item[3][0],
+                 type         => $item[3][0],
                  name         => $item[4],
                  args         => $args,
                  throws       => $item{ \'throws_clause(?)\' },
@@ -7983,7 +7983,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                  throws       => $item{ \'throws_clause(?)\' },
                  # add name and returns so constructor data is like a method
                  name         => \'new\',
-                 returns      => {
+                 type         => {
                     array_depth => 0,
                     array_text => \'\',
                     name => $item[3],

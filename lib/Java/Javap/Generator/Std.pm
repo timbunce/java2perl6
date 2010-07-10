@@ -167,7 +167,7 @@ sub _cast_names {
             foreach my $arg (@{$element->{args}}) {
                 $arg->{perl_type_name} = $type_caster->cast($arg->{name});
             }
-            $element->{returns}->{perl_type_name} = $type_caster->cast($element->{returns}->{name});
+            $element->{type}->{perl_type_name} = $type_caster->cast($element->{type}->{name});
         }
         elsif ($element->{body_element} =~ /^(constant)$/) {
             $element->{type}->{perl_type_name} = $type_caster->cast($element->{type}->{name});
@@ -195,9 +195,9 @@ sub _get_unique_methods {
         foreach my $arg (@{$element->{args}}) {
             $signature .= (($arg->{array_text} =~ /Array of/) ? '@' : '$') . "$arg->{perl_type_name}, ";
         }
-        $signature .= " --> " . ($element->{returns}->{array_text} =~ /Array of/)
+        $signature .= " --> " . ($element->{type}->{array_text} =~ /Array of/)
             ? 'Array'
-            : $element->{returns}->{perl_type_name};
+            : $element->{type}->{perl_type_name};
 
 #       print STDERR "signature: '$signature'\n"   if $debug;
         # de-dup via hash
@@ -244,7 +244,7 @@ sub _get_prologue {
 
         next unless $element->{body_element} =~ /^(method|constructor)/;
 
-        my $target = $type_caster->cast($element->{returns}->{name});
+        my $target = $type_caster->cast($element->{type}->{name});
         $perl_types{$target}++;
 
         foreach my $arg (@{$element->{args}}) {
@@ -267,7 +267,7 @@ sub _get_prologue {
             or $perl_type eq 'void'
             # at the moment rakudo does not support 'Array of' so don't include the 
             # dependency on the class as it will just return Array at the moment.
-            #or $element->{returns}->{array_text} =~ /Array of/;
+            #or $element->{type}->{array_text} =~ /Array of/;
             ;
     }
     warn "$ast->{perl_qualified_name} needs to load: @{[ keys %perl_types ]}\n"
@@ -321,7 +321,7 @@ use v6;
 method [% elem.name -%]
 (
 [% INCLUDE method_all_args elem = elem %]
-[% INCLUDE method_returns ret = elem.returns %]
+[% INCLUDE method_returns ret = elem.type %]
     ) { ... }
 
 [% END %]

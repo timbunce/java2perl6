@@ -64,7 +64,7 @@ my $expected_tree = {
                           },
                           {
                             'body_element' => 'constructor',
-                            'returns' => {
+                            'type' => {
                                            'array_depth' => 0,
                                            'name' => 'ClassTest',
                                            'array_text' => ''
@@ -77,7 +77,7 @@ my $expected_tree = {
                           },
                           {
                             'body_element' => 'constructor',
-                            'returns' => {
+                            'type' => {
                                            'array_depth' => 0,
                                            'name' => 'ClassTest',
                                            'array_text' => ''
@@ -96,7 +96,7 @@ my $expected_tree = {
                           },
                           {
                             'body_element' => 'constructor',
-                            'returns' => {
+                            'type' => {
                                            'array_depth' => 0,
                                            'name' => 'ClassTest',
                                            'array_text' => ''
@@ -121,7 +121,7 @@ my $expected_tree = {
                           {
                             'attrs' => [],
                             'body_element' => 'method',
-                            'returns' => {
+                            'type' => {
                                            'array_depth' => 0,
                                            'array_text' => '',
                                            'name' => 'java.lang.String'
@@ -134,7 +134,7 @@ my $expected_tree = {
                           {
                             'attrs' => [],
                             'body_element' => 'method',
-                            'returns' => {
+                            'type' => {
                                            'array_depth' => 0,
                                            'array_text' => '',
                                            'name' => 'java.lang.String'

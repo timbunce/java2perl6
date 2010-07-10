@@ -34,7 +34,7 @@ my $expected_tree = {
           'contents' => [
                           {
                             'body_element' => 'constructor',
-                            'returns' => {
+                            'type' => {
                                            'array_depth' => 0,
                                            'name' => 'FinalClassTest',
                                            'array_text' => ''
@@ -50,7 +50,7 @@ my $expected_tree = {
                                          'final'
                                        ],
                             'body_element' => 'method',
-                            'returns' => {
+                            'type' => {
                                            'array_depth' => 0,
                                            'array_text' => '',
                                            'name' => 'java.lang.String'

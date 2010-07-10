@@ -48,7 +48,7 @@ my $expected_tree = {
                                          'abstract'
                                        ],
                             'body_element' => 'method',
-                            'returns' => {
+                            'type' => {
                                            'array_text' => 'Array of Array of ',
                                            'array_depth' => 2,
                                            'name' => 'int'
@@ -84,7 +84,7 @@ my $expected_tree = {
                                          'abstract'
                                        ],
                             'body_element' => 'method',
-                            'returns' => {
+                            'type' => {
                                            'array_text' => '',
                                            'array_depth' => 0,
                                            'name' => 'java.lang.String'
@@ -104,7 +104,7 @@ my $expected_tree = {
                                          'abstract'
                                        ],
                             'body_element' => 'method',
-                            'returns' => {
+                            'type' => {
                                            'array_text' => '',
                                            'array_depth' => 0,
                                            'name' => 'java.lang.String'
@@ -129,7 +129,7 @@ my $expected_tree = {
                                          'abstract'
                                        ],
                             'body_element' => 'method',
-                            'returns' => {
+                            'type' => {
                                            'array_text' => '',
                                            'array_depth' => 0,
                                            'name' => 'void'
@@ -150,7 +150,7 @@ my $expected_tree = {
                                          'abstract'
                                        ],
                             'body_element' => 'method',
-                            'returns' => {
+                            'type' => {
                                            'array_text' => '',
                                            'array_depth' => 0,
                                            'name' => 'com.example.Second'
