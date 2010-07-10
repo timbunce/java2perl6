@@ -248,6 +248,9 @@ use v6;
 
 class dupMethodTest {
 
+    # our Int $USELESS_CONSTANT = ...; # int
+    method USELESS_CONSTANT (--> Int) is export { ... }
+
     method new(
     --> dupMethodTest   #  dupMethodTest
     ) { ... }

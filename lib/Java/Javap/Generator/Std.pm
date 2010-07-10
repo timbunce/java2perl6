@@ -125,6 +125,8 @@ sub generate {
     
     $ast->{method_list} = $self->_get_unique_methods( $ast );
     #print STDERR Dumper($ast->{method_list});
+    $ast->{constant_list} = [ grep { $_->{body_element} eq 'constant' } @{$ast->{contents}} ];
+    #warn Dumper($ast->{constant_list});
     
     my $template    = $self->_get_template( $ast );
 
@@ -160,14 +162,17 @@ sub _cast_names {
     $ast->{cast_implements} = \@class_implements;
 
     foreach my $element (@{$ast->{contents}}) {
-        next unless $element->{body_element} =~ /^(method|constructor)/;
-        #$element->{name} =~ s/\$/_/g if defined $element->{name};
 
-        foreach my $arg (@{$element->{args}}) {
-            $arg->{perl_type_name} = $type_caster->cast($arg->{name});
+        if ($element->{body_element} =~ /^(method|constructor)$/) {
+            foreach my $arg (@{$element->{args}}) {
+                $arg->{perl_type_name} = $type_caster->cast($arg->{name});
+            }
+            $element->{returns}->{perl_type_name} = $type_caster->cast($element->{returns}->{name});
         }
-        $element->{returns}->{perl_type_name} = $type_caster->cast($element->{returns}->{name});
-    }
+        elsif ($element->{body_element} =~ /^(constant)$/) {
+            $element->{type}->{perl_type_name} = $type_caster->cast($element->{type}->{name});
+        }
+    }   
 }   
 
 sub _get_unique_methods {
@@ -320,6 +325,11 @@ method [% elem.name -%]
     ) { ... }
 
 [% END %]
+[% BLOCK constant_whole %]
+    # our [% elem.type.perl_type_name %] $[% elem.name -%] = ...; # [% elem.type.name +%]
+    method [% elem.name %] (--> [% elem.type.perl_type_name %]) is export { ... }
+
+[% END %]
 EO_Template
 }
 
@@ -333,6 +343,10 @@ sub _get_template_for_interface {
 role [% ast.perl_qualified_name %]
     [%- IF ast.cast_parent != '' %] does [% ast.cast_parent %] [% END -%]
  {
+
+[% FOREACH element IN ast.constant_list %]
+[% INCLUDE constant_whole elem = element %]
+[% END %]
 [% FOREACH element IN ast.method_list %]
 [% INCLUDE method_whole elem = element %]
 [% END %]
@@ -352,6 +366,9 @@ class [% ast.perl_qualified_name %]
     [%- IF ast.cast_implements.size > 0 %] does [% ast.cast_implements.join(" does ") %] [% END -%]
  {
 
+[% FOREACH element IN ast.constant_list %]
+[% INCLUDE constant_whole elem = element %]
+[% END %]
 [% FOREACH element IN ast.method_list %]
 [% INCLUDE method_whole elem = element %]
 [% END %]

@@ -119,7 +119,9 @@ my $expected_tree = {
                                       ],
                             'name' => 'object_returner',
                             'throws' => [
+                                          [
                                           'java.lang.NumberFormatException'
+                                          ]
                                         ]
                           },
                           {
@@ -206,6 +208,10 @@ use v6;
 class com::example::Second { ... };
 
 role com::example::NestedIntTest {
+
+    # our Int $USELESS_CONSTANT = ...; # int
+    method USELESS_CONSTANT (--> Int) is export { ... }
+
     method array_returner(
         Str $v1,  # java.lang.String
         Int $v2,  # int

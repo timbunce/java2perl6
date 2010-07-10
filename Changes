@@ -4,8 +4,7 @@ Revision history for Perl extension Java::Javap.
     - Added set_types and add_types options.
     - --recurse --nest --check is now the default.
     - Assorted bug fixes.
-    - Now handles constructors
-    - Now handles 'implements'
+    - Now handles constructors, constants, and implements (does)
 
 0.05 July 2nd 2010
     - Simplified grammar for arg_lists and similar constructs, removed
