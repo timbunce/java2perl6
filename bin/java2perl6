@@ -111,7 +111,7 @@ for my $class (sort keys %java_class_info) {
     my $file_name = $info->{output_filename}
         or next;
 
-    warn "checking $file_name - $info->{kind} $class\n";
+    warn "checking $file_name - $info->{kind} $class\n" if $opt_trace;
     if ($opt_trace) {
         warn "\t uses @{ $info->{refers_to_classes} }\n"
             if @{ $info->{refers_to_classes} };
