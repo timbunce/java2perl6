@@ -120,6 +120,7 @@ for my $class (sort keys %java_class_info) {
     local $ENV{PERL6LIB} = join(":",grep { $_ } $opt_outdir,$ENV{PERL6LIB});
     warn "\t @perl6cmd\n" if $opt_trace;
     $check_status{$file_name} = (system(@perl6cmd) == 0);
+    unlink $pirfile;
 }
 
 if (%check_status) {
