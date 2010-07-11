@@ -290,7 +290,7 @@ sub _get_template_prologue {
 [% BLOCK file_header %]
 # *** DO NOT EDIT *** CHANGES WILL BE LOST ***
 # This file was automatically generated
-# by java2perl6 [% version %] from decompiling
+# by java2perl6api [% version %] from decompiling
 # [% class_file %] using command line flags:
 #   [% javap_flags +%]
 
@@ -483,7 +483,7 @@ Nothing, it's all OO
 L<Java::Javap::Generator>
 L<Java::Javap>
 L<Java::Javap::Grammar>
-L<java2perl6>
+L<java2perl6api>
 
 =head1 AUTHOR
 

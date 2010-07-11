@@ -67,7 +67,7 @@ will receive all of the parameters passed to C<get_generator>, except
 the name of the subclass (but C<new> is invoked through the fully
 qualified subclass name, so you get that too).
 
-C<java2perl6> allows callers to supply these parameters as a string on the
+C<java2perl6api> allows callers to supply these parameters as a string on the
 command line with the C<-p> (or C<--genopts>) flag, whose value is split
 on whitespace before the call.
 
@@ -80,7 +80,7 @@ is make the string.  See the test files C<t/02_interface.t> and
 C<t/03_class.t> for examples of the syntax tree data structure.
 
 Parameters are supplied to your C<generate> in a single hash reference.
-These are the ones supplied by the C<java2perl6> command line tool:
+These are the ones supplied by the C<java2perl6api> command line tool:
 
 =over 4
 

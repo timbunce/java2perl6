@@ -109,18 +109,16 @@ Java::Javap - Java to Perl 6 API translator
 
 =head1 SYNOPSIS
 
-    java2perl6 java.somepackage.Module
+    java2perl6api java.somepackage.Module
 
 =head1 DESCRIPTION
 
-See C<java2perl6> for instructions and advice on use of this module.
+See C<java2perl6api> for instructions and advice on use of this module.
 
 This particular module is only a place holder for the version number
 of this project (see below).
 
 =head1 METHODS
-
-For script writers, there is one method:
 
 =head2 get_included_types
 
@@ -169,7 +167,7 @@ Options to be passed to the C<javap> process.
 
 =over
 
-=item C<java2perl6>
+=item C<java2perl6api>
 
 =item C<Java::Javap::Generator>
 

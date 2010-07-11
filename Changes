@@ -1,6 +1,8 @@
 Revision history for Perl extension Java::Javap.
 
 0.06 July 10th 2010
+    - Renamed command to java2perl6api.
+    - Renamed distro to Java-2Perl6API.
     - Added set_types and add_types options.
     - --recurse --nest --check is now the default.
     - Assorted bug fixes.

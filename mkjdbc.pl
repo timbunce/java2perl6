@@ -10,7 +10,7 @@ mkjdbc.pl - generate the perl6 translation of the classes related to JDBC
 
 =head1 DESCRIPTION
 
-This is just a quick hack to exercise java2perl6 with the use case that
+This is just a quick hack to exercise java2perl6api with the use case that
 interests us most: JDBC.
 
 The jdbc_classes.txt class file lists the Java classes related to JDBC.
@@ -32,7 +32,7 @@ my $outdir = 'jdbclib';
 system qq{rm -rf $outdir.prev} if -d "$outdir.prev";
 system qq{mv -f $outdir $outdir.prev} if -d $outdir;
 
-system qq{time perl -Mlib=lib bin/java2perl6 --outdir $outdir @ARGV `cat jdbc_classes.txt`};
+system qq{time perl -Mlib=lib bin/java2perl6api --outdir $outdir @ARGV `cat jdbc_classes.txt`};
 
 system qq{diff -wr --exclude=*.pir -u $outdir.prev $outdir} || warn "Output differs\n"
     if -d "$outdir.prev";

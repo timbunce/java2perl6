@@ -14,14 +14,15 @@ plan skip_all => "javap from Java SDK required: $!"
 plan tests    => 5;
 
 my $perl       = $^X;
-my $java2perl6 = File::Spec->catfile( 'bin', 'java2perl6' );
+my $java2perl6 = File::Spec->catfile( 'bin', 'java2perl6api' );
+my $java2perl6cmd = "$perl $java2perl6 --trace 0 --javapopts '-classpath testjavas'";
 my $testclass  = 'IntTest';
 
 #--------------------------------------------------------------------
 # Output to current directory.
 #--------------------------------------------------------------------
 
-`$perl $java2perl6 --quiet --jpcmd '-classpath testjavas' $testclass`;
+`$java2perl6cmd $testclass`;
 
 if ( -f "$testclass.pm6" ) {
     ok( "$testclass.pm6 in current dir" );
@@ -35,7 +36,7 @@ else {
 # Output to another directory.
 #--------------------------------------------------------------------
 
-`$perl $java2perl6 --quiet --jpcmd '-classpath testjavas' --outdir newdir $testclass`;
+`$java2perl6cmd --outdir newdir $testclass`;
 my $output_file = File::Spec->catfile( 'newdir', "$testclass.pm6" );
 
 if ( -f $output_file ) {
@@ -52,7 +53,7 @@ else {
 
 $testclass = 'com.example.NestedIntTest';
 
-`$perl $java2perl6 --quiet --jpcmd '-classpath testjavas' --nest $testclass`;
+`$java2perl6cmd --nest $testclass`;
 my $nested_location = File::Spec->catfile(
         'com', 'example', 'NestedIntTest.pm6'
 );
@@ -69,7 +70,7 @@ else {
 # Nested output of packaged module under another directory.
 #--------------------------------------------------------------------
 
-`$perl $java2perl6 --quiet --jpcmd '-classpath testjavas' --nest --outdir newdir $testclass`;
+`$java2perl6cmd --nest --outdir newdir $testclass`;
 $nested_location = File::Spec->catfile(
         'newdir', 'com', 'example', 'NestedIntTest.pm6'
 );
@@ -86,7 +87,7 @@ else {
 # Recursive nested output of packaged module under current directory.
 #--------------------------------------------------------------------
 
-`$perl $java2perl6 --quiet --jpcmd '-classpath testjavas' --nest --recurse $testclass`;
+`$java2perl6cmd --nest --recurse $testclass`;
 my $original_nested_location = File::Spec->catfile(
         'com', 'example', 'NestedIntTest.pm6'
 );

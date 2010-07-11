@@ -16,10 +16,8 @@ my %java_class_info;
 my $type_caster = Java::Javap::TypeCast->new();
 
 
-#use Parse::RecDescent; $::RD_TRACE = 1;
-
 GetOptions(
-    'jpcmd=s'     => \(my $opt_jpcmd = ''),
+    'javapopts=s' => \(my $opt_javapopts = ''),
     'genwith=s'   => \(my $opt_genwith = 'Std'),
     'genopts=s'   => \my $opt_genopts,
     'outdir=s'    => \(my $opt_outdir = '.'),
@@ -33,17 +31,13 @@ GetOptions(
     'add_types=s'  => sub {
         $type_caster->add_type_casts_from_file( $_[1] );
     },
-    'quiet!'      => \my $quiet,
     'trace=i'     => \(my $opt_trace = 1),
     'help!'       => \&help,
 ) or exit 1;
 
-my @classes = @ARGV or die "usage: $0 [options] class [ class ... ]\nUse $0 --help for help\n";
+my @classes = @ARGV
+    or die "usage: $0 [options] class [ class ... ]\nUse $0 --help for help\n";
 
-# --quiet overrides trace level option
-if ($quiet) {
-    $opt_trace = 0;
-}
 if ($opt_check) {
     my $perl6_ver = qx{perl6 --version 2>&1};
     if ($perl6_ver) {
@@ -69,7 +63,7 @@ my $jenny  = Java::Javap::Generator->get_generator(
 my %check_status;
 
 my %top_types;
-foreach my $class ( @classes  ) {
+foreach my $class ( @classes ) {
     my $types = load_java_class_info( $class, $opt_recurse ) || [];
     $top_types{$_}++ for @$types;
 }
@@ -96,7 +90,7 @@ for my $class (sort keys %java_class_info) {
     my $file_name = generate_output_file( {
         class_file  => $class,
         ast         => $info->{tree},
-        javap_flags => $opt_jpcmd,
+        javap_flags => $opt_javapopts,
         type_caster => $type_caster,
         epilogue    => join("\n", '', @epilogue),
     });
@@ -154,7 +148,7 @@ sub load_java_class_info {
 
     warn "loading $pad$class\n" if $opt_trace;
 
-    my $cmd = "javap $opt_jpcmd $class";
+    my $cmd = "javap $opt_javapopts $class";
     warn "$cmd\n" if $opt_trace >= 3;
     my $decomp = `$cmd`; # XXX check exit status
     warn $decomp if $opt_trace >= 3;
@@ -235,23 +229,26 @@ sub output_filename_for_class {
 
 sub help {
     print <<'EO_Help';
-java2perl6 [options] class_file [class_file...]
+java2perl6api [options] class_file [class_file...]
 
 where options are:
 
-    --jpcmd     a string of command line flags for javap, example:
-                      -jpcmd '-classpath /some/path'
-    --genwith   the name of a Java::Javap::Generator:: module which
-                      will make the output, defaults to Std
-    --genopts   strings to pass to your -g constructor
-    --outdir    top level directory for output, default '.'
-    --nonest    write files into outdir, not nested subdirectories of it
-    --quiet     silences any output. Overrides --trace
-    --trace     defines the trace level (integer value), where:
-                        0 means silence, no trace
-                        1 is minimum trace messages (the default)
-                        2..9 for more detail
-    --help      this message
+ --help          this message
+ --outdir=D      root directory for output files (default '.')
+ --nonest        place output files in nested directories
+ --nocheck       check the generated code compiles using perl6
+ --norecurse     check the generated code compiles using perl6
+ --set_types=S   replace typemapings with those in file S
+ --add_types=S   add/override typemapings with those in file S
+ --javapopts=S   a string of command line flags for javap, example:
+                    -j '-classpath /some/path'
+ --genwith=S     the name of a Java::Javap::Generator:: module
+                    which will make the output, defaults to Std
+ --genopts=S     strings to pass to your -g constructor
+ --trace=N       defines the trace level (integer value), where:
+                    0 means silence, no trace,
+                    1 is minimum trace messages,
+                    >= 9 for full trace
 EO_Help
     exit;
 }
@@ -260,131 +257,94 @@ __END__
 
 =head1 NAME
 
-java2perl6 - a Java to Perl 6 API translator
+java2perl6api - a Java to Perl 6 API translator
 
 =head1 SYNOPSIS
 
- java2perl6 [options] class_file
+ java2perl6api [options] class_file [...]
 
-where the most frequently used options are:
-
- --nest or -n      place output files in nested directories
- --outdir or -d    top level directory for output
- --check           check the generated code compiles using perl6
-
-other options
-
- --help or -h      this message
- --jpcmd or -j     a string of command line flags for javap, example:
-                   -j '-classpath /some/path'
- --genwith or -g   the name of a Java::Javap::Generator:: module
-                   which will make the output, defaults to Std
- --genopts or -p   strings to pass to your -g constructor
- --quiet or -q     silences any output. Overrides --trace
- --trace or -t     defines the trace level (integer value), where:
-                   0 means silence, no trace,
-                   1 is minimum trace messages,
-                   >= 9 for full trace
+ --help          this message
+ --outdir=D      root directory for output files (default '.')
+ --nonest        place output files in nested directories
+ --nocheck       check the generated code compiles using perl6
+ --norecurse     check the generated code compiles using perl6
+ --set_types=S   replace typemapings with those in file S
+ --add_types=S   add/override typemapings with those in file S
+ --javapopts=S   a string of command line flags for javap, example:
+                    -j '-classpath /some/path'
+ --genwith=S     the name of a Java::Javap::Generator:: module
+                    which will make the output, defaults to Std
+ --genopts=S     strings to pass to your -g constructor
+ --trace=N       defines the trace level (integer value), where:
+                    0 means silence, no trace,
+                    1 is minimum trace messages,
+                    >= 9 for full trace
 
 =head1 DESCRIPTION
 
 This script is the driver for the C<Java::Javap> module which reads compiled
 Java files, parses them into a tree, and generates output in Perl 6.
-Note that output could be in other forms if you write a generator,
-see C<Java::Javap::Generator> for instructions on how to write one
-and use the C<-g> command line flag once yours is installed.  This module
-ships with only one generator: C<Java::Javap::Generator::Std>.
 
-If you write your own generator, you could have it do anything you like
-including outputing APIs in Perl 5, Python, etc.  I plan to add generators
-for tree dumps using Data::Dumper and YAML.
+=head2 Alternative Output Formats
+
+This distribution ships with only one generator: C<Java::Javap::Generator::Std>
+which generates Perl 6 roles in C<.pm6> files. An alternative generator can be
+specified with the C<--genwith> option.
 
 =head1 EXAMPLES
 
 To get a single Perl module in the java/sql subdirectory of the current
 directory with an API translation of java.sql.Connection:
 
-    java2perl6 -n java.sql.Connection
+    java2perl6api java.sql.Connection
 
 To get a single Perl module in the current directory with an API for
 com.example.YourModule whose class file is in /usr/lib/yourjavas:
 
-    java2perl6 -j '-classpath /usr/lib/yourjavas' com.example.YourModule
+    java2perl6api --javapopts '-classpath /usr/lib/yourjavas' com.example.YourModule
 
 To put the output from the previous example into the /usr/local/javaapis
 directory:
 
-    java2perl6 -j '-classpath /usr/lib/yourjavas' \
-        -d /usr/local/javaapis com.example.YourModule
-
-To choose your own generator called C<Java::Javap::Generator::MyGen>
-for the first example:
-
-    java2perl6 -n -g MyGen java.sql.Connection
+    java2perl6api --javapopts '-classpath /usr/lib/yourjavas' \
+        --outdir /usr/local/javaapis com.example.YourModule
 
 =head1 OPTIONS
 
 =over 4
 
-=item --help or -h
+=item --help
 
 Prints a short help message (the same as the L<SYNOPSIS> above).
 
-=item --jpcmd or -j
+=item --javapopts=S
 
 This option takes a single value, you need to quote it.  That value
 is passed directly to C<javap>.  C<-classpath /some/path> is the most
 common value.  Be aware that C<Java::Javap> parses the output of
 C<javap> with a grammar, so some C<javap> flags will cause fatal errors.
 
-=item --genwith or -g
+=item --outdir=S
 
-C<Java::Javap> uses a factory approach to generation.  Basically, any
-module in the Java::Javap::Generator:: namespace can be used here.  Give
-the module's short name, so to get the default behavior explicitly type:
+Sets the root directory for output files. Default '.' (current directory).
 
-    java2perl6 -g Std ...
+=item --nonest
 
-which will load and use C<Java::Javap::Generator::Std> to make
-the output.  See C<Java::Javap::Generator> for the API your module
-must respond to.
+By default output files are written into a directory tree (rooted at --outdir)
+based on the namespace of the Java package. 
 
-=item --genopts or -p
+Use the --nonest to write all files into the root output directory.
 
-Not yet useful.
+=item --norecurse
 
-Any value given to this option will be passed to the generator's constructor.
-These can obviously only be strings.  The Std generator does not support
-any options, but future genertors may.
+Disable the default behaviour of recursively processing any classes referenced
+by the specified class.
 
-=item --outdir or -d
+=item --nocheck
 
-By default, all output is written in the current directory (or one of
-its subdirectories, if you use C<--nest>).  Use this flag to specify
-an alternate top level directory in which to place output.  It may
-be relative to the current directory or absolute.  Remember that the
-invoking user will need write permission on the directory.
+Disable the validity check of the generated Perl 6.
 
-=item --check or -c
-
-Check the validity of the generated Perl 6 code by running it through
-the C<perl6> binary.  Note C<perl6> must be in the PATH.
-
-=item --nest or -n
-
-By default all output is generated at the top level of the C<--outdir>.
-Use this flag to make the normal subdirectories based on the namespace
-of the Java package.  Thus, since com.example.Module will be called
-com::example::Module, you probably want to use this flag so the output
-will go into the com/example subdirectory of the output directory.
-
-=item --quiet or -q
-
-Turn this on to silence any output about what the script is doing. Currently it
-is a boolean flag and overrides any trace level specified. See --trace
-option.
-
-=item --trace or -t
+=item --trace N
 
 Integer value. Assign zero to it (--trace=0) to silence all messages from
 the script. 1 is the minimum trace level. An integer >= 9 will emit full
@@ -394,11 +354,13 @@ trace messages.
 
 =head1 AUTHOR
 
-Phil Crow E<lt>crow.phil@gmail.comE<gt>
+Phil Crow E<lt>crow.phil@gmail.comE<gt> wrote the original verion,
+further devalopment by Tim Bunce and others since.
 
 =head1 COPYRIGHT and LICENSE
 
 Copyright (c) 2007, Phil Crow
+Copyright (c) 2010, Tim Bunce
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself, either Perl version 5.8.6 or,
