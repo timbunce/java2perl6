@@ -24,11 +24,11 @@ my @perl_builtin_undefined = qw(
 # http://perlcabal.org/syn/S02.html#Immutable_types
 my @perl_builtin_immutable = qw(
     Str
-    Bit
+    !Bit
     Int
     Num
     Rat
-    FatRat
+    !FatRat
     Complex
     Bool
 
@@ -38,54 +38,60 @@ my @perl_builtin_immutable = qw(
     Range
 
     Set
-    Bag
+    !Bag
     Enum
     EnumMap
     Signature
     Parcel
-    Slicel
+    !Slicel
     Capture
-    Blob
-    Instant
-    Duration
-    HardRoutine
+    !Blob
+    !Instant
+    !Duration
+    !HardRoutine
 );
 # http://perlcabal.org/syn/S02.html#Mutable_types
 my @perl_builtin_mutable = qw(
     Iterator
-    SeqIter
+    !SeqIter
     RangeIter
-    Scalar
+    !Scalar
     Array
     Hash
-    KeySet
-    KeyBag
-    KeyHash
+    !KeySet
+    !KeyBag
+    !KeyHash
     Pair
-    PairSeq
+    !PairSeq
     Buf
     IO
     Routine
     Sub
     Method
     Submethod
-    Macro
+    !Macro
     Regex
     Match
-    Stash
-    SoftRoutine
+    !Stash
+    !SoftRoutine
 
     DateTime
 );
 my @perl_builtin_roles = qw(
     Iterable
 );
-my $perl_builtin_types = { map { $_=>1 } (
+my $perl_builtin_types = { map { (/^!/) ? () : ($_=>1) } (
         @perl_builtin_undefined,
         @perl_builtin_immutable,
         @perl_builtin_mutable,
         @perl_builtin_roles,
     ) };
+
+if (0) { # check that types actually are built-in to current perl6
+    for my $t (keys %$perl_builtin_types) {
+        system("perl6 -e 'my $t \$v'");
+    }
+}
 
 sub new {
     my $class = shift;
