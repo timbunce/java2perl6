@@ -28,6 +28,8 @@ Determine class hierarchy of exceptions and replicate in perl6.
 
 * General polishing:
 
+Move most of the code from bin/java2perl6api into new Java::2Perl6API module.
+
 Only add comments to types that have non-default mappings.
 (Add method to TypeCast to ask if type has a default mapping)
 
