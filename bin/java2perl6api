@@ -118,7 +118,7 @@ for my $class (sort keys %java_class_info) {
     # because it's noisy and we know we're only compiling modules
     my @perl6cmd = ("perl6", "--target=PIR", "--output=$pirfile", $file_name);
     local $ENV{PERL6LIB} = join(":",grep { $_ } $opt_outdir,$ENV{PERL6LIB});
-    warn "\t @perl6cmd\n" if $opt_trace;
+    warn "\t @perl6cmd\n" if $opt_trace >= 2;
     $check_status{$file_name} = (system(@perl6cmd) == 0);
     unlink $pirfile;
 }
@@ -127,10 +127,12 @@ if (%check_status) {
     my $passed = 0;
     for my $file_name (sort keys %check_status) {
         my $ok = $check_status{$file_name};
-        printf "%6s: %s\n", ($ok ? "ok" : "FAILED"), $file_name;
         ++$passed if $ok;
+        printf "%7s: %s\n", ($ok ? "ok" : "FAILED"), $file_name
+            if !$ok or $opt_trace >= 2;
     }
-    printf "%d ok, %d failed.\n", $passed, keys(%check_status)-$passed;
+    printf "%d ok, %d failed.\n", $passed, keys(%check_status)-$passed
+        if keys %check_status > 1;
 }
 
 if ($opt_trace >= 2) {
