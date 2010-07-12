@@ -1,4 +1,4 @@
-package Java::Javap::Generator::Std;
+package Java::Javap::Generator::Perl6;
 
 use strict;
 use warnings;
@@ -385,12 +385,12 @@ __END__
 
 =head1 NAME
 
-Java::Javap::Generator::Std - uses Template Toolkit to spit out Perl 6
+Java::Javap::Generator::Perl6 - uses Template Toolkit to spit out Perl 6
 
 =head1 SYNOPSIS
 
     use Java::Javap::Generator;
-    my $gen = Java::Javap::Generator->get_generator( 'Std' );
+    my $gen = Java::Javap::Generator->get_generator( 'Perl6' );
     my $output = $gen->generate(
         {
             $class_file  => 'com.example.InterfaceName',
@@ -415,7 +415,7 @@ C<_get_template_for_interface> and/or C<_get_template_for_class>.
 =item get_generator
 
 Call this as a class method on C<Java::Javap::Generator>.  Pass it
-C<Std> to ask it for an instance of this class.
+C<Perl6> to ask it for an instance of this class.
 
 =item generate
 
@@ -447,7 +447,7 @@ Example:
  my $parser = Java::Javap::Grammar->new();
  my $decomp = `javap com.example.SomeInterface`;
  my $tree   = $parser->comp_unit( $decomp );
- my $jenny  = Java::Javap::Generator->get_generator( 'Std' );
+ my $jenny  = Java::Javap::Generator->get_generator( 'Perl6' );
  my $output = $jenny->generate(
       {
           class_file  => $class_file,

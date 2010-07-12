@@ -18,7 +18,7 @@ my $type_caster = Java::Javap::TypeCast->new();
 
 GetOptions(
     'javapopts=s' => \(my $opt_javapopts = ''),
-    'genwith=s'   => \(my $opt_genwith = 'Std'),
+    'genwith=s'   => \(my $opt_genwith = 'Perl6'),
     'genopts=s'   => \my $opt_genopts,
     'outdir=s'    => \(my $opt_outdir = '.'),
     'nest!'       => \(my $opt_nest = 1),
@@ -246,7 +246,7 @@ where options are:
  --javapopts=S   a string of command line flags for javap, example:
                     -j '-classpath /some/path'
  --genwith=S     the name of a Java::Javap::Generator:: module
-                    which will make the output, defaults to Std
+                    which will make the output, defaults to Perl6
  --genopts=S     strings to pass to your -g constructor
  --trace=N       defines the trace level (integer value), where:
                     0 means silence, no trace,
@@ -276,7 +276,7 @@ java2perl6api - a Java to Perl 6 API translator
  --javapopts=S   a string of command line flags for javap, example:
                     -j '-classpath /some/path'
  --genwith=S     the name of a Java::Javap::Generator:: module
-                    which will make the output, defaults to Std
+                    which will make the output, defaults to Perl6
  --genopts=S     strings to pass to your -g constructor
  --trace=N       defines the trace level (integer value), where:
                     0 means silence, no trace,
@@ -290,7 +290,7 @@ Java files, parses them into a tree, and generates output in Perl 6.
 
 =head2 Alternative Output Formats
 
-This distribution ships with only one generator: C<Java::Javap::Generator::Std>
+This distribution ships with only one generator: C<Java::Javap::Generator::Perl6>
 which generates Perl 6 roles in C<.pm6> files. An alternative generator can be
 specified with the C<--genwith> option.
 
