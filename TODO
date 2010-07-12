@@ -1,21 +1,37 @@
-A quick rough list in no particular order:
+Things that need doing - volunteers most welcome!
 
-Handle class variables / constants in class/interface definitions. For example:
+* High Priority
+
+Add --prefix=S that'll prefix all generated classes/types with S.
+Thats needed because the output of java2perl6api is dependent not only
+on the input java class but only on the specific type mapping used.
+Different projects may want to use different type mapings for the
+same java class. --prefix=S provides a way to avoid clashes.
+
+Embed actual values of class constants in class/interface definitions.
+For example:
     public static final int CONCUR_READ_ONLY;
+Probably best done by extending the parser to parse the extra details
+in the "javap -v" output.
 
-Find a way to extract the actual constant value from Java and embed
-into the generated class/role?
-
-Handle multiple implements
-
-Only add comments to types that have non-default mappings
-
-Improve test coverage.
+* Medium Priority
 
 Someone with reasonable knowledge of perl6 and java should sanity check the
-translation and document the issues/tradeoffs.
+type mappings etc. and document the issues/tradeoffs.
 
-Write some tests that run perl6 code that consumes a generated role.
+handle enums like "public final class java.sql.RowIdLifetime extends java.lang.Enum{"
+by generating perl6 enums
+
+Add thrown exceptions as comments.
+
+Determine class hierarchy of exceptions and replicate in perl6.
+
+* General polishing:
+
+Only add comments to types that have non-default mappings.
+(Add method to TypeCast to ask if type has a default mapping)
+
+Improve test coverage.
 
 Move multi-line strings used for comparison tests out from the test script
 into separate text files. Then if a test fails write the new output to a
@@ -23,4 +39,3 @@ different file (same name, extra extension). That way when the code
 generation is changed the tests can be sync'd just by renaming the new file
 over the old one. (This approach has worked well for the NYTProf tests.)
 
-Add thrown exceptions as comments
