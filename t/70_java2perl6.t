@@ -22,7 +22,7 @@ my $testclass  = 'IntTest';
 # Output to current directory.
 #--------------------------------------------------------------------
 
-`$java2perl6cmd $testclass`;
+`$java2perl6cmd --norecurse $testclass`;
 
 if ( -f "$testclass.pm6" ) {
     ok( "$testclass.pm6 in current dir" );
@@ -36,7 +36,7 @@ else {
 # Output to another directory.
 #--------------------------------------------------------------------
 
-`$java2perl6cmd --outdir newdir $testclass`;
+`$java2perl6cmd --norecurse --outdir newdir $testclass`;
 my $output_file = File::Spec->catfile( 'newdir', "$testclass.pm6" );
 
 if ( -f $output_file ) {
@@ -53,7 +53,7 @@ else {
 
 $testclass = 'com.example.NestedIntTest';
 
-`$java2perl6cmd --nest $testclass`;
+`$java2perl6cmd --norecurse --nest $testclass`;
 my $nested_location = File::Spec->catfile(
         'com', 'example', 'NestedIntTest.pm6'
 );
@@ -70,7 +70,7 @@ else {
 # Nested output of packaged module under another directory.
 #--------------------------------------------------------------------
 
-`$java2perl6cmd --nest --outdir newdir $testclass`;
+`$java2perl6cmd --norecurse --nest --outdir newdir $testclass`;
 $nested_location = File::Spec->catfile(
         'newdir', 'com', 'example', 'NestedIntTest.pm6'
 );

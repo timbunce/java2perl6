@@ -287,7 +287,9 @@ sub _get_template {
     my $ast  = shift;
 
     my $prologue = $self->_get_template_prologue;
-    my $method = "_get_template_for_".$ast->{ class_or_interface };
+    my $kind = $ast->{ class_or_interface };
+    $kind = 'interface'; # XXX only generate roles for perl6
+    my $method = "_get_template_for_$kind";
     return $prologue . $self->$method( $ast );
 }
 
