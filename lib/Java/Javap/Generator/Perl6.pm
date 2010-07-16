@@ -326,9 +326,7 @@ method [% elem.name -%]
 
 [% END %]
 [% BLOCK constant_whole %]
-    # our [% elem.type.perl_type_name %] $[% elem.name -%] = ...; # [% elem.type.name +%]
     method [% elem.name %] (--> [% elem.type.perl_type_name %]) is export { ... }
-
 [% END %]
 EO_Template
 }
@@ -347,7 +345,7 @@ role [% ast.perl_qualified_name %]
 [% FOREACH element IN ast.constant_list %]
 [% NEXT IF element.name.search('\$') %]
 [% INCLUDE constant_whole elem = element %]
-[% END %]
+[% END; ast.constant_list.size ? "\n" : "" %]
 [% FOREACH element IN ast.method_list %]
 [% INCLUDE method_whole elem = element %]
 [% END %]
@@ -370,7 +368,7 @@ class [% ast.perl_qualified_name %]
 [% FOREACH element IN ast.constant_list %]
 [% NEXT IF element.name.search('\$') %]
 [% INCLUDE constant_whole elem = element %]
-[% END %]
+[% END; ast.constant_list.size ? "\n" : "" %]
 [% FOREACH element IN ast.method_list %]
 [% INCLUDE method_whole elem = element %]
 [% END %]
