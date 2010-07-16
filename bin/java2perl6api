@@ -90,7 +90,7 @@ for my $class (sort keys %java_class_info) {
     my $file_name = generate_output_file( {
         class_file  => $class,
         ast         => $info->{tree},
-        javap_flags => $opt_javapopts,
+        javap_command => $info->{javap_command},
         type_caster => $type_caster,
         epilogue    => join("\n", '', @epilogue),
     });
@@ -151,18 +151,19 @@ sub load_java_class_info {
 
     warn "loading $pad$class\n" if $opt_trace;
 
-    my $cmd = "javap $opt_javapopts $class";
-    warn "$cmd\n" if $opt_trace >= 3;
-    my $decomp = `$cmd`; # XXX check exit status
+    my $javap_command = "javap $opt_javapopts $class";
+    warn "$javap_command\n" if $opt_trace >= 3;
+    my $decomp = `$javap_command`; # XXX check exit status
     warn $decomp if $opt_trace >= 3;
     my $tree   = $parser->comp_unit( $decomp )
-        or die "Error parsing output of '$cmd'\n";
+        or die "Error parsing output of '$javap_command'\n";
 
     # tell them which types are used by this class
     my $referenced_classes = Java::Javap->get_included_types( $tree, $type_caster );
 
     $java_class_info{$class} = {
         %{ $java_class_info{$class} || {} },
+        javap_command => $javap_command,
         decomp => $decomp,
         tree => $tree,
         refers_to_classes => $referenced_classes,

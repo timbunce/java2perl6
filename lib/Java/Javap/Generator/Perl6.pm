@@ -145,7 +145,7 @@ sub generate {
         version    => $Java::Javap::VERSION,
         class_file => $class_file,
         type_caster=> $self->{type_caster},
-        javap_flags=> $params->{javap_flags},
+        javap_command=> $params->{javap_command},
         prologue   => \@prologue,
     };
     my $retval;
@@ -296,9 +296,8 @@ sub _get_template_prologue {
 [% BLOCK file_header %]
 # *** DO NOT EDIT *** CHANGES WILL BE LOST ***
 # This file was automatically generated
-# by java2perl6api [% version %] from decompiling
-# [% class_file %] using command line flags:
-#   [% javap_flags +%]
+# by java2perl6api [% version %] from the output of
+# [% javap_command +%]
 
 use v6;
 
@@ -395,7 +394,7 @@ Java::Javap::Generator::Perl6 - uses Template Toolkit to spit out Perl 6
         {
             $class_file  => 'com.example.InterfaceName',
             $ast         => $tree,
-            $javap_flags => $javap_flags,
+            $javap_command => $javap_command,
         }
     );
 
@@ -434,7 +433,7 @@ for documentation, the name of the java .class file
 
 the syntax tree you got from the parser
 
-=item javap_flags
+=item javap_command
 
 for documentation, the flags used on the javap command line
 
