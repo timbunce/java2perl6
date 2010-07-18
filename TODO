@@ -22,8 +22,6 @@ type mappings etc. and document the issues/tradeoffs.
 handle enums like "public final class java.sql.RowIdLifetime extends java.lang.Enum{"
 by generating perl6 enums
 
-Add thrown exceptions as comments.
-
 Determine class hierarchy of exceptions and replicate in perl6.
 
 * General polishing:

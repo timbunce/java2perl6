@@ -82,31 +82,27 @@ method : ACCESS method_qualifier(s?)
          arg NAME '(' arg_list(?) ')'
          throws_clause(?) ';' {
              $methods{ $item[4] }++;
-             my $args = $item{ 'arg_list(?)' }[0];
-             $args    = [] unless defined $args;
              {
                  body_element => 'method',
                  access       => $item[1],
                  attrs        => $item[2],
                  type         => $item[3][0],
                  name         => $item[4],
-                 args         => $args,
-                 throws       => $item{ 'throws_clause(?)' },
+                 args         => $item{ 'arg_list(?)' }[0] || [],
+                 throws       => $item{ 'throws_clause(?)' }[0] || [],
              }
          }
        | ACCESS /(native)?/ qualified_name '(' arg_list(?) ')'
          throws_clause(?) ';' {
              $constructors++;
              $methods{ 'new' }++;
-             my $args = $item{ 'arg_list(?)' }[0];
-             $args    = [] unless defined $args;
              {
                  body_element => 'constructor',
                  access       => $item[1],
                  native       => ( $item[2] eq 'native' ) ? 'native' : '',
-                 args         => $args,
-                 throws       => $item{ 'throws_clause(?)' },
-                 # add name and returns so constructor data is like a method
+                 args         => $item{ 'arg_list(?)' }[0] || [],
+                 throws       => $item{ 'throws_clause(?)' }[0] || [],
+                 # add name and type so constructor data is like a method
                  name         => 'new',
                  type         => {
                     array_depth => 0,

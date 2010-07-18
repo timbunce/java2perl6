@@ -325,6 +325,7 @@ method [% elem.name -%]
 [% INCLUDE method_all_args elem = elem %]
 [% INCLUDE method_returns ret = elem.type %]
     ) { ... }
+[%- IF elem.throws.size %] # throws [% elem.throws.join(", ") %][% END +%]
 
 [% END %]
 [% BLOCK constant_whole %]
