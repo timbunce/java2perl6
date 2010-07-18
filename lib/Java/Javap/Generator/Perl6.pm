@@ -342,6 +342,7 @@ sub _get_template_for_interface {
 
 role [% ast.perl_qualified_name %]
     [%- IF ast.cast_parent != '' %] does [% ast.cast_parent %] [% END -%]
+    [%- IF ast.cast_implements.size > 0 %] does [% ast.cast_implements.join(" does ") %] [% END -%]
  {
 
 [% FOREACH element IN ast.constant_list %]
