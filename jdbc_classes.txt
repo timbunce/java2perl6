@@ -6,6 +6,7 @@ java.sql.Connection
 java.sql.DatabaseMetaData
 java.sql.Date
 java.sql.Driver
+java.sql.DriverManager
 java.sql.DriverPropertyInfo
 java.sql.ParameterMetaData
 java.sql.PreparedStatement
