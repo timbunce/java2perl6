@@ -96,6 +96,12 @@ for my $class (sort keys %java_class_info) {
     });
     $info->{output_filename} = $file_name;
     warn "wrote $file_name - $info->{kind} $class\n" if $opt_trace && $file_name;
+    if ($opt_trace) {
+        warn "\t uses @{ $info->{refers_to_classes} }\n"
+            if @{ $info->{refers_to_classes} };
+        warn "\t used by @{ $info->{referred_to_by_classes} }\n"
+            if @{ $info->{referred_to_by_classes} || [] };
+    }
 }
 
 for my $class (sort keys %java_class_info) {
@@ -106,12 +112,6 @@ for my $class (sort keys %java_class_info) {
         or next;
 
     warn "checking $file_name - $info->{kind} $class\n" if $opt_trace;
-    if ($opt_trace) {
-        warn "\t uses @{ $info->{refers_to_classes} }\n"
-            if @{ $info->{refers_to_classes} };
-        warn "\t used by @{ $info->{referred_to_by_classes} }\n"
-            if @{ $info->{referred_to_by_classes} || [] };
-    }
 
     (my $pirfile = $file_name) =~ s/\.pm6$/.pir/;
     # we're effectively doing perl6 -c here but we don't use -c
