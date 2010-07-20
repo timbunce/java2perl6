@@ -9,7 +9,9 @@ my $con    = DBDI.getConnection($conninfo, '', '');
 my $stmt   = $con.createStatement;
 
 my $result = $stmt.executeQuery('select * from pg_database');
+my $meta   = $result.getMetaData;
 
 while ( $result.next ) {
-    say $result.getString(1);
+    my @row = map { $result.getString($_) }, 1..$meta.getColumnCount;
+    say @row.join(", ");
 }

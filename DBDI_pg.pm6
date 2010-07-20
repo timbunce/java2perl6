@@ -4,14 +4,31 @@ use java::sql::Driver;
 use java::sql::Connection;
 use java::sql::Statement;
 use java::sql::ResultSet;
+use java::sql::ResultSetMetaData;
 
 use libpq;
+
+class DBDI_pg::ResultSetMetaData does java::sql::ResultSetMetaData {
+    has $conn;
+    has $db_conn;
+    has $db_res;
+
+    method getColumnCount (
+    --> Int   #  int
+    ) {
+        return PQnfields($db_res);
+    } # throws java.sql.SQLException
+
+}
+
 
 class DBDI_pg::ResultSet does java::sql::ResultSet {
     has $conn;
     has $db_conn;
     has $db_res;
     has $row_num;
+    has $metadata;
+
 
     method next (
     --> Bool   #  boolean
@@ -19,14 +36,23 @@ class DBDI_pg::ResultSet does java::sql::ResultSet {
         return (++$row_num <= PQntuples($db_res));
     } # throws java.sql.SQLException
 
+
     multi method getString (
         Int $v1,  # int
-    --> Str   #  java.lang.String
+    --> Str
     ) {
-        return Str if PQgetisnull($db_res, $row_num-1, $v1);
+        return Str if PQgetisnull($db_res, $row_num-1, $v1-1);
         my $field = PQgetvalue($db_res, $row_num-1, $v1-1);
         return $field;
     } # throws java.sql.SQLException
+
+
+    method getMetaData (
+    --> java::sql::ResultSetMetaData
+    ) {
+        return $metadata ||= DBDI_pg::ResultSetMetaData.new(:conn(self), :$db_conn, :$db_res);
+    } # throws java.sql.SQLException
+
 
 }
 
@@ -36,8 +62,8 @@ class DBDI_pg::Statement does java::sql::Statement {
     has $db_conn;
 
     method executeQuery (
-        Str $v1,  # java.lang.String
-    --> java::sql::ResultSet   #  java.sql.ResultSet
+        Str $v1,
+    --> java::sql::ResultSet
     ) {
         say "> executeQuery $v1";
 
@@ -61,7 +87,7 @@ class DBDI_pg::Connection does java::sql::Connection {
     has $db_conn;
 
     multi method createStatement (
-    --> java::sql::Statement   #  java.sql.Statement
+    --> java::sql::Statement
     ) {
         say "> createStatement";
         my $stmt = DBDI_pg::Statement.new(:conn(self), :$db_conn);
@@ -74,9 +100,9 @@ class DBDI_pg::Connection does java::sql::Connection {
 class DBDI_pg::Driver does java::sql::Driver {
 
     multi method connect (
-        Str $v1,  # java.lang.String
+        Str $v1,
         Hash $v2,
-    --> java::sql::Connection   #  java.sql.Connection
+    --> java::sql::Connection
     ) {
         say "> connect '$v1'";
         my $db_conn = PQconnectdb($v1);
