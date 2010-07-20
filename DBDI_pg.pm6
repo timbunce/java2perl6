@@ -3,18 +3,35 @@ use v6;
 use java::sql::Driver;
 use java::sql::Connection;
 use java::sql::Statement;
-#use java::sql::ResultSet;
+use java::sql::ResultSet;
 
 use libpq;
 
+class DBDI_pg::ResultSet does java::sql::ResultSet {
+    has $conn;
+    has $db_conn;
+}
+
 class DBDI_pg::Statement does java::sql::Statement {
+
+    has $conn;
+    has $db_conn;
 
     method executeQuery (
         Str $v1,  # java.lang.String
     --> java::sql::ResultSet   #  java.sql.ResultSet
     ) {
-        say "> executeQuery";
-        my $result = 1; #DBDI::ResultSet.new;
+        say "> executeQuery $v1";
+
+        my $db_res = PQexec($db_conn, $v1);
+        if (PQresultStatus($db_res) != PGRES_TUPLES_OK)
+        {
+            my $msg = PQerrorMessage($db_conn);
+            PQclear($db_res);
+            die sprintf("FETCH ALL failed: %s", $msg);
+        }
+
+        my $result = DBDI_pg::ResultSet.new(:conn(self), :$db_conn);
         say "< executeQuery";
         return $result;
     }
@@ -29,7 +46,7 @@ class DBDI_pg::Connection does java::sql::Connection {
     --> java::sql::Statement   #  java.sql.Statement
     ) {
         say "> createStatement";
-        my $stmt = DBDI_pg::Statement.new;
+        my $stmt = DBDI_pg::Statement.new(:conn(self), :$db_conn);
         say "< createStatement";
         return $stmt;
     }
@@ -43,12 +60,11 @@ class DBDI_pg::Driver does java::sql::Driver {
         #Hash $v2,
     --> java::sql::Connection   #  java.sql.Connection
     ) {
-        say "> connect $v1";
+        say "> connect '$v1'";
         my $db_conn = PQconnectdb($v1);
-        if (PQstatus($conn) != CONNECTION_OK) {
-            $*ERR.say: sprintf( "Connection to database ($v1) failed: %s",
-                    PQerrorMessage($conn));
-            #exit_nicely($conn);
+        if (PQstatus($db_conn) != CONNECTION_OK) {
+            my $msg = PQerrorMessage($db_conn);
+            die sprintf( "Connection to database ($v1) failed: %s %s", $msg, PQstatus($db_conn));
         }
         my DBDI_pg::Connection $conn .= new( :$db_conn );
 
