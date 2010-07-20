@@ -13,10 +13,19 @@ class DBDI_pg::ResultSetMetaData does java::sql::ResultSetMetaData {
     has $db_conn;
     has $db_res;
 
+
     method getColumnCount (
     --> Int   #  int
     ) {
         return PQnfields($db_res);
+    } # throws java.sql.SQLException
+
+
+    method getColumnLabel (
+        Int $v1,  # int
+    --> Str   #  java.lang.String
+    ) {
+        return PQfname($db_res, $v1-1);
     } # throws java.sql.SQLException
 
 }
@@ -41,7 +50,7 @@ class DBDI_pg::ResultSet does java::sql::ResultSet {
         Int $v1,  # int
     --> Str
     ) {
-        return Str if PQgetisnull($db_res, $row_num-1, $v1-1);
+        return Mu if PQgetisnull($db_res, $row_num-1, $v1-1);
         my $field = PQgetvalue($db_res, $row_num-1, $v1-1);
         return $field;
     } # throws java.sql.SQLException
