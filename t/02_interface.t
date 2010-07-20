@@ -93,10 +93,8 @@ my $expected_tree = {
                             'args' => [],
                             'name' => 'object_returner',
                             'throws' => [
-                                          [
                                             'java.lang.NumberFormatException',
                                             'java.lang.Exception'
-                                          ]
                                         ]
                           },
                           {
@@ -119,9 +117,7 @@ my $expected_tree = {
                                       ],
                             'name' => 'object_returner',
                             'throws' => [
-                                          [
                                           'java.lang.NumberFormatException'
-                                          ]
                                         ]
                           },
                           {
