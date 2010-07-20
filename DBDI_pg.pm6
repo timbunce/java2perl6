@@ -23,7 +23,7 @@ class DBDI_pg::Statement does java::sql::Statement {
 
 class DBDI_pg::Connection does java::sql::Connection {
 
-    has $conn;
+    has $db_conn;
 
     multi method createStatement (
     --> java::sql::Statement   #  java.sql.Statement
@@ -36,23 +36,21 @@ class DBDI_pg::Connection does java::sql::Connection {
 
 }
 
-class DBDI_pg does java::sql::Driver {
+class DBDI_pg::Driver does java::sql::Driver {
 
     multi method connect (
         Str $v1,  # java.lang.String
-        Hash $v2,
+        #Hash $v2,
     --> java::sql::Connection   #  java.sql.Connection
     ) {
-        say "> connect";
-        my $conninfo = "host=localhost user=testuser password=testpass dbname=zavolaj";
-        my $conn = PQconnectdb($conninfo);
-        # Check to see that the backend connection was successfully made
-        if (PQstatus($conn) != CONNECTION_OK)
-        {
-            $*ERR.say: sprintf( "Connection to database failed: %s",
+        say "> connect $v1";
+        my $db_conn = PQconnectdb($v1);
+        if (PQstatus($conn) != CONNECTION_OK) {
+            $*ERR.say: sprintf( "Connection to database ($v1) failed: %s",
                     PQerrorMessage($conn));
-            exit_nicely($conn);
+            #exit_nicely($conn);
         }
+        my DBDI_pg::Connection $conn .= new( :$db_conn );
 
         say "< connect";
         return $conn;

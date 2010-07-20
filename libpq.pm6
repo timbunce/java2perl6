@@ -9,56 +9,67 @@ use NativeCall;  # from project 'zavolaj'
 
 
 sub PQclear( OpaquePointer $res )
-    is native('libpq') is export
+    is export
+    is native('libpq')
     { ... }
 
 sub PQconnectdb( Str $conninfo )
     returns OpaquePointer
-    is native('libpq') is export
+    is export
+    is native('libpq')
     { ... }
 
 sub PQerrorMessage( OpaquePointer $conn )
     returns Str
-    is native('libpq') is export
+    is export
+    is native('libpq')
     { ... }
 
 sub PQexec( OpaquePointer $conn, Str $command )
     returns OpaquePointer
-    is native('libpq') is export
+    is export
+    is native('libpq')
     { ... }
 
 sub PQfinish( OpaquePointer $conn )
-    is native('libpq') is export
+    is export
+    is native('libpq')
     { ... }
 
 sub PQfname( OpaquePointer $res, Int $fieldnum )
     returns Str
-    is native('libpq') is export
+    is export
+    is native('libpq')
     { ... }
 
 sub PQgetvalue( OpaquePointer $res, Int $tuplenum, Int $fieldnum )
     returns Str
-    is native('libpq') is export
+    is export
+    is native('libpq')
     { ... }
 
 sub PQnfields( OpaquePointer $res )
     returns Int
-    is native('libpq') is export
+    is export
+    is native('libpq')
     { ... }
 
 sub PQntuples( OpaquePointer $res )
     returns Int
-    is native('libpq') is export
+    is export
+    is native('libpq')
     { ... }
 
 sub PQresultStatus( OpaquePointer $res )
     returns Int
-    is native('libpq') is export
+    is export
+    is native('libpq')
     { ... }
 
 sub PQstatus( OpaquePointer $conn )
     returns Int
-    is native('libpq') is export
+    is export
+    is native('libpq')
     { ... }
 
  # from libpq-fe.h  These should of course be constants or perhaps even enums

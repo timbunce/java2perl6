@@ -13,7 +13,9 @@ class DBDI does java::sql::DriverManager {
     --> java::sql::Connection   #  java.sql.Connection
     ) {
         say "> getConnection";
-        my $con = DBDI_pg::Connection.new;
+        my $conninfo = "host=localhost user=testuser password=testpass dbname=zavolaj";
+        my %opt;
+        my $con = DBDI_pg::Driver.connect($conninfo);
         say "< getConnection";
         return $con;
     }
