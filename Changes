@@ -1,5 +1,8 @@
 Revision history for Perl extension Java::Javap.
 
+0.07 July 19th 2010
+    - Assorted code generation improvements.
+
 0.06 July 10th 2010
     - Renamed command to java2perl6api.
     - Renamed distro to Java-2Perl6API.
