@@ -15,7 +15,7 @@ plan tests    => 5;
 
 my $perl       = $^X;
 my $java2perl6 = File::Spec->catfile( 'bin', 'java2perl6api' );
-my $java2perl6cmd = "$perl $java2perl6 --trace 0 --javapopts '-classpath testjavas'";
+my $java2perl6cmd = "$perl $java2perl6 --trace 0 --nocheck --javapopts '-classpath testjavas'";
 my $testclass  = 'IntTest';
 
 #--------------------------------------------------------------------
