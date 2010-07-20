@@ -42,6 +42,12 @@ sub PQfname( OpaquePointer $res, Int $fieldnum )
     is native('libpq')
     { ... }
 
+sub PQgetisnull( OpaquePointer $res, Int $tuplenum, Int $fieldnum )
+    returns Int
+    is export
+    is native('libpq')
+    { ... }
+
 sub PQgetvalue( OpaquePointer $res, Int $tuplenum, Int $fieldnum )
     returns Str
     is export

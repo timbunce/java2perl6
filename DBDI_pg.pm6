@@ -10,6 +10,24 @@ use libpq;
 class DBDI_pg::ResultSet does java::sql::ResultSet {
     has $conn;
     has $db_conn;
+    has $db_res;
+    has $row_num;
+
+    method next (
+    --> Bool   #  boolean
+    ) {
+        return (++$row_num <= PQntuples($db_res));
+    } # throws java.sql.SQLException
+
+    multi method getString (
+        Int $v1,  # int
+    --> Str   #  java.lang.String
+    ) {
+        return Str if PQgetisnull($db_res, $row_num-1, $v1);
+        my $field = PQgetvalue($db_res, $row_num-1, $v1-1);
+        return $field;
+    } # throws java.sql.SQLException
+
 }
 
 class DBDI_pg::Statement does java::sql::Statement {
@@ -31,7 +49,7 @@ class DBDI_pg::Statement does java::sql::Statement {
             die sprintf("FETCH ALL failed: %s", $msg);
         }
 
-        my $result = DBDI_pg::ResultSet.new(:conn(self), :$db_conn);
+        my $result = DBDI_pg::ResultSet.new(:conn(self), :$db_conn, :$db_res);
         say "< executeQuery";
         return $result;
     }
@@ -57,7 +75,7 @@ class DBDI_pg::Driver does java::sql::Driver {
 
     multi method connect (
         Str $v1,  # java.lang.String
-        #Hash $v2,
+        Hash $v2,
     --> java::sql::Connection   #  java.sql.Connection
     ) {
         say "> connect '$v1'";

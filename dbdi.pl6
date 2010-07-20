@@ -2,8 +2,14 @@ use v6;
 
 use DBDI;
 
-my $con = DBDI.getConnection('', '', '');
-my $stmt = $con.createStatement;
+my $conninfo = "host=localhost user=testuser password=testpass dbname=zavolaj";
+
+my $con    = DBDI.getConnection($conninfo, '', '');
+
+my $stmt   = $con.createStatement;
+
 my $result = $stmt.executeQuery('select * from pg_database');
-die $! if $!;
-say $result.perl;
+
+while ( $result.next ) {
+    say $result.getString(1);
+}
