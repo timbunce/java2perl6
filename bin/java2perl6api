@@ -39,12 +39,13 @@ my @classes = @ARGV
     or die "usage: $0 [options] class [ class ... ]\nUse $0 --help for help\n";
 
 if ($opt_check) {
+    # XXX fix to be portable to windows
     my $perl6_ver = qx{perl6 --version 2>&1};
     if ($perl6_ver) {
         print "perl6: $perl6_ver\n";
     }
     else {
-        warn "perl6 not available: $perl6_ver\n";
+        warn "perl6 not available so --check disabled\n";
         $opt_check = 0;
     }
 }
