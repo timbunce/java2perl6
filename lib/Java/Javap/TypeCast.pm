@@ -138,16 +138,17 @@ sub _add_type_casts_from_DATA {
 
 =head2 cast
 
-    $perl_type = $type_caster->cast( $java_type );
+    $perl_type = $type_caster->defined_cast( $java_type );
 
-Returns a perl type for the corresponding java type argument.
+Returns a perl type for the corresponding java type argument if an type mapping
+has been defined, else undef.
 
-Firstly java type is looked up in the type mapping. If a defined value is found
-then it's returned.
+Firstly the java type is looked up verbatim in the type mapping.
+If a defined value is found then it's returned.
 
-If there's no explicit match for the full type name then cast() checks for
+If there's no verbatim match for the full type name then defined_cast() checks for
 wildcard matches by removing trailing words and appending a '*'. For example,
-if there's no entry for 'sun.lang.annotation.foo' the cast() would look for
+if there's no entry for 'sun.lang.annotation.foo' the defined_cast() would look for
 each of these in turn:
 
     sun.lang.annotation.foo
@@ -156,11 +157,9 @@ each of these in turn:
     sun.*
     *
 
-If no match is found then cast() calls fallback_cast().
-
 =cut
 
-sub cast {
+sub defined_cast {
     my $self      = shift;
     my $java_type = shift;
   
@@ -179,12 +178,9 @@ sub cast {
         }
     }
 
-    if (not defined $perl6_type) {
-        $perl6_type = $self->fallback_cast($java_type);
-    }
-
     return $perl6_type;
 }
+
 
 
 =head2 fallback_cast()
@@ -209,6 +205,27 @@ sub fallback_cast {
     return $perl6_type;
 }
 
+
+=head2 cast
+
+    $perl_type = $type_caster->cast( $java_type );
+
+Returns the result of calling L</defined_cast>, if defined, else returns the
+result of calling L</fallback_cast>.
+
+=cut
+
+sub cast {
+    my $self      = shift;
+    my $java_type = shift;
+    my $perl6_type = $self->defined_cast($java_type);
+
+    if (not defined $perl6_type) {
+        $perl6_type = $self->fallback_cast($java_type);
+    }
+
+    return $perl6_type;
+}
 
 =head1 AUTHOR
 
