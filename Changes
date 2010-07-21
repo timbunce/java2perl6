@@ -1,5 +1,9 @@
 Revision history for Perl extension Java::Javap.
 
+0.08 July 20th 2010
+    - Added very experimental DBDI files
+    - Fixed references to old Std generator
+
 0.07 July 19th 2010
     - Assorted code generation improvements.
 
