@@ -1,0 +1,19 @@
+java.net.URLStreamHandler   Any
+java.net.URLConnection      Any
+java.net.URLStreamHandlerFactory    Any
+java.net.URL    Str
+java.sql.Clob   Str
+java.sql.NClob   Str
+java.sql.Blob   Buf
+java.sql.SQLXML Str
+java.io.PrintStream IO
+java.sql.SQLPermission  Any
+java.security.BasicPermission Any
+javax.sql.ConnectionEvent   Any
+javax.sql.ConnectionEventListener Any
+javax.sql.StatementEventListener Any
+javax.sql.RowSetListener Any
+javax.sql.XAConnection Any
+java.io.PrintWriter IO
+
+
