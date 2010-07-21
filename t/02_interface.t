@@ -205,7 +205,6 @@ class com::example::Second { ... };
 
 role com::example::NestedIntTest {
 
-    # our Int $USELESS_CONSTANT = ...; # int
     method USELESS_CONSTANT (--> Int) is export { ... }
 
     method array_returner (
@@ -218,12 +217,12 @@ role com::example::NestedIntTest {
 
     multi method object_returner (
     --> Str   #  java.lang.String
-    ) { ... }
+    ) { ... } # throws java.lang.NumberFormatException, java.lang.Exception
 
     multi method object_returner (
         Str $v1,  # java.lang.String
     --> Str   #  java.lang.String
-    ) { ... }
+    ) { ... } # throws java.lang.NumberFormatException
 
     method recurse_for_me (
     --> com::example::Second   #  com.example.Second

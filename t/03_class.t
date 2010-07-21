@@ -186,7 +186,7 @@ my @correct_perl_6 = split /\n/, <<'EO_Correct_Perl_6';
 use v6;
 
 
-class ClassTest {
+role ClassTest {
 
     multi method new (
     --> ClassTest   #  ClassTest
@@ -246,9 +246,8 @@ eq_or_diff( \@perl_6, \@correct_perl_6, 'emission' )
 use v6;
 
 
-class dupMethodTest {
+role dupMethodTest {
 
-    # our Int $USELESS_CONSTANT = ...; # int
     method USELESS_CONSTANT (--> Int) is export { ... }
 
     method new (
