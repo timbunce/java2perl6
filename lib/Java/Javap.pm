@@ -9,10 +9,9 @@ our $JAVAP_EXECUTABLE = 'javap';
 
 use Java::Javap::TypeCast;
 
-sub get_included_types {
+sub get_referenced_typenames {
     shift; # invoked through this class, discard our name
     my $tree     = shift;
-    my $caster   = shift;
    
     my %answers;
 
@@ -31,9 +30,17 @@ sub get_included_types {
 
     # remove own class
     delete $answers{ $tree->{java_qualified_name} };
+    delete $answers{void};
 
-    return [ grep { !_skip_it($_, $caster) } keys %answers ];
+    return keys %answers;
 }
+
+sub get_included_types { # XXX change name
+    my ($class, $tree, $caster) = @_;
+    my @types = $class->get_referenced_typenames($tree);
+    return [ grep { not $caster->defined_cast($_) } @types ];
+}
+
 
 sub invoke_javap {
 	my ($self, $classes, $options) = @_;
@@ -73,25 +80,6 @@ sub javap_test {
 	my $output;
 	eval { $output = $self->invoke_javap(['java.lang.String']) };
 	return $output ? 1 : 0;
-}
-
-# Returns true if type casts to a builtin perl6 type
-sub _skip_it {
-    my $type_name    = shift;
-    my $caster  = shift;
-    
-    return 1 if not defined $type_name;
-    return 1 if $type_name eq 'void';
-
-    my $cast = $caster->cast( $type_name );
-    $cast    =~ s/::/./g;
-
-    my $skip_it = 0;
-
-    $skip_it++ if ( $type_name ne $cast );
-    #warn "Skipping $type_name ($cast)\n" if $skip_it;
-
-    return $skip_it;
 }
 
 1;
