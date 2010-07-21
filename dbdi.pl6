@@ -2,6 +2,8 @@ use v6;
 
 use DBDI;
 
+say $_ for (CREATE_HASH_FROM_LOW_LEVEL %Perl6::Module::Loader::LOADED).keys.sort;
+
 my $conninfo = "host=localhost user=testuser password=testpass dbname=zavolaj";
 
 my $con    = DBDI.getConnection($conninfo, '', '');
