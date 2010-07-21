@@ -2,3 +2,4 @@ Java-2Perl6API-*
 .build
 jdbclib
 jdbclib.prev
+*.swp
