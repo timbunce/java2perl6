@@ -16,30 +16,23 @@ sub get_included_types {
    
     my %answers;
 
-    # first, get parent type
-    my $parent   = $tree->{ parent };
-    $answers{ $parent }++ unless ( _skip_it( $parent, $caster ) );
+    for my $type_name ( $tree->{ parent }, @{ $tree->{implements} } ) {
+        $answers{ $type_name }++ if $type_name;
+    }
 
-    # now get types from the children
-    my $contents = $tree->{ contents };
+    foreach my $element ( @{ $tree->{contents} } ) {
 
-    ELEMENT:
-    foreach my $element ( @{ $contents } ) {
-        if ($element->{ body_element } ne 'method') {
-            next ELEMENT;
-        }
+        $answers{ $element->{type}->{name} }++ if $element->{type};
 
-        foreach my $item ( $element->{ type }, @{ $element->{ args } }) {
-            my $type_name = $item->{ name };
-            next if _skip_it( $type_name, $caster );
-
-            $answers{ $type_name }++
-                unless $type_name eq $tree->{java_qualified_name};
-            #warn "Noted $element->{name} type $type_name\n";
+        if (my $args = $element->{args}) {
+            $answers{ $_->{name} }++ for @$args;
         }
     }
 
-    return [ keys %answers ];
+    # remove own class
+    delete $answers{ $tree->{java_qualified_name} };
+
+    return [ grep { !_skip_it($_, $caster) } keys %answers ];
 }
 
 sub invoke_javap {
