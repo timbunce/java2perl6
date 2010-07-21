@@ -171,7 +171,7 @@ Options to be passed to the C<javap> process.
 
 =item C<Java::Javap::Generator>
 
-=item C<Java::Javap::Generator::Std>
+=item C<Java::Javap::Generator::Perl6>
 
 =item C<javap.grammar>
 

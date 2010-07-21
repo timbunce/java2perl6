@@ -169,7 +169,7 @@ is_deeply( $tree, $expected_tree, 'class' )
 # Emission
 #--------------------------------------------------------------------
 
-my $generator = Java::Javap::Generator->get_generator( 'Std' );
+my $generator = Java::Javap::Generator->get_generator( 'Perl6' );
 my $perl_6    = $generator->generate(
     {
         class_file  => 'ClassTest',
@@ -228,7 +228,7 @@ eq_or_diff( \@perl_6, \@correct_perl_6, 'emission' )
 
   my $tree   = $parser->comp_unit( $decomp );
 
-  my $generator = Java::Javap::Generator->get_generator( 'Std' );
+  my $generator = Java::Javap::Generator->get_generator( 'Perl6' );
   my $perl_6    = $generator->generate(
       {
           class_file  => 'dupMethodTest',

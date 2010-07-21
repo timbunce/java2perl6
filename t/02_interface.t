@@ -184,7 +184,7 @@ is_deeply( $unique_types, [ 'com.example.Second' ], 'unique_types' );
 # Emission
 #--------------------------------------------------------------------
 
-my $generator = Java::Javap::Generator->get_generator( 'Std' );
+my $generator = Java::Javap::Generator->get_generator( 'Perl6' );
 
 my $perl_6 = $generator->generate(
     {
