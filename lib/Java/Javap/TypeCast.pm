@@ -272,6 +272,13 @@ java.lang.String        Str
 java.lang.Number        Num
 java.lang.CharSequence  Str
 java.lang.Exception     Mu # XXX Failure?
+java.lang.Readable      Any
+java.lang.Writable      Any
+java.lang.Comparable    Any
+java.lang.Iterable      Any
+java.lang.Cloneable     Any
+
+java.security.Guard     Any
 
 # --- java.math ---
 java.math.BigInteger    Int
@@ -280,7 +287,7 @@ java.math.BigDecimal    Num # XXX Rat when available?
 
 # --- java.util ---
 # interfaces:
-java.util.Collection    Bag
+java.util.Collection    Hash
 java.util.Enumeration   Iterable
 java.util.Iterator      Any
 java.util.Map           Hash # KeyHash?
@@ -295,6 +302,9 @@ java.util.TimeStamp     DateTime
 
 # --- java.io ---
 java.io.InputStream     IO
+java.io.Serializable    Any
+java.io.Closeable       Any
+java.io.Flushable       IO
 
 # --- java.nio ---
 java.nio.ByteBuffer     Buf
