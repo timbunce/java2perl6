@@ -12,10 +12,8 @@ class DBDI does java::sql::DriverManager {
         Str $v3,  # java.lang.String
     --> java::sql::Connection   #  java.sql.Connection
     ) {
-        say "> getConnection $v1";
         my %opt;
         my $con = DBDI_pg::Driver.connect($v1, %opt);
-        say "< getConnection";
         return $con;
     }
 
