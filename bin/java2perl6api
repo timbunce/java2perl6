@@ -105,7 +105,7 @@ for my $class (sort keys %java_class_info) {
 
 for my $info (
     # compile deepest first as a slight optimization
-    sort { $b->{depth} <=> $a->{depth} } values %java_class_info
+    sort { ($b->{depth}||0) <=> ($a->{depth}||0) } values %java_class_info
 ) {
     next unless $opt_compile;
     my $class = $info->{java_class_name};
@@ -173,6 +173,11 @@ sub load_java_class_info {
 
     if ($recurse) {
         for my $ref_class (sort @$referenced_classes) {
+            if ($ref_class =~ m/\$/) {
+                warn "$ref_class: skipped private class\n"
+                    if $opt_trace >= 2;
+                next;
+            }
             load_java_class_info( $ref_class, $recurse+1 );
         }
     }
