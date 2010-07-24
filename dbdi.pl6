@@ -2,19 +2,20 @@ use v6;
 
 use DBDI;
 
-my $conninfo = "host=localhost user=testuser password=testpass dbname=zavolaj";
+my $dbname = prompt 'Database: ';
 
-my $con    = DBDI.getConnection($conninfo, '', '');
+my $con = DBDI.getConnection("dbname=$dbname", 'testuser', 'testpass');
 
-my $stmt   = $con.createStatement;
+while prompt 'SQL: ' -> $sql {
 
-my $result = $stmt.executeQuery('select * from pg_database');
-my $meta   = $result.getMetaData;
+    my $result = $con.createStatement.executeQuery($sql);
+    my $meta   = $result.getMetaData;
 
-my @names = map { $meta.getColumnLabel($_) }, 1..$meta.getColumnCount;
-say @names.join(", ");
+    my @names = map { $meta.getColumnLabel($_) }, 1..$meta.getColumnCount;
+    say @names.join(", ");
 
-while ( $result.next ) {
-    my @row = map { $result.getString($_) }, 1..$meta.getColumnCount;
-    say @row.join(", ");
+    while ( $result.next ) {
+        my @row = map { $result.getString($_) }, 1..@names.elems;
+        say @row.join(", ");
+    }
 }

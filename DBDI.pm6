@@ -7,13 +7,14 @@ use DBDI_pg;
 class DBDI does java::sql::DriverManager {
 
     multi method getConnection (
-        Str $v1,  # java.lang.String
-        Str $v2,  # java.lang.String
-        Str $v3,  # java.lang.String
-    --> java::sql::Connection   #  java.sql.Connection
+        Str $url,
+        Str $user,
+        Str $pass,
+    --> java::sql::Connection
     ) {
+        my $conninfo = "host=localhost $url user=$user password=$pass";
         my %opt;
-        my $con = DBDI_pg::Driver.connect($v1, %opt);
+        my $con = DBDI_pg::Driver.connect($conninfo, %opt);
         return $con;
     }
 
