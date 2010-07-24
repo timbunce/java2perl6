@@ -23,7 +23,7 @@ GetOptions(
     'outdir=s'    => \(my $opt_outdir = '.'),
     'nest!'       => \(my $opt_nest = 1),
     'recurse!'    => \(my $opt_recurse = 1),
-    'check!'      => \(my $opt_check = 1),
+    'compile!'    => \(my $opt_compile = 1),
     'set_types=s'  => sub {
         $type_caster->set_type_casts({});
         $type_caster->add_type_casts_from_file( $_[1] );
@@ -38,15 +38,15 @@ GetOptions(
 my @classes = @ARGV
     or die "usage: $0 [options] class [ class ... ]\nUse $0 --help for help\n";
 
-if ($opt_check) {
+if ($opt_compile) {
     # XXX fix to be portable to windows
     my $perl6_ver = qx{perl6 --version 2>&1};
     if ($perl6_ver) {
         print "perl6: $perl6_ver\n";
     }
     else {
-        warn "perl6 not available so --check disabled\n";
-        $opt_check = 0;
+        warn "perl6 not available so --compile disabled\n";
+        $opt_compile = 0;
     }
 }
 
@@ -106,22 +106,19 @@ for my $class (sort keys %java_class_info) {
 }
 
 for my $class (sort keys %java_class_info) {
-    next unless $opt_check;
+    next unless $opt_compile;
 
     my $info = $java_class_info{$class};
     my $file_name = $info->{output_filename}
         or next;
 
-    warn "checking $file_name - $info->{kind} $class\n" if $opt_trace;
+    warn "compiling $file_name - $info->{kind} $class\n" if $opt_trace;
 
     (my $pirfile = $file_name) =~ s/\.pm6$/.pir/;
-    # we're effectively doing perl6 -c here but we don't use -c
-    # because it's noisy and we know we're only compiling modules
     my @perl6cmd = ("perl6", "--target=PIR", "--output=$pirfile", $file_name);
     local $ENV{PERL6LIB} = join(":",grep { $_ } $opt_outdir,$ENV{PERL6LIB});
     warn "\t @perl6cmd\n" if $opt_trace >= 2;
     $check_status{$file_name} = (system(@perl6cmd) == 0);
-    unlink $pirfile;
 }
 
 if (%check_status) {
@@ -240,20 +237,21 @@ where options are:
 
  --help          this message
  --outdir=D      root directory for output files (default '.')
- --nonest        place output files in nested directories
- --nocheck       check the generated code compiles using perl6
- --norecurse     check the generated code compiles using perl6
+ --nonest        don't place output files in nested directories
+ --nocompile     don't compile the generated modules into .pir files
+ --norecurse     don't recurse into types used by this class
  --set_types=S   replace typemapings with those in file S
  --add_types=S   add/override typemapings with those in file S
  --javapopts=S   a string of command line flags for javap, example:
                     -j '-classpath /some/path'
  --genwith=S     the name of a Java::Javap::Generator:: module
                     which will make the output, defaults to Perl6
- --genopts=S     strings to pass to your -g constructor
+ --genopts=S     strings to pass to your --genwith constructor
  --trace=N       defines the trace level (integer value), where:
                     0 means silence, no trace,
-                    1 is minimum trace messages,
+                    1 is the default minimum trace messages,
                     >= 9 for full trace
+
 EO_Help
     exit;
 }
@@ -270,31 +268,25 @@ java2perl6api - a Java to Perl 6 API translator
 
  --help          this message
  --outdir=D      root directory for output files (default '.')
- --nonest        place output files in nested directories
- --nocheck       check the generated code compiles using perl6
- --norecurse     check the generated code compiles using perl6
+ --nonest        don't place output files in nested directories
+ --nocompile     don't compile the generated modules into .pir files
+ --norecurse     don't recurse into types used by this class
  --set_types=S   replace typemapings with those in file S
  --add_types=S   add/override typemapings with those in file S
  --javapopts=S   a string of command line flags for javap, example:
                     -j '-classpath /some/path'
  --genwith=S     the name of a Java::Javap::Generator:: module
                     which will make the output, defaults to Perl6
- --genopts=S     strings to pass to your -g constructor
+ --genopts=S     strings to pass to your --genwith constructor
  --trace=N       defines the trace level (integer value), where:
                     0 means silence, no trace,
-                    1 is minimum trace messages,
+                    1 is the default minimum trace messages,
                     >= 9 for full trace
 
 =head1 DESCRIPTION
 
 This script is the driver for the C<Java::Javap> module which reads compiled
 Java files, parses them into a tree, and generates output in Perl 6.
-
-=head2 Alternative Output Formats
-
-This distribution ships with only one generator: C<Java::Javap::Generator::Perl6>
-which generates Perl 6 roles in C<.pm6> files. An alternative generator can be
-specified with the C<--genwith> option.
 
 =head1 EXAMPLES
 
@@ -345,15 +337,23 @@ Use the --nonest to write all files into the root output directory.
 Disable the default behaviour of recursively processing any classes referenced
 by the specified class.
 
-=item --nocheck
+=item --nocompile
 
-Disable the validity check of the generated Perl 6.
+Disable compiling the generated Perl 6 .pm6 file into a .pir file.
+(Generating a .pir file takes time but significantly speeds up any future use
+of the module.)
 
 =item --trace N
 
 Integer value. Assign zero to it (--trace=0) to silence all messages from
 the script. 1 is the minimum trace level. An integer >= 9 will emit full
 trace messages.
+
+=item --genwith S
+
+Specify the Java::Javap::Generator::* class to use to generate the output files.
+Defaults to Perl6 (i.e. C<Java::Javap::Generator::Perl6>) which generates Perl
+6 roles in C<.pm6> files.
 
 =back
 
