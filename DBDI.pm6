@@ -1,10 +1,18 @@
 use v6;
 
+class java::sql::Driver { ... };
+class java::sql::Connection { ... };
+
 use java::sql::DriverManager;
 
-use DBDI_pg;
+class DBDI::DriverManager does java::sql::DriverManager {
 
-class DBDI does java::sql::DriverManager {
+    my %drivers;
+
+    method registerDriver ( java::sql::Driver $driver ) {
+        say "registerDriver($driver)";
+        %drivers{$driver} = $driver;
+    } # throws java.sql.SQLException
 
     multi method getConnection (
         Str $url,
@@ -12,9 +20,20 @@ class DBDI does java::sql::DriverManager {
         Str $pass,
     --> java::sql::Connection
     ) {
-        my $conninfo = "host=localhost $url user=$user password=$pass";
-        my %opt;
-        my $con = DBDI_pg::Driver.connect($conninfo, %opt);
+        say "> getConnection($url, $user, $pass)";
+
+        my Hash $opt .= new;
+        $opt.<user> = $user;
+        $opt.<password> = $pass;
+
+        my $con;
+        for %drivers.values -> $driver {
+            $con = $driver.connect($url, $opt);
+            last if $con;
+        }
+        die "Unable to find a driver to handle $url" if not $con;
+
+        say "< getConnection $con";
         return $con;
     }
 

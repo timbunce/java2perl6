@@ -1,10 +1,11 @@
 use v6;
 
 use DBDI;
+use DBDI_pg;
 
-my $dbname = prompt 'Database: ';
+my $dbname = @*ARGS.shift || prompt 'Database: ';
 
-my $con = DBDI.getConnection("dbname=$dbname", 'testuser', 'testpass');
+my $con = DBDI::DriverManager.getConnection("dbname=$dbname", 'testuser', 'testpass');
 
 while prompt 'SQL: ' -> $sql {
 

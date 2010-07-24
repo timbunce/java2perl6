@@ -108,16 +108,20 @@ class DBDI_pg::Connection does java::sql::Connection {
 
 class DBDI_pg::Driver does java::sql::Driver {
 
+    DBDI::DriverManager.registerDriver( DBDI_pg::Driver.new );
+
+
     multi method connect (
-        Str $v1,
-        Hash $v2,
+        Str $url,
+        Hash $prop,
     --> java::sql::Connection
     ) {
-        say "> connect '$v1'";
-        my $db_conn = PQconnectdb($v1);
+        say "> connect '$url'";
+        my $conninfo = "host=localhost $url user=$prop.<user> password=$prop.<password>";
+        my $db_conn = PQconnectdb($conninfo);
         if (PQstatus($db_conn) != CONNECTION_OK) {
             my $msg = PQerrorMessage($db_conn);
-            die sprintf( "Connection to database ($v1) failed: %s %s", $msg, PQstatus($db_conn));
+            die sprintf( "Connection to database ($conninfo) failed: %s %s", $msg, PQstatus($db_conn));
         }
         my DBDI_pg::Connection $conn .= new( :$db_conn );
 
