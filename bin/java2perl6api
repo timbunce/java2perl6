@@ -63,10 +63,8 @@ my $jenny  = Java::Javap::Generator->get_generator(
 
 my %check_status;
 
-my %top_types;
 foreach my $class ( @classes ) {
-    my $types = load_java_class_info( $class, $opt_recurse ) || [];
-    $top_types{$_}++ for @$types;
+    load_java_class_info( $class, $opt_recurse );
 }
 
 for my $class (sort keys %java_class_info) {
@@ -105,10 +103,13 @@ for my $class (sort keys %java_class_info) {
     }
 }
 
-for my $class (sort keys %java_class_info) {
+for my $info (
+    # compile deepest first as a slight optimization
+    sort { $b->{depth} <=> $a->{depth} } values %java_class_info
+) {
     next unless $opt_compile;
+    my $class = $info->{java_class_name};
 
-    my $info = $java_class_info{$class};
     my $file_name = $info->{output_filename}
         or next;
 
@@ -131,11 +132,6 @@ if (%check_status) {
     }
     printf "%d ok, %d failed.\n", $passed, keys(%check_status)-$passed
         if keys %check_status > 1;
-}
-
-if ($opt_trace >= 2) {
-    print "Types used by specified classes:\n";
-    printf "%s\n", $_ for sort keys %top_types;
 }
 
 exit 0;
@@ -161,11 +157,13 @@ sub load_java_class_info {
 
     $java_class_info{$class} = {
         %{ $java_class_info{$class} || {} },
+        java_class_name => $class,
         javap_command => $javap_command,
         decomp => $decomp,
         tree => $tree,
         refers_to_classes => $referenced_classes,
         kind => $tree->{class_or_interface},
+        depth => $recurse,
     };
 
     warn "$class: ".Dumper($java_class_info{$class}) if $opt_trace >= 9;
