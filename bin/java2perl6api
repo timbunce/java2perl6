@@ -42,6 +42,7 @@ if ($opt_compile) {
     # XXX fix to be portable to windows
     my $perl6_ver = qx{perl6 --version 2>&1};
     if ($perl6_ver) {
+        $perl6_ver = $1 if $perl6_ver =~ m/(Rakudo Perl.*)/; # tidy
         print "perl6: $perl6_ver\n";
     }
     else {
