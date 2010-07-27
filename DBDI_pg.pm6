@@ -110,14 +110,17 @@ class DBDI_pg::Driver does java::sql::Driver {
 
     DBDI::DriverManager.registerDriver( DBDI_pg::Driver.new );
 
-
     multi method connect (
-        Str $url,
+        Str $url is copy,
         Hash $prop,
     --> java::sql::Connection
     ) {
         say "> connect '$url'";
+
+        return fail() if not $url ~~ s/^dbdi\:postgres\://;
+
         my $conninfo = "host=localhost $url user=$prop.<user> password=$prop.<password>";
+        say "- connect '$conninfo'";
         my $db_conn = PQconnectdb($conninfo);
         if (PQstatus($db_conn) != CONNECTION_OK) {
             my $msg = PQerrorMessage($db_conn);

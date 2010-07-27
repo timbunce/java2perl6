@@ -5,7 +5,7 @@ use DBDI_pg;
 
 my $dbname = @*ARGS.shift || prompt 'Database: ';
 
-my $con = DBDI::DriverManager.getConnection("dbname=$dbname", 'testuser', 'testpass');
+my $con = DBDI::DriverManager.getConnection("dbdi:postgres:dbname=$dbname", 'testuser', 'testpass');
 
 while prompt 'SQL: ' -> $sql {
 
