@@ -1,0 +1,42 @@
+{
+   "abstract" : "Translate Java Class and Interface Definitions to Perl 6 Roles",
+   "author" : [
+      "Tim Bunce <Tim.Bunce@pobox.com>"
+   ],
+   "dynamic_config" : 0,
+   "generated_by" : "Dist::Zilla version 4.101612, CPAN::Meta::Converter version 2.101610",
+   "license" : [
+      "perl_5"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : "2"
+   },
+   "name" : "Java-2Perl6API",
+   "prereqs" : {
+      "configure" : {
+         "requires" : {
+            "ExtUtils::MakeMaker" : "6.31"
+         }
+      },
+      "runtime" : {
+         "requires" : {
+            "Parse::RecDescent" : "1.0",
+            "Template" : "2.0",
+            "Test::Differences" : 0,
+            "Test::More" : "0.82",
+            "Test::Most" : 0
+         }
+      }
+   },
+   "release_status" : "stable",
+   "resources" : {
+      "repository" : {
+         "type" : "git",
+         "url" : "git://github.com/timbunce/java2perl6.git",
+         "web" : "http://github.com/timbunce/java2perl6"
+      }
+   },
+   "version" : "0.09"
+}
+

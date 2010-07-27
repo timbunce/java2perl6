@@ -3,9 +3,10 @@ use v6;
 use DBDI;
 use DBDI_pg;
 
-my $dbname = @*ARGS.shift || prompt 'Database: ';
+# e.g. "dbdi:postgres:dbname=$dbname"
+my $url = @*ARGS.shift || prompt "Enter a 'dbdi:driver:...' URL: ";
 
-my $con = DBDI::DriverManager.getConnection("dbdi:postgres:dbname=$dbname", 'testuser', 'testpass');
+my $con = DBDI::DriverManager.getConnection($url, 'testuser', 'testpass');
 
 while prompt 'SQL: ' -> $sql {
 
