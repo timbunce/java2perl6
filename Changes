@@ -1,5 +1,11 @@
 Revision history for Perl extension Java::Javap.
 
+0.09 July 27th 2010
+    - Greatly improved code (declaration) generation.
+    - Includes a working (but very minimal) example DBDI driver for PostgreSQL.
+    - Includes a working perl6 script to use the DBDI driver.
+    - Defaults to compiling the .pm6 into adjacent .pir files for performance.
+
 0.08 July 20th 2010
     - Added very experimental DBDI files
     - Fixed references to old Std generator
