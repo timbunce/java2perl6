@@ -32,6 +32,7 @@ comp_unit_decl : ACCESS class_qualifier(s?)
                  CLASS_OR_INTERFACE qualified_name
                  extends_clause(?)
                  implements_clause(?)
+                 verbose_class_details(?)
 {
     my $perl_qualified_name = $item{ qualified_name };
     $perl_qualified_name    =~ s/\./::/g;
@@ -46,7 +47,9 @@ comp_unit_decl : ACCESS class_qualifier(s?)
     }
 }
 
-class_qualifier   : 'final' { 'final' }
+verbose_class_details : /[^{]*/
+
+class_qualifier   : 'final'    { 'final'  }
                   | 'abstract' { 'status' }
 
 extends_clause    : 'extends' qualified_name { $item{ qualified_name } }
@@ -59,13 +62,15 @@ body_element : constant { $item[1] }
              | method   { $item[1] }
              | variable { $item[1] }
 
-constant : ACCESS 'static' constant_modifier(s?) arg NAME ';' {
+constant : ACCESS 'static' constant_modifier(s?) arg NAME ';'
+           verbose_constant_details(?) {
     {
         body_element => 'constant',
         access       => $item{ ACCESS },
         modifiers    => $item{ 'constant_modifier(s?)' },
         type         => $item{ arg }[0],
         name         => $item{ NAME },
+        value        => $item{ 'verbose_constant_details(?)' }[0],
     }
 }
          | 'static' 'transient' arg NAME ';' {
@@ -76,11 +81,18 @@ constant : ACCESS 'static' constant_modifier(s?) arg NAME ';' {
     }
 }
 
+verbose_constant_details : 'Constant' 'value:' arg constant_value {
+    $item{ constant_value }
+}
+
+constant_value : /[^\n]*/
+
 constant_modifier : 'final' | 'transient' | 'volatile'
 
 method : ACCESS method_qualifier(s?)
          arg NAME '(' arg_list(?) ')'
-         throws_clause(?) ';' {
+         throws_clause(?) ';'
+         verbose_exceptions_details(?) {
              $methods{ $item[4] }++;
              {
                  body_element => 'method',
@@ -93,7 +105,8 @@ method : ACCESS method_qualifier(s?)
              }
          }
        | ACCESS /(native)?/ qualified_name '(' arg_list(?) ')'
-         throws_clause(?) ';' {
+         throws_clause(?) ';'
+         verbose_exceptions_details(?) {
              $constructors++;
              $methods{ 'new' }++;
              {
@@ -111,6 +124,8 @@ method : ACCESS method_qualifier(s?)
                  },
              }
          }
+
+verbose_exceptions_details : 'Exceptions:' throws_clause
 
 method_qualifier : 'abstract'     { 'abstract'     }
                  | 'native'       { 'native'       }
