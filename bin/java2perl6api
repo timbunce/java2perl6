@@ -149,6 +149,19 @@ sub load_java_class_info {
     my $javap_command = "javap $opt_javapopts $class";
     warn "$javap_command\n" if $opt_trace >= 3;
     my $decomp = `$javap_command`; # XXX check exit status
+
+    # XXX temp hacks till parser is taught about these
+    #
+    # public abstract java.math.BigDecimal getBigDecimal(int, int)   throws java.sql.SQLException;
+    #   Exceptions:
+    #      throws java.sql.SQLException  Deprecated: true
+    $decomp =~ s/Deprecated: .*//g;
+    #   public abstract java.lang.Object getObject(int, java.util.Map)   throws java.sql.SQLException;
+    #   Exceptions:
+    #   throws java.sql.SQLException  Signature: length = 0x2
+    #   00 FFFFFFB5
+    $decomp =~ s/Signature: length = .*?\n\n//sg;
+
     warn $decomp if $opt_trace >= 3;
     my $tree   = $parser->comp_unit( $decomp )
         or die "Error parsing output of '$javap_command'\n";
