@@ -56,7 +56,7 @@ sub invoke_javap {
 	$options ||= {};
 
 	# Open the real javap executable and read output from it
-	open(my $javap_fh, '-|', $JAVAP_EXECUTABLE, %$options, @$classes)
+	open(my $javap_fh, '-|', $JAVAP_EXECUTABLE, '-v', %$options, @$classes)
 		or croak "'$JAVAP_EXECUTABLE @{[ %$options ]} @$classes' failed: $!";
 
 	my $javap_output = q{};

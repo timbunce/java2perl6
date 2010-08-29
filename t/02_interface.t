@@ -42,6 +42,7 @@ my $expected_tree = {
                                 array_depth => 0,
                                 array_text => '',
                             },
+                            value => '4',
                           },
                           {
                             'attrs' => [
@@ -205,7 +206,7 @@ class com::example::Second { ... };
 
 role com::example::NestedIntTest {
 
-    method USELESS_CONSTANT (--> Int) is export { ... }
+    method USELESS_CONSTANT (--> Int) is export { 4 }
 
     method array_returner (
         Str $v1,  # java.lang.String
