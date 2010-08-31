@@ -92,7 +92,7 @@ constant_modifier : 'final' | 'transient' | 'volatile'
 method : ACCESS method_qualifier(s?)
          arg NAME '(' arg_list(?) ')'
          throws_clause(?) ';'
-         verbose_exceptions_details(?) {
+         verbose_method_details(?) {
              $methods{ $item[4] }++;
              {
                  body_element => 'method',
@@ -106,7 +106,7 @@ method : ACCESS method_qualifier(s?)
          }
        | ACCESS /(native)?/ qualified_name '(' arg_list(?) ')'
          throws_clause(?) ';'
-         verbose_exceptions_details(?) {
+         verbose_method_details(?) {
              $constructors++;
              $methods{ 'new' }++;
              {
@@ -125,7 +125,16 @@ method : ACCESS method_qualifier(s?)
              }
          }
 
-verbose_exceptions_details : 'Exceptions:' throws_clause
+verbose_method_details : verbose_exceptions(?)
+                         verbose_method_code(?)
+                         verbose_line_number_table(?)
+
+verbose_exceptions        : 'Exceptions:' throws_clause
+verbose_method_code       : 'Code:' /Stack.*=\d+/ byte_code_line(s?)
+verbose_line_number_table : 'LineNumberTable:' number_table_line(s?)
+
+byte_code_line : /\d+:[^\n]*/
+number_table_line : /line \d+:[^\n]*/
 
 method_qualifier : 'abstract'     { 'abstract'     }
                  | 'native'       { 'native'       }
