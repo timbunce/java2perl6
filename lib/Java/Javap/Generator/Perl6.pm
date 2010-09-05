@@ -4,6 +4,7 @@ use strict;
 use warnings;
 
 use Template;
+use Template::Filters;
 use Java::Javap;
 use Java::Javap::TypeCast;
 
@@ -93,13 +94,29 @@ if (0) { # check that types actually are built-in to current perl6
     }
 }
 
+sub perl6_string_literal_filter {
+    my $value = shift;
+    $value =~ s/\\/\\\\/g;
+    $value =~ s/"/\\"/g;
+    $value =~ s/([^[:print:]])/ sprintf "\\u%04x", ord($1) /eg;
+    return qq{"$value"};
+}
+
+
 sub new {
     my $class = shift;
 
     my $self = bless { @_ }, $class;
 
+    my $filters = Template::Filters->new({
+        FILTERS => {
+            perl6_string_literal => \&perl6_string_literal_filter,
+        },
+    });
+    
     my $tt_args = {
         POST_CHOMP => 1,
+        LOAD_FILTERS => [ $filters ],
     };
     $self->tt_args_set( $tt_args );
 
@@ -342,7 +359,8 @@ method [% elem.name -%]
 [% END %]
 [% BLOCK constant_whole %]
     method [% elem.name %] (--> [% elem.type.perl_type_name %]) is export {
-    [%- IF elem.type.perl_type_name == 'Str' %] '[% elem.value | replace('\'','\\\'') %]'
+    [%- IF elem.type.perl_type_name == 'Str'
+    %] [% elem.value | perl6_string_literal %]
     [%- ELSIF elem.type.perl_type_name == 'Int' or elem.type.perl_type_name == 'Num' %] [% elem.value %]
     [%- ELSE %] ...
     [% END %] }
