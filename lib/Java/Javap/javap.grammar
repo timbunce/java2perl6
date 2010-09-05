@@ -68,6 +68,8 @@ constant : ACCESS 'static' constant_modifier(s?) arg NAME ';'
     my $value = $item{ 'verbose_constant_details(?)' }[0];
     # remove trailing 'd' from double constants
     $value =~ s/d$// if $type->{name} eq 'double';
+    # remove trailing 'l' from long constants
+    $value =~ s/l$// if $type->{name} eq 'long';
     #warn "constant( $item{ NAME } ) @{[ %$type ]}: '$value'";
     {
         body_element => 'constant',
@@ -133,12 +135,16 @@ method : ACCESS method_qualifier(s?)
 verbose_method_details : verbose_exceptions(?)
                          verbose_method_code(?)
                          verbose_line_number_table(?)
+                         verbose_method_deprecated(?)
 
 verbose_exceptions        : 'Exceptions:' throws_clause
 verbose_method_code       : 'Code:' /Stack.*=\d+/ byte_code_line(s?)
 verbose_line_number_table : 'LineNumberTable:' number_table_line(s?)
+verbose_method_deprecated : 'Deprecated:' 'true'
 
-byte_code_line : /\d+:[^\n]*/
+# Using "byte_code_line : /\d+:[^\n]*/" doesn't handle multi-line opcodes
+# like tableswitch in java.sql.Date.
+byte_code_line : /(?!LineNumberTable)[^\n]*/
 number_table_line : /line \d+:[^\n]*/
 
 method_qualifier : 'abstract'     { 'abstract'     }

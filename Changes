@@ -1,5 +1,8 @@
 Revision history for Perl extension Java::Javap.
 
+0.11 Sept 5th 2010
+    - Now includes constant values in the generated perl6 (Phil Crow)
+
 0.09 July 27th 2010
     - Greatly improved code (declaration) generation.
     - Includes a working (but very minimal) example DBDI driver for PostgreSQL.
