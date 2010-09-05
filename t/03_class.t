@@ -249,7 +249,7 @@ use v6;
 
 role dupMethodTest {
 
-    method USELESS_CONSTANT (--> Int) is export { ... }
+    method USELESS_CONSTANT (--> Int) is export { 4 }
 
     method new (
     --> dupMethodTest   #  dupMethodTest
