@@ -58,9 +58,14 @@ implements_clause : 'implements' comma_list  { $item{ comma_list } }
 body : body_element(s?) { $item[1] }
 
 body_element : constant { $item[1] }
-             | 'static' '{' '}' ';'  { { body_element => 'static_block' } }
+             | static_block { $item[1] }
              | method   { $item[1] }
              | variable { $item[1] }
+
+static_block : 'static' '{' '}' ';'
+    verbose_method_detail(s?) {
+        { body_element => 'static_block' }
+}
 
 constant : ACCESS 'static' constant_modifier(s?) arg NAME ';'
            verbose_constant_details(?) {
@@ -99,7 +104,7 @@ constant_modifier : 'final' | 'transient' | 'volatile'
 method : ACCESS method_qualifier(s?)
          arg NAME '(' arg_list(?) ')'
          throws_clause(?) ';'
-         verbose_method_details(?) {
+         verbose_method_detail(s?) {
              $methods{ $item[4] }++;
              {
                  body_element => 'method',
@@ -113,7 +118,7 @@ method : ACCESS method_qualifier(s?)
          }
        | ACCESS /(native)?/ qualified_name '(' arg_list(?) ')'
          throws_clause(?) ';'
-         verbose_method_details(?) {
+         verbose_method_detail(s?) {
              $constructors++;
              $methods{ 'new' }++;
              {
@@ -132,20 +137,30 @@ method : ACCESS method_qualifier(s?)
              }
          }
 
-verbose_method_details : verbose_exceptions(?)
-                         verbose_method_code(?)
-                         verbose_line_number_table(?)
-                         verbose_method_deprecated(?)
+verbose_method_detail : verbose_method_code
+                      | verbose_line_number_table
+                      | verbose_method_deprecated
+                      | verbose_exceptions
+                      | verbose_signature
+                      | verbose_annotations
 
-verbose_exceptions        : 'Exceptions:' throws_clause
 verbose_method_code       : 'Code:' /Stack.*=\d+/ byte_code_line(s?)
-verbose_line_number_table : 'LineNumberTable:' number_table_line(s?)
-verbose_method_deprecated : 'Deprecated:' 'true'
-
 # Using "byte_code_line : /\d+:[^\n]*/" doesn't handle multi-line opcodes
-# like tableswitch in java.sql.Date.
+# like tableswitch in java.sql.Date. Also skips "Exception table:"
 byte_code_line : /(?!LineNumberTable)[^\n]*/
+
+verbose_line_number_table : 'LineNumberTable:' number_table_line(s?)
 number_table_line : /line \d+:[^\n]*/
+
+verbose_method_deprecated : 'Deprecated:' 'true'
+verbose_exceptions        : 'Exceptions:' throws_clause
+
+verbose_signature         : /Signature: .*/ signature_line(s)
+signature_line : /\d\d\s+[A-F0-9 ]+/
+
+verbose_annotations       : /RuntimeVisibleAnnotations: .*/ annotations_line(s)
+annotations_line : /[A-F0-9][A-F0-9]/
+
 
 method_qualifier : 'abstract'     { 'abstract'     }
                  | 'native'       { 'native'       }

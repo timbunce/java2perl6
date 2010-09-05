@@ -13,8 +13,6 @@ use Java::Javap::Grammar;
 plan skip_all => "javap from Java SDK required: $!"
 	unless Java::Javap->javap_test();
 
-plan tests    => 1;
-
 #--------------------------------------------------------------------
 # Grammar
 #--------------------------------------------------------------------
@@ -264,3 +262,23 @@ my $expected_tree = {
 
 is_deeply( $tree, $expected_tree, 'class' )
     or print "---vvv---\n".Dumper($tree)."---^^^---\n";
+
+# -- parse tricky classes to check they at least parse ok
+
+sub parse_class {
+    my ($class) = @_;
+    my $decomp = Java::Javap->javap($class, [ qw(-verbose) ]);
+    my $tree = $parser->comp_unit( $decomp );
+    return $tree;
+}
+
+# java.sql.DriverManager has Deprecated:, Signature:, and "static {};"
+# java.sql.Time has RuntimeVisibleAnnotations:
+
+ok parse_class($_) for (qw(
+    java.sql.DriverManager
+    java.sql.Time
+));
+
+done_testing();
+

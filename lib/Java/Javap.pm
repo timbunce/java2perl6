@@ -57,6 +57,7 @@ sub javap {
 
     my $javap_output = q{};
 
+    local $_;
     while (<$javap_fh>) {
         $javap_output .= $_;
     }
