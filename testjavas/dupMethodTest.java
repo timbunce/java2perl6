@@ -1,7 +1,7 @@
 public class dupMethodTest {
     public static final int INT_CONST = 4;
     public static final double FLOAT_CONST = 4.2;
-    public static final java.lang.String A_STRING_CONST = "A string";
+    public static final java.lang.String A_STRING_CONST = "A \"string\"";
     public static final java.lang.String B_STRING_CONST = "A 'str' & \back";
     // public static final java.lang.String C_STRING_CONST = "A \\u2297='\u2297'"; not working
     public dupMethodTest() {}

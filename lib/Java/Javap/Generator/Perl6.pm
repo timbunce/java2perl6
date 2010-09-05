@@ -96,8 +96,8 @@ if (0) { # check that types actually are built-in to current perl6
 
 sub perl6_string_literal_filter {
     my $value = shift;
-    $value =~ s/\\/\\\\/g;
-    $value =~ s/"/\\"/g;
+    #$value =~ s/\\/\\\\/g;
+    #$value =~ s/"/\\"/g;
     $value =~ s/([^[:print:]])/ sprintf "\\u%04x", ord($1) /eg;
     return qq{"$value"};
 }

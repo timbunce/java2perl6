@@ -251,7 +251,7 @@ role dupMethodTest {
 
     method INT_CONST (--> Int) is export { 4 }
     method FLOAT_CONST (--> Num) is export { 4.2 }
-    method A_STRING_CONST (--> Str) is export { "A string" }
+    method A_STRING_CONST (--> Str) is export { "A \"string\"" }
     method B_STRING_CONST (--> Str) is export { "A 'str' & \u0008ack" }
 
     method new (
