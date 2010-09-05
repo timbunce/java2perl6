@@ -249,7 +249,10 @@ use v6;
 
 role dupMethodTest {
 
-    method USELESS_CONSTANT (--> Int) is export { 4 }
+    method INT_CONSTANT (--> Int) is export { 4 }
+    method FLOAT_CONSTANT (--> Num) is export { 4.2 }
+    method A_STRING_CONSTANT (--> Str) is export { 'A string' }
+    method B_STRING_CONSTANT (--> Str) is export { 'A \'str\'' }
 
     method new (
     --> dupMethodTest   #  dupMethodTest

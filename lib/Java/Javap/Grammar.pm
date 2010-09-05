@@ -7,6 +7,7 @@ use Parse::RecDescent;
 package Parse::RecDescent::Java::Javap::Grammar;
 use strict;
 use vars qw($skip $AUTOLOAD  );
+@Parse::RecDescent::Java::Javap::Grammar::ISA = ();
 $skip = '\s*';
 
     my %methods;
@@ -17,11 +18,11 @@ $skip = '\s*';
 {
 local $SIG{__WARN__} = sub {0};
 # PRETEND TO BE IN Parse::RecDescent NAMESPACE
-*Parse::RecDescent::Java::Javap::Grammar::AUTOLOAD	= sub
+*Parse::RecDescent::Java::Javap::Grammar::AUTOLOAD   = sub
 {
-	no strict 'refs';
-	$AUTOLOAD =~ s/^Parse::RecDescent::Java::Javap::Grammar/Parse::RecDescent/;
-	goto &{$AUTOLOAD};
+    no strict 'refs';
+    $AUTOLOAD =~ s/^Parse::RecDescent::Java::Javap::Grammar/Parse::RecDescent/;
+    goto &{$AUTOLOAD};
 }
 }
 
@@ -33,123 +34,124 @@ sub Parse::RecDescent::Java::Javap::Grammar::arg
 	use vars q{$tracelevel};
 	local $tracelevel = ($tracelevel||0)+1;
 	$ERRORS = 0;
-	my $thisrule = $thisparser->{"rules"}{"arg"};
-	
-	Parse::RecDescent::_trace(q{Trying rule: [arg]},
-				  Parse::RecDescent::_tracefirst($_[1]),
-				  q{arg},
-				  $tracelevel)
-					if defined $::RD_TRACE;
+    my $thisrule = $thisparser->{"rules"}{"arg"};
+    
+    Parse::RecDescent::_trace(q{Trying rule: [arg]},
+                  Parse::RecDescent::_tracefirst($_[1]),
+                  q{arg},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
 
-	
-	my $err_at = @{$thisparser->{errors}};
+    
+    my $err_at = @{$thisparser->{errors}};
 
-	my $score;
-	my $score_return;
-	my $_tok;
-	my $return = undef;
-	my $_matched=0;
-	my $commit=0;
-	my @item = ();
-	my %item = ();
-	my $repeating =  defined($_[2]) && $_[2];
-	my $_noactions = defined($_[3]) && $_[3];
- 	my @arg =        defined $_[4] ? @{ &{$_[4]} } : ();
-	my %arg =        ($#arg & 01) ? @arg : (@arg, undef);
-	my $text;
-	my $lastsep="";
-	my $expectation = new Parse::RecDescent::Expectation($thisrule->expected());
-	$expectation->at($_[1]);
-	
-	my $thisline;
-	tie $thisline, q{Parse::RecDescent::LineCounter}, \$text, $thisparser;
+    my $score;
+    my $score_return;
+    my $_tok;
+    my $return = undef;
+    my $_matched=0;
+    my $commit=0;
+    my @item = ();
+    my %item = ();
+    my $repeating =  defined($_[2]) && $_[2];
+    my $_noactions = defined($_[3]) && $_[3];
+    my @arg =    defined $_[4] ? @{ &{$_[4]} } : ();
+    my %arg =    ($#arg & 01) ? @arg : (@arg, undef);
+    my $text;
+    my $lastsep="";
+    my $current_match;
+    my $expectation = new Parse::RecDescent::Expectation(q{qualified_name});
+    $expectation->at($_[1]);
+    
+    my $thisline;
+    tie $thisline, q{Parse::RecDescent::LineCounter}, \$text, $thisparser;
 
-	
+    
 
-	while (!$_matched && !$commit)
-	{
-		
-		Parse::RecDescent::_trace(q{Trying production: [qualified_name array_depth]},
-					  Parse::RecDescent::_tracefirst($_[1]),
-					  q{arg},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		my $thisprod = $thisrule->{"prods"}[0];
-		$text = $_[1];
-		my $_savetext;
-		@item = (q{arg});
-		%item = (__RULE__ => q{arg});
-		my $repcount = 0;
+    while (!$_matched && !$commit)
+    {
+        
+        Parse::RecDescent::_trace(q{Trying production: [qualified_name array_depth]},
+                      Parse::RecDescent::_tracefirst($_[1]),
+                      q{arg},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        my $thisprod = $thisrule->{"prods"}[0];
+        $text = $_[1];
+        my $_savetext;
+        @item = (q{arg});
+        %item = (__RULE__ => q{arg});
+        my $repcount = 0;
 
 
-		Parse::RecDescent::_trace(q{Trying subrule: [qualified_name]},
-				  Parse::RecDescent::_tracefirst($text),
-				  q{arg},
-				  $tracelevel)
-					if defined $::RD_TRACE;
-		if (1) { no strict qw{refs};
-		$expectation->is(q{})->at($text);
-		unless (defined ($_tok = Parse::RecDescent::Java::Javap::Grammar::qualified_name($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
-		{
-			
-			Parse::RecDescent::_trace(q{<<Didn't match subrule: [qualified_name]>>},
-						  Parse::RecDescent::_tracefirst($text),
-						  q{arg},
-						  $tracelevel)
-							if defined $::RD_TRACE;
-			$expectation->failed();
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched subrule: [qualified_name]<< (return value: [}
-					. $_tok . q{]},
-					  
-					  Parse::RecDescent::_tracefirst($text),
-					  q{arg},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$item{q{qualified_name}} = $_tok;
-		push @item, $_tok;
-		
-		}
+        Parse::RecDescent::_trace(q{Trying subrule: [qualified_name]},
+                  Parse::RecDescent::_tracefirst($text),
+                  q{arg},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
+        if (1) { no strict qw{refs};
+        $expectation->is(q{})->at($text);
+        unless (defined ($_tok = Parse::RecDescent::Java::Javap::Grammar::qualified_name($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
+        {
+            
+            Parse::RecDescent::_trace(q{<<Didn't match subrule: [qualified_name]>>},
+                          Parse::RecDescent::_tracefirst($text),
+                          q{arg},
+                          $tracelevel)
+                            if defined $::RD_TRACE;
+            $expectation->failed();
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched subrule: [qualified_name]<< (return value: [}
+                    . $_tok . q{]},
+                      
+                      Parse::RecDescent::_tracefirst($text),
+                      q{arg},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $item{q{qualified_name}} = $_tok;
+        push @item, $_tok;
+        
+        }
 
-		Parse::RecDescent::_trace(q{Trying subrule: [array_depth]},
-				  Parse::RecDescent::_tracefirst($text),
-				  q{arg},
-				  $tracelevel)
-					if defined $::RD_TRACE;
-		if (1) { no strict qw{refs};
-		$expectation->is(q{array_depth})->at($text);
-		unless (defined ($_tok = Parse::RecDescent::Java::Javap::Grammar::array_depth($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
-		{
-			
-			Parse::RecDescent::_trace(q{<<Didn't match subrule: [array_depth]>>},
-						  Parse::RecDescent::_tracefirst($text),
-						  q{arg},
-						  $tracelevel)
-							if defined $::RD_TRACE;
-			$expectation->failed();
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched subrule: [array_depth]<< (return value: [}
-					. $_tok . q{]},
-					  
-					  Parse::RecDescent::_tracefirst($text),
-					  q{arg},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$item{q{array_depth}} = $_tok;
-		push @item, $_tok;
-		
-		}
+        Parse::RecDescent::_trace(q{Trying subrule: [array_depth]},
+                  Parse::RecDescent::_tracefirst($text),
+                  q{arg},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
+        if (1) { no strict qw{refs};
+        $expectation->is(q{array_depth})->at($text);
+        unless (defined ($_tok = Parse::RecDescent::Java::Javap::Grammar::array_depth($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
+        {
+            
+            Parse::RecDescent::_trace(q{<<Didn't match subrule: [array_depth]>>},
+                          Parse::RecDescent::_tracefirst($text),
+                          q{arg},
+                          $tracelevel)
+                            if defined $::RD_TRACE;
+            $expectation->failed();
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched subrule: [array_depth]<< (return value: [}
+                    . $_tok . q{]},
+                      
+                      Parse::RecDescent::_tracefirst($text),
+                      q{arg},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $item{q{array_depth}} = $_tok;
+        push @item, $_tok;
+        
+        }
 
-		Parse::RecDescent::_trace(q{Trying action},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{arg},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		
+        Parse::RecDescent::_trace(q{Trying action},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{arg},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        
 
-		$_tok = ($_noactions) ? 0 : do {
+        $_tok = ($_noactions) ? 0 : do {
     my $array_text = '';
     foreach my $i ( 1 .. $item[2] ) {
         $array_text .= 'Array of ';
@@ -162,67 +164,67 @@ sub Parse::RecDescent::Java::Javap::Grammar::arg
         }
     ]
 };
-		unless (defined $_tok)
-		{
-			Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
-					if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
-					  . $_tok . q{])},
-					  Parse::RecDescent::_tracefirst($text))
-						if defined $::RD_TRACE;
-		push @item, $_tok;
-		$item{__ACTION1__}=$_tok;
-		
+        unless (defined $_tok)
+        {
+            Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
+                    if defined $::RD_TRACE;
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
+                      . $_tok . q{])},
+                      Parse::RecDescent::_tracefirst($text))
+                        if defined $::RD_TRACE;
+        push @item, $_tok;
+        $item{__ACTION1__}=$_tok;
+        
 
 
-		Parse::RecDescent::_trace(q{>>Matched production: [qualified_name array_depth]<<},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{arg},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$_matched = 1;
-		last;
-	}
+        Parse::RecDescent::_trace(q{>>Matched production: [qualified_name array_depth]<<},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{arg},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $_matched = 1;
+        last;
+    }
 
 
-        unless ( $_matched || defined($return) || defined($score) )
-	{
-		
+    unless ( $_matched || defined($score) )
+    {
+        
 
-		$_[1] = $text;	# NOT SURE THIS IS NEEDED
-		Parse::RecDescent::_trace(q{<<Didn't match rule>>},
-					 Parse::RecDescent::_tracefirst($_[1]),
-					 q{arg},
-					 $tracelevel)
-					if defined $::RD_TRACE;
-		return undef;
-	}
-	if (!defined($return) && defined($score))
-	{
-		Parse::RecDescent::_trace(q{>>Accepted scored production<<}, "",
-					  q{arg},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$return = $score_return;
-	}
-	splice @{$thisparser->{errors}}, $err_at;
-	$return = $item[$#item] unless defined $return;
-	if (defined $::RD_TRACE)
-	{
-		Parse::RecDescent::_trace(q{>>Matched rule<< (return value: [} .
-					  $return . q{])}, "",
-					  q{arg},
-					  $tracelevel);
-		Parse::RecDescent::_trace(q{(consumed: [} .
-					  Parse::RecDescent::_tracemax(substr($_[1],0,-length($text))) . q{])}, 
-					  Parse::RecDescent::_tracefirst($text),
-					  , q{arg},
-					  $tracelevel)
-	}
-	$_[1] = $text;
-	return $return;
+        $_[1] = $text;  # NOT SURE THIS IS NEEDED
+        Parse::RecDescent::_trace(q{<<Didn't match rule>>},
+                     Parse::RecDescent::_tracefirst($_[1]),
+                     q{arg},
+                     $tracelevel)
+                    if defined $::RD_TRACE;
+        return undef;
+    }
+    if (!defined($return) && defined($score))
+    {
+        Parse::RecDescent::_trace(q{>>Accepted scored production<<}, "",
+                      q{arg},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $return = $score_return;
+    }
+    splice @{$thisparser->{errors}}, $err_at;
+    $return = $item[$#item] unless defined $return;
+    if (defined $::RD_TRACE)
+    {
+        Parse::RecDescent::_trace(q{>>Matched rule<< (return value: [} .
+                      $return . q{])}, "",
+                      q{arg},
+                      $tracelevel);
+        Parse::RecDescent::_trace(q{(consumed: [} .
+                      Parse::RecDescent::_tracemax(substr($_[1],0,-length($text))) . q{])}, 
+                      Parse::RecDescent::_tracefirst($text),
+                      , q{arg},
+                      $tracelevel)
+    }
+    $_[1] = $text;
+    return $return;
 }
 
 # ARGS ARE: ($parser, $text; $repeating, $_noactions, \@args)
@@ -232,180 +234,185 @@ sub Parse::RecDescent::Java::Javap::Grammar::verbose_method_code
 	use vars q{$tracelevel};
 	local $tracelevel = ($tracelevel||0)+1;
 	$ERRORS = 0;
-	my $thisrule = $thisparser->{"rules"}{"verbose_method_code"};
-	
-	Parse::RecDescent::_trace(q{Trying rule: [verbose_method_code]},
-				  Parse::RecDescent::_tracefirst($_[1]),
-				  q{verbose_method_code},
-				  $tracelevel)
-					if defined $::RD_TRACE;
+    my $thisrule = $thisparser->{"rules"}{"verbose_method_code"};
+    
+    Parse::RecDescent::_trace(q{Trying rule: [verbose_method_code]},
+                  Parse::RecDescent::_tracefirst($_[1]),
+                  q{verbose_method_code},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
 
-	
-	my $err_at = @{$thisparser->{errors}};
+    
+    my $err_at = @{$thisparser->{errors}};
 
-	my $score;
-	my $score_return;
-	my $_tok;
-	my $return = undef;
-	my $_matched=0;
-	my $commit=0;
-	my @item = ();
-	my %item = ();
-	my $repeating =  defined($_[2]) && $_[2];
-	my $_noactions = defined($_[3]) && $_[3];
- 	my @arg =        defined $_[4] ? @{ &{$_[4]} } : ();
-	my %arg =        ($#arg & 01) ? @arg : (@arg, undef);
-	my $text;
-	my $lastsep="";
-	my $expectation = new Parse::RecDescent::Expectation($thisrule->expected());
-	$expectation->at($_[1]);
-	
-	my $thisline;
-	tie $thisline, q{Parse::RecDescent::LineCounter}, \$text, $thisparser;
+    my $score;
+    my $score_return;
+    my $_tok;
+    my $return = undef;
+    my $_matched=0;
+    my $commit=0;
+    my @item = ();
+    my %item = ();
+    my $repeating =  defined($_[2]) && $_[2];
+    my $_noactions = defined($_[3]) && $_[3];
+    my @arg =    defined $_[4] ? @{ &{$_[4]} } : ();
+    my %arg =    ($#arg & 01) ? @arg : (@arg, undef);
+    my $text;
+    my $lastsep="";
+    my $current_match;
+    my $expectation = new Parse::RecDescent::Expectation(q{'Code:'});
+    $expectation->at($_[1]);
+    
+    my $thisline;
+    tie $thisline, q{Parse::RecDescent::LineCounter}, \$text, $thisparser;
 
-	
+    
 
-	while (!$_matched && !$commit)
-	{
-		
-		Parse::RecDescent::_trace(q{Trying production: ['Code:' /Stack.*=\\d+/ byte_code_line]},
-					  Parse::RecDescent::_tracefirst($_[1]),
-					  q{verbose_method_code},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		my $thisprod = $thisrule->{"prods"}[0];
-		$text = $_[1];
-		my $_savetext;
-		@item = (q{verbose_method_code});
-		%item = (__RULE__ => q{verbose_method_code});
-		my $repcount = 0;
-
-
-		Parse::RecDescent::_trace(q{Trying terminal: ['Code:']},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{verbose_method_code},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$lastsep = "";
-		$expectation->is(q{})->at($text);
-		
-
-		unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ s/\ACode\://)
-		{
-			
-			$expectation->failed();
-			Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
-						. $& . q{])},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-		push @item, $item{__STRING1__}=$&;
-		
-
-		Parse::RecDescent::_trace(q{Trying terminal: [/Stack.*=\\d+/]}, Parse::RecDescent::_tracefirst($text),
-					  q{verbose_method_code},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$lastsep = "";
-		$expectation->is(q{/Stack.*=\\d+/})->at($text);
-		
-
-		unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ s/\A(?:Stack.*=\d+)//)
-		{
-			
-			$expectation->failed();
-			Parse::RecDescent::_trace(q{<<Didn't match terminal>>},
-						  Parse::RecDescent::_tracefirst($text))
-					if defined $::RD_TRACE;
-
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
-						. $& . q{])},
-						  Parse::RecDescent::_tracefirst($text))
-					if defined $::RD_TRACE;
-		push @item, $item{__PATTERN1__}=$&;
-		
-
-		Parse::RecDescent::_trace(q{Trying repeated subrule: [byte_code_line]},
-				  Parse::RecDescent::_tracefirst($text),
-				  q{verbose_method_code},
-				  $tracelevel)
-					if defined $::RD_TRACE;
-		$expectation->is(q{byte_code_line})->at($text);
-		
-		unless (defined ($_tok = $thisparser->_parserepeat($text, \&Parse::RecDescent::Java::Javap::Grammar::byte_code_line, 0, 100000000, $_noactions,$expectation,undef))) 
-		{
-			Parse::RecDescent::_trace(q{<<Didn't match repeated subrule: [byte_code_line]>>},
-						  Parse::RecDescent::_tracefirst($text),
-						  q{verbose_method_code},
-						  $tracelevel)
-							if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched repeated subrule: [byte_code_line]<< (}
-					. @$_tok . q{ times)},
-					  
-					  Parse::RecDescent::_tracefirst($text),
-					  q{verbose_method_code},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$item{q{byte_code_line(s?)}} = $_tok;
-		push @item, $_tok;
-		
+    while (!$_matched && !$commit)
+    {
+        
+        Parse::RecDescent::_trace(q{Trying production: ['Code:' /Stack.*=\\d+/ byte_code_line]},
+                      Parse::RecDescent::_tracefirst($_[1]),
+                      q{verbose_method_code},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        my $thisprod = $thisrule->{"prods"}[0];
+        $text = $_[1];
+        my $_savetext;
+        @item = (q{verbose_method_code});
+        %item = (__RULE__ => q{verbose_method_code});
+        my $repcount = 0;
 
 
+        Parse::RecDescent::_trace(q{Trying terminal: ['Code:']},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{verbose_method_code},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $lastsep = "";
+        $expectation->is(q{})->at($text);
+        
 
-		Parse::RecDescent::_trace(q{>>Matched production: ['Code:' /Stack.*=\\d+/ byte_code_line]<<},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{verbose_method_code},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$_matched = 1;
-		last;
-	}
+        unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ m/\ACode\:/)
+        {
+            
+            $expectation->failed();
+            Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+            last;
+        }
+		$current_match = substr($text, $-[0], $+[0] - $-[0]);
+        substr($text,0,length($current_match),q{});
+        Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
+                        . $current_match . q{])},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+        push @item, $item{__STRING1__}=$current_match;
+        
+
+        Parse::RecDescent::_trace(q{Trying terminal: [/Stack.*=\\d+/]}, Parse::RecDescent::_tracefirst($text),
+                      q{verbose_method_code},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $lastsep = "";
+        $expectation->is(q{/Stack.*=\\d+/})->at($text);
+        
+
+        unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ m/\A(?:Stack.*=\d+)/)
+        {
+            
+            $expectation->failed();
+            Parse::RecDescent::_trace(q{<<Didn't match terminal>>},
+                          Parse::RecDescent::_tracefirst($text))
+                    if defined $::RD_TRACE;
+
+            last;
+        }
+		$current_match = substr($text, $-[0], $+[0] - $-[0]);
+        substr($text,0,length($current_match),q{});
+        Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
+                        . $current_match . q{])},
+                          Parse::RecDescent::_tracefirst($text))
+                    if defined $::RD_TRACE;
+        push @item, $item{__PATTERN1__}=$current_match;
+        
+
+        Parse::RecDescent::_trace(q{Trying repeated subrule: [byte_code_line]},
+                  Parse::RecDescent::_tracefirst($text),
+                  q{verbose_method_code},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
+        $expectation->is(q{byte_code_line})->at($text);
+        
+        unless (defined ($_tok = $thisparser->_parserepeat($text, \&Parse::RecDescent::Java::Javap::Grammar::byte_code_line, 0, 100000000, $_noactions,$expectation,sub { \@arg }))) 
+        {
+            Parse::RecDescent::_trace(q{<<Didn't match repeated subrule: [byte_code_line]>>},
+                          Parse::RecDescent::_tracefirst($text),
+                          q{verbose_method_code},
+                          $tracelevel)
+                            if defined $::RD_TRACE;
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched repeated subrule: [byte_code_line]<< (}
+                    . @$_tok . q{ times)},
+                      
+                      Parse::RecDescent::_tracefirst($text),
+                      q{verbose_method_code},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $item{q{byte_code_line(s?)}} = $_tok;
+        push @item, $_tok;
+        
 
 
-        unless ( $_matched || defined($return) || defined($score) )
-	{
-		
 
-		$_[1] = $text;	# NOT SURE THIS IS NEEDED
-		Parse::RecDescent::_trace(q{<<Didn't match rule>>},
-					 Parse::RecDescent::_tracefirst($_[1]),
-					 q{verbose_method_code},
-					 $tracelevel)
-					if defined $::RD_TRACE;
-		return undef;
-	}
-	if (!defined($return) && defined($score))
-	{
-		Parse::RecDescent::_trace(q{>>Accepted scored production<<}, "",
-					  q{verbose_method_code},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$return = $score_return;
-	}
-	splice @{$thisparser->{errors}}, $err_at;
-	$return = $item[$#item] unless defined $return;
-	if (defined $::RD_TRACE)
-	{
-		Parse::RecDescent::_trace(q{>>Matched rule<< (return value: [} .
-					  $return . q{])}, "",
-					  q{verbose_method_code},
-					  $tracelevel);
-		Parse::RecDescent::_trace(q{(consumed: [} .
-					  Parse::RecDescent::_tracemax(substr($_[1],0,-length($text))) . q{])}, 
-					  Parse::RecDescent::_tracefirst($text),
-					  , q{verbose_method_code},
-					  $tracelevel)
-	}
-	$_[1] = $text;
-	return $return;
+        Parse::RecDescent::_trace(q{>>Matched production: ['Code:' /Stack.*=\\d+/ byte_code_line]<<},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{verbose_method_code},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $_matched = 1;
+        last;
+    }
+
+
+    unless ( $_matched || defined($score) )
+    {
+        
+
+        $_[1] = $text;  # NOT SURE THIS IS NEEDED
+        Parse::RecDescent::_trace(q{<<Didn't match rule>>},
+                     Parse::RecDescent::_tracefirst($_[1]),
+                     q{verbose_method_code},
+                     $tracelevel)
+                    if defined $::RD_TRACE;
+        return undef;
+    }
+    if (!defined($return) && defined($score))
+    {
+        Parse::RecDescent::_trace(q{>>Accepted scored production<<}, "",
+                      q{verbose_method_code},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $return = $score_return;
+    }
+    splice @{$thisparser->{errors}}, $err_at;
+    $return = $item[$#item] unless defined $return;
+    if (defined $::RD_TRACE)
+    {
+        Parse::RecDescent::_trace(q{>>Matched rule<< (return value: [} .
+                      $return . q{])}, "",
+                      q{verbose_method_code},
+                      $tracelevel);
+        Parse::RecDescent::_trace(q{(consumed: [} .
+                      Parse::RecDescent::_tracemax(substr($_[1],0,-length($text))) . q{])}, 
+                      Parse::RecDescent::_tracefirst($text),
+                      , q{verbose_method_code},
+                      $tracelevel)
+    }
+    $_[1] = $text;
+    return $return;
 }
 
 # ARGS ARE: ($parser, $text; $repeating, $_noactions, \@args)
@@ -415,231 +422,238 @@ sub Parse::RecDescent::Java::Javap::Grammar::var_modifier
 	use vars q{$tracelevel};
 	local $tracelevel = ($tracelevel||0)+1;
 	$ERRORS = 0;
-	my $thisrule = $thisparser->{"rules"}{"var_modifier"};
-	
-	Parse::RecDescent::_trace(q{Trying rule: [var_modifier]},
-				  Parse::RecDescent::_tracefirst($_[1]),
-				  q{var_modifier},
-				  $tracelevel)
-					if defined $::RD_TRACE;
+    my $thisrule = $thisparser->{"rules"}{"var_modifier"};
+    
+    Parse::RecDescent::_trace(q{Trying rule: [var_modifier]},
+                  Parse::RecDescent::_tracefirst($_[1]),
+                  q{var_modifier},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
 
-	
-	my $err_at = @{$thisparser->{errors}};
+    
+    my $err_at = @{$thisparser->{errors}};
 
-	my $score;
-	my $score_return;
-	my $_tok;
-	my $return = undef;
-	my $_matched=0;
-	my $commit=0;
-	my @item = ();
-	my %item = ();
-	my $repeating =  defined($_[2]) && $_[2];
-	my $_noactions = defined($_[3]) && $_[3];
- 	my @arg =        defined $_[4] ? @{ &{$_[4]} } : ();
-	my %arg =        ($#arg & 01) ? @arg : (@arg, undef);
-	my $text;
-	my $lastsep="";
-	my $expectation = new Parse::RecDescent::Expectation($thisrule->expected());
-	$expectation->at($_[1]);
-	
-	my $thisline;
-	tie $thisline, q{Parse::RecDescent::LineCounter}, \$text, $thisparser;
+    my $score;
+    my $score_return;
+    my $_tok;
+    my $return = undef;
+    my $_matched=0;
+    my $commit=0;
+    my @item = ();
+    my %item = ();
+    my $repeating =  defined($_[2]) && $_[2];
+    my $_noactions = defined($_[3]) && $_[3];
+    my @arg =    defined $_[4] ? @{ &{$_[4]} } : ();
+    my %arg =    ($#arg & 01) ? @arg : (@arg, undef);
+    my $text;
+    my $lastsep="";
+    my $current_match;
+    my $expectation = new Parse::RecDescent::Expectation(q{'volatile', or 'final', or 'transient'});
+    $expectation->at($_[1]);
+    
+    my $thisline;
+    tie $thisline, q{Parse::RecDescent::LineCounter}, \$text, $thisparser;
 
-	
+    
 
-	while (!$_matched && !$commit)
-	{
-		
-		Parse::RecDescent::_trace(q{Trying production: ['volatile']},
-					  Parse::RecDescent::_tracefirst($_[1]),
-					  q{var_modifier},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		my $thisprod = $thisrule->{"prods"}[0];
-		$text = $_[1];
-		my $_savetext;
-		@item = (q{var_modifier});
-		%item = (__RULE__ => q{var_modifier});
-		my $repcount = 0;
-
-
-		Parse::RecDescent::_trace(q{Trying terminal: ['volatile']},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{var_modifier},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$lastsep = "";
-		$expectation->is(q{})->at($text);
-		
-
-		unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ s/\Avolatile//)
-		{
-			
-			$expectation->failed();
-			Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
-						. $& . q{])},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-		push @item, $item{__STRING1__}=$&;
-		
+    while (!$_matched && !$commit)
+    {
+        
+        Parse::RecDescent::_trace(q{Trying production: ['volatile']},
+                      Parse::RecDescent::_tracefirst($_[1]),
+                      q{var_modifier},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        my $thisprod = $thisrule->{"prods"}[0];
+        $text = $_[1];
+        my $_savetext;
+        @item = (q{var_modifier});
+        %item = (__RULE__ => q{var_modifier});
+        my $repcount = 0;
 
 
-		Parse::RecDescent::_trace(q{>>Matched production: ['volatile']<<},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{var_modifier},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$_matched = 1;
-		last;
-	}
+        Parse::RecDescent::_trace(q{Trying terminal: ['volatile']},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{var_modifier},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $lastsep = "";
+        $expectation->is(q{})->at($text);
+        
+
+        unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ m/\Avolatile/)
+        {
+            
+            $expectation->failed();
+            Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+            last;
+        }
+		$current_match = substr($text, $-[0], $+[0] - $-[0]);
+        substr($text,0,length($current_match),q{});
+        Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
+                        . $current_match . q{])},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+        push @item, $item{__STRING1__}=$current_match;
+        
 
 
-	while (!$_matched && !$commit)
-	{
-		
-		Parse::RecDescent::_trace(q{Trying production: ['final']},
-					  Parse::RecDescent::_tracefirst($_[1]),
-					  q{var_modifier},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		my $thisprod = $thisrule->{"prods"}[1];
-		$text = $_[1];
-		my $_savetext;
-		@item = (q{var_modifier});
-		%item = (__RULE__ => q{var_modifier});
-		my $repcount = 0;
+        Parse::RecDescent::_trace(q{>>Matched production: ['volatile']<<},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{var_modifier},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $_matched = 1;
+        last;
+    }
 
 
-		Parse::RecDescent::_trace(q{Trying terminal: ['final']},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{var_modifier},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$lastsep = "";
-		$expectation->is(q{})->at($text);
-		
-
-		unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ s/\Afinal//)
-		{
-			
-			$expectation->failed();
-			Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
-						. $& . q{])},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-		push @item, $item{__STRING1__}=$&;
-		
+    while (!$_matched && !$commit)
+    {
+        
+        Parse::RecDescent::_trace(q{Trying production: ['final']},
+                      Parse::RecDescent::_tracefirst($_[1]),
+                      q{var_modifier},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        my $thisprod = $thisrule->{"prods"}[1];
+        $text = $_[1];
+        my $_savetext;
+        @item = (q{var_modifier});
+        %item = (__RULE__ => q{var_modifier});
+        my $repcount = 0;
 
 
-		Parse::RecDescent::_trace(q{>>Matched production: ['final']<<},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{var_modifier},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$_matched = 1;
-		last;
-	}
+        Parse::RecDescent::_trace(q{Trying terminal: ['final']},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{var_modifier},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $lastsep = "";
+        $expectation->is(q{})->at($text);
+        
+
+        unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ m/\Afinal/)
+        {
+            
+            $expectation->failed();
+            Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+            last;
+        }
+		$current_match = substr($text, $-[0], $+[0] - $-[0]);
+        substr($text,0,length($current_match),q{});
+        Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
+                        . $current_match . q{])},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+        push @item, $item{__STRING1__}=$current_match;
+        
 
 
-	while (!$_matched && !$commit)
-	{
-		
-		Parse::RecDescent::_trace(q{Trying production: ['transient']},
-					  Parse::RecDescent::_tracefirst($_[1]),
-					  q{var_modifier},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		my $thisprod = $thisrule->{"prods"}[2];
-		$text = $_[1];
-		my $_savetext;
-		@item = (q{var_modifier});
-		%item = (__RULE__ => q{var_modifier});
-		my $repcount = 0;
+        Parse::RecDescent::_trace(q{>>Matched production: ['final']<<},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{var_modifier},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $_matched = 1;
+        last;
+    }
 
 
-		Parse::RecDescent::_trace(q{Trying terminal: ['transient']},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{var_modifier},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$lastsep = "";
-		$expectation->is(q{})->at($text);
-		
-
-		unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ s/\Atransient//)
-		{
-			
-			$expectation->failed();
-			Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
-						. $& . q{])},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-		push @item, $item{__STRING1__}=$&;
-		
+    while (!$_matched && !$commit)
+    {
+        
+        Parse::RecDescent::_trace(q{Trying production: ['transient']},
+                      Parse::RecDescent::_tracefirst($_[1]),
+                      q{var_modifier},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        my $thisprod = $thisrule->{"prods"}[2];
+        $text = $_[1];
+        my $_savetext;
+        @item = (q{var_modifier});
+        %item = (__RULE__ => q{var_modifier});
+        my $repcount = 0;
 
 
-		Parse::RecDescent::_trace(q{>>Matched production: ['transient']<<},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{var_modifier},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$_matched = 1;
-		last;
-	}
+        Parse::RecDescent::_trace(q{Trying terminal: ['transient']},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{var_modifier},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $lastsep = "";
+        $expectation->is(q{})->at($text);
+        
+
+        unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ m/\Atransient/)
+        {
+            
+            $expectation->failed();
+            Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+            last;
+        }
+		$current_match = substr($text, $-[0], $+[0] - $-[0]);
+        substr($text,0,length($current_match),q{});
+        Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
+                        . $current_match . q{])},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+        push @item, $item{__STRING1__}=$current_match;
+        
 
 
-        unless ( $_matched || defined($return) || defined($score) )
-	{
-		
+        Parse::RecDescent::_trace(q{>>Matched production: ['transient']<<},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{var_modifier},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $_matched = 1;
+        last;
+    }
 
-		$_[1] = $text;	# NOT SURE THIS IS NEEDED
-		Parse::RecDescent::_trace(q{<<Didn't match rule>>},
-					 Parse::RecDescent::_tracefirst($_[1]),
-					 q{var_modifier},
-					 $tracelevel)
-					if defined $::RD_TRACE;
-		return undef;
-	}
-	if (!defined($return) && defined($score))
-	{
-		Parse::RecDescent::_trace(q{>>Accepted scored production<<}, "",
-					  q{var_modifier},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$return = $score_return;
-	}
-	splice @{$thisparser->{errors}}, $err_at;
-	$return = $item[$#item] unless defined $return;
-	if (defined $::RD_TRACE)
-	{
-		Parse::RecDescent::_trace(q{>>Matched rule<< (return value: [} .
-					  $return . q{])}, "",
-					  q{var_modifier},
-					  $tracelevel);
-		Parse::RecDescent::_trace(q{(consumed: [} .
-					  Parse::RecDescent::_tracemax(substr($_[1],0,-length($text))) . q{])}, 
-					  Parse::RecDescent::_tracefirst($text),
-					  , q{var_modifier},
-					  $tracelevel)
-	}
-	$_[1] = $text;
-	return $return;
+
+    unless ( $_matched || defined($score) )
+    {
+        
+
+        $_[1] = $text;  # NOT SURE THIS IS NEEDED
+        Parse::RecDescent::_trace(q{<<Didn't match rule>>},
+                     Parse::RecDescent::_tracefirst($_[1]),
+                     q{var_modifier},
+                     $tracelevel)
+                    if defined $::RD_TRACE;
+        return undef;
+    }
+    if (!defined($return) && defined($score))
+    {
+        Parse::RecDescent::_trace(q{>>Accepted scored production<<}, "",
+                      q{var_modifier},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $return = $score_return;
+    }
+    splice @{$thisparser->{errors}}, $err_at;
+    $return = $item[$#item] unless defined $return;
+    if (defined $::RD_TRACE)
+    {
+        Parse::RecDescent::_trace(q{>>Matched rule<< (return value: [} .
+                      $return . q{])}, "",
+                      q{var_modifier},
+                      $tracelevel);
+        Parse::RecDescent::_trace(q{(consumed: [} .
+                      Parse::RecDescent::_tracemax(substr($_[1],0,-length($text))) . q{])}, 
+                      Parse::RecDescent::_tracefirst($text),
+                      , q{var_modifier},
+                      $tracelevel)
+    }
+    $_[1] = $text;
+    return $return;
 }
 
 # ARGS ARE: ($parser, $text; $repeating, $_noactions, \@args)
@@ -649,265 +663,266 @@ sub Parse::RecDescent::Java::Javap::Grammar::comp_unit_decl
 	use vars q{$tracelevel};
 	local $tracelevel = ($tracelevel||0)+1;
 	$ERRORS = 0;
-	my $thisrule = $thisparser->{"rules"}{"comp_unit_decl"};
-	
-	Parse::RecDescent::_trace(q{Trying rule: [comp_unit_decl]},
-				  Parse::RecDescent::_tracefirst($_[1]),
-				  q{comp_unit_decl},
-				  $tracelevel)
-					if defined $::RD_TRACE;
+    my $thisrule = $thisparser->{"rules"}{"comp_unit_decl"};
+    
+    Parse::RecDescent::_trace(q{Trying rule: [comp_unit_decl]},
+                  Parse::RecDescent::_tracefirst($_[1]),
+                  q{comp_unit_decl},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
 
-	
-	my $err_at = @{$thisparser->{errors}};
+    
+    my $err_at = @{$thisparser->{errors}};
 
-	my $score;
-	my $score_return;
-	my $_tok;
-	my $return = undef;
-	my $_matched=0;
-	my $commit=0;
-	my @item = ();
-	my %item = ();
-	my $repeating =  defined($_[2]) && $_[2];
-	my $_noactions = defined($_[3]) && $_[3];
- 	my @arg =        defined $_[4] ? @{ &{$_[4]} } : ();
-	my %arg =        ($#arg & 01) ? @arg : (@arg, undef);
-	my $text;
-	my $lastsep="";
-	my $expectation = new Parse::RecDescent::Expectation($thisrule->expected());
-	$expectation->at($_[1]);
-	
-	my $thisline;
-	tie $thisline, q{Parse::RecDescent::LineCounter}, \$text, $thisparser;
+    my $score;
+    my $score_return;
+    my $_tok;
+    my $return = undef;
+    my $_matched=0;
+    my $commit=0;
+    my @item = ();
+    my %item = ();
+    my $repeating =  defined($_[2]) && $_[2];
+    my $_noactions = defined($_[3]) && $_[3];
+    my @arg =    defined $_[4] ? @{ &{$_[4]} } : ();
+    my %arg =    ($#arg & 01) ? @arg : (@arg, undef);
+    my $text;
+    my $lastsep="";
+    my $current_match;
+    my $expectation = new Parse::RecDescent::Expectation(q{ACCESS});
+    $expectation->at($_[1]);
+    
+    my $thisline;
+    tie $thisline, q{Parse::RecDescent::LineCounter}, \$text, $thisparser;
 
-	
+    
 
-	while (!$_matched && !$commit)
-	{
-		
-		Parse::RecDescent::_trace(q{Trying production: [ACCESS class_qualifier CLASS_OR_INTERFACE qualified_name extends_clause implements_clause verbose_class_details]},
-					  Parse::RecDescent::_tracefirst($_[1]),
-					  q{comp_unit_decl},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		my $thisprod = $thisrule->{"prods"}[0];
-		$text = $_[1];
-		my $_savetext;
-		@item = (q{comp_unit_decl});
-		%item = (__RULE__ => q{comp_unit_decl});
-		my $repcount = 0;
-
-
-		Parse::RecDescent::_trace(q{Trying subrule: [ACCESS]},
-				  Parse::RecDescent::_tracefirst($text),
-				  q{comp_unit_decl},
-				  $tracelevel)
-					if defined $::RD_TRACE;
-		if (1) { no strict qw{refs};
-		$expectation->is(q{})->at($text);
-		unless (defined ($_tok = Parse::RecDescent::Java::Javap::Grammar::ACCESS($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
-		{
-			
-			Parse::RecDescent::_trace(q{<<Didn't match subrule: [ACCESS]>>},
-						  Parse::RecDescent::_tracefirst($text),
-						  q{comp_unit_decl},
-						  $tracelevel)
-							if defined $::RD_TRACE;
-			$expectation->failed();
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched subrule: [ACCESS]<< (return value: [}
-					. $_tok . q{]},
-					  
-					  Parse::RecDescent::_tracefirst($text),
-					  q{comp_unit_decl},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$item{q{ACCESS}} = $_tok;
-		push @item, $_tok;
-		
-		}
-
-		Parse::RecDescent::_trace(q{Trying repeated subrule: [class_qualifier]},
-				  Parse::RecDescent::_tracefirst($text),
-				  q{comp_unit_decl},
-				  $tracelevel)
-					if defined $::RD_TRACE;
-		$expectation->is(q{class_qualifier})->at($text);
-		
-		unless (defined ($_tok = $thisparser->_parserepeat($text, \&Parse::RecDescent::Java::Javap::Grammar::class_qualifier, 0, 100000000, $_noactions,$expectation,undef))) 
-		{
-			Parse::RecDescent::_trace(q{<<Didn't match repeated subrule: [class_qualifier]>>},
-						  Parse::RecDescent::_tracefirst($text),
-						  q{comp_unit_decl},
-						  $tracelevel)
-							if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched repeated subrule: [class_qualifier]<< (}
-					. @$_tok . q{ times)},
-					  
-					  Parse::RecDescent::_tracefirst($text),
-					  q{comp_unit_decl},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$item{q{class_qualifier(s?)}} = $_tok;
-		push @item, $_tok;
-		
+    while (!$_matched && !$commit)
+    {
+        
+        Parse::RecDescent::_trace(q{Trying production: [ACCESS class_qualifier CLASS_OR_INTERFACE qualified_name extends_clause implements_clause verbose_class_details]},
+                      Parse::RecDescent::_tracefirst($_[1]),
+                      q{comp_unit_decl},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        my $thisprod = $thisrule->{"prods"}[0];
+        $text = $_[1];
+        my $_savetext;
+        @item = (q{comp_unit_decl});
+        %item = (__RULE__ => q{comp_unit_decl});
+        my $repcount = 0;
 
 
-		Parse::RecDescent::_trace(q{Trying subrule: [CLASS_OR_INTERFACE]},
-				  Parse::RecDescent::_tracefirst($text),
-				  q{comp_unit_decl},
-				  $tracelevel)
-					if defined $::RD_TRACE;
-		if (1) { no strict qw{refs};
-		$expectation->is(q{CLASS_OR_INTERFACE})->at($text);
-		unless (defined ($_tok = Parse::RecDescent::Java::Javap::Grammar::CLASS_OR_INTERFACE($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
-		{
-			
-			Parse::RecDescent::_trace(q{<<Didn't match subrule: [CLASS_OR_INTERFACE]>>},
-						  Parse::RecDescent::_tracefirst($text),
-						  q{comp_unit_decl},
-						  $tracelevel)
-							if defined $::RD_TRACE;
-			$expectation->failed();
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched subrule: [CLASS_OR_INTERFACE]<< (return value: [}
-					. $_tok . q{]},
-					  
-					  Parse::RecDescent::_tracefirst($text),
-					  q{comp_unit_decl},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$item{q{CLASS_OR_INTERFACE}} = $_tok;
-		push @item, $_tok;
-		
-		}
+        Parse::RecDescent::_trace(q{Trying subrule: [ACCESS]},
+                  Parse::RecDescent::_tracefirst($text),
+                  q{comp_unit_decl},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
+        if (1) { no strict qw{refs};
+        $expectation->is(q{})->at($text);
+        unless (defined ($_tok = Parse::RecDescent::Java::Javap::Grammar::ACCESS($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
+        {
+            
+            Parse::RecDescent::_trace(q{<<Didn't match subrule: [ACCESS]>>},
+                          Parse::RecDescent::_tracefirst($text),
+                          q{comp_unit_decl},
+                          $tracelevel)
+                            if defined $::RD_TRACE;
+            $expectation->failed();
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched subrule: [ACCESS]<< (return value: [}
+                    . $_tok . q{]},
+                      
+                      Parse::RecDescent::_tracefirst($text),
+                      q{comp_unit_decl},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $item{q{ACCESS}} = $_tok;
+        push @item, $_tok;
+        
+        }
 
-		Parse::RecDescent::_trace(q{Trying subrule: [qualified_name]},
-				  Parse::RecDescent::_tracefirst($text),
-				  q{comp_unit_decl},
-				  $tracelevel)
-					if defined $::RD_TRACE;
-		if (1) { no strict qw{refs};
-		$expectation->is(q{qualified_name})->at($text);
-		unless (defined ($_tok = Parse::RecDescent::Java::Javap::Grammar::qualified_name($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
-		{
-			
-			Parse::RecDescent::_trace(q{<<Didn't match subrule: [qualified_name]>>},
-						  Parse::RecDescent::_tracefirst($text),
-						  q{comp_unit_decl},
-						  $tracelevel)
-							if defined $::RD_TRACE;
-			$expectation->failed();
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched subrule: [qualified_name]<< (return value: [}
-					. $_tok . q{]},
-					  
-					  Parse::RecDescent::_tracefirst($text),
-					  q{comp_unit_decl},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$item{q{qualified_name}} = $_tok;
-		push @item, $_tok;
-		
-		}
-
-		Parse::RecDescent::_trace(q{Trying repeated subrule: [extends_clause]},
-				  Parse::RecDescent::_tracefirst($text),
-				  q{comp_unit_decl},
-				  $tracelevel)
-					if defined $::RD_TRACE;
-		$expectation->is(q{extends_clause})->at($text);
-		
-		unless (defined ($_tok = $thisparser->_parserepeat($text, \&Parse::RecDescent::Java::Javap::Grammar::extends_clause, 0, 1, $_noactions,$expectation,undef))) 
-		{
-			Parse::RecDescent::_trace(q{<<Didn't match repeated subrule: [extends_clause]>>},
-						  Parse::RecDescent::_tracefirst($text),
-						  q{comp_unit_decl},
-						  $tracelevel)
-							if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched repeated subrule: [extends_clause]<< (}
-					. @$_tok . q{ times)},
-					  
-					  Parse::RecDescent::_tracefirst($text),
-					  q{comp_unit_decl},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$item{q{extends_clause(?)}} = $_tok;
-		push @item, $_tok;
-		
+        Parse::RecDescent::_trace(q{Trying repeated subrule: [class_qualifier]},
+                  Parse::RecDescent::_tracefirst($text),
+                  q{comp_unit_decl},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
+        $expectation->is(q{class_qualifier})->at($text);
+        
+        unless (defined ($_tok = $thisparser->_parserepeat($text, \&Parse::RecDescent::Java::Javap::Grammar::class_qualifier, 0, 100000000, $_noactions,$expectation,sub { \@arg }))) 
+        {
+            Parse::RecDescent::_trace(q{<<Didn't match repeated subrule: [class_qualifier]>>},
+                          Parse::RecDescent::_tracefirst($text),
+                          q{comp_unit_decl},
+                          $tracelevel)
+                            if defined $::RD_TRACE;
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched repeated subrule: [class_qualifier]<< (}
+                    . @$_tok . q{ times)},
+                      
+                      Parse::RecDescent::_tracefirst($text),
+                      q{comp_unit_decl},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $item{q{class_qualifier(s?)}} = $_tok;
+        push @item, $_tok;
+        
 
 
-		Parse::RecDescent::_trace(q{Trying repeated subrule: [implements_clause]},
-				  Parse::RecDescent::_tracefirst($text),
-				  q{comp_unit_decl},
-				  $tracelevel)
-					if defined $::RD_TRACE;
-		$expectation->is(q{implements_clause})->at($text);
-		
-		unless (defined ($_tok = $thisparser->_parserepeat($text, \&Parse::RecDescent::Java::Javap::Grammar::implements_clause, 0, 1, $_noactions,$expectation,undef))) 
-		{
-			Parse::RecDescent::_trace(q{<<Didn't match repeated subrule: [implements_clause]>>},
-						  Parse::RecDescent::_tracefirst($text),
-						  q{comp_unit_decl},
-						  $tracelevel)
-							if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched repeated subrule: [implements_clause]<< (}
-					. @$_tok . q{ times)},
-					  
-					  Parse::RecDescent::_tracefirst($text),
-					  q{comp_unit_decl},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$item{q{implements_clause(?)}} = $_tok;
-		push @item, $_tok;
-		
+        Parse::RecDescent::_trace(q{Trying subrule: [CLASS_OR_INTERFACE]},
+                  Parse::RecDescent::_tracefirst($text),
+                  q{comp_unit_decl},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
+        if (1) { no strict qw{refs};
+        $expectation->is(q{CLASS_OR_INTERFACE})->at($text);
+        unless (defined ($_tok = Parse::RecDescent::Java::Javap::Grammar::CLASS_OR_INTERFACE($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
+        {
+            
+            Parse::RecDescent::_trace(q{<<Didn't match subrule: [CLASS_OR_INTERFACE]>>},
+                          Parse::RecDescent::_tracefirst($text),
+                          q{comp_unit_decl},
+                          $tracelevel)
+                            if defined $::RD_TRACE;
+            $expectation->failed();
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched subrule: [CLASS_OR_INTERFACE]<< (return value: [}
+                    . $_tok . q{]},
+                      
+                      Parse::RecDescent::_tracefirst($text),
+                      q{comp_unit_decl},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $item{q{CLASS_OR_INTERFACE}} = $_tok;
+        push @item, $_tok;
+        
+        }
+
+        Parse::RecDescent::_trace(q{Trying subrule: [qualified_name]},
+                  Parse::RecDescent::_tracefirst($text),
+                  q{comp_unit_decl},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
+        if (1) { no strict qw{refs};
+        $expectation->is(q{qualified_name})->at($text);
+        unless (defined ($_tok = Parse::RecDescent::Java::Javap::Grammar::qualified_name($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
+        {
+            
+            Parse::RecDescent::_trace(q{<<Didn't match subrule: [qualified_name]>>},
+                          Parse::RecDescent::_tracefirst($text),
+                          q{comp_unit_decl},
+                          $tracelevel)
+                            if defined $::RD_TRACE;
+            $expectation->failed();
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched subrule: [qualified_name]<< (return value: [}
+                    . $_tok . q{]},
+                      
+                      Parse::RecDescent::_tracefirst($text),
+                      q{comp_unit_decl},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $item{q{qualified_name}} = $_tok;
+        push @item, $_tok;
+        
+        }
+
+        Parse::RecDescent::_trace(q{Trying repeated subrule: [extends_clause]},
+                  Parse::RecDescent::_tracefirst($text),
+                  q{comp_unit_decl},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
+        $expectation->is(q{extends_clause})->at($text);
+        
+        unless (defined ($_tok = $thisparser->_parserepeat($text, \&Parse::RecDescent::Java::Javap::Grammar::extends_clause, 0, 1, $_noactions,$expectation,sub { \@arg }))) 
+        {
+            Parse::RecDescent::_trace(q{<<Didn't match repeated subrule: [extends_clause]>>},
+                          Parse::RecDescent::_tracefirst($text),
+                          q{comp_unit_decl},
+                          $tracelevel)
+                            if defined $::RD_TRACE;
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched repeated subrule: [extends_clause]<< (}
+                    . @$_tok . q{ times)},
+                      
+                      Parse::RecDescent::_tracefirst($text),
+                      q{comp_unit_decl},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $item{q{extends_clause(?)}} = $_tok;
+        push @item, $_tok;
+        
 
 
-		Parse::RecDescent::_trace(q{Trying repeated subrule: [verbose_class_details]},
-				  Parse::RecDescent::_tracefirst($text),
-				  q{comp_unit_decl},
-				  $tracelevel)
-					if defined $::RD_TRACE;
-		$expectation->is(q{verbose_class_details})->at($text);
-		
-		unless (defined ($_tok = $thisparser->_parserepeat($text, \&Parse::RecDescent::Java::Javap::Grammar::verbose_class_details, 0, 1, $_noactions,$expectation,undef))) 
-		{
-			Parse::RecDescent::_trace(q{<<Didn't match repeated subrule: [verbose_class_details]>>},
-						  Parse::RecDescent::_tracefirst($text),
-						  q{comp_unit_decl},
-						  $tracelevel)
-							if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched repeated subrule: [verbose_class_details]<< (}
-					. @$_tok . q{ times)},
-					  
-					  Parse::RecDescent::_tracefirst($text),
-					  q{comp_unit_decl},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$item{q{verbose_class_details(?)}} = $_tok;
-		push @item, $_tok;
-		
+        Parse::RecDescent::_trace(q{Trying repeated subrule: [implements_clause]},
+                  Parse::RecDescent::_tracefirst($text),
+                  q{comp_unit_decl},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
+        $expectation->is(q{implements_clause})->at($text);
+        
+        unless (defined ($_tok = $thisparser->_parserepeat($text, \&Parse::RecDescent::Java::Javap::Grammar::implements_clause, 0, 1, $_noactions,$expectation,sub { \@arg }))) 
+        {
+            Parse::RecDescent::_trace(q{<<Didn't match repeated subrule: [implements_clause]>>},
+                          Parse::RecDescent::_tracefirst($text),
+                          q{comp_unit_decl},
+                          $tracelevel)
+                            if defined $::RD_TRACE;
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched repeated subrule: [implements_clause]<< (}
+                    . @$_tok . q{ times)},
+                      
+                      Parse::RecDescent::_tracefirst($text),
+                      q{comp_unit_decl},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $item{q{implements_clause(?)}} = $_tok;
+        push @item, $_tok;
+        
 
 
-		Parse::RecDescent::_trace(q{Trying action},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{comp_unit_decl},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		
+        Parse::RecDescent::_trace(q{Trying repeated subrule: [verbose_class_details]},
+                  Parse::RecDescent::_tracefirst($text),
+                  q{comp_unit_decl},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
+        $expectation->is(q{verbose_class_details})->at($text);
+        
+        unless (defined ($_tok = $thisparser->_parserepeat($text, \&Parse::RecDescent::Java::Javap::Grammar::verbose_class_details, 0, 1, $_noactions,$expectation,sub { \@arg }))) 
+        {
+            Parse::RecDescent::_trace(q{<<Didn't match repeated subrule: [verbose_class_details]>>},
+                          Parse::RecDescent::_tracefirst($text),
+                          q{comp_unit_decl},
+                          $tracelevel)
+                            if defined $::RD_TRACE;
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched repeated subrule: [verbose_class_details]<< (}
+                    . @$_tok . q{ times)},
+                      
+                      Parse::RecDescent::_tracefirst($text),
+                      q{comp_unit_decl},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $item{q{verbose_class_details(?)}} = $_tok;
+        push @item, $_tok;
+        
 
-		$_tok = ($_noactions) ? 0 : do {
+
+        Parse::RecDescent::_trace(q{Trying action},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{comp_unit_decl},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        
+
+        $_tok = ($_noactions) ? 0 : do {
     my $perl_qualified_name = $item{ qualified_name };
     $perl_qualified_name    =~ s/\./::/g;
     {
@@ -920,67 +935,67 @@ sub Parse::RecDescent::Java::Javap::Grammar::comp_unit_decl
         perl_qualified_name => $perl_qualified_name,
     }
 };
-		unless (defined $_tok)
-		{
-			Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
-					if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
-					  . $_tok . q{])},
-					  Parse::RecDescent::_tracefirst($text))
-						if defined $::RD_TRACE;
-		push @item, $_tok;
-		$item{__ACTION1__}=$_tok;
-		
+        unless (defined $_tok)
+        {
+            Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
+                    if defined $::RD_TRACE;
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
+                      . $_tok . q{])},
+                      Parse::RecDescent::_tracefirst($text))
+                        if defined $::RD_TRACE;
+        push @item, $_tok;
+        $item{__ACTION1__}=$_tok;
+        
 
 
-		Parse::RecDescent::_trace(q{>>Matched production: [ACCESS class_qualifier CLASS_OR_INTERFACE qualified_name extends_clause implements_clause verbose_class_details]<<},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{comp_unit_decl},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$_matched = 1;
-		last;
-	}
+        Parse::RecDescent::_trace(q{>>Matched production: [ACCESS class_qualifier CLASS_OR_INTERFACE qualified_name extends_clause implements_clause verbose_class_details]<<},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{comp_unit_decl},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $_matched = 1;
+        last;
+    }
 
 
-        unless ( $_matched || defined($return) || defined($score) )
-	{
-		
+    unless ( $_matched || defined($score) )
+    {
+        
 
-		$_[1] = $text;	# NOT SURE THIS IS NEEDED
-		Parse::RecDescent::_trace(q{<<Didn't match rule>>},
-					 Parse::RecDescent::_tracefirst($_[1]),
-					 q{comp_unit_decl},
-					 $tracelevel)
-					if defined $::RD_TRACE;
-		return undef;
-	}
-	if (!defined($return) && defined($score))
-	{
-		Parse::RecDescent::_trace(q{>>Accepted scored production<<}, "",
-					  q{comp_unit_decl},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$return = $score_return;
-	}
-	splice @{$thisparser->{errors}}, $err_at;
-	$return = $item[$#item] unless defined $return;
-	if (defined $::RD_TRACE)
-	{
-		Parse::RecDescent::_trace(q{>>Matched rule<< (return value: [} .
-					  $return . q{])}, "",
-					  q{comp_unit_decl},
-					  $tracelevel);
-		Parse::RecDescent::_trace(q{(consumed: [} .
-					  Parse::RecDescent::_tracemax(substr($_[1],0,-length($text))) . q{])}, 
-					  Parse::RecDescent::_tracefirst($text),
-					  , q{comp_unit_decl},
-					  $tracelevel)
-	}
-	$_[1] = $text;
-	return $return;
+        $_[1] = $text;  # NOT SURE THIS IS NEEDED
+        Parse::RecDescent::_trace(q{<<Didn't match rule>>},
+                     Parse::RecDescent::_tracefirst($_[1]),
+                     q{comp_unit_decl},
+                     $tracelevel)
+                    if defined $::RD_TRACE;
+        return undef;
+    }
+    if (!defined($return) && defined($score))
+    {
+        Parse::RecDescent::_trace(q{>>Accepted scored production<<}, "",
+                      q{comp_unit_decl},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $return = $score_return;
+    }
+    splice @{$thisparser->{errors}}, $err_at;
+    $return = $item[$#item] unless defined $return;
+    if (defined $::RD_TRACE)
+    {
+        Parse::RecDescent::_trace(q{>>Matched rule<< (return value: [} .
+                      $return . q{])}, "",
+                      q{comp_unit_decl},
+                      $tracelevel);
+        Parse::RecDescent::_trace(q{(consumed: [} .
+                      Parse::RecDescent::_tracemax(substr($_[1],0,-length($text))) . q{])}, 
+                      Parse::RecDescent::_tracefirst($text),
+                      , q{comp_unit_decl},
+                      $tracelevel)
+    }
+    $_[1] = $text;
+    return $return;
 }
 
 # ARGS ARE: ($parser, $text; $repeating, $_noactions, \@args)
@@ -990,346 +1005,353 @@ sub Parse::RecDescent::Java::Javap::Grammar::ACCESS
 	use vars q{$tracelevel};
 	local $tracelevel = ($tracelevel||0)+1;
 	$ERRORS = 0;
-	my $thisrule = $thisparser->{"rules"}{"ACCESS"};
-	
-	Parse::RecDescent::_trace(q{Trying rule: [ACCESS]},
-				  Parse::RecDescent::_tracefirst($_[1]),
-				  q{ACCESS},
-				  $tracelevel)
-					if defined $::RD_TRACE;
+    my $thisrule = $thisparser->{"rules"}{"ACCESS"};
+    
+    Parse::RecDescent::_trace(q{Trying rule: [ACCESS]},
+                  Parse::RecDescent::_tracefirst($_[1]),
+                  q{ACCESS},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
 
-	
-	my $err_at = @{$thisparser->{errors}};
+    
+    my $err_at = @{$thisparser->{errors}};
 
-	my $score;
-	my $score_return;
-	my $_tok;
-	my $return = undef;
-	my $_matched=0;
-	my $commit=0;
-	my @item = ();
-	my %item = ();
-	my $repeating =  defined($_[2]) && $_[2];
-	my $_noactions = defined($_[3]) && $_[3];
- 	my @arg =        defined $_[4] ? @{ &{$_[4]} } : ();
-	my %arg =        ($#arg & 01) ? @arg : (@arg, undef);
-	my $text;
-	my $lastsep="";
-	my $expectation = new Parse::RecDescent::Expectation($thisrule->expected());
-	$expectation->at($_[1]);
-	
-	my $thisline;
-	tie $thisline, q{Parse::RecDescent::LineCounter}, \$text, $thisparser;
+    my $score;
+    my $score_return;
+    my $_tok;
+    my $return = undef;
+    my $_matched=0;
+    my $commit=0;
+    my @item = ();
+    my %item = ();
+    my $repeating =  defined($_[2]) && $_[2];
+    my $_noactions = defined($_[3]) && $_[3];
+    my @arg =    defined $_[4] ? @{ &{$_[4]} } : ();
+    my %arg =    ($#arg & 01) ? @arg : (@arg, undef);
+    my $text;
+    my $lastsep="";
+    my $current_match;
+    my $expectation = new Parse::RecDescent::Expectation(q{'public', or 'protected', or 'private'});
+    $expectation->at($_[1]);
+    
+    my $thisline;
+    tie $thisline, q{Parse::RecDescent::LineCounter}, \$text, $thisparser;
 
-	
+    
 
-	while (!$_matched && !$commit)
-	{
-		
-		Parse::RecDescent::_trace(q{Trying production: ['public']},
-					  Parse::RecDescent::_tracefirst($_[1]),
-					  q{ACCESS},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		my $thisprod = $thisrule->{"prods"}[0];
-		$text = $_[1];
-		my $_savetext;
-		@item = (q{ACCESS});
-		%item = (__RULE__ => q{ACCESS});
-		my $repcount = 0;
-
-
-		Parse::RecDescent::_trace(q{Trying terminal: ['public']},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{ACCESS},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$lastsep = "";
-		$expectation->is(q{})->at($text);
-		
-
-		unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ s/\Apublic//)
-		{
-			
-			$expectation->failed();
-			Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
-						. $& . q{])},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-		push @item, $item{__STRING1__}=$&;
-		
-
-		Parse::RecDescent::_trace(q{Trying action},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{ACCESS},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		
-
-		$_tok = ($_noactions) ? 0 : do { $item[1] };
-		unless (defined $_tok)
-		{
-			Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
-					if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
-					  . $_tok . q{])},
-					  Parse::RecDescent::_tracefirst($text))
-						if defined $::RD_TRACE;
-		push @item, $_tok;
-		$item{__ACTION1__}=$_tok;
-		
+    while (!$_matched && !$commit)
+    {
+        
+        Parse::RecDescent::_trace(q{Trying production: ['public']},
+                      Parse::RecDescent::_tracefirst($_[1]),
+                      q{ACCESS},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        my $thisprod = $thisrule->{"prods"}[0];
+        $text = $_[1];
+        my $_savetext;
+        @item = (q{ACCESS});
+        %item = (__RULE__ => q{ACCESS});
+        my $repcount = 0;
 
 
-		Parse::RecDescent::_trace(q{>>Matched production: ['public']<<},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{ACCESS},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$_matched = 1;
-		last;
-	}
+        Parse::RecDescent::_trace(q{Trying terminal: ['public']},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{ACCESS},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $lastsep = "";
+        $expectation->is(q{})->at($text);
+        
+
+        unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ m/\Apublic/)
+        {
+            
+            $expectation->failed();
+            Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+            last;
+        }
+		$current_match = substr($text, $-[0], $+[0] - $-[0]);
+        substr($text,0,length($current_match),q{});
+        Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
+                        . $current_match . q{])},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+        push @item, $item{__STRING1__}=$current_match;
+        
+
+        Parse::RecDescent::_trace(q{Trying action},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{ACCESS},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        
+
+        $_tok = ($_noactions) ? 0 : do { $item[1] };
+        unless (defined $_tok)
+        {
+            Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
+                    if defined $::RD_TRACE;
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
+                      . $_tok . q{])},
+                      Parse::RecDescent::_tracefirst($text))
+                        if defined $::RD_TRACE;
+        push @item, $_tok;
+        $item{__ACTION1__}=$_tok;
+        
 
 
-	while (!$_matched && !$commit)
-	{
-		
-		Parse::RecDescent::_trace(q{Trying production: ['protected']},
-					  Parse::RecDescent::_tracefirst($_[1]),
-					  q{ACCESS},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		my $thisprod = $thisrule->{"prods"}[1];
-		$text = $_[1];
-		my $_savetext;
-		@item = (q{ACCESS});
-		%item = (__RULE__ => q{ACCESS});
-		my $repcount = 0;
+        Parse::RecDescent::_trace(q{>>Matched production: ['public']<<},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{ACCESS},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $_matched = 1;
+        last;
+    }
 
 
-		Parse::RecDescent::_trace(q{Trying terminal: ['protected']},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{ACCESS},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$lastsep = "";
-		$expectation->is(q{})->at($text);
-		
-
-		unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ s/\Aprotected//)
-		{
-			
-			$expectation->failed();
-			Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
-						. $& . q{])},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-		push @item, $item{__STRING1__}=$&;
-		
-
-		Parse::RecDescent::_trace(q{Trying action},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{ACCESS},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		
-
-		$_tok = ($_noactions) ? 0 : do { $item[1] };
-		unless (defined $_tok)
-		{
-			Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
-					if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
-					  . $_tok . q{])},
-					  Parse::RecDescent::_tracefirst($text))
-						if defined $::RD_TRACE;
-		push @item, $_tok;
-		$item{__ACTION1__}=$_tok;
-		
+    while (!$_matched && !$commit)
+    {
+        
+        Parse::RecDescent::_trace(q{Trying production: ['protected']},
+                      Parse::RecDescent::_tracefirst($_[1]),
+                      q{ACCESS},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        my $thisprod = $thisrule->{"prods"}[1];
+        $text = $_[1];
+        my $_savetext;
+        @item = (q{ACCESS});
+        %item = (__RULE__ => q{ACCESS});
+        my $repcount = 0;
 
 
-		Parse::RecDescent::_trace(q{>>Matched production: ['protected']<<},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{ACCESS},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$_matched = 1;
-		last;
-	}
+        Parse::RecDescent::_trace(q{Trying terminal: ['protected']},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{ACCESS},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $lastsep = "";
+        $expectation->is(q{})->at($text);
+        
+
+        unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ m/\Aprotected/)
+        {
+            
+            $expectation->failed();
+            Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+            last;
+        }
+		$current_match = substr($text, $-[0], $+[0] - $-[0]);
+        substr($text,0,length($current_match),q{});
+        Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
+                        . $current_match . q{])},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+        push @item, $item{__STRING1__}=$current_match;
+        
+
+        Parse::RecDescent::_trace(q{Trying action},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{ACCESS},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        
+
+        $_tok = ($_noactions) ? 0 : do { $item[1] };
+        unless (defined $_tok)
+        {
+            Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
+                    if defined $::RD_TRACE;
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
+                      . $_tok . q{])},
+                      Parse::RecDescent::_tracefirst($text))
+                        if defined $::RD_TRACE;
+        push @item, $_tok;
+        $item{__ACTION1__}=$_tok;
+        
 
 
-	while (!$_matched && !$commit)
-	{
-		
-		Parse::RecDescent::_trace(q{Trying production: ['private']},
-					  Parse::RecDescent::_tracefirst($_[1]),
-					  q{ACCESS},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		my $thisprod = $thisrule->{"prods"}[2];
-		$text = $_[1];
-		my $_savetext;
-		@item = (q{ACCESS});
-		%item = (__RULE__ => q{ACCESS});
-		my $repcount = 0;
+        Parse::RecDescent::_trace(q{>>Matched production: ['protected']<<},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{ACCESS},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $_matched = 1;
+        last;
+    }
 
 
-		Parse::RecDescent::_trace(q{Trying terminal: ['private']},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{ACCESS},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$lastsep = "";
-		$expectation->is(q{})->at($text);
-		
-
-		unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ s/\Aprivate//)
-		{
-			
-			$expectation->failed();
-			Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
-						. $& . q{])},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-		push @item, $item{__STRING1__}=$&;
-		
-
-		Parse::RecDescent::_trace(q{Trying action},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{ACCESS},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		
-
-		$_tok = ($_noactions) ? 0 : do { $item[1] };
-		unless (defined $_tok)
-		{
-			Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
-					if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
-					  . $_tok . q{])},
-					  Parse::RecDescent::_tracefirst($text))
-						if defined $::RD_TRACE;
-		push @item, $_tok;
-		$item{__ACTION1__}=$_tok;
-		
+    while (!$_matched && !$commit)
+    {
+        
+        Parse::RecDescent::_trace(q{Trying production: ['private']},
+                      Parse::RecDescent::_tracefirst($_[1]),
+                      q{ACCESS},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        my $thisprod = $thisrule->{"prods"}[2];
+        $text = $_[1];
+        my $_savetext;
+        @item = (q{ACCESS});
+        %item = (__RULE__ => q{ACCESS});
+        my $repcount = 0;
 
 
-		Parse::RecDescent::_trace(q{>>Matched production: ['private']<<},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{ACCESS},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$_matched = 1;
-		last;
-	}
+        Parse::RecDescent::_trace(q{Trying terminal: ['private']},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{ACCESS},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $lastsep = "";
+        $expectation->is(q{})->at($text);
+        
+
+        unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ m/\Aprivate/)
+        {
+            
+            $expectation->failed();
+            Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+            last;
+        }
+		$current_match = substr($text, $-[0], $+[0] - $-[0]);
+        substr($text,0,length($current_match),q{});
+        Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
+                        . $current_match . q{])},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+        push @item, $item{__STRING1__}=$current_match;
+        
+
+        Parse::RecDescent::_trace(q{Trying action},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{ACCESS},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        
+
+        $_tok = ($_noactions) ? 0 : do { $item[1] };
+        unless (defined $_tok)
+        {
+            Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
+                    if defined $::RD_TRACE;
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
+                      . $_tok . q{])},
+                      Parse::RecDescent::_tracefirst($text))
+                        if defined $::RD_TRACE;
+        push @item, $_tok;
+        $item{__ACTION1__}=$_tok;
+        
 
 
-	while (!$_matched && !$commit)
-	{
-		
-		Parse::RecDescent::_trace(q{Trying production: []},
-					  Parse::RecDescent::_tracefirst($_[1]),
-					  q{ACCESS},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		my $thisprod = $thisrule->{"prods"}[3];
-		$text = $_[1];
-		my $_savetext;
-		@item = (q{ACCESS});
-		%item = (__RULE__ => q{ACCESS});
-		my $repcount = 0;
+        Parse::RecDescent::_trace(q{>>Matched production: ['private']<<},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{ACCESS},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $_matched = 1;
+        last;
+    }
 
 
-		Parse::RecDescent::_trace(q{Trying action},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{ACCESS},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		
-
-		$_tok = ($_noactions) ? 0 : do { '' };
-		unless (defined $_tok)
-		{
-			Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
-					if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
-					  . $_tok . q{])},
-					  Parse::RecDescent::_tracefirst($text))
-						if defined $::RD_TRACE;
-		push @item, $_tok;
-		$item{__ACTION1__}=$_tok;
-		
+    while (!$_matched && !$commit)
+    {
+        
+        Parse::RecDescent::_trace(q{Trying production: []},
+                      Parse::RecDescent::_tracefirst($_[1]),
+                      q{ACCESS},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        my $thisprod = $thisrule->{"prods"}[3];
+        $text = $_[1];
+        my $_savetext;
+        @item = (q{ACCESS});
+        %item = (__RULE__ => q{ACCESS});
+        my $repcount = 0;
 
 
-		Parse::RecDescent::_trace(q{>>Matched production: []<<},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{ACCESS},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$_matched = 1;
-		last;
-	}
+        Parse::RecDescent::_trace(q{Trying action},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{ACCESS},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        
+
+        $_tok = ($_noactions) ? 0 : do { '' };
+        unless (defined $_tok)
+        {
+            Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
+                    if defined $::RD_TRACE;
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
+                      . $_tok . q{])},
+                      Parse::RecDescent::_tracefirst($text))
+                        if defined $::RD_TRACE;
+        push @item, $_tok;
+        $item{__ACTION1__}=$_tok;
+        
 
 
-        unless ( $_matched || defined($return) || defined($score) )
-	{
-		
+        Parse::RecDescent::_trace(q{>>Matched production: []<<},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{ACCESS},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $_matched = 1;
+        last;
+    }
 
-		$_[1] = $text;	# NOT SURE THIS IS NEEDED
-		Parse::RecDescent::_trace(q{<<Didn't match rule>>},
-					 Parse::RecDescent::_tracefirst($_[1]),
-					 q{ACCESS},
-					 $tracelevel)
-					if defined $::RD_TRACE;
-		return undef;
-	}
-	if (!defined($return) && defined($score))
-	{
-		Parse::RecDescent::_trace(q{>>Accepted scored production<<}, "",
-					  q{ACCESS},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$return = $score_return;
-	}
-	splice @{$thisparser->{errors}}, $err_at;
-	$return = $item[$#item] unless defined $return;
-	if (defined $::RD_TRACE)
-	{
-		Parse::RecDescent::_trace(q{>>Matched rule<< (return value: [} .
-					  $return . q{])}, "",
-					  q{ACCESS},
-					  $tracelevel);
-		Parse::RecDescent::_trace(q{(consumed: [} .
-					  Parse::RecDescent::_tracemax(substr($_[1],0,-length($text))) . q{])}, 
-					  Parse::RecDescent::_tracefirst($text),
-					  , q{ACCESS},
-					  $tracelevel)
-	}
-	$_[1] = $text;
-	return $return;
+
+    unless ( $_matched || defined($score) )
+    {
+        
+
+        $_[1] = $text;  # NOT SURE THIS IS NEEDED
+        Parse::RecDescent::_trace(q{<<Didn't match rule>>},
+                     Parse::RecDescent::_tracefirst($_[1]),
+                     q{ACCESS},
+                     $tracelevel)
+                    if defined $::RD_TRACE;
+        return undef;
+    }
+    if (!defined($return) && defined($score))
+    {
+        Parse::RecDescent::_trace(q{>>Accepted scored production<<}, "",
+                      q{ACCESS},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $return = $score_return;
+    }
+    splice @{$thisparser->{errors}}, $err_at;
+    $return = $item[$#item] unless defined $return;
+    if (defined $::RD_TRACE)
+    {
+        Parse::RecDescent::_trace(q{>>Matched rule<< (return value: [} .
+                      $return . q{])}, "",
+                      q{ACCESS},
+                      $tracelevel);
+        Parse::RecDescent::_trace(q{(consumed: [} .
+                      Parse::RecDescent::_tracemax(substr($_[1],0,-length($text))) . q{])}, 
+                      Parse::RecDescent::_tracefirst($text),
+                      , q{ACCESS},
+                      $tracelevel)
+    }
+    $_[1] = $text;
+    return $return;
 }
 
 # ARGS ARE: ($parser, $text; $repeating, $_noactions, \@args)
@@ -1339,149 +1361,152 @@ sub Parse::RecDescent::Java::Javap::Grammar::ARRAY_LEVEL
 	use vars q{$tracelevel};
 	local $tracelevel = ($tracelevel||0)+1;
 	$ERRORS = 0;
-	my $thisrule = $thisparser->{"rules"}{"ARRAY_LEVEL"};
-	
-	Parse::RecDescent::_trace(q{Trying rule: [ARRAY_LEVEL]},
-				  Parse::RecDescent::_tracefirst($_[1]),
-				  q{ARRAY_LEVEL},
-				  $tracelevel)
-					if defined $::RD_TRACE;
+    my $thisrule = $thisparser->{"rules"}{"ARRAY_LEVEL"};
+    
+    Parse::RecDescent::_trace(q{Trying rule: [ARRAY_LEVEL]},
+                  Parse::RecDescent::_tracefirst($_[1]),
+                  q{ARRAY_LEVEL},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
 
-	
-	my $err_at = @{$thisparser->{errors}};
+    
+    my $err_at = @{$thisparser->{errors}};
 
-	my $score;
-	my $score_return;
-	my $_tok;
-	my $return = undef;
-	my $_matched=0;
-	my $commit=0;
-	my @item = ();
-	my %item = ();
-	my $repeating =  defined($_[2]) && $_[2];
-	my $_noactions = defined($_[3]) && $_[3];
- 	my @arg =        defined $_[4] ? @{ &{$_[4]} } : ();
-	my %arg =        ($#arg & 01) ? @arg : (@arg, undef);
-	my $text;
-	my $lastsep="";
-	my $expectation = new Parse::RecDescent::Expectation($thisrule->expected());
-	$expectation->at($_[1]);
-	
-	my $thisline;
-	tie $thisline, q{Parse::RecDescent::LineCounter}, \$text, $thisparser;
+    my $score;
+    my $score_return;
+    my $_tok;
+    my $return = undef;
+    my $_matched=0;
+    my $commit=0;
+    my @item = ();
+    my %item = ();
+    my $repeating =  defined($_[2]) && $_[2];
+    my $_noactions = defined($_[3]) && $_[3];
+    my @arg =    defined $_[4] ? @{ &{$_[4]} } : ();
+    my %arg =    ($#arg & 01) ? @arg : (@arg, undef);
+    my $text;
+    my $lastsep="";
+    my $current_match;
+    my $expectation = new Parse::RecDescent::Expectation(q{'[]'});
+    $expectation->at($_[1]);
+    
+    my $thisline;
+    tie $thisline, q{Parse::RecDescent::LineCounter}, \$text, $thisparser;
 
-	
+    
 
-	while (!$_matched && !$commit)
-	{
-		
-		Parse::RecDescent::_trace(q{Trying production: ['[]']},
-					  Parse::RecDescent::_tracefirst($_[1]),
-					  q{ARRAY_LEVEL},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		my $thisprod = $thisrule->{"prods"}[0];
-		$text = $_[1];
-		my $_savetext;
-		@item = (q{ARRAY_LEVEL});
-		%item = (__RULE__ => q{ARRAY_LEVEL});
-		my $repcount = 0;
-
-
-		Parse::RecDescent::_trace(q{Trying terminal: ['[]']},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{ARRAY_LEVEL},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$lastsep = "";
-		$expectation->is(q{})->at($text);
-		
-
-		unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ s/\A\[\]//)
-		{
-			
-			$expectation->failed();
-			Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
-						. $& . q{])},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-		push @item, $item{__STRING1__}=$&;
-		
-
-		Parse::RecDescent::_trace(q{Trying action},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{ARRAY_LEVEL},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		
-
-		$_tok = ($_noactions) ? 0 : do { 1 };
-		unless (defined $_tok)
-		{
-			Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
-					if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
-					  . $_tok . q{])},
-					  Parse::RecDescent::_tracefirst($text))
-						if defined $::RD_TRACE;
-		push @item, $_tok;
-		$item{__ACTION1__}=$_tok;
-		
+    while (!$_matched && !$commit)
+    {
+        
+        Parse::RecDescent::_trace(q{Trying production: ['[]']},
+                      Parse::RecDescent::_tracefirst($_[1]),
+                      q{ARRAY_LEVEL},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        my $thisprod = $thisrule->{"prods"}[0];
+        $text = $_[1];
+        my $_savetext;
+        @item = (q{ARRAY_LEVEL});
+        %item = (__RULE__ => q{ARRAY_LEVEL});
+        my $repcount = 0;
 
 
-		Parse::RecDescent::_trace(q{>>Matched production: ['[]']<<},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{ARRAY_LEVEL},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$_matched = 1;
-		last;
-	}
+        Parse::RecDescent::_trace(q{Trying terminal: ['[]']},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{ARRAY_LEVEL},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $lastsep = "";
+        $expectation->is(q{})->at($text);
+        
+
+        unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ m/\A\[\]/)
+        {
+            
+            $expectation->failed();
+            Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+            last;
+        }
+		$current_match = substr($text, $-[0], $+[0] - $-[0]);
+        substr($text,0,length($current_match),q{});
+        Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
+                        . $current_match . q{])},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+        push @item, $item{__STRING1__}=$current_match;
+        
+
+        Parse::RecDescent::_trace(q{Trying action},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{ARRAY_LEVEL},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        
+
+        $_tok = ($_noactions) ? 0 : do { 1 };
+        unless (defined $_tok)
+        {
+            Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
+                    if defined $::RD_TRACE;
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
+                      . $_tok . q{])},
+                      Parse::RecDescent::_tracefirst($text))
+                        if defined $::RD_TRACE;
+        push @item, $_tok;
+        $item{__ACTION1__}=$_tok;
+        
 
 
-        unless ( $_matched || defined($return) || defined($score) )
-	{
-		
+        Parse::RecDescent::_trace(q{>>Matched production: ['[]']<<},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{ARRAY_LEVEL},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $_matched = 1;
+        last;
+    }
 
-		$_[1] = $text;	# NOT SURE THIS IS NEEDED
-		Parse::RecDescent::_trace(q{<<Didn't match rule>>},
-					 Parse::RecDescent::_tracefirst($_[1]),
-					 q{ARRAY_LEVEL},
-					 $tracelevel)
-					if defined $::RD_TRACE;
-		return undef;
-	}
-	if (!defined($return) && defined($score))
-	{
-		Parse::RecDescent::_trace(q{>>Accepted scored production<<}, "",
-					  q{ARRAY_LEVEL},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$return = $score_return;
-	}
-	splice @{$thisparser->{errors}}, $err_at;
-	$return = $item[$#item] unless defined $return;
-	if (defined $::RD_TRACE)
-	{
-		Parse::RecDescent::_trace(q{>>Matched rule<< (return value: [} .
-					  $return . q{])}, "",
-					  q{ARRAY_LEVEL},
-					  $tracelevel);
-		Parse::RecDescent::_trace(q{(consumed: [} .
-					  Parse::RecDescent::_tracemax(substr($_[1],0,-length($text))) . q{])}, 
-					  Parse::RecDescent::_tracefirst($text),
-					  , q{ARRAY_LEVEL},
-					  $tracelevel)
-	}
-	$_[1] = $text;
-	return $return;
+
+    unless ( $_matched || defined($score) )
+    {
+        
+
+        $_[1] = $text;  # NOT SURE THIS IS NEEDED
+        Parse::RecDescent::_trace(q{<<Didn't match rule>>},
+                     Parse::RecDescent::_tracefirst($_[1]),
+                     q{ARRAY_LEVEL},
+                     $tracelevel)
+                    if defined $::RD_TRACE;
+        return undef;
+    }
+    if (!defined($return) && defined($score))
+    {
+        Parse::RecDescent::_trace(q{>>Accepted scored production<<}, "",
+                      q{ARRAY_LEVEL},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $return = $score_return;
+    }
+    splice @{$thisparser->{errors}}, $err_at;
+    $return = $item[$#item] unless defined $return;
+    if (defined $::RD_TRACE)
+    {
+        Parse::RecDescent::_trace(q{>>Matched rule<< (return value: [} .
+                      $return . q{])}, "",
+                      q{ARRAY_LEVEL},
+                      $tracelevel);
+        Parse::RecDescent::_trace(q{(consumed: [} .
+                      Parse::RecDescent::_tracemax(substr($_[1],0,-length($text))) . q{])}, 
+                      Parse::RecDescent::_tracefirst($text),
+                      , q{ARRAY_LEVEL},
+                      $tracelevel)
+    }
+    $_[1] = $text;
+    return $return;
 }
 
 # ARGS ARE: ($parser, $text; $repeating, $_noactions, \@args)
@@ -1491,127 +1516,130 @@ sub Parse::RecDescent::Java::Javap::Grammar::number_table_line
 	use vars q{$tracelevel};
 	local $tracelevel = ($tracelevel||0)+1;
 	$ERRORS = 0;
-	my $thisrule = $thisparser->{"rules"}{"number_table_line"};
-	
-	Parse::RecDescent::_trace(q{Trying rule: [number_table_line]},
-				  Parse::RecDescent::_tracefirst($_[1]),
-				  q{number_table_line},
-				  $tracelevel)
-					if defined $::RD_TRACE;
+    my $thisrule = $thisparser->{"rules"}{"number_table_line"};
+    
+    Parse::RecDescent::_trace(q{Trying rule: [number_table_line]},
+                  Parse::RecDescent::_tracefirst($_[1]),
+                  q{number_table_line},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
 
-	
-	my $err_at = @{$thisparser->{errors}};
+    
+    my $err_at = @{$thisparser->{errors}};
 
-	my $score;
-	my $score_return;
-	my $_tok;
-	my $return = undef;
-	my $_matched=0;
-	my $commit=0;
-	my @item = ();
-	my %item = ();
-	my $repeating =  defined($_[2]) && $_[2];
-	my $_noactions = defined($_[3]) && $_[3];
- 	my @arg =        defined $_[4] ? @{ &{$_[4]} } : ();
-	my %arg =        ($#arg & 01) ? @arg : (@arg, undef);
-	my $text;
-	my $lastsep="";
-	my $expectation = new Parse::RecDescent::Expectation($thisrule->expected());
-	$expectation->at($_[1]);
-	
-	my $thisline;
-	tie $thisline, q{Parse::RecDescent::LineCounter}, \$text, $thisparser;
+    my $score;
+    my $score_return;
+    my $_tok;
+    my $return = undef;
+    my $_matched=0;
+    my $commit=0;
+    my @item = ();
+    my %item = ();
+    my $repeating =  defined($_[2]) && $_[2];
+    my $_noactions = defined($_[3]) && $_[3];
+    my @arg =    defined $_[4] ? @{ &{$_[4]} } : ();
+    my %arg =    ($#arg & 01) ? @arg : (@arg, undef);
+    my $text;
+    my $lastsep="";
+    my $current_match;
+    my $expectation = new Parse::RecDescent::Expectation(q{/line \\d+:[^\\n]*/});
+    $expectation->at($_[1]);
+    
+    my $thisline;
+    tie $thisline, q{Parse::RecDescent::LineCounter}, \$text, $thisparser;
 
-	
+    
 
-	while (!$_matched && !$commit)
-	{
-		
-		Parse::RecDescent::_trace(q{Trying production: [/line \\d+:[^\\n]*/]},
-					  Parse::RecDescent::_tracefirst($_[1]),
-					  q{number_table_line},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		my $thisprod = $thisrule->{"prods"}[0];
-		$text = $_[1];
-		my $_savetext;
-		@item = (q{number_table_line});
-		%item = (__RULE__ => q{number_table_line});
-		my $repcount = 0;
-
-
-		Parse::RecDescent::_trace(q{Trying terminal: [/line \\d+:[^\\n]*/]}, Parse::RecDescent::_tracefirst($text),
-					  q{number_table_line},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$lastsep = "";
-		$expectation->is(q{})->at($text);
-		
-
-		unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ s/\A(?:line \d+:[^\n]*)//)
-		{
-			
-			$expectation->failed();
-			Parse::RecDescent::_trace(q{<<Didn't match terminal>>},
-						  Parse::RecDescent::_tracefirst($text))
-					if defined $::RD_TRACE;
-
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
-						. $& . q{])},
-						  Parse::RecDescent::_tracefirst($text))
-					if defined $::RD_TRACE;
-		push @item, $item{__PATTERN1__}=$&;
-		
+    while (!$_matched && !$commit)
+    {
+        
+        Parse::RecDescent::_trace(q{Trying production: [/line \\d+:[^\\n]*/]},
+                      Parse::RecDescent::_tracefirst($_[1]),
+                      q{number_table_line},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        my $thisprod = $thisrule->{"prods"}[0];
+        $text = $_[1];
+        my $_savetext;
+        @item = (q{number_table_line});
+        %item = (__RULE__ => q{number_table_line});
+        my $repcount = 0;
 
 
-		Parse::RecDescent::_trace(q{>>Matched production: [/line \\d+:[^\\n]*/]<<},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{number_table_line},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$_matched = 1;
-		last;
-	}
+        Parse::RecDescent::_trace(q{Trying terminal: [/line \\d+:[^\\n]*/]}, Parse::RecDescent::_tracefirst($text),
+                      q{number_table_line},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $lastsep = "";
+        $expectation->is(q{})->at($text);
+        
+
+        unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ m/\A(?:line \d+:[^\n]*)/)
+        {
+            
+            $expectation->failed();
+            Parse::RecDescent::_trace(q{<<Didn't match terminal>>},
+                          Parse::RecDescent::_tracefirst($text))
+                    if defined $::RD_TRACE;
+
+            last;
+        }
+		$current_match = substr($text, $-[0], $+[0] - $-[0]);
+        substr($text,0,length($current_match),q{});
+        Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
+                        . $current_match . q{])},
+                          Parse::RecDescent::_tracefirst($text))
+                    if defined $::RD_TRACE;
+        push @item, $item{__PATTERN1__}=$current_match;
+        
 
 
-        unless ( $_matched || defined($return) || defined($score) )
-	{
-		
+        Parse::RecDescent::_trace(q{>>Matched production: [/line \\d+:[^\\n]*/]<<},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{number_table_line},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $_matched = 1;
+        last;
+    }
 
-		$_[1] = $text;	# NOT SURE THIS IS NEEDED
-		Parse::RecDescent::_trace(q{<<Didn't match rule>>},
-					 Parse::RecDescent::_tracefirst($_[1]),
-					 q{number_table_line},
-					 $tracelevel)
-					if defined $::RD_TRACE;
-		return undef;
-	}
-	if (!defined($return) && defined($score))
-	{
-		Parse::RecDescent::_trace(q{>>Accepted scored production<<}, "",
-					  q{number_table_line},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$return = $score_return;
-	}
-	splice @{$thisparser->{errors}}, $err_at;
-	$return = $item[$#item] unless defined $return;
-	if (defined $::RD_TRACE)
-	{
-		Parse::RecDescent::_trace(q{>>Matched rule<< (return value: [} .
-					  $return . q{])}, "",
-					  q{number_table_line},
-					  $tracelevel);
-		Parse::RecDescent::_trace(q{(consumed: [} .
-					  Parse::RecDescent::_tracemax(substr($_[1],0,-length($text))) . q{])}, 
-					  Parse::RecDescent::_tracefirst($text),
-					  , q{number_table_line},
-					  $tracelevel)
-	}
-	$_[1] = $text;
-	return $return;
+
+    unless ( $_matched || defined($score) )
+    {
+        
+
+        $_[1] = $text;  # NOT SURE THIS IS NEEDED
+        Parse::RecDescent::_trace(q{<<Didn't match rule>>},
+                     Parse::RecDescent::_tracefirst($_[1]),
+                     q{number_table_line},
+                     $tracelevel)
+                    if defined $::RD_TRACE;
+        return undef;
+    }
+    if (!defined($return) && defined($score))
+    {
+        Parse::RecDescent::_trace(q{>>Accepted scored production<<}, "",
+                      q{number_table_line},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $return = $score_return;
+    }
+    splice @{$thisparser->{errors}}, $err_at;
+    $return = $item[$#item] unless defined $return;
+    if (defined $::RD_TRACE)
+    {
+        Parse::RecDescent::_trace(q{>>Matched rule<< (return value: [} .
+                      $return . q{])}, "",
+                      q{number_table_line},
+                      $tracelevel);
+        Parse::RecDescent::_trace(q{(consumed: [} .
+                      Parse::RecDescent::_tracemax(substr($_[1],0,-length($text))) . q{])}, 
+                      Parse::RecDescent::_tracefirst($text),
+                      , q{number_table_line},
+                      $tracelevel)
+    }
+    $_[1] = $text;
+    return $return;
 }
 
 # ARGS ARE: ($parser, $text; $repeating, $_noactions, \@args)
@@ -1621,179 +1649,182 @@ sub Parse::RecDescent::Java::Javap::Grammar::throws_clause
 	use vars q{$tracelevel};
 	local $tracelevel = ($tracelevel||0)+1;
 	$ERRORS = 0;
-	my $thisrule = $thisparser->{"rules"}{"throws_clause"};
-	
-	Parse::RecDescent::_trace(q{Trying rule: [throws_clause]},
-				  Parse::RecDescent::_tracefirst($_[1]),
-				  q{throws_clause},
-				  $tracelevel)
-					if defined $::RD_TRACE;
+    my $thisrule = $thisparser->{"rules"}{"throws_clause"};
+    
+    Parse::RecDescent::_trace(q{Trying rule: [throws_clause]},
+                  Parse::RecDescent::_tracefirst($_[1]),
+                  q{throws_clause},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
 
-	
-	my $err_at = @{$thisparser->{errors}};
+    
+    my $err_at = @{$thisparser->{errors}};
 
-	my $score;
-	my $score_return;
-	my $_tok;
-	my $return = undef;
-	my $_matched=0;
-	my $commit=0;
-	my @item = ();
-	my %item = ();
-	my $repeating =  defined($_[2]) && $_[2];
-	my $_noactions = defined($_[3]) && $_[3];
- 	my @arg =        defined $_[4] ? @{ &{$_[4]} } : ();
-	my %arg =        ($#arg & 01) ? @arg : (@arg, undef);
-	my $text;
-	my $lastsep="";
-	my $expectation = new Parse::RecDescent::Expectation($thisrule->expected());
-	$expectation->at($_[1]);
-	
-	my $thisline;
-	tie $thisline, q{Parse::RecDescent::LineCounter}, \$text, $thisparser;
+    my $score;
+    my $score_return;
+    my $_tok;
+    my $return = undef;
+    my $_matched=0;
+    my $commit=0;
+    my @item = ();
+    my %item = ();
+    my $repeating =  defined($_[2]) && $_[2];
+    my $_noactions = defined($_[3]) && $_[3];
+    my @arg =    defined $_[4] ? @{ &{$_[4]} } : ();
+    my %arg =    ($#arg & 01) ? @arg : (@arg, undef);
+    my $text;
+    my $lastsep="";
+    my $current_match;
+    my $expectation = new Parse::RecDescent::Expectation(q{'throws'});
+    $expectation->at($_[1]);
+    
+    my $thisline;
+    tie $thisline, q{Parse::RecDescent::LineCounter}, \$text, $thisparser;
 
-	
+    
 
-	while (!$_matched && !$commit)
-	{
-		
-		Parse::RecDescent::_trace(q{Trying production: ['throws' comma_list]},
-					  Parse::RecDescent::_tracefirst($_[1]),
-					  q{throws_clause},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		my $thisprod = $thisrule->{"prods"}[0];
-		$text = $_[1];
-		my $_savetext;
-		@item = (q{throws_clause});
-		%item = (__RULE__ => q{throws_clause});
-		my $repcount = 0;
-
-
-		Parse::RecDescent::_trace(q{Trying terminal: ['throws']},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{throws_clause},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$lastsep = "";
-		$expectation->is(q{})->at($text);
-		
-
-		unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ s/\Athrows//)
-		{
-			
-			$expectation->failed();
-			Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
-						. $& . q{])},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-		push @item, $item{__STRING1__}=$&;
-		
-
-		Parse::RecDescent::_trace(q{Trying subrule: [comma_list]},
-				  Parse::RecDescent::_tracefirst($text),
-				  q{throws_clause},
-				  $tracelevel)
-					if defined $::RD_TRACE;
-		if (1) { no strict qw{refs};
-		$expectation->is(q{comma_list})->at($text);
-		unless (defined ($_tok = Parse::RecDescent::Java::Javap::Grammar::comma_list($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
-		{
-			
-			Parse::RecDescent::_trace(q{<<Didn't match subrule: [comma_list]>>},
-						  Parse::RecDescent::_tracefirst($text),
-						  q{throws_clause},
-						  $tracelevel)
-							if defined $::RD_TRACE;
-			$expectation->failed();
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched subrule: [comma_list]<< (return value: [}
-					. $_tok . q{]},
-					  
-					  Parse::RecDescent::_tracefirst($text),
-					  q{throws_clause},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$item{q{comma_list}} = $_tok;
-		push @item, $_tok;
-		
-		}
-
-		Parse::RecDescent::_trace(q{Trying action},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{throws_clause},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		
-
-		$_tok = ($_noactions) ? 0 : do { $item{comma_list} };
-		unless (defined $_tok)
-		{
-			Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
-					if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
-					  . $_tok . q{])},
-					  Parse::RecDescent::_tracefirst($text))
-						if defined $::RD_TRACE;
-		push @item, $_tok;
-		$item{__ACTION1__}=$_tok;
-		
+    while (!$_matched && !$commit)
+    {
+        
+        Parse::RecDescent::_trace(q{Trying production: ['throws' comma_list]},
+                      Parse::RecDescent::_tracefirst($_[1]),
+                      q{throws_clause},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        my $thisprod = $thisrule->{"prods"}[0];
+        $text = $_[1];
+        my $_savetext;
+        @item = (q{throws_clause});
+        %item = (__RULE__ => q{throws_clause});
+        my $repcount = 0;
 
 
-		Parse::RecDescent::_trace(q{>>Matched production: ['throws' comma_list]<<},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{throws_clause},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$_matched = 1;
-		last;
-	}
+        Parse::RecDescent::_trace(q{Trying terminal: ['throws']},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{throws_clause},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $lastsep = "";
+        $expectation->is(q{})->at($text);
+        
+
+        unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ m/\Athrows/)
+        {
+            
+            $expectation->failed();
+            Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+            last;
+        }
+		$current_match = substr($text, $-[0], $+[0] - $-[0]);
+        substr($text,0,length($current_match),q{});
+        Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
+                        . $current_match . q{])},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+        push @item, $item{__STRING1__}=$current_match;
+        
+
+        Parse::RecDescent::_trace(q{Trying subrule: [comma_list]},
+                  Parse::RecDescent::_tracefirst($text),
+                  q{throws_clause},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
+        if (1) { no strict qw{refs};
+        $expectation->is(q{comma_list})->at($text);
+        unless (defined ($_tok = Parse::RecDescent::Java::Javap::Grammar::comma_list($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
+        {
+            
+            Parse::RecDescent::_trace(q{<<Didn't match subrule: [comma_list]>>},
+                          Parse::RecDescent::_tracefirst($text),
+                          q{throws_clause},
+                          $tracelevel)
+                            if defined $::RD_TRACE;
+            $expectation->failed();
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched subrule: [comma_list]<< (return value: [}
+                    . $_tok . q{]},
+                      
+                      Parse::RecDescent::_tracefirst($text),
+                      q{throws_clause},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $item{q{comma_list}} = $_tok;
+        push @item, $_tok;
+        
+        }
+
+        Parse::RecDescent::_trace(q{Trying action},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{throws_clause},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        
+
+        $_tok = ($_noactions) ? 0 : do { $item{comma_list} };
+        unless (defined $_tok)
+        {
+            Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
+                    if defined $::RD_TRACE;
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
+                      . $_tok . q{])},
+                      Parse::RecDescent::_tracefirst($text))
+                        if defined $::RD_TRACE;
+        push @item, $_tok;
+        $item{__ACTION1__}=$_tok;
+        
 
 
-        unless ( $_matched || defined($return) || defined($score) )
-	{
-		
+        Parse::RecDescent::_trace(q{>>Matched production: ['throws' comma_list]<<},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{throws_clause},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $_matched = 1;
+        last;
+    }
 
-		$_[1] = $text;	# NOT SURE THIS IS NEEDED
-		Parse::RecDescent::_trace(q{<<Didn't match rule>>},
-					 Parse::RecDescent::_tracefirst($_[1]),
-					 q{throws_clause},
-					 $tracelevel)
-					if defined $::RD_TRACE;
-		return undef;
-	}
-	if (!defined($return) && defined($score))
-	{
-		Parse::RecDescent::_trace(q{>>Accepted scored production<<}, "",
-					  q{throws_clause},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$return = $score_return;
-	}
-	splice @{$thisparser->{errors}}, $err_at;
-	$return = $item[$#item] unless defined $return;
-	if (defined $::RD_TRACE)
-	{
-		Parse::RecDescent::_trace(q{>>Matched rule<< (return value: [} .
-					  $return . q{])}, "",
-					  q{throws_clause},
-					  $tracelevel);
-		Parse::RecDescent::_trace(q{(consumed: [} .
-					  Parse::RecDescent::_tracemax(substr($_[1],0,-length($text))) . q{])}, 
-					  Parse::RecDescent::_tracefirst($text),
-					  , q{throws_clause},
-					  $tracelevel)
-	}
-	$_[1] = $text;
-	return $return;
+
+    unless ( $_matched || defined($score) )
+    {
+        
+
+        $_[1] = $text;  # NOT SURE THIS IS NEEDED
+        Parse::RecDescent::_trace(q{<<Didn't match rule>>},
+                     Parse::RecDescent::_tracefirst($_[1]),
+                     q{throws_clause},
+                     $tracelevel)
+                    if defined $::RD_TRACE;
+        return undef;
+    }
+    if (!defined($return) && defined($score))
+    {
+        Parse::RecDescent::_trace(q{>>Accepted scored production<<}, "",
+                      q{throws_clause},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $return = $score_return;
+    }
+    splice @{$thisparser->{errors}}, $err_at;
+    $return = $item[$#item] unless defined $return;
+    if (defined $::RD_TRACE)
+    {
+        Parse::RecDescent::_trace(q{>>Matched rule<< (return value: [} .
+                      $return . q{])}, "",
+                      q{throws_clause},
+                      $tracelevel);
+        Parse::RecDescent::_trace(q{(consumed: [} .
+                      Parse::RecDescent::_tracemax(substr($_[1],0,-length($text))) . q{])}, 
+                      Parse::RecDescent::_tracefirst($text),
+                      , q{throws_clause},
+                      $tracelevel)
+    }
+    $_[1] = $text;
+    return $return;
 }
 
 # ARGS ARE: ($parser, $text; $repeating, $_noactions, \@args)
@@ -1803,186 +1834,187 @@ sub Parse::RecDescent::Java::Javap::Grammar::verbose_method_details
 	use vars q{$tracelevel};
 	local $tracelevel = ($tracelevel||0)+1;
 	$ERRORS = 0;
-	my $thisrule = $thisparser->{"rules"}{"verbose_method_details"};
-	
-	Parse::RecDescent::_trace(q{Trying rule: [verbose_method_details]},
-				  Parse::RecDescent::_tracefirst($_[1]),
-				  q{verbose_method_details},
-				  $tracelevel)
-					if defined $::RD_TRACE;
+    my $thisrule = $thisparser->{"rules"}{"verbose_method_details"};
+    
+    Parse::RecDescent::_trace(q{Trying rule: [verbose_method_details]},
+                  Parse::RecDescent::_tracefirst($_[1]),
+                  q{verbose_method_details},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
 
-	
-	my $err_at = @{$thisparser->{errors}};
+    
+    my $err_at = @{$thisparser->{errors}};
 
-	my $score;
-	my $score_return;
-	my $_tok;
-	my $return = undef;
-	my $_matched=0;
-	my $commit=0;
-	my @item = ();
-	my %item = ();
-	my $repeating =  defined($_[2]) && $_[2];
-	my $_noactions = defined($_[3]) && $_[3];
- 	my @arg =        defined $_[4] ? @{ &{$_[4]} } : ();
-	my %arg =        ($#arg & 01) ? @arg : (@arg, undef);
-	my $text;
-	my $lastsep="";
-	my $expectation = new Parse::RecDescent::Expectation($thisrule->expected());
-	$expectation->at($_[1]);
-	
-	my $thisline;
-	tie $thisline, q{Parse::RecDescent::LineCounter}, \$text, $thisparser;
+    my $score;
+    my $score_return;
+    my $_tok;
+    my $return = undef;
+    my $_matched=0;
+    my $commit=0;
+    my @item = ();
+    my %item = ();
+    my $repeating =  defined($_[2]) && $_[2];
+    my $_noactions = defined($_[3]) && $_[3];
+    my @arg =    defined $_[4] ? @{ &{$_[4]} } : ();
+    my %arg =    ($#arg & 01) ? @arg : (@arg, undef);
+    my $text;
+    my $lastsep="";
+    my $current_match;
+    my $expectation = new Parse::RecDescent::Expectation(q{verbose_exceptions});
+    $expectation->at($_[1]);
+    
+    my $thisline;
+    tie $thisline, q{Parse::RecDescent::LineCounter}, \$text, $thisparser;
 
-	
+    
 
-	while (!$_matched && !$commit)
-	{
-		
-		Parse::RecDescent::_trace(q{Trying production: [verbose_exceptions verbose_method_code verbose_line_number_table]},
-					  Parse::RecDescent::_tracefirst($_[1]),
-					  q{verbose_method_details},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		my $thisprod = $thisrule->{"prods"}[0];
-		$text = $_[1];
-		my $_savetext;
-		@item = (q{verbose_method_details});
-		%item = (__RULE__ => q{verbose_method_details});
-		my $repcount = 0;
-
-
-		Parse::RecDescent::_trace(q{Trying repeated subrule: [verbose_exceptions]},
-				  Parse::RecDescent::_tracefirst($text),
-				  q{verbose_method_details},
-				  $tracelevel)
-					if defined $::RD_TRACE;
-		$expectation->is(q{})->at($text);
-		
-		unless (defined ($_tok = $thisparser->_parserepeat($text, \&Parse::RecDescent::Java::Javap::Grammar::verbose_exceptions, 0, 1, $_noactions,$expectation,undef))) 
-		{
-			Parse::RecDescent::_trace(q{<<Didn't match repeated subrule: [verbose_exceptions]>>},
-						  Parse::RecDescent::_tracefirst($text),
-						  q{verbose_method_details},
-						  $tracelevel)
-							if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched repeated subrule: [verbose_exceptions]<< (}
-					. @$_tok . q{ times)},
-					  
-					  Parse::RecDescent::_tracefirst($text),
-					  q{verbose_method_details},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$item{q{verbose_exceptions(?)}} = $_tok;
-		push @item, $_tok;
-		
+    while (!$_matched && !$commit)
+    {
+        
+        Parse::RecDescent::_trace(q{Trying production: [verbose_exceptions verbose_method_code verbose_line_number_table]},
+                      Parse::RecDescent::_tracefirst($_[1]),
+                      q{verbose_method_details},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        my $thisprod = $thisrule->{"prods"}[0];
+        $text = $_[1];
+        my $_savetext;
+        @item = (q{verbose_method_details});
+        %item = (__RULE__ => q{verbose_method_details});
+        my $repcount = 0;
 
 
-		Parse::RecDescent::_trace(q{Trying repeated subrule: [verbose_method_code]},
-				  Parse::RecDescent::_tracefirst($text),
-				  q{verbose_method_details},
-				  $tracelevel)
-					if defined $::RD_TRACE;
-		$expectation->is(q{verbose_method_code})->at($text);
-		
-		unless (defined ($_tok = $thisparser->_parserepeat($text, \&Parse::RecDescent::Java::Javap::Grammar::verbose_method_code, 0, 1, $_noactions,$expectation,undef))) 
-		{
-			Parse::RecDescent::_trace(q{<<Didn't match repeated subrule: [verbose_method_code]>>},
-						  Parse::RecDescent::_tracefirst($text),
-						  q{verbose_method_details},
-						  $tracelevel)
-							if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched repeated subrule: [verbose_method_code]<< (}
-					. @$_tok . q{ times)},
-					  
-					  Parse::RecDescent::_tracefirst($text),
-					  q{verbose_method_details},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$item{q{verbose_method_code(?)}} = $_tok;
-		push @item, $_tok;
-		
+        Parse::RecDescent::_trace(q{Trying repeated subrule: [verbose_exceptions]},
+                  Parse::RecDescent::_tracefirst($text),
+                  q{verbose_method_details},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
+        $expectation->is(q{})->at($text);
+        
+        unless (defined ($_tok = $thisparser->_parserepeat($text, \&Parse::RecDescent::Java::Javap::Grammar::verbose_exceptions, 0, 1, $_noactions,$expectation,sub { \@arg }))) 
+        {
+            Parse::RecDescent::_trace(q{<<Didn't match repeated subrule: [verbose_exceptions]>>},
+                          Parse::RecDescent::_tracefirst($text),
+                          q{verbose_method_details},
+                          $tracelevel)
+                            if defined $::RD_TRACE;
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched repeated subrule: [verbose_exceptions]<< (}
+                    . @$_tok . q{ times)},
+                      
+                      Parse::RecDescent::_tracefirst($text),
+                      q{verbose_method_details},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $item{q{verbose_exceptions(?)}} = $_tok;
+        push @item, $_tok;
+        
 
 
-		Parse::RecDescent::_trace(q{Trying repeated subrule: [verbose_line_number_table]},
-				  Parse::RecDescent::_tracefirst($text),
-				  q{verbose_method_details},
-				  $tracelevel)
-					if defined $::RD_TRACE;
-		$expectation->is(q{verbose_line_number_table})->at($text);
-		
-		unless (defined ($_tok = $thisparser->_parserepeat($text, \&Parse::RecDescent::Java::Javap::Grammar::verbose_line_number_table, 0, 1, $_noactions,$expectation,undef))) 
-		{
-			Parse::RecDescent::_trace(q{<<Didn't match repeated subrule: [verbose_line_number_table]>>},
-						  Parse::RecDescent::_tracefirst($text),
-						  q{verbose_method_details},
-						  $tracelevel)
-							if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched repeated subrule: [verbose_line_number_table]<< (}
-					. @$_tok . q{ times)},
-					  
-					  Parse::RecDescent::_tracefirst($text),
-					  q{verbose_method_details},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$item{q{verbose_line_number_table(?)}} = $_tok;
-		push @item, $_tok;
-		
+        Parse::RecDescent::_trace(q{Trying repeated subrule: [verbose_method_code]},
+                  Parse::RecDescent::_tracefirst($text),
+                  q{verbose_method_details},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
+        $expectation->is(q{verbose_method_code})->at($text);
+        
+        unless (defined ($_tok = $thisparser->_parserepeat($text, \&Parse::RecDescent::Java::Javap::Grammar::verbose_method_code, 0, 1, $_noactions,$expectation,sub { \@arg }))) 
+        {
+            Parse::RecDescent::_trace(q{<<Didn't match repeated subrule: [verbose_method_code]>>},
+                          Parse::RecDescent::_tracefirst($text),
+                          q{verbose_method_details},
+                          $tracelevel)
+                            if defined $::RD_TRACE;
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched repeated subrule: [verbose_method_code]<< (}
+                    . @$_tok . q{ times)},
+                      
+                      Parse::RecDescent::_tracefirst($text),
+                      q{verbose_method_details},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $item{q{verbose_method_code(?)}} = $_tok;
+        push @item, $_tok;
+        
+
+
+        Parse::RecDescent::_trace(q{Trying repeated subrule: [verbose_line_number_table]},
+                  Parse::RecDescent::_tracefirst($text),
+                  q{verbose_method_details},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
+        $expectation->is(q{verbose_line_number_table})->at($text);
+        
+        unless (defined ($_tok = $thisparser->_parserepeat($text, \&Parse::RecDescent::Java::Javap::Grammar::verbose_line_number_table, 0, 1, $_noactions,$expectation,sub { \@arg }))) 
+        {
+            Parse::RecDescent::_trace(q{<<Didn't match repeated subrule: [verbose_line_number_table]>>},
+                          Parse::RecDescent::_tracefirst($text),
+                          q{verbose_method_details},
+                          $tracelevel)
+                            if defined $::RD_TRACE;
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched repeated subrule: [verbose_line_number_table]<< (}
+                    . @$_tok . q{ times)},
+                      
+                      Parse::RecDescent::_tracefirst($text),
+                      q{verbose_method_details},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $item{q{verbose_line_number_table(?)}} = $_tok;
+        push @item, $_tok;
+        
 
 
 
-		Parse::RecDescent::_trace(q{>>Matched production: [verbose_exceptions verbose_method_code verbose_line_number_table]<<},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{verbose_method_details},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$_matched = 1;
-		last;
-	}
+        Parse::RecDescent::_trace(q{>>Matched production: [verbose_exceptions verbose_method_code verbose_line_number_table]<<},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{verbose_method_details},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $_matched = 1;
+        last;
+    }
 
 
-        unless ( $_matched || defined($return) || defined($score) )
-	{
-		
+    unless ( $_matched || defined($score) )
+    {
+        
 
-		$_[1] = $text;	# NOT SURE THIS IS NEEDED
-		Parse::RecDescent::_trace(q{<<Didn't match rule>>},
-					 Parse::RecDescent::_tracefirst($_[1]),
-					 q{verbose_method_details},
-					 $tracelevel)
-					if defined $::RD_TRACE;
-		return undef;
-	}
-	if (!defined($return) && defined($score))
-	{
-		Parse::RecDescent::_trace(q{>>Accepted scored production<<}, "",
-					  q{verbose_method_details},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$return = $score_return;
-	}
-	splice @{$thisparser->{errors}}, $err_at;
-	$return = $item[$#item] unless defined $return;
-	if (defined $::RD_TRACE)
-	{
-		Parse::RecDescent::_trace(q{>>Matched rule<< (return value: [} .
-					  $return . q{])}, "",
-					  q{verbose_method_details},
-					  $tracelevel);
-		Parse::RecDescent::_trace(q{(consumed: [} .
-					  Parse::RecDescent::_tracemax(substr($_[1],0,-length($text))) . q{])}, 
-					  Parse::RecDescent::_tracefirst($text),
-					  , q{verbose_method_details},
-					  $tracelevel)
-	}
-	$_[1] = $text;
-	return $return;
+        $_[1] = $text;  # NOT SURE THIS IS NEEDED
+        Parse::RecDescent::_trace(q{<<Didn't match rule>>},
+                     Parse::RecDescent::_tracefirst($_[1]),
+                     q{verbose_method_details},
+                     $tracelevel)
+                    if defined $::RD_TRACE;
+        return undef;
+    }
+    if (!defined($return) && defined($score))
+    {
+        Parse::RecDescent::_trace(q{>>Accepted scored production<<}, "",
+                      q{verbose_method_details},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $return = $score_return;
+    }
+    splice @{$thisparser->{errors}}, $err_at;
+    $return = $item[$#item] unless defined $return;
+    if (defined $::RD_TRACE)
+    {
+        Parse::RecDescent::_trace(q{>>Matched rule<< (return value: [} .
+                      $return . q{])}, "",
+                      q{verbose_method_details},
+                      $tracelevel);
+        Parse::RecDescent::_trace(q{(consumed: [} .
+                      Parse::RecDescent::_tracemax(substr($_[1],0,-length($text))) . q{])}, 
+                      Parse::RecDescent::_tracefirst($text),
+                      , q{verbose_method_details},
+                      $tracelevel)
+    }
+    $_[1] = $text;
+    return $return;
 }
 
 # ARGS ARE: ($parser, $text; $repeating, $_noactions, \@args)
@@ -1992,223 +2024,228 @@ sub Parse::RecDescent::Java::Javap::Grammar::class_qualifier
 	use vars q{$tracelevel};
 	local $tracelevel = ($tracelevel||0)+1;
 	$ERRORS = 0;
-	my $thisrule = $thisparser->{"rules"}{"class_qualifier"};
-	
-	Parse::RecDescent::_trace(q{Trying rule: [class_qualifier]},
-				  Parse::RecDescent::_tracefirst($_[1]),
-				  q{class_qualifier},
-				  $tracelevel)
-					if defined $::RD_TRACE;
+    my $thisrule = $thisparser->{"rules"}{"class_qualifier"};
+    
+    Parse::RecDescent::_trace(q{Trying rule: [class_qualifier]},
+                  Parse::RecDescent::_tracefirst($_[1]),
+                  q{class_qualifier},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
 
-	
-	my $err_at = @{$thisparser->{errors}};
+    
+    my $err_at = @{$thisparser->{errors}};
 
-	my $score;
-	my $score_return;
-	my $_tok;
-	my $return = undef;
-	my $_matched=0;
-	my $commit=0;
-	my @item = ();
-	my %item = ();
-	my $repeating =  defined($_[2]) && $_[2];
-	my $_noactions = defined($_[3]) && $_[3];
- 	my @arg =        defined $_[4] ? @{ &{$_[4]} } : ();
-	my %arg =        ($#arg & 01) ? @arg : (@arg, undef);
-	my $text;
-	my $lastsep="";
-	my $expectation = new Parse::RecDescent::Expectation($thisrule->expected());
-	$expectation->at($_[1]);
-	
-	my $thisline;
-	tie $thisline, q{Parse::RecDescent::LineCounter}, \$text, $thisparser;
+    my $score;
+    my $score_return;
+    my $_tok;
+    my $return = undef;
+    my $_matched=0;
+    my $commit=0;
+    my @item = ();
+    my %item = ();
+    my $repeating =  defined($_[2]) && $_[2];
+    my $_noactions = defined($_[3]) && $_[3];
+    my @arg =    defined $_[4] ? @{ &{$_[4]} } : ();
+    my %arg =    ($#arg & 01) ? @arg : (@arg, undef);
+    my $text;
+    my $lastsep="";
+    my $current_match;
+    my $expectation = new Parse::RecDescent::Expectation(q{'final', or 'abstract'});
+    $expectation->at($_[1]);
+    
+    my $thisline;
+    tie $thisline, q{Parse::RecDescent::LineCounter}, \$text, $thisparser;
 
-	
+    
 
-	while (!$_matched && !$commit)
-	{
-		
-		Parse::RecDescent::_trace(q{Trying production: ['final']},
-					  Parse::RecDescent::_tracefirst($_[1]),
-					  q{class_qualifier},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		my $thisprod = $thisrule->{"prods"}[0];
-		$text = $_[1];
-		my $_savetext;
-		@item = (q{class_qualifier});
-		%item = (__RULE__ => q{class_qualifier});
-		my $repcount = 0;
-
-
-		Parse::RecDescent::_trace(q{Trying terminal: ['final']},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{class_qualifier},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$lastsep = "";
-		$expectation->is(q{})->at($text);
-		
-
-		unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ s/\Afinal//)
-		{
-			
-			$expectation->failed();
-			Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
-						. $& . q{])},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-		push @item, $item{__STRING1__}=$&;
-		
-
-		Parse::RecDescent::_trace(q{Trying action},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{class_qualifier},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		
-
-		$_tok = ($_noactions) ? 0 : do { 'final'  };
-		unless (defined $_tok)
-		{
-			Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
-					if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
-					  . $_tok . q{])},
-					  Parse::RecDescent::_tracefirst($text))
-						if defined $::RD_TRACE;
-		push @item, $_tok;
-		$item{__ACTION1__}=$_tok;
-		
+    while (!$_matched && !$commit)
+    {
+        
+        Parse::RecDescent::_trace(q{Trying production: ['final']},
+                      Parse::RecDescent::_tracefirst($_[1]),
+                      q{class_qualifier},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        my $thisprod = $thisrule->{"prods"}[0];
+        $text = $_[1];
+        my $_savetext;
+        @item = (q{class_qualifier});
+        %item = (__RULE__ => q{class_qualifier});
+        my $repcount = 0;
 
 
-		Parse::RecDescent::_trace(q{>>Matched production: ['final']<<},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{class_qualifier},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$_matched = 1;
-		last;
-	}
+        Parse::RecDescent::_trace(q{Trying terminal: ['final']},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{class_qualifier},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $lastsep = "";
+        $expectation->is(q{})->at($text);
+        
+
+        unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ m/\Afinal/)
+        {
+            
+            $expectation->failed();
+            Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+            last;
+        }
+		$current_match = substr($text, $-[0], $+[0] - $-[0]);
+        substr($text,0,length($current_match),q{});
+        Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
+                        . $current_match . q{])},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+        push @item, $item{__STRING1__}=$current_match;
+        
+
+        Parse::RecDescent::_trace(q{Trying action},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{class_qualifier},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        
+
+        $_tok = ($_noactions) ? 0 : do { 'final'  };
+        unless (defined $_tok)
+        {
+            Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
+                    if defined $::RD_TRACE;
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
+                      . $_tok . q{])},
+                      Parse::RecDescent::_tracefirst($text))
+                        if defined $::RD_TRACE;
+        push @item, $_tok;
+        $item{__ACTION1__}=$_tok;
+        
 
 
-	while (!$_matched && !$commit)
-	{
-		
-		Parse::RecDescent::_trace(q{Trying production: ['abstract']},
-					  Parse::RecDescent::_tracefirst($_[1]),
-					  q{class_qualifier},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		my $thisprod = $thisrule->{"prods"}[1];
-		$text = $_[1];
-		my $_savetext;
-		@item = (q{class_qualifier});
-		%item = (__RULE__ => q{class_qualifier});
-		my $repcount = 0;
+        Parse::RecDescent::_trace(q{>>Matched production: ['final']<<},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{class_qualifier},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $_matched = 1;
+        last;
+    }
 
 
-		Parse::RecDescent::_trace(q{Trying terminal: ['abstract']},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{class_qualifier},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$lastsep = "";
-		$expectation->is(q{})->at($text);
-		
-
-		unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ s/\Aabstract//)
-		{
-			
-			$expectation->failed();
-			Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
-						. $& . q{])},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-		push @item, $item{__STRING1__}=$&;
-		
-
-		Parse::RecDescent::_trace(q{Trying action},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{class_qualifier},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		
-
-		$_tok = ($_noactions) ? 0 : do { 'status' };
-		unless (defined $_tok)
-		{
-			Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
-					if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
-					  . $_tok . q{])},
-					  Parse::RecDescent::_tracefirst($text))
-						if defined $::RD_TRACE;
-		push @item, $_tok;
-		$item{__ACTION1__}=$_tok;
-		
+    while (!$_matched && !$commit)
+    {
+        
+        Parse::RecDescent::_trace(q{Trying production: ['abstract']},
+                      Parse::RecDescent::_tracefirst($_[1]),
+                      q{class_qualifier},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        my $thisprod = $thisrule->{"prods"}[1];
+        $text = $_[1];
+        my $_savetext;
+        @item = (q{class_qualifier});
+        %item = (__RULE__ => q{class_qualifier});
+        my $repcount = 0;
 
 
-		Parse::RecDescent::_trace(q{>>Matched production: ['abstract']<<},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{class_qualifier},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$_matched = 1;
-		last;
-	}
+        Parse::RecDescent::_trace(q{Trying terminal: ['abstract']},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{class_qualifier},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $lastsep = "";
+        $expectation->is(q{})->at($text);
+        
+
+        unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ m/\Aabstract/)
+        {
+            
+            $expectation->failed();
+            Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+            last;
+        }
+		$current_match = substr($text, $-[0], $+[0] - $-[0]);
+        substr($text,0,length($current_match),q{});
+        Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
+                        . $current_match . q{])},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+        push @item, $item{__STRING1__}=$current_match;
+        
+
+        Parse::RecDescent::_trace(q{Trying action},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{class_qualifier},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        
+
+        $_tok = ($_noactions) ? 0 : do { 'status' };
+        unless (defined $_tok)
+        {
+            Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
+                    if defined $::RD_TRACE;
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
+                      . $_tok . q{])},
+                      Parse::RecDescent::_tracefirst($text))
+                        if defined $::RD_TRACE;
+        push @item, $_tok;
+        $item{__ACTION1__}=$_tok;
+        
 
 
-        unless ( $_matched || defined($return) || defined($score) )
-	{
-		
+        Parse::RecDescent::_trace(q{>>Matched production: ['abstract']<<},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{class_qualifier},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $_matched = 1;
+        last;
+    }
 
-		$_[1] = $text;	# NOT SURE THIS IS NEEDED
-		Parse::RecDescent::_trace(q{<<Didn't match rule>>},
-					 Parse::RecDescent::_tracefirst($_[1]),
-					 q{class_qualifier},
-					 $tracelevel)
-					if defined $::RD_TRACE;
-		return undef;
-	}
-	if (!defined($return) && defined($score))
-	{
-		Parse::RecDescent::_trace(q{>>Accepted scored production<<}, "",
-					  q{class_qualifier},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$return = $score_return;
-	}
-	splice @{$thisparser->{errors}}, $err_at;
-	$return = $item[$#item] unless defined $return;
-	if (defined $::RD_TRACE)
-	{
-		Parse::RecDescent::_trace(q{>>Matched rule<< (return value: [} .
-					  $return . q{])}, "",
-					  q{class_qualifier},
-					  $tracelevel);
-		Parse::RecDescent::_trace(q{(consumed: [} .
-					  Parse::RecDescent::_tracemax(substr($_[1],0,-length($text))) . q{])}, 
-					  Parse::RecDescent::_tracefirst($text),
-					  , q{class_qualifier},
-					  $tracelevel)
-	}
-	$_[1] = $text;
-	return $return;
+
+    unless ( $_matched || defined($score) )
+    {
+        
+
+        $_[1] = $text;  # NOT SURE THIS IS NEEDED
+        Parse::RecDescent::_trace(q{<<Didn't match rule>>},
+                     Parse::RecDescent::_tracefirst($_[1]),
+                     q{class_qualifier},
+                     $tracelevel)
+                    if defined $::RD_TRACE;
+        return undef;
+    }
+    if (!defined($return) && defined($score))
+    {
+        Parse::RecDescent::_trace(q{>>Accepted scored production<<}, "",
+                      q{class_qualifier},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $return = $score_return;
+    }
+    splice @{$thisparser->{errors}}, $err_at;
+    $return = $item[$#item] unless defined $return;
+    if (defined $::RD_TRACE)
+    {
+        Parse::RecDescent::_trace(q{>>Matched rule<< (return value: [} .
+                      $return . q{])}, "",
+                      q{class_qualifier},
+                      $tracelevel);
+        Parse::RecDescent::_trace(q{(consumed: [} .
+                      Parse::RecDescent::_tracemax(substr($_[1],0,-length($text))) . q{])}, 
+                      Parse::RecDescent::_tracefirst($text),
+                      , q{class_qualifier},
+                      $tracelevel)
+    }
+    $_[1] = $text;
+    return $return;
 }
 
 # ARGS ARE: ($parser, $text; $repeating, $_noactions, \@args)
@@ -2218,204 +2255,209 @@ sub Parse::RecDescent::Java::Javap::Grammar::comp_stmt
 	use vars q{$tracelevel};
 	local $tracelevel = ($tracelevel||0)+1;
 	$ERRORS = 0;
-	my $thisrule = $thisparser->{"rules"}{"comp_stmt"};
-	
-	Parse::RecDescent::_trace(q{Trying rule: [comp_stmt]},
-				  Parse::RecDescent::_tracefirst($_[1]),
-				  q{comp_stmt},
-				  $tracelevel)
-					if defined $::RD_TRACE;
+    my $thisrule = $thisparser->{"rules"}{"comp_stmt"};
+    
+    Parse::RecDescent::_trace(q{Trying rule: [comp_stmt]},
+                  Parse::RecDescent::_tracefirst($_[1]),
+                  q{comp_stmt},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
 
-	
-	my $err_at = @{$thisparser->{errors}};
+    
+    my $err_at = @{$thisparser->{errors}};
 
-	my $score;
-	my $score_return;
-	my $_tok;
-	my $return = undef;
-	my $_matched=0;
-	my $commit=0;
-	my @item = ();
-	my %item = ();
-	my $repeating =  defined($_[2]) && $_[2];
-	my $_noactions = defined($_[3]) && $_[3];
- 	my @arg =        defined $_[4] ? @{ &{$_[4]} } : ();
-	my %arg =        ($#arg & 01) ? @arg : (@arg, undef);
-	my $text;
-	my $lastsep="";
-	my $expectation = new Parse::RecDescent::Expectation($thisrule->expected());
-	$expectation->at($_[1]);
-	
-	my $thisline;
-	tie $thisline, q{Parse::RecDescent::LineCounter}, \$text, $thisparser;
+    my $score;
+    my $score_return;
+    my $_tok;
+    my $return = undef;
+    my $_matched=0;
+    my $commit=0;
+    my @item = ();
+    my %item = ();
+    my $repeating =  defined($_[2]) && $_[2];
+    my $_noactions = defined($_[3]) && $_[3];
+    my @arg =    defined $_[4] ? @{ &{$_[4]} } : ();
+    my %arg =    ($#arg & 01) ? @arg : (@arg, undef);
+    my $text;
+    my $lastsep="";
+    my $current_match;
+    my $expectation = new Parse::RecDescent::Expectation(q{'Compiled from "'});
+    $expectation->at($_[1]);
+    
+    my $thisline;
+    tie $thisline, q{Parse::RecDescent::LineCounter}, \$text, $thisparser;
 
-	
+    
 
-	while (!$_matched && !$commit)
-	{
-		
-		Parse::RecDescent::_trace(q{Trying production: ['Compiled from "' NAME '.java"']},
-					  Parse::RecDescent::_tracefirst($_[1]),
-					  q{comp_stmt},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		my $thisprod = $thisrule->{"prods"}[0];
-		$text = $_[1];
-		my $_savetext;
-		@item = (q{comp_stmt});
-		%item = (__RULE__ => q{comp_stmt});
-		my $repcount = 0;
-
-
-		Parse::RecDescent::_trace(q{Trying terminal: ['Compiled from "']},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{comp_stmt},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$lastsep = "";
-		$expectation->is(q{})->at($text);
-		
-
-		unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ s/\ACompiled\ from\ \"//)
-		{
-			
-			$expectation->failed();
-			Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
-						. $& . q{])},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-		push @item, $item{__STRING1__}=$&;
-		
-
-		Parse::RecDescent::_trace(q{Trying subrule: [NAME]},
-				  Parse::RecDescent::_tracefirst($text),
-				  q{comp_stmt},
-				  $tracelevel)
-					if defined $::RD_TRACE;
-		if (1) { no strict qw{refs};
-		$expectation->is(q{NAME})->at($text);
-		unless (defined ($_tok = Parse::RecDescent::Java::Javap::Grammar::NAME($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
-		{
-			
-			Parse::RecDescent::_trace(q{<<Didn't match subrule: [NAME]>>},
-						  Parse::RecDescent::_tracefirst($text),
-						  q{comp_stmt},
-						  $tracelevel)
-							if defined $::RD_TRACE;
-			$expectation->failed();
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched subrule: [NAME]<< (return value: [}
-					. $_tok . q{]},
-					  
-					  Parse::RecDescent::_tracefirst($text),
-					  q{comp_stmt},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$item{q{NAME}} = $_tok;
-		push @item, $_tok;
-		
-		}
-
-		Parse::RecDescent::_trace(q{Trying terminal: ['.java"']},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{comp_stmt},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$lastsep = "";
-		$expectation->is(q{'.java"'})->at($text);
-		
-
-		unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ s/\A\.java\"//)
-		{
-			
-			$expectation->failed();
-			Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
-						. $& . q{])},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-		push @item, $item{__STRING2__}=$&;
-		
-
-		Parse::RecDescent::_trace(q{Trying action},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{comp_stmt},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		
-
-		$_tok = ($_noactions) ? 0 : do { $item{NAME} };
-		unless (defined $_tok)
-		{
-			Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
-					if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
-					  . $_tok . q{])},
-					  Parse::RecDescent::_tracefirst($text))
-						if defined $::RD_TRACE;
-		push @item, $_tok;
-		$item{__ACTION1__}=$_tok;
-		
+    while (!$_matched && !$commit)
+    {
+        
+        Parse::RecDescent::_trace(q{Trying production: ['Compiled from "' NAME '.java"']},
+                      Parse::RecDescent::_tracefirst($_[1]),
+                      q{comp_stmt},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        my $thisprod = $thisrule->{"prods"}[0];
+        $text = $_[1];
+        my $_savetext;
+        @item = (q{comp_stmt});
+        %item = (__RULE__ => q{comp_stmt});
+        my $repcount = 0;
 
 
-		Parse::RecDescent::_trace(q{>>Matched production: ['Compiled from "' NAME '.java"']<<},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{comp_stmt},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$_matched = 1;
-		last;
-	}
+        Parse::RecDescent::_trace(q{Trying terminal: ['Compiled from "']},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{comp_stmt},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $lastsep = "";
+        $expectation->is(q{})->at($text);
+        
+
+        unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ m/\ACompiled\ from\ \"/)
+        {
+            
+            $expectation->failed();
+            Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+            last;
+        }
+		$current_match = substr($text, $-[0], $+[0] - $-[0]);
+        substr($text,0,length($current_match),q{});
+        Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
+                        . $current_match . q{])},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+        push @item, $item{__STRING1__}=$current_match;
+        
+
+        Parse::RecDescent::_trace(q{Trying subrule: [NAME]},
+                  Parse::RecDescent::_tracefirst($text),
+                  q{comp_stmt},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
+        if (1) { no strict qw{refs};
+        $expectation->is(q{NAME})->at($text);
+        unless (defined ($_tok = Parse::RecDescent::Java::Javap::Grammar::NAME($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
+        {
+            
+            Parse::RecDescent::_trace(q{<<Didn't match subrule: [NAME]>>},
+                          Parse::RecDescent::_tracefirst($text),
+                          q{comp_stmt},
+                          $tracelevel)
+                            if defined $::RD_TRACE;
+            $expectation->failed();
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched subrule: [NAME]<< (return value: [}
+                    . $_tok . q{]},
+                      
+                      Parse::RecDescent::_tracefirst($text),
+                      q{comp_stmt},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $item{q{NAME}} = $_tok;
+        push @item, $_tok;
+        
+        }
+
+        Parse::RecDescent::_trace(q{Trying terminal: ['.java"']},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{comp_stmt},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $lastsep = "";
+        $expectation->is(q{'.java"'})->at($text);
+        
+
+        unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ m/\A\.java\"/)
+        {
+            
+            $expectation->failed();
+            Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+            last;
+        }
+		$current_match = substr($text, $-[0], $+[0] - $-[0]);
+        substr($text,0,length($current_match),q{});
+        Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
+                        . $current_match . q{])},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+        push @item, $item{__STRING2__}=$current_match;
+        
+
+        Parse::RecDescent::_trace(q{Trying action},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{comp_stmt},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        
+
+        $_tok = ($_noactions) ? 0 : do { $item{NAME} };
+        unless (defined $_tok)
+        {
+            Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
+                    if defined $::RD_TRACE;
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
+                      . $_tok . q{])},
+                      Parse::RecDescent::_tracefirst($text))
+                        if defined $::RD_TRACE;
+        push @item, $_tok;
+        $item{__ACTION1__}=$_tok;
+        
 
 
-        unless ( $_matched || defined($return) || defined($score) )
-	{
-		
+        Parse::RecDescent::_trace(q{>>Matched production: ['Compiled from "' NAME '.java"']<<},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{comp_stmt},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $_matched = 1;
+        last;
+    }
 
-		$_[1] = $text;	# NOT SURE THIS IS NEEDED
-		Parse::RecDescent::_trace(q{<<Didn't match rule>>},
-					 Parse::RecDescent::_tracefirst($_[1]),
-					 q{comp_stmt},
-					 $tracelevel)
-					if defined $::RD_TRACE;
-		return undef;
-	}
-	if (!defined($return) && defined($score))
-	{
-		Parse::RecDescent::_trace(q{>>Accepted scored production<<}, "",
-					  q{comp_stmt},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$return = $score_return;
-	}
-	splice @{$thisparser->{errors}}, $err_at;
-	$return = $item[$#item] unless defined $return;
-	if (defined $::RD_TRACE)
-	{
-		Parse::RecDescent::_trace(q{>>Matched rule<< (return value: [} .
-					  $return . q{])}, "",
-					  q{comp_stmt},
-					  $tracelevel);
-		Parse::RecDescent::_trace(q{(consumed: [} .
-					  Parse::RecDescent::_tracemax(substr($_[1],0,-length($text))) . q{])}, 
-					  Parse::RecDescent::_tracefirst($text),
-					  , q{comp_stmt},
-					  $tracelevel)
-	}
-	$_[1] = $text;
-	return $return;
+
+    unless ( $_matched || defined($score) )
+    {
+        
+
+        $_[1] = $text;  # NOT SURE THIS IS NEEDED
+        Parse::RecDescent::_trace(q{<<Didn't match rule>>},
+                     Parse::RecDescent::_tracefirst($_[1]),
+                     q{comp_stmt},
+                     $tracelevel)
+                    if defined $::RD_TRACE;
+        return undef;
+    }
+    if (!defined($return) && defined($score))
+    {
+        Parse::RecDescent::_trace(q{>>Accepted scored production<<}, "",
+                      q{comp_stmt},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $return = $score_return;
+    }
+    splice @{$thisparser->{errors}}, $err_at;
+    $return = $item[$#item] unless defined $return;
+    if (defined $::RD_TRACE)
+    {
+        Parse::RecDescent::_trace(q{>>Matched rule<< (return value: [} .
+                      $return . q{])}, "",
+                      q{comp_stmt},
+                      $tracelevel);
+        Parse::RecDescent::_trace(q{(consumed: [} .
+                      Parse::RecDescent::_tracemax(substr($_[1],0,-length($text))) . q{])}, 
+                      Parse::RecDescent::_tracefirst($text),
+                      , q{comp_stmt},
+                      $tracelevel)
+    }
+    $_[1] = $text;
+    return $return;
 }
 
 # ARGS ARE: ($parser, $text; $repeating, $_noactions, \@args)
@@ -2425,206 +2467,209 @@ sub Parse::RecDescent::Java::Javap::Grammar::variable
 	use vars q{$tracelevel};
 	local $tracelevel = ($tracelevel||0)+1;
 	$ERRORS = 0;
-	my $thisrule = $thisparser->{"rules"}{"variable"};
-	
-	Parse::RecDescent::_trace(q{Trying rule: [variable]},
-				  Parse::RecDescent::_tracefirst($_[1]),
-				  q{variable},
-				  $tracelevel)
-					if defined $::RD_TRACE;
+    my $thisrule = $thisparser->{"rules"}{"variable"};
+    
+    Parse::RecDescent::_trace(q{Trying rule: [variable]},
+                  Parse::RecDescent::_tracefirst($_[1]),
+                  q{variable},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
 
-	
-	my $err_at = @{$thisparser->{errors}};
+    
+    my $err_at = @{$thisparser->{errors}};
 
-	my $score;
-	my $score_return;
-	my $_tok;
-	my $return = undef;
-	my $_matched=0;
-	my $commit=0;
-	my @item = ();
-	my %item = ();
-	my $repeating =  defined($_[2]) && $_[2];
-	my $_noactions = defined($_[3]) && $_[3];
- 	my @arg =        defined $_[4] ? @{ &{$_[4]} } : ();
-	my %arg =        ($#arg & 01) ? @arg : (@arg, undef);
-	my $text;
-	my $lastsep="";
-	my $expectation = new Parse::RecDescent::Expectation($thisrule->expected());
-	$expectation->at($_[1]);
-	
-	my $thisline;
-	tie $thisline, q{Parse::RecDescent::LineCounter}, \$text, $thisparser;
+    my $score;
+    my $score_return;
+    my $_tok;
+    my $return = undef;
+    my $_matched=0;
+    my $commit=0;
+    my @item = ();
+    my %item = ();
+    my $repeating =  defined($_[2]) && $_[2];
+    my $_noactions = defined($_[3]) && $_[3];
+    my @arg =    defined $_[4] ? @{ &{$_[4]} } : ();
+    my %arg =    ($#arg & 01) ? @arg : (@arg, undef);
+    my $text;
+    my $lastsep="";
+    my $current_match;
+    my $expectation = new Parse::RecDescent::Expectation(q{ACCESS});
+    $expectation->at($_[1]);
+    
+    my $thisline;
+    tie $thisline, q{Parse::RecDescent::LineCounter}, \$text, $thisparser;
 
-	
+    
 
-	while (!$_matched && !$commit)
-	{
-		
-		Parse::RecDescent::_trace(q{Trying production: [ACCESS var_modifier arg NAME ';']},
-					  Parse::RecDescent::_tracefirst($_[1]),
-					  q{variable},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		my $thisprod = $thisrule->{"prods"}[0];
-		$text = $_[1];
-		my $_savetext;
-		@item = (q{variable});
-		%item = (__RULE__ => q{variable});
-		my $repcount = 0;
-
-
-		Parse::RecDescent::_trace(q{Trying subrule: [ACCESS]},
-				  Parse::RecDescent::_tracefirst($text),
-				  q{variable},
-				  $tracelevel)
-					if defined $::RD_TRACE;
-		if (1) { no strict qw{refs};
-		$expectation->is(q{})->at($text);
-		unless (defined ($_tok = Parse::RecDescent::Java::Javap::Grammar::ACCESS($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
-		{
-			
-			Parse::RecDescent::_trace(q{<<Didn't match subrule: [ACCESS]>>},
-						  Parse::RecDescent::_tracefirst($text),
-						  q{variable},
-						  $tracelevel)
-							if defined $::RD_TRACE;
-			$expectation->failed();
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched subrule: [ACCESS]<< (return value: [}
-					. $_tok . q{]},
-					  
-					  Parse::RecDescent::_tracefirst($text),
-					  q{variable},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$item{q{ACCESS}} = $_tok;
-		push @item, $_tok;
-		
-		}
-
-		Parse::RecDescent::_trace(q{Trying repeated subrule: [var_modifier]},
-				  Parse::RecDescent::_tracefirst($text),
-				  q{variable},
-				  $tracelevel)
-					if defined $::RD_TRACE;
-		$expectation->is(q{var_modifier})->at($text);
-		
-		unless (defined ($_tok = $thisparser->_parserepeat($text, \&Parse::RecDescent::Java::Javap::Grammar::var_modifier, 0, 100000000, $_noactions,$expectation,undef))) 
-		{
-			Parse::RecDescent::_trace(q{<<Didn't match repeated subrule: [var_modifier]>>},
-						  Parse::RecDescent::_tracefirst($text),
-						  q{variable},
-						  $tracelevel)
-							if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched repeated subrule: [var_modifier]<< (}
-					. @$_tok . q{ times)},
-					  
-					  Parse::RecDescent::_tracefirst($text),
-					  q{variable},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$item{q{var_modifier(s?)}} = $_tok;
-		push @item, $_tok;
-		
+    while (!$_matched && !$commit)
+    {
+        
+        Parse::RecDescent::_trace(q{Trying production: [ACCESS var_modifier arg NAME ';']},
+                      Parse::RecDescent::_tracefirst($_[1]),
+                      q{variable},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        my $thisprod = $thisrule->{"prods"}[0];
+        $text = $_[1];
+        my $_savetext;
+        @item = (q{variable});
+        %item = (__RULE__ => q{variable});
+        my $repcount = 0;
 
 
-		Parse::RecDescent::_trace(q{Trying subrule: [arg]},
-				  Parse::RecDescent::_tracefirst($text),
-				  q{variable},
-				  $tracelevel)
-					if defined $::RD_TRACE;
-		if (1) { no strict qw{refs};
-		$expectation->is(q{arg})->at($text);
-		unless (defined ($_tok = Parse::RecDescent::Java::Javap::Grammar::arg($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
-		{
-			
-			Parse::RecDescent::_trace(q{<<Didn't match subrule: [arg]>>},
-						  Parse::RecDescent::_tracefirst($text),
-						  q{variable},
-						  $tracelevel)
-							if defined $::RD_TRACE;
-			$expectation->failed();
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched subrule: [arg]<< (return value: [}
-					. $_tok . q{]},
-					  
-					  Parse::RecDescent::_tracefirst($text),
-					  q{variable},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$item{q{arg}} = $_tok;
-		push @item, $_tok;
-		
-		}
+        Parse::RecDescent::_trace(q{Trying subrule: [ACCESS]},
+                  Parse::RecDescent::_tracefirst($text),
+                  q{variable},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
+        if (1) { no strict qw{refs};
+        $expectation->is(q{})->at($text);
+        unless (defined ($_tok = Parse::RecDescent::Java::Javap::Grammar::ACCESS($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
+        {
+            
+            Parse::RecDescent::_trace(q{<<Didn't match subrule: [ACCESS]>>},
+                          Parse::RecDescent::_tracefirst($text),
+                          q{variable},
+                          $tracelevel)
+                            if defined $::RD_TRACE;
+            $expectation->failed();
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched subrule: [ACCESS]<< (return value: [}
+                    . $_tok . q{]},
+                      
+                      Parse::RecDescent::_tracefirst($text),
+                      q{variable},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $item{q{ACCESS}} = $_tok;
+        push @item, $_tok;
+        
+        }
 
-		Parse::RecDescent::_trace(q{Trying subrule: [NAME]},
-				  Parse::RecDescent::_tracefirst($text),
-				  q{variable},
-				  $tracelevel)
-					if defined $::RD_TRACE;
-		if (1) { no strict qw{refs};
-		$expectation->is(q{NAME})->at($text);
-		unless (defined ($_tok = Parse::RecDescent::Java::Javap::Grammar::NAME($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
-		{
-			
-			Parse::RecDescent::_trace(q{<<Didn't match subrule: [NAME]>>},
-						  Parse::RecDescent::_tracefirst($text),
-						  q{variable},
-						  $tracelevel)
-							if defined $::RD_TRACE;
-			$expectation->failed();
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched subrule: [NAME]<< (return value: [}
-					. $_tok . q{]},
-					  
-					  Parse::RecDescent::_tracefirst($text),
-					  q{variable},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$item{q{NAME}} = $_tok;
-		push @item, $_tok;
-		
-		}
+        Parse::RecDescent::_trace(q{Trying repeated subrule: [var_modifier]},
+                  Parse::RecDescent::_tracefirst($text),
+                  q{variable},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
+        $expectation->is(q{var_modifier})->at($text);
+        
+        unless (defined ($_tok = $thisparser->_parserepeat($text, \&Parse::RecDescent::Java::Javap::Grammar::var_modifier, 0, 100000000, $_noactions,$expectation,sub { \@arg }))) 
+        {
+            Parse::RecDescent::_trace(q{<<Didn't match repeated subrule: [var_modifier]>>},
+                          Parse::RecDescent::_tracefirst($text),
+                          q{variable},
+                          $tracelevel)
+                            if defined $::RD_TRACE;
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched repeated subrule: [var_modifier]<< (}
+                    . @$_tok . q{ times)},
+                      
+                      Parse::RecDescent::_tracefirst($text),
+                      q{variable},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $item{q{var_modifier(s?)}} = $_tok;
+        push @item, $_tok;
+        
 
-		Parse::RecDescent::_trace(q{Trying terminal: [';']},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{variable},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$lastsep = "";
-		$expectation->is(q{';'})->at($text);
-		
 
-		unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ s/\A\;//)
-		{
-			
-			$expectation->failed();
-			Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
-						. $& . q{])},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-		push @item, $item{__STRING1__}=$&;
-		
+        Parse::RecDescent::_trace(q{Trying subrule: [arg]},
+                  Parse::RecDescent::_tracefirst($text),
+                  q{variable},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
+        if (1) { no strict qw{refs};
+        $expectation->is(q{arg})->at($text);
+        unless (defined ($_tok = Parse::RecDescent::Java::Javap::Grammar::arg($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
+        {
+            
+            Parse::RecDescent::_trace(q{<<Didn't match subrule: [arg]>>},
+                          Parse::RecDescent::_tracefirst($text),
+                          q{variable},
+                          $tracelevel)
+                            if defined $::RD_TRACE;
+            $expectation->failed();
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched subrule: [arg]<< (return value: [}
+                    . $_tok . q{]},
+                      
+                      Parse::RecDescent::_tracefirst($text),
+                      q{variable},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $item{q{arg}} = $_tok;
+        push @item, $_tok;
+        
+        }
 
-		Parse::RecDescent::_trace(q{Trying action},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{variable},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		
+        Parse::RecDescent::_trace(q{Trying subrule: [NAME]},
+                  Parse::RecDescent::_tracefirst($text),
+                  q{variable},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
+        if (1) { no strict qw{refs};
+        $expectation->is(q{NAME})->at($text);
+        unless (defined ($_tok = Parse::RecDescent::Java::Javap::Grammar::NAME($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
+        {
+            
+            Parse::RecDescent::_trace(q{<<Didn't match subrule: [NAME]>>},
+                          Parse::RecDescent::_tracefirst($text),
+                          q{variable},
+                          $tracelevel)
+                            if defined $::RD_TRACE;
+            $expectation->failed();
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched subrule: [NAME]<< (return value: [}
+                    . $_tok . q{]},
+                      
+                      Parse::RecDescent::_tracefirst($text),
+                      q{variable},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $item{q{NAME}} = $_tok;
+        push @item, $_tok;
+        
+        }
 
-		$_tok = ($_noactions) ? 0 : do {
+        Parse::RecDescent::_trace(q{Trying terminal: [';']},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{variable},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $lastsep = "";
+        $expectation->is(q{';'})->at($text);
+        
+
+        unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ m/\A\;/)
+        {
+            
+            $expectation->failed();
+            Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+            last;
+        }
+		$current_match = substr($text, $-[0], $+[0] - $-[0]);
+        substr($text,0,length($current_match),q{});
+        Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
+                        . $current_match . q{])},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+        push @item, $item{__STRING1__}=$current_match;
+        
+
+        Parse::RecDescent::_trace(q{Trying action},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{variable},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        
+
+        $_tok = ($_noactions) ? 0 : do {
     {
         body_element => 'variable',
         access       => $item{ ACCESS },
@@ -2632,67 +2677,67 @@ sub Parse::RecDescent::Java::Javap::Grammar::variable
         type         => $item{ arg }[0],
     }
 };
-		unless (defined $_tok)
-		{
-			Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
-					if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
-					  . $_tok . q{])},
-					  Parse::RecDescent::_tracefirst($text))
-						if defined $::RD_TRACE;
-		push @item, $_tok;
-		$item{__ACTION1__}=$_tok;
-		
+        unless (defined $_tok)
+        {
+            Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
+                    if defined $::RD_TRACE;
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
+                      . $_tok . q{])},
+                      Parse::RecDescent::_tracefirst($text))
+                        if defined $::RD_TRACE;
+        push @item, $_tok;
+        $item{__ACTION1__}=$_tok;
+        
 
 
-		Parse::RecDescent::_trace(q{>>Matched production: [ACCESS var_modifier arg NAME ';']<<},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{variable},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$_matched = 1;
-		last;
-	}
+        Parse::RecDescent::_trace(q{>>Matched production: [ACCESS var_modifier arg NAME ';']<<},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{variable},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $_matched = 1;
+        last;
+    }
 
 
-        unless ( $_matched || defined($return) || defined($score) )
-	{
-		
+    unless ( $_matched || defined($score) )
+    {
+        
 
-		$_[1] = $text;	# NOT SURE THIS IS NEEDED
-		Parse::RecDescent::_trace(q{<<Didn't match rule>>},
-					 Parse::RecDescent::_tracefirst($_[1]),
-					 q{variable},
-					 $tracelevel)
-					if defined $::RD_TRACE;
-		return undef;
-	}
-	if (!defined($return) && defined($score))
-	{
-		Parse::RecDescent::_trace(q{>>Accepted scored production<<}, "",
-					  q{variable},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$return = $score_return;
-	}
-	splice @{$thisparser->{errors}}, $err_at;
-	$return = $item[$#item] unless defined $return;
-	if (defined $::RD_TRACE)
-	{
-		Parse::RecDescent::_trace(q{>>Matched rule<< (return value: [} .
-					  $return . q{])}, "",
-					  q{variable},
-					  $tracelevel);
-		Parse::RecDescent::_trace(q{(consumed: [} .
-					  Parse::RecDescent::_tracemax(substr($_[1],0,-length($text))) . q{])}, 
-					  Parse::RecDescent::_tracefirst($text),
-					  , q{variable},
-					  $tracelevel)
-	}
-	$_[1] = $text;
-	return $return;
+        $_[1] = $text;  # NOT SURE THIS IS NEEDED
+        Parse::RecDescent::_trace(q{<<Didn't match rule>>},
+                     Parse::RecDescent::_tracefirst($_[1]),
+                     q{variable},
+                     $tracelevel)
+                    if defined $::RD_TRACE;
+        return undef;
+    }
+    if (!defined($return) && defined($score))
+    {
+        Parse::RecDescent::_trace(q{>>Accepted scored production<<}, "",
+                      q{variable},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $return = $score_return;
+    }
+    splice @{$thisparser->{errors}}, $err_at;
+    $return = $item[$#item] unless defined $return;
+    if (defined $::RD_TRACE)
+    {
+        Parse::RecDescent::_trace(q{>>Matched rule<< (return value: [} .
+                      $return . q{])}, "",
+                      q{variable},
+                      $tracelevel);
+        Parse::RecDescent::_trace(q{(consumed: [} .
+                      Parse::RecDescent::_tracemax(substr($_[1],0,-length($text))) . q{])}, 
+                      Parse::RecDescent::_tracefirst($text),
+                      , q{variable},
+                      $tracelevel)
+    }
+    $_[1] = $text;
+    return $return;
 }
 
 # ARGS ARE: ($parser, $text; $repeating, $_noactions, \@args)
@@ -2702,231 +2747,238 @@ sub Parse::RecDescent::Java::Javap::Grammar::constant_modifier
 	use vars q{$tracelevel};
 	local $tracelevel = ($tracelevel||0)+1;
 	$ERRORS = 0;
-	my $thisrule = $thisparser->{"rules"}{"constant_modifier"};
-	
-	Parse::RecDescent::_trace(q{Trying rule: [constant_modifier]},
-				  Parse::RecDescent::_tracefirst($_[1]),
-				  q{constant_modifier},
-				  $tracelevel)
-					if defined $::RD_TRACE;
+    my $thisrule = $thisparser->{"rules"}{"constant_modifier"};
+    
+    Parse::RecDescent::_trace(q{Trying rule: [constant_modifier]},
+                  Parse::RecDescent::_tracefirst($_[1]),
+                  q{constant_modifier},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
 
-	
-	my $err_at = @{$thisparser->{errors}};
+    
+    my $err_at = @{$thisparser->{errors}};
 
-	my $score;
-	my $score_return;
-	my $_tok;
-	my $return = undef;
-	my $_matched=0;
-	my $commit=0;
-	my @item = ();
-	my %item = ();
-	my $repeating =  defined($_[2]) && $_[2];
-	my $_noactions = defined($_[3]) && $_[3];
- 	my @arg =        defined $_[4] ? @{ &{$_[4]} } : ();
-	my %arg =        ($#arg & 01) ? @arg : (@arg, undef);
-	my $text;
-	my $lastsep="";
-	my $expectation = new Parse::RecDescent::Expectation($thisrule->expected());
-	$expectation->at($_[1]);
-	
-	my $thisline;
-	tie $thisline, q{Parse::RecDescent::LineCounter}, \$text, $thisparser;
+    my $score;
+    my $score_return;
+    my $_tok;
+    my $return = undef;
+    my $_matched=0;
+    my $commit=0;
+    my @item = ();
+    my %item = ();
+    my $repeating =  defined($_[2]) && $_[2];
+    my $_noactions = defined($_[3]) && $_[3];
+    my @arg =    defined $_[4] ? @{ &{$_[4]} } : ();
+    my %arg =    ($#arg & 01) ? @arg : (@arg, undef);
+    my $text;
+    my $lastsep="";
+    my $current_match;
+    my $expectation = new Parse::RecDescent::Expectation(q{'final', or 'transient', or 'volatile'});
+    $expectation->at($_[1]);
+    
+    my $thisline;
+    tie $thisline, q{Parse::RecDescent::LineCounter}, \$text, $thisparser;
 
-	
+    
 
-	while (!$_matched && !$commit)
-	{
-		
-		Parse::RecDescent::_trace(q{Trying production: ['final']},
-					  Parse::RecDescent::_tracefirst($_[1]),
-					  q{constant_modifier},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		my $thisprod = $thisrule->{"prods"}[0];
-		$text = $_[1];
-		my $_savetext;
-		@item = (q{constant_modifier});
-		%item = (__RULE__ => q{constant_modifier});
-		my $repcount = 0;
-
-
-		Parse::RecDescent::_trace(q{Trying terminal: ['final']},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{constant_modifier},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$lastsep = "";
-		$expectation->is(q{})->at($text);
-		
-
-		unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ s/\Afinal//)
-		{
-			
-			$expectation->failed();
-			Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
-						. $& . q{])},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-		push @item, $item{__STRING1__}=$&;
-		
+    while (!$_matched && !$commit)
+    {
+        
+        Parse::RecDescent::_trace(q{Trying production: ['final']},
+                      Parse::RecDescent::_tracefirst($_[1]),
+                      q{constant_modifier},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        my $thisprod = $thisrule->{"prods"}[0];
+        $text = $_[1];
+        my $_savetext;
+        @item = (q{constant_modifier});
+        %item = (__RULE__ => q{constant_modifier});
+        my $repcount = 0;
 
 
-		Parse::RecDescent::_trace(q{>>Matched production: ['final']<<},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{constant_modifier},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$_matched = 1;
-		last;
-	}
+        Parse::RecDescent::_trace(q{Trying terminal: ['final']},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{constant_modifier},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $lastsep = "";
+        $expectation->is(q{})->at($text);
+        
+
+        unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ m/\Afinal/)
+        {
+            
+            $expectation->failed();
+            Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+            last;
+        }
+		$current_match = substr($text, $-[0], $+[0] - $-[0]);
+        substr($text,0,length($current_match),q{});
+        Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
+                        . $current_match . q{])},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+        push @item, $item{__STRING1__}=$current_match;
+        
 
 
-	while (!$_matched && !$commit)
-	{
-		
-		Parse::RecDescent::_trace(q{Trying production: ['transient']},
-					  Parse::RecDescent::_tracefirst($_[1]),
-					  q{constant_modifier},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		my $thisprod = $thisrule->{"prods"}[1];
-		$text = $_[1];
-		my $_savetext;
-		@item = (q{constant_modifier});
-		%item = (__RULE__ => q{constant_modifier});
-		my $repcount = 0;
+        Parse::RecDescent::_trace(q{>>Matched production: ['final']<<},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{constant_modifier},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $_matched = 1;
+        last;
+    }
 
 
-		Parse::RecDescent::_trace(q{Trying terminal: ['transient']},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{constant_modifier},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$lastsep = "";
-		$expectation->is(q{})->at($text);
-		
-
-		unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ s/\Atransient//)
-		{
-			
-			$expectation->failed();
-			Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
-						. $& . q{])},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-		push @item, $item{__STRING1__}=$&;
-		
+    while (!$_matched && !$commit)
+    {
+        
+        Parse::RecDescent::_trace(q{Trying production: ['transient']},
+                      Parse::RecDescent::_tracefirst($_[1]),
+                      q{constant_modifier},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        my $thisprod = $thisrule->{"prods"}[1];
+        $text = $_[1];
+        my $_savetext;
+        @item = (q{constant_modifier});
+        %item = (__RULE__ => q{constant_modifier});
+        my $repcount = 0;
 
 
-		Parse::RecDescent::_trace(q{>>Matched production: ['transient']<<},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{constant_modifier},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$_matched = 1;
-		last;
-	}
+        Parse::RecDescent::_trace(q{Trying terminal: ['transient']},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{constant_modifier},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $lastsep = "";
+        $expectation->is(q{})->at($text);
+        
+
+        unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ m/\Atransient/)
+        {
+            
+            $expectation->failed();
+            Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+            last;
+        }
+		$current_match = substr($text, $-[0], $+[0] - $-[0]);
+        substr($text,0,length($current_match),q{});
+        Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
+                        . $current_match . q{])},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+        push @item, $item{__STRING1__}=$current_match;
+        
 
 
-	while (!$_matched && !$commit)
-	{
-		
-		Parse::RecDescent::_trace(q{Trying production: ['volatile']},
-					  Parse::RecDescent::_tracefirst($_[1]),
-					  q{constant_modifier},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		my $thisprod = $thisrule->{"prods"}[2];
-		$text = $_[1];
-		my $_savetext;
-		@item = (q{constant_modifier});
-		%item = (__RULE__ => q{constant_modifier});
-		my $repcount = 0;
+        Parse::RecDescent::_trace(q{>>Matched production: ['transient']<<},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{constant_modifier},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $_matched = 1;
+        last;
+    }
 
 
-		Parse::RecDescent::_trace(q{Trying terminal: ['volatile']},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{constant_modifier},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$lastsep = "";
-		$expectation->is(q{})->at($text);
-		
-
-		unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ s/\Avolatile//)
-		{
-			
-			$expectation->failed();
-			Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
-						. $& . q{])},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-		push @item, $item{__STRING1__}=$&;
-		
+    while (!$_matched && !$commit)
+    {
+        
+        Parse::RecDescent::_trace(q{Trying production: ['volatile']},
+                      Parse::RecDescent::_tracefirst($_[1]),
+                      q{constant_modifier},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        my $thisprod = $thisrule->{"prods"}[2];
+        $text = $_[1];
+        my $_savetext;
+        @item = (q{constant_modifier});
+        %item = (__RULE__ => q{constant_modifier});
+        my $repcount = 0;
 
 
-		Parse::RecDescent::_trace(q{>>Matched production: ['volatile']<<},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{constant_modifier},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$_matched = 1;
-		last;
-	}
+        Parse::RecDescent::_trace(q{Trying terminal: ['volatile']},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{constant_modifier},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $lastsep = "";
+        $expectation->is(q{})->at($text);
+        
+
+        unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ m/\Avolatile/)
+        {
+            
+            $expectation->failed();
+            Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+            last;
+        }
+		$current_match = substr($text, $-[0], $+[0] - $-[0]);
+        substr($text,0,length($current_match),q{});
+        Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
+                        . $current_match . q{])},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+        push @item, $item{__STRING1__}=$current_match;
+        
 
 
-        unless ( $_matched || defined($return) || defined($score) )
-	{
-		
+        Parse::RecDescent::_trace(q{>>Matched production: ['volatile']<<},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{constant_modifier},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $_matched = 1;
+        last;
+    }
 
-		$_[1] = $text;	# NOT SURE THIS IS NEEDED
-		Parse::RecDescent::_trace(q{<<Didn't match rule>>},
-					 Parse::RecDescent::_tracefirst($_[1]),
-					 q{constant_modifier},
-					 $tracelevel)
-					if defined $::RD_TRACE;
-		return undef;
-	}
-	if (!defined($return) && defined($score))
-	{
-		Parse::RecDescent::_trace(q{>>Accepted scored production<<}, "",
-					  q{constant_modifier},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$return = $score_return;
-	}
-	splice @{$thisparser->{errors}}, $err_at;
-	$return = $item[$#item] unless defined $return;
-	if (defined $::RD_TRACE)
-	{
-		Parse::RecDescent::_trace(q{>>Matched rule<< (return value: [} .
-					  $return . q{])}, "",
-					  q{constant_modifier},
-					  $tracelevel);
-		Parse::RecDescent::_trace(q{(consumed: [} .
-					  Parse::RecDescent::_tracemax(substr($_[1],0,-length($text))) . q{])}, 
-					  Parse::RecDescent::_tracefirst($text),
-					  , q{constant_modifier},
-					  $tracelevel)
-	}
-	$_[1] = $text;
-	return $return;
+
+    unless ( $_matched || defined($score) )
+    {
+        
+
+        $_[1] = $text;  # NOT SURE THIS IS NEEDED
+        Parse::RecDescent::_trace(q{<<Didn't match rule>>},
+                     Parse::RecDescent::_tracefirst($_[1]),
+                     q{constant_modifier},
+                     $tracelevel)
+                    if defined $::RD_TRACE;
+        return undef;
+    }
+    if (!defined($return) && defined($score))
+    {
+        Parse::RecDescent::_trace(q{>>Accepted scored production<<}, "",
+                      q{constant_modifier},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $return = $score_return;
+    }
+    splice @{$thisparser->{errors}}, $err_at;
+    $return = $item[$#item] unless defined $return;
+    if (defined $::RD_TRACE)
+    {
+        Parse::RecDescent::_trace(q{>>Matched rule<< (return value: [} .
+                      $return . q{])}, "",
+                      q{constant_modifier},
+                      $tracelevel);
+        Parse::RecDescent::_trace(q{(consumed: [} .
+                      Parse::RecDescent::_tracemax(substr($_[1],0,-length($text))) . q{])}, 
+                      Parse::RecDescent::_tracefirst($text),
+                      , q{constant_modifier},
+                      $tracelevel)
+    }
+    $_[1] = $text;
+    return $return;
 }
 
 # ARGS ARE: ($parser, $text; $repeating, $_noactions, \@args)
@@ -2936,288 +2988,291 @@ sub Parse::RecDescent::Java::Javap::Grammar::arg_list
 	use vars q{$tracelevel};
 	local $tracelevel = ($tracelevel||0)+1;
 	$ERRORS = 0;
-	my $thisrule = $thisparser->{"rules"}{"arg_list"};
-	
-	Parse::RecDescent::_trace(q{Trying rule: [arg_list]},
-				  Parse::RecDescent::_tracefirst($_[1]),
-				  q{arg_list},
-				  $tracelevel)
-					if defined $::RD_TRACE;
+    my $thisrule = $thisparser->{"rules"}{"arg_list"};
+    
+    Parse::RecDescent::_trace(q{Trying rule: [arg_list]},
+                  Parse::RecDescent::_tracefirst($_[1]),
+                  q{arg_list},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
 
-	
-	my $err_at = @{$thisparser->{errors}};
+    
+    my $err_at = @{$thisparser->{errors}};
 
-	my $score;
-	my $score_return;
-	my $_tok;
-	my $return = undef;
-	my $_matched=0;
-	my $commit=0;
-	my @item = ();
-	my %item = ();
-	my $repeating =  defined($_[2]) && $_[2];
-	my $_noactions = defined($_[3]) && $_[3];
- 	my @arg =        defined $_[4] ? @{ &{$_[4]} } : ();
-	my %arg =        ($#arg & 01) ? @arg : (@arg, undef);
-	my $text;
-	my $lastsep="";
-	my $expectation = new Parse::RecDescent::Expectation($thisrule->expected());
-	$expectation->at($_[1]);
-	
-	my $thisline;
-	tie $thisline, q{Parse::RecDescent::LineCounter}, \$text, $thisparser;
+    my $score;
+    my $score_return;
+    my $_tok;
+    my $return = undef;
+    my $_matched=0;
+    my $commit=0;
+    my @item = ();
+    my %item = ();
+    my $repeating =  defined($_[2]) && $_[2];
+    my $_noactions = defined($_[3]) && $_[3];
+    my @arg =    defined $_[4] ? @{ &{$_[4]} } : ();
+    my %arg =    ($#arg & 01) ? @arg : (@arg, undef);
+    my $text;
+    my $lastsep="";
+    my $current_match;
+    my $expectation = new Parse::RecDescent::Expectation(q{arg});
+    $expectation->at($_[1]);
+    
+    my $thisline;
+    tie $thisline, q{Parse::RecDescent::LineCounter}, \$text, $thisparser;
 
-	
+    
 
-	while (!$_matched && !$commit)
-	{
-		
-		Parse::RecDescent::_trace(q{Trying production: [arg ',' arg_list]},
-					  Parse::RecDescent::_tracefirst($_[1]),
-					  q{arg_list},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		my $thisprod = $thisrule->{"prods"}[0];
-		$text = $_[1];
-		my $_savetext;
-		@item = (q{arg_list});
-		%item = (__RULE__ => q{arg_list});
-		my $repcount = 0;
-
-
-		Parse::RecDescent::_trace(q{Trying subrule: [arg]},
-				  Parse::RecDescent::_tracefirst($text),
-				  q{arg_list},
-				  $tracelevel)
-					if defined $::RD_TRACE;
-		if (1) { no strict qw{refs};
-		$expectation->is(q{})->at($text);
-		unless (defined ($_tok = Parse::RecDescent::Java::Javap::Grammar::arg($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
-		{
-			
-			Parse::RecDescent::_trace(q{<<Didn't match subrule: [arg]>>},
-						  Parse::RecDescent::_tracefirst($text),
-						  q{arg_list},
-						  $tracelevel)
-							if defined $::RD_TRACE;
-			$expectation->failed();
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched subrule: [arg]<< (return value: [}
-					. $_tok . q{]},
-					  
-					  Parse::RecDescent::_tracefirst($text),
-					  q{arg_list},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$item{q{arg}} = $_tok;
-		push @item, $_tok;
-		
-		}
-
-		Parse::RecDescent::_trace(q{Trying terminal: [',']},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{arg_list},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$lastsep = "";
-		$expectation->is(q{','})->at($text);
-		
-
-		unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ s/\A\,//)
-		{
-			
-			$expectation->failed();
-			Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
-						. $& . q{])},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-		push @item, $item{__STRING1__}=$&;
-		
-
-		Parse::RecDescent::_trace(q{Trying subrule: [arg_list]},
-				  Parse::RecDescent::_tracefirst($text),
-				  q{arg_list},
-				  $tracelevel)
-					if defined $::RD_TRACE;
-		if (1) { no strict qw{refs};
-		$expectation->is(q{arg_list})->at($text);
-		unless (defined ($_tok = Parse::RecDescent::Java::Javap::Grammar::arg_list($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
-		{
-			
-			Parse::RecDescent::_trace(q{<<Didn't match subrule: [arg_list]>>},
-						  Parse::RecDescent::_tracefirst($text),
-						  q{arg_list},
-						  $tracelevel)
-							if defined $::RD_TRACE;
-			$expectation->failed();
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched subrule: [arg_list]<< (return value: [}
-					. $_tok . q{]},
-					  
-					  Parse::RecDescent::_tracefirst($text),
-					  q{arg_list},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$item{q{arg_list}} = $_tok;
-		push @item, $_tok;
-		
-		}
-
-		Parse::RecDescent::_trace(q{Trying action},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{arg_list},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		
-
-		$_tok = ($_noactions) ? 0 : do { [ @{ $item[1] }, @{ $item[3] } ] };
-		unless (defined $_tok)
-		{
-			Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
-					if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
-					  . $_tok . q{])},
-					  Parse::RecDescent::_tracefirst($text))
-						if defined $::RD_TRACE;
-		push @item, $_tok;
-		$item{__ACTION1__}=$_tok;
-		
+    while (!$_matched && !$commit)
+    {
+        
+        Parse::RecDescent::_trace(q{Trying production: [arg ',' arg_list]},
+                      Parse::RecDescent::_tracefirst($_[1]),
+                      q{arg_list},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        my $thisprod = $thisrule->{"prods"}[0];
+        $text = $_[1];
+        my $_savetext;
+        @item = (q{arg_list});
+        %item = (__RULE__ => q{arg_list});
+        my $repcount = 0;
 
 
-		Parse::RecDescent::_trace(q{>>Matched production: [arg ',' arg_list]<<},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{arg_list},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$_matched = 1;
-		last;
-	}
+        Parse::RecDescent::_trace(q{Trying subrule: [arg]},
+                  Parse::RecDescent::_tracefirst($text),
+                  q{arg_list},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
+        if (1) { no strict qw{refs};
+        $expectation->is(q{})->at($text);
+        unless (defined ($_tok = Parse::RecDescent::Java::Javap::Grammar::arg($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
+        {
+            
+            Parse::RecDescent::_trace(q{<<Didn't match subrule: [arg]>>},
+                          Parse::RecDescent::_tracefirst($text),
+                          q{arg_list},
+                          $tracelevel)
+                            if defined $::RD_TRACE;
+            $expectation->failed();
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched subrule: [arg]<< (return value: [}
+                    . $_tok . q{]},
+                      
+                      Parse::RecDescent::_tracefirst($text),
+                      q{arg_list},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $item{q{arg}} = $_tok;
+        push @item, $_tok;
+        
+        }
+
+        Parse::RecDescent::_trace(q{Trying terminal: [',']},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{arg_list},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $lastsep = "";
+        $expectation->is(q{','})->at($text);
+        
+
+        unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ m/\A\,/)
+        {
+            
+            $expectation->failed();
+            Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+            last;
+        }
+		$current_match = substr($text, $-[0], $+[0] - $-[0]);
+        substr($text,0,length($current_match),q{});
+        Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
+                        . $current_match . q{])},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+        push @item, $item{__STRING1__}=$current_match;
+        
+
+        Parse::RecDescent::_trace(q{Trying subrule: [arg_list]},
+                  Parse::RecDescent::_tracefirst($text),
+                  q{arg_list},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
+        if (1) { no strict qw{refs};
+        $expectation->is(q{arg_list})->at($text);
+        unless (defined ($_tok = Parse::RecDescent::Java::Javap::Grammar::arg_list($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
+        {
+            
+            Parse::RecDescent::_trace(q{<<Didn't match subrule: [arg_list]>>},
+                          Parse::RecDescent::_tracefirst($text),
+                          q{arg_list},
+                          $tracelevel)
+                            if defined $::RD_TRACE;
+            $expectation->failed();
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched subrule: [arg_list]<< (return value: [}
+                    . $_tok . q{]},
+                      
+                      Parse::RecDescent::_tracefirst($text),
+                      q{arg_list},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $item{q{arg_list}} = $_tok;
+        push @item, $_tok;
+        
+        }
+
+        Parse::RecDescent::_trace(q{Trying action},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{arg_list},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        
+
+        $_tok = ($_noactions) ? 0 : do { [ @{ $item[1] }, @{ $item[3] } ] };
+        unless (defined $_tok)
+        {
+            Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
+                    if defined $::RD_TRACE;
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
+                      . $_tok . q{])},
+                      Parse::RecDescent::_tracefirst($text))
+                        if defined $::RD_TRACE;
+        push @item, $_tok;
+        $item{__ACTION1__}=$_tok;
+        
 
 
-	while (!$_matched && !$commit)
-	{
-		
-		Parse::RecDescent::_trace(q{Trying production: [arg]},
-					  Parse::RecDescent::_tracefirst($_[1]),
-					  q{arg_list},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		my $thisprod = $thisrule->{"prods"}[1];
-		$text = $_[1];
-		my $_savetext;
-		@item = (q{arg_list});
-		%item = (__RULE__ => q{arg_list});
-		my $repcount = 0;
+        Parse::RecDescent::_trace(q{>>Matched production: [arg ',' arg_list]<<},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{arg_list},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $_matched = 1;
+        last;
+    }
 
 
-		Parse::RecDescent::_trace(q{Trying subrule: [arg]},
-				  Parse::RecDescent::_tracefirst($text),
-				  q{arg_list},
-				  $tracelevel)
-					if defined $::RD_TRACE;
-		if (1) { no strict qw{refs};
-		$expectation->is(q{})->at($text);
-		unless (defined ($_tok = Parse::RecDescent::Java::Javap::Grammar::arg($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
-		{
-			
-			Parse::RecDescent::_trace(q{<<Didn't match subrule: [arg]>>},
-						  Parse::RecDescent::_tracefirst($text),
-						  q{arg_list},
-						  $tracelevel)
-							if defined $::RD_TRACE;
-			$expectation->failed();
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched subrule: [arg]<< (return value: [}
-					. $_tok . q{]},
-					  
-					  Parse::RecDescent::_tracefirst($text),
-					  q{arg_list},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$item{q{arg}} = $_tok;
-		push @item, $_tok;
-		
-		}
-
-		Parse::RecDescent::_trace(q{Trying action},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{arg_list},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		
-
-		$_tok = ($_noactions) ? 0 : do { $item[1] };
-		unless (defined $_tok)
-		{
-			Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
-					if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
-					  . $_tok . q{])},
-					  Parse::RecDescent::_tracefirst($text))
-						if defined $::RD_TRACE;
-		push @item, $_tok;
-		$item{__ACTION1__}=$_tok;
-		
+    while (!$_matched && !$commit)
+    {
+        
+        Parse::RecDescent::_trace(q{Trying production: [arg]},
+                      Parse::RecDescent::_tracefirst($_[1]),
+                      q{arg_list},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        my $thisprod = $thisrule->{"prods"}[1];
+        $text = $_[1];
+        my $_savetext;
+        @item = (q{arg_list});
+        %item = (__RULE__ => q{arg_list});
+        my $repcount = 0;
 
 
-		Parse::RecDescent::_trace(q{>>Matched production: [arg]<<},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{arg_list},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$_matched = 1;
-		last;
-	}
+        Parse::RecDescent::_trace(q{Trying subrule: [arg]},
+                  Parse::RecDescent::_tracefirst($text),
+                  q{arg_list},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
+        if (1) { no strict qw{refs};
+        $expectation->is(q{})->at($text);
+        unless (defined ($_tok = Parse::RecDescent::Java::Javap::Grammar::arg($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
+        {
+            
+            Parse::RecDescent::_trace(q{<<Didn't match subrule: [arg]>>},
+                          Parse::RecDescent::_tracefirst($text),
+                          q{arg_list},
+                          $tracelevel)
+                            if defined $::RD_TRACE;
+            $expectation->failed();
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched subrule: [arg]<< (return value: [}
+                    . $_tok . q{]},
+                      
+                      Parse::RecDescent::_tracefirst($text),
+                      q{arg_list},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $item{q{arg}} = $_tok;
+        push @item, $_tok;
+        
+        }
+
+        Parse::RecDescent::_trace(q{Trying action},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{arg_list},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        
+
+        $_tok = ($_noactions) ? 0 : do { $item[1] };
+        unless (defined $_tok)
+        {
+            Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
+                    if defined $::RD_TRACE;
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
+                      . $_tok . q{])},
+                      Parse::RecDescent::_tracefirst($text))
+                        if defined $::RD_TRACE;
+        push @item, $_tok;
+        $item{__ACTION1__}=$_tok;
+        
 
 
-        unless ( $_matched || defined($return) || defined($score) )
-	{
-		
+        Parse::RecDescent::_trace(q{>>Matched production: [arg]<<},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{arg_list},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $_matched = 1;
+        last;
+    }
 
-		$_[1] = $text;	# NOT SURE THIS IS NEEDED
-		Parse::RecDescent::_trace(q{<<Didn't match rule>>},
-					 Parse::RecDescent::_tracefirst($_[1]),
-					 q{arg_list},
-					 $tracelevel)
-					if defined $::RD_TRACE;
-		return undef;
-	}
-	if (!defined($return) && defined($score))
-	{
-		Parse::RecDescent::_trace(q{>>Accepted scored production<<}, "",
-					  q{arg_list},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$return = $score_return;
-	}
-	splice @{$thisparser->{errors}}, $err_at;
-	$return = $item[$#item] unless defined $return;
-	if (defined $::RD_TRACE)
-	{
-		Parse::RecDescent::_trace(q{>>Matched rule<< (return value: [} .
-					  $return . q{])}, "",
-					  q{arg_list},
-					  $tracelevel);
-		Parse::RecDescent::_trace(q{(consumed: [} .
-					  Parse::RecDescent::_tracemax(substr($_[1],0,-length($text))) . q{])}, 
-					  Parse::RecDescent::_tracefirst($text),
-					  , q{arg_list},
-					  $tracelevel)
-	}
-	$_[1] = $text;
-	return $return;
+
+    unless ( $_matched || defined($score) )
+    {
+        
+
+        $_[1] = $text;  # NOT SURE THIS IS NEEDED
+        Parse::RecDescent::_trace(q{<<Didn't match rule>>},
+                     Parse::RecDescent::_tracefirst($_[1]),
+                     q{arg_list},
+                     $tracelevel)
+                    if defined $::RD_TRACE;
+        return undef;
+    }
+    if (!defined($return) && defined($score))
+    {
+        Parse::RecDescent::_trace(q{>>Accepted scored production<<}, "",
+                      q{arg_list},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $return = $score_return;
+    }
+    splice @{$thisparser->{errors}}, $err_at;
+    $return = $item[$#item] unless defined $return;
+    if (defined $::RD_TRACE)
+    {
+        Parse::RecDescent::_trace(q{>>Matched rule<< (return value: [} .
+                      $return . q{])}, "",
+                      q{arg_list},
+                      $tracelevel);
+        Parse::RecDescent::_trace(q{(consumed: [} .
+                      Parse::RecDescent::_tracemax(substr($_[1],0,-length($text))) . q{])}, 
+                      Parse::RecDescent::_tracefirst($text),
+                      , q{arg_list},
+                      $tracelevel)
+    }
+    $_[1] = $text;
+    return $return;
 }
 
 # ARGS ARE: ($parser, $text; $repeating, $_noactions, \@args)
@@ -3227,152 +3282,153 @@ sub Parse::RecDescent::Java::Javap::Grammar::body
 	use vars q{$tracelevel};
 	local $tracelevel = ($tracelevel||0)+1;
 	$ERRORS = 0;
-	my $thisrule = $thisparser->{"rules"}{"body"};
-	
-	Parse::RecDescent::_trace(q{Trying rule: [body]},
-				  Parse::RecDescent::_tracefirst($_[1]),
-				  q{body},
-				  $tracelevel)
-					if defined $::RD_TRACE;
+    my $thisrule = $thisparser->{"rules"}{"body"};
+    
+    Parse::RecDescent::_trace(q{Trying rule: [body]},
+                  Parse::RecDescent::_tracefirst($_[1]),
+                  q{body},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
 
-	
-	my $err_at = @{$thisparser->{errors}};
+    
+    my $err_at = @{$thisparser->{errors}};
 
-	my $score;
-	my $score_return;
-	my $_tok;
-	my $return = undef;
-	my $_matched=0;
-	my $commit=0;
-	my @item = ();
-	my %item = ();
-	my $repeating =  defined($_[2]) && $_[2];
-	my $_noactions = defined($_[3]) && $_[3];
- 	my @arg =        defined $_[4] ? @{ &{$_[4]} } : ();
-	my %arg =        ($#arg & 01) ? @arg : (@arg, undef);
-	my $text;
-	my $lastsep="";
-	my $expectation = new Parse::RecDescent::Expectation($thisrule->expected());
-	$expectation->at($_[1]);
-	
-	my $thisline;
-	tie $thisline, q{Parse::RecDescent::LineCounter}, \$text, $thisparser;
+    my $score;
+    my $score_return;
+    my $_tok;
+    my $return = undef;
+    my $_matched=0;
+    my $commit=0;
+    my @item = ();
+    my %item = ();
+    my $repeating =  defined($_[2]) && $_[2];
+    my $_noactions = defined($_[3]) && $_[3];
+    my @arg =    defined $_[4] ? @{ &{$_[4]} } : ();
+    my %arg =    ($#arg & 01) ? @arg : (@arg, undef);
+    my $text;
+    my $lastsep="";
+    my $current_match;
+    my $expectation = new Parse::RecDescent::Expectation(q{body_element});
+    $expectation->at($_[1]);
+    
+    my $thisline;
+    tie $thisline, q{Parse::RecDescent::LineCounter}, \$text, $thisparser;
 
-	
+    
 
-	while (!$_matched && !$commit)
-	{
-		
-		Parse::RecDescent::_trace(q{Trying production: [body_element]},
-					  Parse::RecDescent::_tracefirst($_[1]),
-					  q{body},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		my $thisprod = $thisrule->{"prods"}[0];
-		$text = $_[1];
-		my $_savetext;
-		@item = (q{body});
-		%item = (__RULE__ => q{body});
-		my $repcount = 0;
-
-
-		Parse::RecDescent::_trace(q{Trying repeated subrule: [body_element]},
-				  Parse::RecDescent::_tracefirst($text),
-				  q{body},
-				  $tracelevel)
-					if defined $::RD_TRACE;
-		$expectation->is(q{})->at($text);
-		
-		unless (defined ($_tok = $thisparser->_parserepeat($text, \&Parse::RecDescent::Java::Javap::Grammar::body_element, 0, 100000000, $_noactions,$expectation,undef))) 
-		{
-			Parse::RecDescent::_trace(q{<<Didn't match repeated subrule: [body_element]>>},
-						  Parse::RecDescent::_tracefirst($text),
-						  q{body},
-						  $tracelevel)
-							if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched repeated subrule: [body_element]<< (}
-					. @$_tok . q{ times)},
-					  
-					  Parse::RecDescent::_tracefirst($text),
-					  q{body},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$item{q{body_element(s?)}} = $_tok;
-		push @item, $_tok;
-		
+    while (!$_matched && !$commit)
+    {
+        
+        Parse::RecDescent::_trace(q{Trying production: [body_element]},
+                      Parse::RecDescent::_tracefirst($_[1]),
+                      q{body},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        my $thisprod = $thisrule->{"prods"}[0];
+        $text = $_[1];
+        my $_savetext;
+        @item = (q{body});
+        %item = (__RULE__ => q{body});
+        my $repcount = 0;
 
 
-		Parse::RecDescent::_trace(q{Trying action},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{body},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		
-
-		$_tok = ($_noactions) ? 0 : do { $item[1] };
-		unless (defined $_tok)
-		{
-			Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
-					if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
-					  . $_tok . q{])},
-					  Parse::RecDescent::_tracefirst($text))
-						if defined $::RD_TRACE;
-		push @item, $_tok;
-		$item{__ACTION1__}=$_tok;
-		
-
-
-		Parse::RecDescent::_trace(q{>>Matched production: [body_element]<<},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{body},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$_matched = 1;
-		last;
-	}
+        Parse::RecDescent::_trace(q{Trying repeated subrule: [body_element]},
+                  Parse::RecDescent::_tracefirst($text),
+                  q{body},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
+        $expectation->is(q{})->at($text);
+        
+        unless (defined ($_tok = $thisparser->_parserepeat($text, \&Parse::RecDescent::Java::Javap::Grammar::body_element, 0, 100000000, $_noactions,$expectation,sub { \@arg }))) 
+        {
+            Parse::RecDescent::_trace(q{<<Didn't match repeated subrule: [body_element]>>},
+                          Parse::RecDescent::_tracefirst($text),
+                          q{body},
+                          $tracelevel)
+                            if defined $::RD_TRACE;
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched repeated subrule: [body_element]<< (}
+                    . @$_tok . q{ times)},
+                      
+                      Parse::RecDescent::_tracefirst($text),
+                      q{body},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $item{q{body_element(s?)}} = $_tok;
+        push @item, $_tok;
+        
 
 
-        unless ( $_matched || defined($return) || defined($score) )
-	{
-		
+        Parse::RecDescent::_trace(q{Trying action},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{body},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        
 
-		$_[1] = $text;	# NOT SURE THIS IS NEEDED
-		Parse::RecDescent::_trace(q{<<Didn't match rule>>},
-					 Parse::RecDescent::_tracefirst($_[1]),
-					 q{body},
-					 $tracelevel)
-					if defined $::RD_TRACE;
-		return undef;
-	}
-	if (!defined($return) && defined($score))
-	{
-		Parse::RecDescent::_trace(q{>>Accepted scored production<<}, "",
-					  q{body},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$return = $score_return;
-	}
-	splice @{$thisparser->{errors}}, $err_at;
-	$return = $item[$#item] unless defined $return;
-	if (defined $::RD_TRACE)
-	{
-		Parse::RecDescent::_trace(q{>>Matched rule<< (return value: [} .
-					  $return . q{])}, "",
-					  q{body},
-					  $tracelevel);
-		Parse::RecDescent::_trace(q{(consumed: [} .
-					  Parse::RecDescent::_tracemax(substr($_[1],0,-length($text))) . q{])}, 
-					  Parse::RecDescent::_tracefirst($text),
-					  , q{body},
-					  $tracelevel)
-	}
-	$_[1] = $text;
-	return $return;
+        $_tok = ($_noactions) ? 0 : do { $item[1] };
+        unless (defined $_tok)
+        {
+            Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
+                    if defined $::RD_TRACE;
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
+                      . $_tok . q{])},
+                      Parse::RecDescent::_tracefirst($text))
+                        if defined $::RD_TRACE;
+        push @item, $_tok;
+        $item{__ACTION1__}=$_tok;
+        
+
+
+        Parse::RecDescent::_trace(q{>>Matched production: [body_element]<<},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{body},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $_matched = 1;
+        last;
+    }
+
+
+    unless ( $_matched || defined($score) )
+    {
+        
+
+        $_[1] = $text;  # NOT SURE THIS IS NEEDED
+        Parse::RecDescent::_trace(q{<<Didn't match rule>>},
+                     Parse::RecDescent::_tracefirst($_[1]),
+                     q{body},
+                     $tracelevel)
+                    if defined $::RD_TRACE;
+        return undef;
+    }
+    if (!defined($return) && defined($score))
+    {
+        Parse::RecDescent::_trace(q{>>Accepted scored production<<}, "",
+                      q{body},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $return = $score_return;
+    }
+    splice @{$thisparser->{errors}}, $err_at;
+    $return = $item[$#item] unless defined $return;
+    if (defined $::RD_TRACE)
+    {
+        Parse::RecDescent::_trace(q{>>Matched rule<< (return value: [} .
+                      $return . q{])}, "",
+                      q{body},
+                      $tracelevel);
+        Parse::RecDescent::_trace(q{(consumed: [} .
+                      Parse::RecDescent::_tracemax(substr($_[1],0,-length($text))) . q{])}, 
+                      Parse::RecDescent::_tracefirst($text),
+                      , q{body},
+                      $tracelevel)
+    }
+    $_[1] = $text;
+    return $return;
 }
 
 # ARGS ARE: ($parser, $text; $repeating, $_noactions, \@args)
@@ -3382,127 +3438,130 @@ sub Parse::RecDescent::Java::Javap::Grammar::byte_code_line
 	use vars q{$tracelevel};
 	local $tracelevel = ($tracelevel||0)+1;
 	$ERRORS = 0;
-	my $thisrule = $thisparser->{"rules"}{"byte_code_line"};
-	
-	Parse::RecDescent::_trace(q{Trying rule: [byte_code_line]},
-				  Parse::RecDescent::_tracefirst($_[1]),
-				  q{byte_code_line},
-				  $tracelevel)
-					if defined $::RD_TRACE;
+    my $thisrule = $thisparser->{"rules"}{"byte_code_line"};
+    
+    Parse::RecDescent::_trace(q{Trying rule: [byte_code_line]},
+                  Parse::RecDescent::_tracefirst($_[1]),
+                  q{byte_code_line},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
 
-	
-	my $err_at = @{$thisparser->{errors}};
+    
+    my $err_at = @{$thisparser->{errors}};
 
-	my $score;
-	my $score_return;
-	my $_tok;
-	my $return = undef;
-	my $_matched=0;
-	my $commit=0;
-	my @item = ();
-	my %item = ();
-	my $repeating =  defined($_[2]) && $_[2];
-	my $_noactions = defined($_[3]) && $_[3];
- 	my @arg =        defined $_[4] ? @{ &{$_[4]} } : ();
-	my %arg =        ($#arg & 01) ? @arg : (@arg, undef);
-	my $text;
-	my $lastsep="";
-	my $expectation = new Parse::RecDescent::Expectation($thisrule->expected());
-	$expectation->at($_[1]);
-	
-	my $thisline;
-	tie $thisline, q{Parse::RecDescent::LineCounter}, \$text, $thisparser;
+    my $score;
+    my $score_return;
+    my $_tok;
+    my $return = undef;
+    my $_matched=0;
+    my $commit=0;
+    my @item = ();
+    my %item = ();
+    my $repeating =  defined($_[2]) && $_[2];
+    my $_noactions = defined($_[3]) && $_[3];
+    my @arg =    defined $_[4] ? @{ &{$_[4]} } : ();
+    my %arg =    ($#arg & 01) ? @arg : (@arg, undef);
+    my $text;
+    my $lastsep="";
+    my $current_match;
+    my $expectation = new Parse::RecDescent::Expectation(q{/\\d+:[^\\n]*/});
+    $expectation->at($_[1]);
+    
+    my $thisline;
+    tie $thisline, q{Parse::RecDescent::LineCounter}, \$text, $thisparser;
 
-	
+    
 
-	while (!$_matched && !$commit)
-	{
-		
-		Parse::RecDescent::_trace(q{Trying production: [/\\d+:[^\\n]*/]},
-					  Parse::RecDescent::_tracefirst($_[1]),
-					  q{byte_code_line},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		my $thisprod = $thisrule->{"prods"}[0];
-		$text = $_[1];
-		my $_savetext;
-		@item = (q{byte_code_line});
-		%item = (__RULE__ => q{byte_code_line});
-		my $repcount = 0;
-
-
-		Parse::RecDescent::_trace(q{Trying terminal: [/\\d+:[^\\n]*/]}, Parse::RecDescent::_tracefirst($text),
-					  q{byte_code_line},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$lastsep = "";
-		$expectation->is(q{})->at($text);
-		
-
-		unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ s/\A(?:\d+:[^\n]*)//)
-		{
-			
-			$expectation->failed();
-			Parse::RecDescent::_trace(q{<<Didn't match terminal>>},
-						  Parse::RecDescent::_tracefirst($text))
-					if defined $::RD_TRACE;
-
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
-						. $& . q{])},
-						  Parse::RecDescent::_tracefirst($text))
-					if defined $::RD_TRACE;
-		push @item, $item{__PATTERN1__}=$&;
-		
+    while (!$_matched && !$commit)
+    {
+        
+        Parse::RecDescent::_trace(q{Trying production: [/\\d+:[^\\n]*/]},
+                      Parse::RecDescent::_tracefirst($_[1]),
+                      q{byte_code_line},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        my $thisprod = $thisrule->{"prods"}[0];
+        $text = $_[1];
+        my $_savetext;
+        @item = (q{byte_code_line});
+        %item = (__RULE__ => q{byte_code_line});
+        my $repcount = 0;
 
 
-		Parse::RecDescent::_trace(q{>>Matched production: [/\\d+:[^\\n]*/]<<},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{byte_code_line},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$_matched = 1;
-		last;
-	}
+        Parse::RecDescent::_trace(q{Trying terminal: [/\\d+:[^\\n]*/]}, Parse::RecDescent::_tracefirst($text),
+                      q{byte_code_line},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $lastsep = "";
+        $expectation->is(q{})->at($text);
+        
+
+        unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ m/\A(?:\d+:[^\n]*)/)
+        {
+            
+            $expectation->failed();
+            Parse::RecDescent::_trace(q{<<Didn't match terminal>>},
+                          Parse::RecDescent::_tracefirst($text))
+                    if defined $::RD_TRACE;
+
+            last;
+        }
+		$current_match = substr($text, $-[0], $+[0] - $-[0]);
+        substr($text,0,length($current_match),q{});
+        Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
+                        . $current_match . q{])},
+                          Parse::RecDescent::_tracefirst($text))
+                    if defined $::RD_TRACE;
+        push @item, $item{__PATTERN1__}=$current_match;
+        
 
 
-        unless ( $_matched || defined($return) || defined($score) )
-	{
-		
+        Parse::RecDescent::_trace(q{>>Matched production: [/\\d+:[^\\n]*/]<<},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{byte_code_line},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $_matched = 1;
+        last;
+    }
 
-		$_[1] = $text;	# NOT SURE THIS IS NEEDED
-		Parse::RecDescent::_trace(q{<<Didn't match rule>>},
-					 Parse::RecDescent::_tracefirst($_[1]),
-					 q{byte_code_line},
-					 $tracelevel)
-					if defined $::RD_TRACE;
-		return undef;
-	}
-	if (!defined($return) && defined($score))
-	{
-		Parse::RecDescent::_trace(q{>>Accepted scored production<<}, "",
-					  q{byte_code_line},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$return = $score_return;
-	}
-	splice @{$thisparser->{errors}}, $err_at;
-	$return = $item[$#item] unless defined $return;
-	if (defined $::RD_TRACE)
-	{
-		Parse::RecDescent::_trace(q{>>Matched rule<< (return value: [} .
-					  $return . q{])}, "",
-					  q{byte_code_line},
-					  $tracelevel);
-		Parse::RecDescent::_trace(q{(consumed: [} .
-					  Parse::RecDescent::_tracemax(substr($_[1],0,-length($text))) . q{])}, 
-					  Parse::RecDescent::_tracefirst($text),
-					  , q{byte_code_line},
-					  $tracelevel)
-	}
-	$_[1] = $text;
-	return $return;
+
+    unless ( $_matched || defined($score) )
+    {
+        
+
+        $_[1] = $text;  # NOT SURE THIS IS NEEDED
+        Parse::RecDescent::_trace(q{<<Didn't match rule>>},
+                     Parse::RecDescent::_tracefirst($_[1]),
+                     q{byte_code_line},
+                     $tracelevel)
+                    if defined $::RD_TRACE;
+        return undef;
+    }
+    if (!defined($return) && defined($score))
+    {
+        Parse::RecDescent::_trace(q{>>Accepted scored production<<}, "",
+                      q{byte_code_line},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $return = $score_return;
+    }
+    splice @{$thisparser->{errors}}, $err_at;
+    $return = $item[$#item] unless defined $return;
+    if (defined $::RD_TRACE)
+    {
+        Parse::RecDescent::_trace(q{>>Matched rule<< (return value: [} .
+                      $return . q{])}, "",
+                      q{byte_code_line},
+                      $tracelevel);
+        Parse::RecDescent::_trace(q{(consumed: [} .
+                      Parse::RecDescent::_tracemax(substr($_[1],0,-length($text))) . q{])}, 
+                      Parse::RecDescent::_tracefirst($text),
+                      , q{byte_code_line},
+                      $tracelevel)
+    }
+    $_[1] = $text;
+    return $return;
 }
 
 # ARGS ARE: ($parser, $text; $repeating, $_noactions, \@args)
@@ -3512,155 +3571,156 @@ sub Parse::RecDescent::Java::Javap::Grammar::array_depth
 	use vars q{$tracelevel};
 	local $tracelevel = ($tracelevel||0)+1;
 	$ERRORS = 0;
-	my $thisrule = $thisparser->{"rules"}{"array_depth"};
-	
-	Parse::RecDescent::_trace(q{Trying rule: [array_depth]},
-				  Parse::RecDescent::_tracefirst($_[1]),
-				  q{array_depth},
-				  $tracelevel)
-					if defined $::RD_TRACE;
+    my $thisrule = $thisparser->{"rules"}{"array_depth"};
+    
+    Parse::RecDescent::_trace(q{Trying rule: [array_depth]},
+                  Parse::RecDescent::_tracefirst($_[1]),
+                  q{array_depth},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
 
-	
-	my $err_at = @{$thisparser->{errors}};
+    
+    my $err_at = @{$thisparser->{errors}};
 
-	my $score;
-	my $score_return;
-	my $_tok;
-	my $return = undef;
-	my $_matched=0;
-	my $commit=0;
-	my @item = ();
-	my %item = ();
-	my $repeating =  defined($_[2]) && $_[2];
-	my $_noactions = defined($_[3]) && $_[3];
- 	my @arg =        defined $_[4] ? @{ &{$_[4]} } : ();
-	my %arg =        ($#arg & 01) ? @arg : (@arg, undef);
-	my $text;
-	my $lastsep="";
-	my $expectation = new Parse::RecDescent::Expectation($thisrule->expected());
-	$expectation->at($_[1]);
-	
-	my $thisline;
-	tie $thisline, q{Parse::RecDescent::LineCounter}, \$text, $thisparser;
+    my $score;
+    my $score_return;
+    my $_tok;
+    my $return = undef;
+    my $_matched=0;
+    my $commit=0;
+    my @item = ();
+    my %item = ();
+    my $repeating =  defined($_[2]) && $_[2];
+    my $_noactions = defined($_[3]) && $_[3];
+    my @arg =    defined $_[4] ? @{ &{$_[4]} } : ();
+    my %arg =    ($#arg & 01) ? @arg : (@arg, undef);
+    my $text;
+    my $lastsep="";
+    my $current_match;
+    my $expectation = new Parse::RecDescent::Expectation(q{ARRAY_LEVEL});
+    $expectation->at($_[1]);
+    
+    my $thisline;
+    tie $thisline, q{Parse::RecDescent::LineCounter}, \$text, $thisparser;
 
-	
+    
 
-	while (!$_matched && !$commit)
-	{
-		
-		Parse::RecDescent::_trace(q{Trying production: [ARRAY_LEVEL]},
-					  Parse::RecDescent::_tracefirst($_[1]),
-					  q{array_depth},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		my $thisprod = $thisrule->{"prods"}[0];
-		$text = $_[1];
-		my $_savetext;
-		@item = (q{array_depth});
-		%item = (__RULE__ => q{array_depth});
-		my $repcount = 0;
-
-
-		Parse::RecDescent::_trace(q{Trying repeated subrule: [ARRAY_LEVEL]},
-				  Parse::RecDescent::_tracefirst($text),
-				  q{array_depth},
-				  $tracelevel)
-					if defined $::RD_TRACE;
-		$expectation->is(q{})->at($text);
-		
-		unless (defined ($_tok = $thisparser->_parserepeat($text, \&Parse::RecDescent::Java::Javap::Grammar::ARRAY_LEVEL, 0, 100000000, $_noactions,$expectation,undef))) 
-		{
-			Parse::RecDescent::_trace(q{<<Didn't match repeated subrule: [ARRAY_LEVEL]>>},
-						  Parse::RecDescent::_tracefirst($text),
-						  q{array_depth},
-						  $tracelevel)
-							if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched repeated subrule: [ARRAY_LEVEL]<< (}
-					. @$_tok . q{ times)},
-					  
-					  Parse::RecDescent::_tracefirst($text),
-					  q{array_depth},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$item{q{ARRAY_LEVEL(s?)}} = $_tok;
-		push @item, $_tok;
-		
+    while (!$_matched && !$commit)
+    {
+        
+        Parse::RecDescent::_trace(q{Trying production: [ARRAY_LEVEL]},
+                      Parse::RecDescent::_tracefirst($_[1]),
+                      q{array_depth},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        my $thisprod = $thisrule->{"prods"}[0];
+        $text = $_[1];
+        my $_savetext;
+        @item = (q{array_depth});
+        %item = (__RULE__ => q{array_depth});
+        my $repcount = 0;
 
 
-		Parse::RecDescent::_trace(q{Trying action},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{array_depth},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		
+        Parse::RecDescent::_trace(q{Trying repeated subrule: [ARRAY_LEVEL]},
+                  Parse::RecDescent::_tracefirst($text),
+                  q{array_depth},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
+        $expectation->is(q{})->at($text);
+        
+        unless (defined ($_tok = $thisparser->_parserepeat($text, \&Parse::RecDescent::Java::Javap::Grammar::ARRAY_LEVEL, 0, 100000000, $_noactions,$expectation,sub { \@arg }))) 
+        {
+            Parse::RecDescent::_trace(q{<<Didn't match repeated subrule: [ARRAY_LEVEL]>>},
+                          Parse::RecDescent::_tracefirst($text),
+                          q{array_depth},
+                          $tracelevel)
+                            if defined $::RD_TRACE;
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched repeated subrule: [ARRAY_LEVEL]<< (}
+                    . @$_tok . q{ times)},
+                      
+                      Parse::RecDescent::_tracefirst($text),
+                      q{array_depth},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $item{q{ARRAY_LEVEL(s?)}} = $_tok;
+        push @item, $_tok;
+        
 
-		$_tok = ($_noactions) ? 0 : do {
+
+        Parse::RecDescent::_trace(q{Trying action},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{array_depth},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        
+
+        $_tok = ($_noactions) ? 0 : do {
                 my $depth = scalar @{ $item[1] };
                 $depth;
               };
-		unless (defined $_tok)
-		{
-			Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
-					if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
-					  . $_tok . q{])},
-					  Parse::RecDescent::_tracefirst($text))
-						if defined $::RD_TRACE;
-		push @item, $_tok;
-		$item{__ACTION1__}=$_tok;
-		
+        unless (defined $_tok)
+        {
+            Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
+                    if defined $::RD_TRACE;
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
+                      . $_tok . q{])},
+                      Parse::RecDescent::_tracefirst($text))
+                        if defined $::RD_TRACE;
+        push @item, $_tok;
+        $item{__ACTION1__}=$_tok;
+        
 
 
-		Parse::RecDescent::_trace(q{>>Matched production: [ARRAY_LEVEL]<<},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{array_depth},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$_matched = 1;
-		last;
-	}
+        Parse::RecDescent::_trace(q{>>Matched production: [ARRAY_LEVEL]<<},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{array_depth},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $_matched = 1;
+        last;
+    }
 
 
-        unless ( $_matched || defined($return) || defined($score) )
-	{
-		
+    unless ( $_matched || defined($score) )
+    {
+        
 
-		$_[1] = $text;	# NOT SURE THIS IS NEEDED
-		Parse::RecDescent::_trace(q{<<Didn't match rule>>},
-					 Parse::RecDescent::_tracefirst($_[1]),
-					 q{array_depth},
-					 $tracelevel)
-					if defined $::RD_TRACE;
-		return undef;
-	}
-	if (!defined($return) && defined($score))
-	{
-		Parse::RecDescent::_trace(q{>>Accepted scored production<<}, "",
-					  q{array_depth},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$return = $score_return;
-	}
-	splice @{$thisparser->{errors}}, $err_at;
-	$return = $item[$#item] unless defined $return;
-	if (defined $::RD_TRACE)
-	{
-		Parse::RecDescent::_trace(q{>>Matched rule<< (return value: [} .
-					  $return . q{])}, "",
-					  q{array_depth},
-					  $tracelevel);
-		Parse::RecDescent::_trace(q{(consumed: [} .
-					  Parse::RecDescent::_tracemax(substr($_[1],0,-length($text))) . q{])}, 
-					  Parse::RecDescent::_tracefirst($text),
-					  , q{array_depth},
-					  $tracelevel)
-	}
-	$_[1] = $text;
-	return $return;
+        $_[1] = $text;  # NOT SURE THIS IS NEEDED
+        Parse::RecDescent::_trace(q{<<Didn't match rule>>},
+                     Parse::RecDescent::_tracefirst($_[1]),
+                     q{array_depth},
+                     $tracelevel)
+                    if defined $::RD_TRACE;
+        return undef;
+    }
+    if (!defined($return) && defined($score))
+    {
+        Parse::RecDescent::_trace(q{>>Accepted scored production<<}, "",
+                      q{array_depth},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $return = $score_return;
+    }
+    splice @{$thisparser->{errors}}, $err_at;
+    $return = $item[$#item] unless defined $return;
+    if (defined $::RD_TRACE)
+    {
+        Parse::RecDescent::_trace(q{>>Matched rule<< (return value: [} .
+                      $return . q{])}, "",
+                      q{array_depth},
+                      $tracelevel);
+        Parse::RecDescent::_trace(q{(consumed: [} .
+                      Parse::RecDescent::_tracemax(substr($_[1],0,-length($text))) . q{])}, 
+                      Parse::RecDescent::_tracefirst($text),
+                      , q{array_depth},
+                      $tracelevel)
+    }
+    $_[1] = $text;
+    return $return;
 }
 
 # ARGS ARE: ($parser, $text; $repeating, $_noactions, \@args)
@@ -3670,340 +3730,347 @@ sub Parse::RecDescent::Java::Javap::Grammar::method
 	use vars q{$tracelevel};
 	local $tracelevel = ($tracelevel||0)+1;
 	$ERRORS = 0;
-	my $thisrule = $thisparser->{"rules"}{"method"};
-	
-	Parse::RecDescent::_trace(q{Trying rule: [method]},
-				  Parse::RecDescent::_tracefirst($_[1]),
-				  q{method},
-				  $tracelevel)
-					if defined $::RD_TRACE;
+    my $thisrule = $thisparser->{"rules"}{"method"};
+    
+    Parse::RecDescent::_trace(q{Trying rule: [method]},
+                  Parse::RecDescent::_tracefirst($_[1]),
+                  q{method},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
 
-	
-	my $err_at = @{$thisparser->{errors}};
+    
+    my $err_at = @{$thisparser->{errors}};
 
-	my $score;
-	my $score_return;
-	my $_tok;
-	my $return = undef;
-	my $_matched=0;
-	my $commit=0;
-	my @item = ();
-	my %item = ();
-	my $repeating =  defined($_[2]) && $_[2];
-	my $_noactions = defined($_[3]) && $_[3];
- 	my @arg =        defined $_[4] ? @{ &{$_[4]} } : ();
-	my %arg =        ($#arg & 01) ? @arg : (@arg, undef);
-	my $text;
-	my $lastsep="";
-	my $expectation = new Parse::RecDescent::Expectation($thisrule->expected());
-	$expectation->at($_[1]);
-	
-	my $thisline;
-	tie $thisline, q{Parse::RecDescent::LineCounter}, \$text, $thisparser;
+    my $score;
+    my $score_return;
+    my $_tok;
+    my $return = undef;
+    my $_matched=0;
+    my $commit=0;
+    my @item = ();
+    my %item = ();
+    my $repeating =  defined($_[2]) && $_[2];
+    my $_noactions = defined($_[3]) && $_[3];
+    my @arg =    defined $_[4] ? @{ &{$_[4]} } : ();
+    my %arg =    ($#arg & 01) ? @arg : (@arg, undef);
+    my $text;
+    my $lastsep="";
+    my $current_match;
+    my $expectation = new Parse::RecDescent::Expectation(q{ACCESS});
+    $expectation->at($_[1]);
+    
+    my $thisline;
+    tie $thisline, q{Parse::RecDescent::LineCounter}, \$text, $thisparser;
 
-	
+    
 
-	while (!$_matched && !$commit)
-	{
-		
-		Parse::RecDescent::_trace(q{Trying production: [ACCESS method_qualifier arg NAME '(' arg_list ')' throws_clause ';' verbose_method_details]},
-					  Parse::RecDescent::_tracefirst($_[1]),
-					  q{method},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		my $thisprod = $thisrule->{"prods"}[0];
-		$text = $_[1];
-		my $_savetext;
-		@item = (q{method});
-		%item = (__RULE__ => q{method});
-		my $repcount = 0;
-
-
-		Parse::RecDescent::_trace(q{Trying subrule: [ACCESS]},
-				  Parse::RecDescent::_tracefirst($text),
-				  q{method},
-				  $tracelevel)
-					if defined $::RD_TRACE;
-		if (1) { no strict qw{refs};
-		$expectation->is(q{})->at($text);
-		unless (defined ($_tok = Parse::RecDescent::Java::Javap::Grammar::ACCESS($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
-		{
-			
-			Parse::RecDescent::_trace(q{<<Didn't match subrule: [ACCESS]>>},
-						  Parse::RecDescent::_tracefirst($text),
-						  q{method},
-						  $tracelevel)
-							if defined $::RD_TRACE;
-			$expectation->failed();
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched subrule: [ACCESS]<< (return value: [}
-					. $_tok . q{]},
-					  
-					  Parse::RecDescent::_tracefirst($text),
-					  q{method},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$item{q{ACCESS}} = $_tok;
-		push @item, $_tok;
-		
-		}
-
-		Parse::RecDescent::_trace(q{Trying repeated subrule: [method_qualifier]},
-				  Parse::RecDescent::_tracefirst($text),
-				  q{method},
-				  $tracelevel)
-					if defined $::RD_TRACE;
-		$expectation->is(q{method_qualifier})->at($text);
-		
-		unless (defined ($_tok = $thisparser->_parserepeat($text, \&Parse::RecDescent::Java::Javap::Grammar::method_qualifier, 0, 100000000, $_noactions,$expectation,undef))) 
-		{
-			Parse::RecDescent::_trace(q{<<Didn't match repeated subrule: [method_qualifier]>>},
-						  Parse::RecDescent::_tracefirst($text),
-						  q{method},
-						  $tracelevel)
-							if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched repeated subrule: [method_qualifier]<< (}
-					. @$_tok . q{ times)},
-					  
-					  Parse::RecDescent::_tracefirst($text),
-					  q{method},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$item{q{method_qualifier(s?)}} = $_tok;
-		push @item, $_tok;
-		
+    while (!$_matched && !$commit)
+    {
+        
+        Parse::RecDescent::_trace(q{Trying production: [ACCESS method_qualifier arg NAME '(' arg_list ')' throws_clause ';' verbose_method_details]},
+                      Parse::RecDescent::_tracefirst($_[1]),
+                      q{method},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        my $thisprod = $thisrule->{"prods"}[0];
+        $text = $_[1];
+        my $_savetext;
+        @item = (q{method});
+        %item = (__RULE__ => q{method});
+        my $repcount = 0;
 
 
-		Parse::RecDescent::_trace(q{Trying subrule: [arg]},
-				  Parse::RecDescent::_tracefirst($text),
-				  q{method},
-				  $tracelevel)
-					if defined $::RD_TRACE;
-		if (1) { no strict qw{refs};
-		$expectation->is(q{arg})->at($text);
-		unless (defined ($_tok = Parse::RecDescent::Java::Javap::Grammar::arg($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
-		{
-			
-			Parse::RecDescent::_trace(q{<<Didn't match subrule: [arg]>>},
-						  Parse::RecDescent::_tracefirst($text),
-						  q{method},
-						  $tracelevel)
-							if defined $::RD_TRACE;
-			$expectation->failed();
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched subrule: [arg]<< (return value: [}
-					. $_tok . q{]},
-					  
-					  Parse::RecDescent::_tracefirst($text),
-					  q{method},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$item{q{arg}} = $_tok;
-		push @item, $_tok;
-		
-		}
+        Parse::RecDescent::_trace(q{Trying subrule: [ACCESS]},
+                  Parse::RecDescent::_tracefirst($text),
+                  q{method},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
+        if (1) { no strict qw{refs};
+        $expectation->is(q{})->at($text);
+        unless (defined ($_tok = Parse::RecDescent::Java::Javap::Grammar::ACCESS($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
+        {
+            
+            Parse::RecDescent::_trace(q{<<Didn't match subrule: [ACCESS]>>},
+                          Parse::RecDescent::_tracefirst($text),
+                          q{method},
+                          $tracelevel)
+                            if defined $::RD_TRACE;
+            $expectation->failed();
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched subrule: [ACCESS]<< (return value: [}
+                    . $_tok . q{]},
+                      
+                      Parse::RecDescent::_tracefirst($text),
+                      q{method},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $item{q{ACCESS}} = $_tok;
+        push @item, $_tok;
+        
+        }
 
-		Parse::RecDescent::_trace(q{Trying subrule: [NAME]},
-				  Parse::RecDescent::_tracefirst($text),
-				  q{method},
-				  $tracelevel)
-					if defined $::RD_TRACE;
-		if (1) { no strict qw{refs};
-		$expectation->is(q{NAME})->at($text);
-		unless (defined ($_tok = Parse::RecDescent::Java::Javap::Grammar::NAME($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
-		{
-			
-			Parse::RecDescent::_trace(q{<<Didn't match subrule: [NAME]>>},
-						  Parse::RecDescent::_tracefirst($text),
-						  q{method},
-						  $tracelevel)
-							if defined $::RD_TRACE;
-			$expectation->failed();
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched subrule: [NAME]<< (return value: [}
-					. $_tok . q{]},
-					  
-					  Parse::RecDescent::_tracefirst($text),
-					  q{method},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$item{q{NAME}} = $_tok;
-		push @item, $_tok;
-		
-		}
-
-		Parse::RecDescent::_trace(q{Trying terminal: ['(']},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{method},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$lastsep = "";
-		$expectation->is(q{'('})->at($text);
-		
-
-		unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ s/\A\(//)
-		{
-			
-			$expectation->failed();
-			Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
-						. $& . q{])},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-		push @item, $item{__STRING1__}=$&;
-		
-
-		Parse::RecDescent::_trace(q{Trying repeated subrule: [arg_list]},
-				  Parse::RecDescent::_tracefirst($text),
-				  q{method},
-				  $tracelevel)
-					if defined $::RD_TRACE;
-		$expectation->is(q{arg_list})->at($text);
-		
-		unless (defined ($_tok = $thisparser->_parserepeat($text, \&Parse::RecDescent::Java::Javap::Grammar::arg_list, 0, 1, $_noactions,$expectation,undef))) 
-		{
-			Parse::RecDescent::_trace(q{<<Didn't match repeated subrule: [arg_list]>>},
-						  Parse::RecDescent::_tracefirst($text),
-						  q{method},
-						  $tracelevel)
-							if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched repeated subrule: [arg_list]<< (}
-					. @$_tok . q{ times)},
-					  
-					  Parse::RecDescent::_tracefirst($text),
-					  q{method},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$item{q{arg_list(?)}} = $_tok;
-		push @item, $_tok;
-		
+        Parse::RecDescent::_trace(q{Trying repeated subrule: [method_qualifier]},
+                  Parse::RecDescent::_tracefirst($text),
+                  q{method},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
+        $expectation->is(q{method_qualifier})->at($text);
+        
+        unless (defined ($_tok = $thisparser->_parserepeat($text, \&Parse::RecDescent::Java::Javap::Grammar::method_qualifier, 0, 100000000, $_noactions,$expectation,sub { \@arg }))) 
+        {
+            Parse::RecDescent::_trace(q{<<Didn't match repeated subrule: [method_qualifier]>>},
+                          Parse::RecDescent::_tracefirst($text),
+                          q{method},
+                          $tracelevel)
+                            if defined $::RD_TRACE;
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched repeated subrule: [method_qualifier]<< (}
+                    . @$_tok . q{ times)},
+                      
+                      Parse::RecDescent::_tracefirst($text),
+                      q{method},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $item{q{method_qualifier(s?)}} = $_tok;
+        push @item, $_tok;
+        
 
 
-		Parse::RecDescent::_trace(q{Trying terminal: [')']},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{method},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$lastsep = "";
-		$expectation->is(q{')'})->at($text);
-		
+        Parse::RecDescent::_trace(q{Trying subrule: [arg]},
+                  Parse::RecDescent::_tracefirst($text),
+                  q{method},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
+        if (1) { no strict qw{refs};
+        $expectation->is(q{arg})->at($text);
+        unless (defined ($_tok = Parse::RecDescent::Java::Javap::Grammar::arg($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
+        {
+            
+            Parse::RecDescent::_trace(q{<<Didn't match subrule: [arg]>>},
+                          Parse::RecDescent::_tracefirst($text),
+                          q{method},
+                          $tracelevel)
+                            if defined $::RD_TRACE;
+            $expectation->failed();
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched subrule: [arg]<< (return value: [}
+                    . $_tok . q{]},
+                      
+                      Parse::RecDescent::_tracefirst($text),
+                      q{method},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $item{q{arg}} = $_tok;
+        push @item, $_tok;
+        
+        }
 
-		unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ s/\A\)//)
-		{
-			
-			$expectation->failed();
-			Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
-						. $& . q{])},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-		push @item, $item{__STRING2__}=$&;
-		
+        Parse::RecDescent::_trace(q{Trying subrule: [NAME]},
+                  Parse::RecDescent::_tracefirst($text),
+                  q{method},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
+        if (1) { no strict qw{refs};
+        $expectation->is(q{NAME})->at($text);
+        unless (defined ($_tok = Parse::RecDescent::Java::Javap::Grammar::NAME($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
+        {
+            
+            Parse::RecDescent::_trace(q{<<Didn't match subrule: [NAME]>>},
+                          Parse::RecDescent::_tracefirst($text),
+                          q{method},
+                          $tracelevel)
+                            if defined $::RD_TRACE;
+            $expectation->failed();
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched subrule: [NAME]<< (return value: [}
+                    . $_tok . q{]},
+                      
+                      Parse::RecDescent::_tracefirst($text),
+                      q{method},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $item{q{NAME}} = $_tok;
+        push @item, $_tok;
+        
+        }
 
-		Parse::RecDescent::_trace(q{Trying repeated subrule: [throws_clause]},
-				  Parse::RecDescent::_tracefirst($text),
-				  q{method},
-				  $tracelevel)
-					if defined $::RD_TRACE;
-		$expectation->is(q{throws_clause})->at($text);
-		
-		unless (defined ($_tok = $thisparser->_parserepeat($text, \&Parse::RecDescent::Java::Javap::Grammar::throws_clause, 0, 1, $_noactions,$expectation,undef))) 
-		{
-			Parse::RecDescent::_trace(q{<<Didn't match repeated subrule: [throws_clause]>>},
-						  Parse::RecDescent::_tracefirst($text),
-						  q{method},
-						  $tracelevel)
-							if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched repeated subrule: [throws_clause]<< (}
-					. @$_tok . q{ times)},
-					  
-					  Parse::RecDescent::_tracefirst($text),
-					  q{method},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$item{q{throws_clause(?)}} = $_tok;
-		push @item, $_tok;
-		
+        Parse::RecDescent::_trace(q{Trying terminal: ['(']},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{method},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $lastsep = "";
+        $expectation->is(q{'('})->at($text);
+        
 
+        unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ m/\A\(/)
+        {
+            
+            $expectation->failed();
+            Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+            last;
+        }
+		$current_match = substr($text, $-[0], $+[0] - $-[0]);
+        substr($text,0,length($current_match),q{});
+        Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
+                        . $current_match . q{])},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+        push @item, $item{__STRING1__}=$current_match;
+        
 
-		Parse::RecDescent::_trace(q{Trying terminal: [';']},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{method},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$lastsep = "";
-		$expectation->is(q{';'})->at($text);
-		
-
-		unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ s/\A\;//)
-		{
-			
-			$expectation->failed();
-			Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
-						. $& . q{])},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-		push @item, $item{__STRING3__}=$&;
-		
-
-		Parse::RecDescent::_trace(q{Trying repeated subrule: [verbose_method_details]},
-				  Parse::RecDescent::_tracefirst($text),
-				  q{method},
-				  $tracelevel)
-					if defined $::RD_TRACE;
-		$expectation->is(q{verbose_method_details})->at($text);
-		
-		unless (defined ($_tok = $thisparser->_parserepeat($text, \&Parse::RecDescent::Java::Javap::Grammar::verbose_method_details, 0, 1, $_noactions,$expectation,undef))) 
-		{
-			Parse::RecDescent::_trace(q{<<Didn't match repeated subrule: [verbose_method_details]>>},
-						  Parse::RecDescent::_tracefirst($text),
-						  q{method},
-						  $tracelevel)
-							if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched repeated subrule: [verbose_method_details]<< (}
-					. @$_tok . q{ times)},
-					  
-					  Parse::RecDescent::_tracefirst($text),
-					  q{method},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$item{q{verbose_method_details(?)}} = $_tok;
-		push @item, $_tok;
-		
+        Parse::RecDescent::_trace(q{Trying repeated subrule: [arg_list]},
+                  Parse::RecDescent::_tracefirst($text),
+                  q{method},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
+        $expectation->is(q{arg_list})->at($text);
+        
+        unless (defined ($_tok = $thisparser->_parserepeat($text, \&Parse::RecDescent::Java::Javap::Grammar::arg_list, 0, 1, $_noactions,$expectation,sub { \@arg }))) 
+        {
+            Parse::RecDescent::_trace(q{<<Didn't match repeated subrule: [arg_list]>>},
+                          Parse::RecDescent::_tracefirst($text),
+                          q{method},
+                          $tracelevel)
+                            if defined $::RD_TRACE;
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched repeated subrule: [arg_list]<< (}
+                    . @$_tok . q{ times)},
+                      
+                      Parse::RecDescent::_tracefirst($text),
+                      q{method},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $item{q{arg_list(?)}} = $_tok;
+        push @item, $_tok;
+        
 
 
-		Parse::RecDescent::_trace(q{Trying action},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{method},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		
+        Parse::RecDescent::_trace(q{Trying terminal: [')']},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{method},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $lastsep = "";
+        $expectation->is(q{')'})->at($text);
+        
 
-		$_tok = ($_noactions) ? 0 : do {
+        unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ m/\A\)/)
+        {
+            
+            $expectation->failed();
+            Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+            last;
+        }
+		$current_match = substr($text, $-[0], $+[0] - $-[0]);
+        substr($text,0,length($current_match),q{});
+        Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
+                        . $current_match . q{])},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+        push @item, $item{__STRING2__}=$current_match;
+        
+
+        Parse::RecDescent::_trace(q{Trying repeated subrule: [throws_clause]},
+                  Parse::RecDescent::_tracefirst($text),
+                  q{method},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
+        $expectation->is(q{throws_clause})->at($text);
+        
+        unless (defined ($_tok = $thisparser->_parserepeat($text, \&Parse::RecDescent::Java::Javap::Grammar::throws_clause, 0, 1, $_noactions,$expectation,sub { \@arg }))) 
+        {
+            Parse::RecDescent::_trace(q{<<Didn't match repeated subrule: [throws_clause]>>},
+                          Parse::RecDescent::_tracefirst($text),
+                          q{method},
+                          $tracelevel)
+                            if defined $::RD_TRACE;
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched repeated subrule: [throws_clause]<< (}
+                    . @$_tok . q{ times)},
+                      
+                      Parse::RecDescent::_tracefirst($text),
+                      q{method},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $item{q{throws_clause(?)}} = $_tok;
+        push @item, $_tok;
+        
+
+
+        Parse::RecDescent::_trace(q{Trying terminal: [';']},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{method},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $lastsep = "";
+        $expectation->is(q{';'})->at($text);
+        
+
+        unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ m/\A\;/)
+        {
+            
+            $expectation->failed();
+            Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+            last;
+        }
+		$current_match = substr($text, $-[0], $+[0] - $-[0]);
+        substr($text,0,length($current_match),q{});
+        Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
+                        . $current_match . q{])},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+        push @item, $item{__STRING3__}=$current_match;
+        
+
+        Parse::RecDescent::_trace(q{Trying repeated subrule: [verbose_method_details]},
+                  Parse::RecDescent::_tracefirst($text),
+                  q{method},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
+        $expectation->is(q{verbose_method_details})->at($text);
+        
+        unless (defined ($_tok = $thisparser->_parserepeat($text, \&Parse::RecDescent::Java::Javap::Grammar::verbose_method_details, 0, 1, $_noactions,$expectation,sub { \@arg }))) 
+        {
+            Parse::RecDescent::_trace(q{<<Didn't match repeated subrule: [verbose_method_details]>>},
+                          Parse::RecDescent::_tracefirst($text),
+                          q{method},
+                          $tracelevel)
+                            if defined $::RD_TRACE;
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched repeated subrule: [verbose_method_details]<< (}
+                    . @$_tok . q{ times)},
+                      
+                      Parse::RecDescent::_tracefirst($text),
+                      q{method},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $item{q{verbose_method_details(?)}} = $_tok;
+        push @item, $_tok;
+        
+
+
+        Parse::RecDescent::_trace(q{Trying action},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{method},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        
+
+        $_tok = ($_noactions) ? 0 : do {
              $methods{ $item[4] }++;
              {
                  body_element => 'method',
@@ -4015,299 +4082,307 @@ sub Parse::RecDescent::Java::Javap::Grammar::method
                  throws       => $item{ 'throws_clause(?)' }[0] || [],
              }
          };
-		unless (defined $_tok)
-		{
-			Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
-					if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
-					  . $_tok . q{])},
-					  Parse::RecDescent::_tracefirst($text))
-						if defined $::RD_TRACE;
-		push @item, $_tok;
-		$item{__ACTION1__}=$_tok;
-		
+        unless (defined $_tok)
+        {
+            Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
+                    if defined $::RD_TRACE;
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
+                      . $_tok . q{])},
+                      Parse::RecDescent::_tracefirst($text))
+                        if defined $::RD_TRACE;
+        push @item, $_tok;
+        $item{__ACTION1__}=$_tok;
+        
 
 
-		Parse::RecDescent::_trace(q{>>Matched production: [ACCESS method_qualifier arg NAME '(' arg_list ')' throws_clause ';' verbose_method_details]<<},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{method},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$_matched = 1;
-		last;
-	}
+        Parse::RecDescent::_trace(q{>>Matched production: [ACCESS method_qualifier arg NAME '(' arg_list ')' throws_clause ';' verbose_method_details]<<},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{method},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $_matched = 1;
+        last;
+    }
 
 
-	while (!$_matched && !$commit)
-	{
-		
-		Parse::RecDescent::_trace(q{Trying production: [ACCESS /(native)?/ qualified_name '(' arg_list ')' throws_clause ';' verbose_method_details]},
-					  Parse::RecDescent::_tracefirst($_[1]),
-					  q{method},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		my $thisprod = $thisrule->{"prods"}[1];
-		$text = $_[1];
-		my $_savetext;
-		@item = (q{method});
-		%item = (__RULE__ => q{method});
-		my $repcount = 0;
+    while (!$_matched && !$commit)
+    {
+        
+        Parse::RecDescent::_trace(q{Trying production: [ACCESS /(native)?/ qualified_name '(' arg_list ')' throws_clause ';' verbose_method_details]},
+                      Parse::RecDescent::_tracefirst($_[1]),
+                      q{method},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        my $thisprod = $thisrule->{"prods"}[1];
+        $text = $_[1];
+        my $_savetext;
+        @item = (q{method});
+        %item = (__RULE__ => q{method});
+        my $repcount = 0;
 
 
-		Parse::RecDescent::_trace(q{Trying subrule: [ACCESS]},
-				  Parse::RecDescent::_tracefirst($text),
-				  q{method},
-				  $tracelevel)
-					if defined $::RD_TRACE;
-		if (1) { no strict qw{refs};
-		$expectation->is(q{})->at($text);
-		unless (defined ($_tok = Parse::RecDescent::Java::Javap::Grammar::ACCESS($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
-		{
-			
-			Parse::RecDescent::_trace(q{<<Didn't match subrule: [ACCESS]>>},
-						  Parse::RecDescent::_tracefirst($text),
-						  q{method},
-						  $tracelevel)
-							if defined $::RD_TRACE;
-			$expectation->failed();
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched subrule: [ACCESS]<< (return value: [}
-					. $_tok . q{]},
-					  
-					  Parse::RecDescent::_tracefirst($text),
-					  q{method},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$item{q{ACCESS}} = $_tok;
-		push @item, $_tok;
-		
-		}
+        Parse::RecDescent::_trace(q{Trying subrule: [ACCESS]},
+                  Parse::RecDescent::_tracefirst($text),
+                  q{method},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
+        if (1) { no strict qw{refs};
+        $expectation->is(q{})->at($text);
+        unless (defined ($_tok = Parse::RecDescent::Java::Javap::Grammar::ACCESS($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
+        {
+            
+            Parse::RecDescent::_trace(q{<<Didn't match subrule: [ACCESS]>>},
+                          Parse::RecDescent::_tracefirst($text),
+                          q{method},
+                          $tracelevel)
+                            if defined $::RD_TRACE;
+            $expectation->failed();
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched subrule: [ACCESS]<< (return value: [}
+                    . $_tok . q{]},
+                      
+                      Parse::RecDescent::_tracefirst($text),
+                      q{method},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $item{q{ACCESS}} = $_tok;
+        push @item, $_tok;
+        
+        }
 
-		Parse::RecDescent::_trace(q{Trying terminal: [/(native)?/]}, Parse::RecDescent::_tracefirst($text),
-					  q{method},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$lastsep = "";
-		$expectation->is(q{/(native)?/})->at($text);
-		
+        Parse::RecDescent::_trace(q{Trying terminal: [/(native)?/]}, Parse::RecDescent::_tracefirst($text),
+                      q{method},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $lastsep = "";
+        $expectation->is(q{/(native)?/})->at($text);
+        
 
-		unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ s/\A(?:(native)?)//)
-		{
-			
-			$expectation->failed();
-			Parse::RecDescent::_trace(q{<<Didn't match terminal>>},
-						  Parse::RecDescent::_tracefirst($text))
-					if defined $::RD_TRACE;
+        unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ m/\A(?:(native)?)/)
+        {
+            
+            $expectation->failed();
+            Parse::RecDescent::_trace(q{<<Didn't match terminal>>},
+                          Parse::RecDescent::_tracefirst($text))
+                    if defined $::RD_TRACE;
 
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
-						. $& . q{])},
-						  Parse::RecDescent::_tracefirst($text))
-					if defined $::RD_TRACE;
-		push @item, $item{__PATTERN1__}=$&;
-		
+            last;
+        }
+		$current_match = substr($text, $-[0], $+[0] - $-[0]);
+        substr($text,0,length($current_match),q{});
+        Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
+                        . $current_match . q{])},
+                          Parse::RecDescent::_tracefirst($text))
+                    if defined $::RD_TRACE;
+        push @item, $item{__PATTERN1__}=$current_match;
+        
 
-		Parse::RecDescent::_trace(q{Trying subrule: [qualified_name]},
-				  Parse::RecDescent::_tracefirst($text),
-				  q{method},
-				  $tracelevel)
-					if defined $::RD_TRACE;
-		if (1) { no strict qw{refs};
-		$expectation->is(q{qualified_name})->at($text);
-		unless (defined ($_tok = Parse::RecDescent::Java::Javap::Grammar::qualified_name($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
-		{
-			
-			Parse::RecDescent::_trace(q{<<Didn't match subrule: [qualified_name]>>},
-						  Parse::RecDescent::_tracefirst($text),
-						  q{method},
-						  $tracelevel)
-							if defined $::RD_TRACE;
-			$expectation->failed();
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched subrule: [qualified_name]<< (return value: [}
-					. $_tok . q{]},
-					  
-					  Parse::RecDescent::_tracefirst($text),
-					  q{method},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$item{q{qualified_name}} = $_tok;
-		push @item, $_tok;
-		
-		}
+        Parse::RecDescent::_trace(q{Trying subrule: [qualified_name]},
+                  Parse::RecDescent::_tracefirst($text),
+                  q{method},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
+        if (1) { no strict qw{refs};
+        $expectation->is(q{qualified_name})->at($text);
+        unless (defined ($_tok = Parse::RecDescent::Java::Javap::Grammar::qualified_name($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
+        {
+            
+            Parse::RecDescent::_trace(q{<<Didn't match subrule: [qualified_name]>>},
+                          Parse::RecDescent::_tracefirst($text),
+                          q{method},
+                          $tracelevel)
+                            if defined $::RD_TRACE;
+            $expectation->failed();
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched subrule: [qualified_name]<< (return value: [}
+                    . $_tok . q{]},
+                      
+                      Parse::RecDescent::_tracefirst($text),
+                      q{method},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $item{q{qualified_name}} = $_tok;
+        push @item, $_tok;
+        
+        }
 
-		Parse::RecDescent::_trace(q{Trying terminal: ['(']},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{method},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$lastsep = "";
-		$expectation->is(q{'('})->at($text);
-		
+        Parse::RecDescent::_trace(q{Trying terminal: ['(']},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{method},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $lastsep = "";
+        $expectation->is(q{'('})->at($text);
+        
 
-		unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ s/\A\(//)
-		{
-			
-			$expectation->failed();
-			Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
-						. $& . q{])},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-		push @item, $item{__STRING1__}=$&;
-		
+        unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ m/\A\(/)
+        {
+            
+            $expectation->failed();
+            Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+            last;
+        }
+		$current_match = substr($text, $-[0], $+[0] - $-[0]);
+        substr($text,0,length($current_match),q{});
+        Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
+                        . $current_match . q{])},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+        push @item, $item{__STRING1__}=$current_match;
+        
 
-		Parse::RecDescent::_trace(q{Trying repeated subrule: [arg_list]},
-				  Parse::RecDescent::_tracefirst($text),
-				  q{method},
-				  $tracelevel)
-					if defined $::RD_TRACE;
-		$expectation->is(q{arg_list})->at($text);
-		
-		unless (defined ($_tok = $thisparser->_parserepeat($text, \&Parse::RecDescent::Java::Javap::Grammar::arg_list, 0, 1, $_noactions,$expectation,undef))) 
-		{
-			Parse::RecDescent::_trace(q{<<Didn't match repeated subrule: [arg_list]>>},
-						  Parse::RecDescent::_tracefirst($text),
-						  q{method},
-						  $tracelevel)
-							if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched repeated subrule: [arg_list]<< (}
-					. @$_tok . q{ times)},
-					  
-					  Parse::RecDescent::_tracefirst($text),
-					  q{method},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$item{q{arg_list(?)}} = $_tok;
-		push @item, $_tok;
-		
-
-
-		Parse::RecDescent::_trace(q{Trying terminal: [')']},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{method},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$lastsep = "";
-		$expectation->is(q{')'})->at($text);
-		
-
-		unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ s/\A\)//)
-		{
-			
-			$expectation->failed();
-			Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
-						. $& . q{])},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-		push @item, $item{__STRING2__}=$&;
-		
-
-		Parse::RecDescent::_trace(q{Trying repeated subrule: [throws_clause]},
-				  Parse::RecDescent::_tracefirst($text),
-				  q{method},
-				  $tracelevel)
-					if defined $::RD_TRACE;
-		$expectation->is(q{throws_clause})->at($text);
-		
-		unless (defined ($_tok = $thisparser->_parserepeat($text, \&Parse::RecDescent::Java::Javap::Grammar::throws_clause, 0, 1, $_noactions,$expectation,undef))) 
-		{
-			Parse::RecDescent::_trace(q{<<Didn't match repeated subrule: [throws_clause]>>},
-						  Parse::RecDescent::_tracefirst($text),
-						  q{method},
-						  $tracelevel)
-							if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched repeated subrule: [throws_clause]<< (}
-					. @$_tok . q{ times)},
-					  
-					  Parse::RecDescent::_tracefirst($text),
-					  q{method},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$item{q{throws_clause(?)}} = $_tok;
-		push @item, $_tok;
-		
+        Parse::RecDescent::_trace(q{Trying repeated subrule: [arg_list]},
+                  Parse::RecDescent::_tracefirst($text),
+                  q{method},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
+        $expectation->is(q{arg_list})->at($text);
+        
+        unless (defined ($_tok = $thisparser->_parserepeat($text, \&Parse::RecDescent::Java::Javap::Grammar::arg_list, 0, 1, $_noactions,$expectation,sub { \@arg }))) 
+        {
+            Parse::RecDescent::_trace(q{<<Didn't match repeated subrule: [arg_list]>>},
+                          Parse::RecDescent::_tracefirst($text),
+                          q{method},
+                          $tracelevel)
+                            if defined $::RD_TRACE;
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched repeated subrule: [arg_list]<< (}
+                    . @$_tok . q{ times)},
+                      
+                      Parse::RecDescent::_tracefirst($text),
+                      q{method},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $item{q{arg_list(?)}} = $_tok;
+        push @item, $_tok;
+        
 
 
-		Parse::RecDescent::_trace(q{Trying terminal: [';']},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{method},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$lastsep = "";
-		$expectation->is(q{';'})->at($text);
-		
+        Parse::RecDescent::_trace(q{Trying terminal: [')']},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{method},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $lastsep = "";
+        $expectation->is(q{')'})->at($text);
+        
 
-		unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ s/\A\;//)
-		{
-			
-			$expectation->failed();
-			Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
-						. $& . q{])},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-		push @item, $item{__STRING3__}=$&;
-		
+        unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ m/\A\)/)
+        {
+            
+            $expectation->failed();
+            Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+            last;
+        }
+		$current_match = substr($text, $-[0], $+[0] - $-[0]);
+        substr($text,0,length($current_match),q{});
+        Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
+                        . $current_match . q{])},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+        push @item, $item{__STRING2__}=$current_match;
+        
 
-		Parse::RecDescent::_trace(q{Trying repeated subrule: [verbose_method_details]},
-				  Parse::RecDescent::_tracefirst($text),
-				  q{method},
-				  $tracelevel)
-					if defined $::RD_TRACE;
-		$expectation->is(q{verbose_method_details})->at($text);
-		
-		unless (defined ($_tok = $thisparser->_parserepeat($text, \&Parse::RecDescent::Java::Javap::Grammar::verbose_method_details, 0, 1, $_noactions,$expectation,undef))) 
-		{
-			Parse::RecDescent::_trace(q{<<Didn't match repeated subrule: [verbose_method_details]>>},
-						  Parse::RecDescent::_tracefirst($text),
-						  q{method},
-						  $tracelevel)
-							if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched repeated subrule: [verbose_method_details]<< (}
-					. @$_tok . q{ times)},
-					  
-					  Parse::RecDescent::_tracefirst($text),
-					  q{method},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$item{q{verbose_method_details(?)}} = $_tok;
-		push @item, $_tok;
-		
+        Parse::RecDescent::_trace(q{Trying repeated subrule: [throws_clause]},
+                  Parse::RecDescent::_tracefirst($text),
+                  q{method},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
+        $expectation->is(q{throws_clause})->at($text);
+        
+        unless (defined ($_tok = $thisparser->_parserepeat($text, \&Parse::RecDescent::Java::Javap::Grammar::throws_clause, 0, 1, $_noactions,$expectation,sub { \@arg }))) 
+        {
+            Parse::RecDescent::_trace(q{<<Didn't match repeated subrule: [throws_clause]>>},
+                          Parse::RecDescent::_tracefirst($text),
+                          q{method},
+                          $tracelevel)
+                            if defined $::RD_TRACE;
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched repeated subrule: [throws_clause]<< (}
+                    . @$_tok . q{ times)},
+                      
+                      Parse::RecDescent::_tracefirst($text),
+                      q{method},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $item{q{throws_clause(?)}} = $_tok;
+        push @item, $_tok;
+        
 
 
-		Parse::RecDescent::_trace(q{Trying action},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{method},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		
+        Parse::RecDescent::_trace(q{Trying terminal: [';']},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{method},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $lastsep = "";
+        $expectation->is(q{';'})->at($text);
+        
 
-		$_tok = ($_noactions) ? 0 : do {
+        unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ m/\A\;/)
+        {
+            
+            $expectation->failed();
+            Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+            last;
+        }
+		$current_match = substr($text, $-[0], $+[0] - $-[0]);
+        substr($text,0,length($current_match),q{});
+        Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
+                        . $current_match . q{])},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+        push @item, $item{__STRING3__}=$current_match;
+        
+
+        Parse::RecDescent::_trace(q{Trying repeated subrule: [verbose_method_details]},
+                  Parse::RecDescent::_tracefirst($text),
+                  q{method},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
+        $expectation->is(q{verbose_method_details})->at($text);
+        
+        unless (defined ($_tok = $thisparser->_parserepeat($text, \&Parse::RecDescent::Java::Javap::Grammar::verbose_method_details, 0, 1, $_noactions,$expectation,sub { \@arg }))) 
+        {
+            Parse::RecDescent::_trace(q{<<Didn't match repeated subrule: [verbose_method_details]>>},
+                          Parse::RecDescent::_tracefirst($text),
+                          q{method},
+                          $tracelevel)
+                            if defined $::RD_TRACE;
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched repeated subrule: [verbose_method_details]<< (}
+                    . @$_tok . q{ times)},
+                      
+                      Parse::RecDescent::_tracefirst($text),
+                      q{method},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $item{q{verbose_method_details(?)}} = $_tok;
+        push @item, $_tok;
+        
+
+
+        Parse::RecDescent::_trace(q{Trying action},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{method},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        
+
+        $_tok = ($_noactions) ? 0 : do {
              $constructors++;
              $methods{ 'new' }++;
              {
@@ -4325,67 +4400,67 @@ sub Parse::RecDescent::Java::Javap::Grammar::method
                  },
              }
          };
-		unless (defined $_tok)
-		{
-			Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
-					if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
-					  . $_tok . q{])},
-					  Parse::RecDescent::_tracefirst($text))
-						if defined $::RD_TRACE;
-		push @item, $_tok;
-		$item{__ACTION1__}=$_tok;
-		
+        unless (defined $_tok)
+        {
+            Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
+                    if defined $::RD_TRACE;
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
+                      . $_tok . q{])},
+                      Parse::RecDescent::_tracefirst($text))
+                        if defined $::RD_TRACE;
+        push @item, $_tok;
+        $item{__ACTION1__}=$_tok;
+        
 
 
-		Parse::RecDescent::_trace(q{>>Matched production: [ACCESS /(native)?/ qualified_name '(' arg_list ')' throws_clause ';' verbose_method_details]<<},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{method},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$_matched = 1;
-		last;
-	}
+        Parse::RecDescent::_trace(q{>>Matched production: [ACCESS /(native)?/ qualified_name '(' arg_list ')' throws_clause ';' verbose_method_details]<<},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{method},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $_matched = 1;
+        last;
+    }
 
 
-        unless ( $_matched || defined($return) || defined($score) )
-	{
-		
+    unless ( $_matched || defined($score) )
+    {
+        
 
-		$_[1] = $text;	# NOT SURE THIS IS NEEDED
-		Parse::RecDescent::_trace(q{<<Didn't match rule>>},
-					 Parse::RecDescent::_tracefirst($_[1]),
-					 q{method},
-					 $tracelevel)
-					if defined $::RD_TRACE;
-		return undef;
-	}
-	if (!defined($return) && defined($score))
-	{
-		Parse::RecDescent::_trace(q{>>Accepted scored production<<}, "",
-					  q{method},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$return = $score_return;
-	}
-	splice @{$thisparser->{errors}}, $err_at;
-	$return = $item[$#item] unless defined $return;
-	if (defined $::RD_TRACE)
-	{
-		Parse::RecDescent::_trace(q{>>Matched rule<< (return value: [} .
-					  $return . q{])}, "",
-					  q{method},
-					  $tracelevel);
-		Parse::RecDescent::_trace(q{(consumed: [} .
-					  Parse::RecDescent::_tracemax(substr($_[1],0,-length($text))) . q{])}, 
-					  Parse::RecDescent::_tracefirst($text),
-					  , q{method},
-					  $tracelevel)
-	}
-	$_[1] = $text;
-	return $return;
+        $_[1] = $text;  # NOT SURE THIS IS NEEDED
+        Parse::RecDescent::_trace(q{<<Didn't match rule>>},
+                     Parse::RecDescent::_tracefirst($_[1]),
+                     q{method},
+                     $tracelevel)
+                    if defined $::RD_TRACE;
+        return undef;
+    }
+    if (!defined($return) && defined($score))
+    {
+        Parse::RecDescent::_trace(q{>>Accepted scored production<<}, "",
+                      q{method},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $return = $score_return;
+    }
+    splice @{$thisparser->{errors}}, $err_at;
+    $return = $item[$#item] unless defined $return;
+    if (defined $::RD_TRACE)
+    {
+        Parse::RecDescent::_trace(q{>>Matched rule<< (return value: [} .
+                      $return . q{])}, "",
+                      q{method},
+                      $tracelevel);
+        Parse::RecDescent::_trace(q{(consumed: [} .
+                      Parse::RecDescent::_tracemax(substr($_[1],0,-length($text))) . q{])}, 
+                      Parse::RecDescent::_tracefirst($text),
+                      , q{method},
+                      $tracelevel)
+    }
+    $_[1] = $text;
+    return $return;
 }
 
 # ARGS ARE: ($parser, $text; $repeating, $_noactions, \@args)
@@ -4395,201 +4470,206 @@ sub Parse::RecDescent::Java::Javap::Grammar::comp_unit
 	use vars q{$tracelevel};
 	local $tracelevel = ($tracelevel||0)+1;
 	$ERRORS = 0;
-	my $thisrule = $thisparser->{"rules"}{"comp_unit"};
-	
-	Parse::RecDescent::_trace(q{Trying rule: [comp_unit]},
-				  Parse::RecDescent::_tracefirst($_[1]),
-				  q{comp_unit},
-				  $tracelevel)
-					if defined $::RD_TRACE;
+    my $thisrule = $thisparser->{"rules"}{"comp_unit"};
+    
+    Parse::RecDescent::_trace(q{Trying rule: [comp_unit]},
+                  Parse::RecDescent::_tracefirst($_[1]),
+                  q{comp_unit},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
 
-	
-	my $err_at = @{$thisparser->{errors}};
+    
+    my $err_at = @{$thisparser->{errors}};
 
-	my $score;
-	my $score_return;
-	my $_tok;
-	my $return = undef;
-	my $_matched=0;
-	my $commit=0;
-	my @item = ();
-	my %item = ();
-	my $repeating =  defined($_[2]) && $_[2];
-	my $_noactions = defined($_[3]) && $_[3];
- 	my @arg =        defined $_[4] ? @{ &{$_[4]} } : ();
-	my %arg =        ($#arg & 01) ? @arg : (@arg, undef);
-	my $text;
-	my $lastsep="";
-	my $expectation = new Parse::RecDescent::Expectation($thisrule->expected());
-	$expectation->at($_[1]);
-	
-	my $thisline;
-	tie $thisline, q{Parse::RecDescent::LineCounter}, \$text, $thisparser;
+    my $score;
+    my $score_return;
+    my $_tok;
+    my $return = undef;
+    my $_matched=0;
+    my $commit=0;
+    my @item = ();
+    my %item = ();
+    my $repeating =  defined($_[2]) && $_[2];
+    my $_noactions = defined($_[3]) && $_[3];
+    my @arg =    defined $_[4] ? @{ &{$_[4]} } : ();
+    my %arg =    ($#arg & 01) ? @arg : (@arg, undef);
+    my $text;
+    my $lastsep="";
+    my $current_match;
+    my $expectation = new Parse::RecDescent::Expectation(q{comp_stmt});
+    $expectation->at($_[1]);
+    
+    my $thisline;
+    tie $thisline, q{Parse::RecDescent::LineCounter}, \$text, $thisparser;
 
-	
+    
 
-	while (!$_matched && !$commit)
-	{
-		
-		Parse::RecDescent::_trace(q{Trying production: [comp_stmt comp_unit_decl '\{' body '\}']},
-					  Parse::RecDescent::_tracefirst($_[1]),
-					  q{comp_unit},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		my $thisprod = $thisrule->{"prods"}[0];
-		$text = $_[1];
-		my $_savetext;
-		@item = (q{comp_unit});
-		%item = (__RULE__ => q{comp_unit});
-		my $repcount = 0;
-
-
-		Parse::RecDescent::_trace(q{Trying repeated subrule: [comp_stmt]},
-				  Parse::RecDescent::_tracefirst($text),
-				  q{comp_unit},
-				  $tracelevel)
-					if defined $::RD_TRACE;
-		$expectation->is(q{})->at($text);
-		
-		unless (defined ($_tok = $thisparser->_parserepeat($text, \&Parse::RecDescent::Java::Javap::Grammar::comp_stmt, 0, 1, $_noactions,$expectation,undef))) 
-		{
-			Parse::RecDescent::_trace(q{<<Didn't match repeated subrule: [comp_stmt]>>},
-						  Parse::RecDescent::_tracefirst($text),
-						  q{comp_unit},
-						  $tracelevel)
-							if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched repeated subrule: [comp_stmt]<< (}
-					. @$_tok . q{ times)},
-					  
-					  Parse::RecDescent::_tracefirst($text),
-					  q{comp_unit},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$item{q{comp_stmt(?)}} = $_tok;
-		push @item, $_tok;
-		
+    while (!$_matched && !$commit)
+    {
+        
+        Parse::RecDescent::_trace(q{Trying production: [comp_stmt comp_unit_decl '\{' body '\}']},
+                      Parse::RecDescent::_tracefirst($_[1]),
+                      q{comp_unit},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        my $thisprod = $thisrule->{"prods"}[0];
+        $text = $_[1];
+        my $_savetext;
+        @item = (q{comp_unit});
+        %item = (__RULE__ => q{comp_unit});
+        my $repcount = 0;
 
 
-		Parse::RecDescent::_trace(q{Trying subrule: [comp_unit_decl]},
-				  Parse::RecDescent::_tracefirst($text),
-				  q{comp_unit},
-				  $tracelevel)
-					if defined $::RD_TRACE;
-		if (1) { no strict qw{refs};
-		$expectation->is(q{comp_unit_decl})->at($text);
-		unless (defined ($_tok = Parse::RecDescent::Java::Javap::Grammar::comp_unit_decl($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
-		{
-			
-			Parse::RecDescent::_trace(q{<<Didn't match subrule: [comp_unit_decl]>>},
-						  Parse::RecDescent::_tracefirst($text),
-						  q{comp_unit},
-						  $tracelevel)
-							if defined $::RD_TRACE;
-			$expectation->failed();
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched subrule: [comp_unit_decl]<< (return value: [}
-					. $_tok . q{]},
-					  
-					  Parse::RecDescent::_tracefirst($text),
-					  q{comp_unit},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$item{q{comp_unit_decl}} = $_tok;
-		push @item, $_tok;
-		
-		}
+        Parse::RecDescent::_trace(q{Trying repeated subrule: [comp_stmt]},
+                  Parse::RecDescent::_tracefirst($text),
+                  q{comp_unit},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
+        $expectation->is(q{})->at($text);
+        
+        unless (defined ($_tok = $thisparser->_parserepeat($text, \&Parse::RecDescent::Java::Javap::Grammar::comp_stmt, 0, 1, $_noactions,$expectation,sub { \@arg }))) 
+        {
+            Parse::RecDescent::_trace(q{<<Didn't match repeated subrule: [comp_stmt]>>},
+                          Parse::RecDescent::_tracefirst($text),
+                          q{comp_unit},
+                          $tracelevel)
+                            if defined $::RD_TRACE;
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched repeated subrule: [comp_stmt]<< (}
+                    . @$_tok . q{ times)},
+                      
+                      Parse::RecDescent::_tracefirst($text),
+                      q{comp_unit},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $item{q{comp_stmt(?)}} = $_tok;
+        push @item, $_tok;
+        
 
-		Parse::RecDescent::_trace(q{Trying terminal: ['\{']},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{comp_unit},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$lastsep = "";
-		$expectation->is(q{'\{'})->at($text);
-		
 
-		unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ s/\A\{//)
-		{
-			
-			$expectation->failed();
-			Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
-						. $& . q{])},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-		push @item, $item{__STRING1__}=$&;
-		
+        Parse::RecDescent::_trace(q{Trying subrule: [comp_unit_decl]},
+                  Parse::RecDescent::_tracefirst($text),
+                  q{comp_unit},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
+        if (1) { no strict qw{refs};
+        $expectation->is(q{comp_unit_decl})->at($text);
+        unless (defined ($_tok = Parse::RecDescent::Java::Javap::Grammar::comp_unit_decl($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
+        {
+            
+            Parse::RecDescent::_trace(q{<<Didn't match subrule: [comp_unit_decl]>>},
+                          Parse::RecDescent::_tracefirst($text),
+                          q{comp_unit},
+                          $tracelevel)
+                            if defined $::RD_TRACE;
+            $expectation->failed();
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched subrule: [comp_unit_decl]<< (return value: [}
+                    . $_tok . q{]},
+                      
+                      Parse::RecDescent::_tracefirst($text),
+                      q{comp_unit},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $item{q{comp_unit_decl}} = $_tok;
+        push @item, $_tok;
+        
+        }
 
-		Parse::RecDescent::_trace(q{Trying subrule: [body]},
-				  Parse::RecDescent::_tracefirst($text),
-				  q{comp_unit},
-				  $tracelevel)
-					if defined $::RD_TRACE;
-		if (1) { no strict qw{refs};
-		$expectation->is(q{body})->at($text);
-		unless (defined ($_tok = Parse::RecDescent::Java::Javap::Grammar::body($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
-		{
-			
-			Parse::RecDescent::_trace(q{<<Didn't match subrule: [body]>>},
-						  Parse::RecDescent::_tracefirst($text),
-						  q{comp_unit},
-						  $tracelevel)
-							if defined $::RD_TRACE;
-			$expectation->failed();
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched subrule: [body]<< (return value: [}
-					. $_tok . q{]},
-					  
-					  Parse::RecDescent::_tracefirst($text),
-					  q{comp_unit},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$item{q{body}} = $_tok;
-		push @item, $_tok;
-		
-		}
+        Parse::RecDescent::_trace(q{Trying terminal: ['\{']},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{comp_unit},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $lastsep = "";
+        $expectation->is(q{'\{'})->at($text);
+        
 
-		Parse::RecDescent::_trace(q{Trying terminal: ['\}']},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{comp_unit},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$lastsep = "";
-		$expectation->is(q{'\}'})->at($text);
-		
+        unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ m/\A\{/)
+        {
+            
+            $expectation->failed();
+            Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+            last;
+        }
+		$current_match = substr($text, $-[0], $+[0] - $-[0]);
+        substr($text,0,length($current_match),q{});
+        Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
+                        . $current_match . q{])},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+        push @item, $item{__STRING1__}=$current_match;
+        
 
-		unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ s/\A\}//)
-		{
-			
-			$expectation->failed();
-			Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
-						. $& . q{])},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-		push @item, $item{__STRING2__}=$&;
-		
+        Parse::RecDescent::_trace(q{Trying subrule: [body]},
+                  Parse::RecDescent::_tracefirst($text),
+                  q{comp_unit},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
+        if (1) { no strict qw{refs};
+        $expectation->is(q{body})->at($text);
+        unless (defined ($_tok = Parse::RecDescent::Java::Javap::Grammar::body($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
+        {
+            
+            Parse::RecDescent::_trace(q{<<Didn't match subrule: [body]>>},
+                          Parse::RecDescent::_tracefirst($text),
+                          q{comp_unit},
+                          $tracelevel)
+                            if defined $::RD_TRACE;
+            $expectation->failed();
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched subrule: [body]<< (return value: [}
+                    . $_tok . q{]},
+                      
+                      Parse::RecDescent::_tracefirst($text),
+                      q{comp_unit},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $item{q{body}} = $_tok;
+        push @item, $_tok;
+        
+        }
 
-		Parse::RecDescent::_trace(q{Trying action},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{comp_unit},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		
+        Parse::RecDescent::_trace(q{Trying terminal: ['\}']},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{comp_unit},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $lastsep = "";
+        $expectation->is(q{'\}'})->at($text);
+        
 
-		$_tok = ($_noactions) ? 0 : do {
+        unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ m/\A\}/)
+        {
+            
+            $expectation->failed();
+            Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+            last;
+        }
+		$current_match = substr($text, $-[0], $+[0] - $-[0]);
+        substr($text,0,length($current_match),q{});
+        Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
+                        . $current_match . q{])},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+        push @item, $item{__STRING2__}=$current_match;
+        
+
+        Parse::RecDescent::_trace(q{Trying action},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{comp_unit},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        
+
+        $_tok = ($_noactions) ? 0 : do {
     my $retval = $item{ comp_unit_decl };
     # Match of subrule X(?) always generates an array
     my $comp_stmt = $item{ q{comp_stmt(?)} }->[0];
@@ -4599,125 +4679,125 @@ sub Parse::RecDescent::Java::Javap::Grammar::comp_unit
     $retval->{ constructors  } = $constructors; $constructors = 0;
     $retval;
 };
-		unless (defined $_tok)
-		{
-			Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
-					if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
-					  . $_tok . q{])},
-					  Parse::RecDescent::_tracefirst($text))
-						if defined $::RD_TRACE;
-		push @item, $_tok;
-		$item{__ACTION1__}=$_tok;
-		
+        unless (defined $_tok)
+        {
+            Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
+                    if defined $::RD_TRACE;
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
+                      . $_tok . q{])},
+                      Parse::RecDescent::_tracefirst($text))
+                        if defined $::RD_TRACE;
+        push @item, $_tok;
+        $item{__ACTION1__}=$_tok;
+        
 
 
-		Parse::RecDescent::_trace(q{>>Matched production: [comp_stmt comp_unit_decl '\{' body '\}']<<},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{comp_unit},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$_matched = 1;
-		last;
-	}
+        Parse::RecDescent::_trace(q{>>Matched production: [comp_stmt comp_unit_decl '\{' body '\}']<<},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{comp_unit},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $_matched = 1;
+        last;
+    }
 
 
-	while (!$_matched)
-	{
-		
-		Parse::RecDescent::_trace(q{Trying production: [<error...>]},
-					  Parse::RecDescent::_tracefirst($_[1]),
-					  q{comp_unit},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		my $thisprod = $thisrule->{"prods"}[1];
-		
-		my $_savetext;
-		@item = (q{comp_unit});
-		%item = (__RULE__ => q{comp_unit});
-		my $repcount = 0;
+    while (!$_matched)
+    {
+        
+        Parse::RecDescent::_trace(q{Trying production: [<error...>]},
+                      Parse::RecDescent::_tracefirst($_[1]),
+                      q{comp_unit},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        my $thisprod = $thisrule->{"prods"}[1];
+        
+        my $_savetext;
+        @item = (q{comp_unit});
+        %item = (__RULE__ => q{comp_unit});
+        my $repcount = 0;
 
 
-		
+        
 
-		Parse::RecDescent::_trace(q{Trying directive: [<error...>]},
-					Parse::RecDescent::_tracefirst($text),
-					  q{comp_unit},
-					  $tracelevel)
-						if defined $::RD_TRACE; 
-		$_tok = do { if (1) { do {
-		my $rule = $item[0];
-		   $rule =~ s/_/ /g;
-		#WAS: Parse::RecDescent::_error("Invalid $rule: " . $expectation->message() ,$thisline);
-		push @{$thisparser->{errors}}, ["Invalid $rule: " . $expectation->message() ,$thisline];
-		} unless  $_noactions; undef } else {0} };
-		if (defined($_tok))
-		{
-			Parse::RecDescent::_trace(q{>>Matched directive<< (return value: [}
-						. $_tok . q{])},
-						Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-		}
-		else
-		{
-			Parse::RecDescent::_trace(q{<<Didn't match directive>>},
-						Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-		}
-		
-		last unless defined $_tok;
-		push @item, $item{__DIRECTIVE1__}=$_tok;
-		
-
-
-		Parse::RecDescent::_trace(q{>>Matched production: [<error...>]<<},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{comp_unit},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$_matched = 1;
-		last;
-	}
+        Parse::RecDescent::_trace(q{Trying directive: [<error...>]},
+                    Parse::RecDescent::_tracefirst($text),
+                      q{comp_unit},
+                      $tracelevel)
+                        if defined $::RD_TRACE; 
+        $_tok = do { if (1) { do {
+        my $rule = $item[0];
+           $rule =~ s/_/ /g;
+        #WAS: Parse::RecDescent::_error("Invalid $rule: " . $expectation->message() ,$thisline);
+        push @{$thisparser->{errors}}, ["Invalid $rule: " . $expectation->message() ,$thisline];
+        } unless  $_noactions; undef } else {0} };
+        if (defined($_tok))
+        {
+            Parse::RecDescent::_trace(q{>>Matched directive<< (return value: [}
+                        . $_tok . q{])},
+                        Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+        }
+        else
+        {
+            Parse::RecDescent::_trace(q{<<Didn't match directive>>},
+                        Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+        }
+        
+        last unless defined $_tok;
+        push @item, $item{__DIRECTIVE1__}=$_tok;
+        
 
 
-        unless ( $_matched || defined($return) || defined($score) )
-	{
-		
+        Parse::RecDescent::_trace(q{>>Matched production: [<error...>]<<},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{comp_unit},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $_matched = 1;
+        last;
+    }
 
-		$_[1] = $text;	# NOT SURE THIS IS NEEDED
-		Parse::RecDescent::_trace(q{<<Didn't match rule>>},
-					 Parse::RecDescent::_tracefirst($_[1]),
-					 q{comp_unit},
-					 $tracelevel)
-					if defined $::RD_TRACE;
-		return undef;
-	}
-	if (!defined($return) && defined($score))
-	{
-		Parse::RecDescent::_trace(q{>>Accepted scored production<<}, "",
-					  q{comp_unit},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$return = $score_return;
-	}
-	splice @{$thisparser->{errors}}, $err_at;
-	$return = $item[$#item] unless defined $return;
-	if (defined $::RD_TRACE)
-	{
-		Parse::RecDescent::_trace(q{>>Matched rule<< (return value: [} .
-					  $return . q{])}, "",
-					  q{comp_unit},
-					  $tracelevel);
-		Parse::RecDescent::_trace(q{(consumed: [} .
-					  Parse::RecDescent::_tracemax(substr($_[1],0,-length($text))) . q{])}, 
-					  Parse::RecDescent::_tracefirst($text),
-					  , q{comp_unit},
-					  $tracelevel)
-	}
-	$_[1] = $text;
-	return $return;
+
+    unless ( $_matched || defined($score) )
+    {
+        
+
+        $_[1] = $text;  # NOT SURE THIS IS NEEDED
+        Parse::RecDescent::_trace(q{<<Didn't match rule>>},
+                     Parse::RecDescent::_tracefirst($_[1]),
+                     q{comp_unit},
+                     $tracelevel)
+                    if defined $::RD_TRACE;
+        return undef;
+    }
+    if (!defined($return) && defined($score))
+    {
+        Parse::RecDescent::_trace(q{>>Accepted scored production<<}, "",
+                      q{comp_unit},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $return = $score_return;
+    }
+    splice @{$thisparser->{errors}}, $err_at;
+    $return = $item[$#item] unless defined $return;
+    if (defined $::RD_TRACE)
+    {
+        Parse::RecDescent::_trace(q{>>Matched rule<< (return value: [} .
+                      $return . q{])}, "",
+                      q{comp_unit},
+                      $tracelevel);
+        Parse::RecDescent::_trace(q{(consumed: [} .
+                      Parse::RecDescent::_tracemax(substr($_[1],0,-length($text))) . q{])}, 
+                      Parse::RecDescent::_tracefirst($text),
+                      , q{comp_unit},
+                      $tracelevel)
+    }
+    $_[1] = $text;
+    return $return;
 }
 
 # ARGS ARE: ($parser, $text; $repeating, $_noactions, \@args)
@@ -4727,127 +4807,130 @@ sub Parse::RecDescent::Java::Javap::Grammar::constant_value
 	use vars q{$tracelevel};
 	local $tracelevel = ($tracelevel||0)+1;
 	$ERRORS = 0;
-	my $thisrule = $thisparser->{"rules"}{"constant_value"};
-	
-	Parse::RecDescent::_trace(q{Trying rule: [constant_value]},
-				  Parse::RecDescent::_tracefirst($_[1]),
-				  q{constant_value},
-				  $tracelevel)
-					if defined $::RD_TRACE;
+    my $thisrule = $thisparser->{"rules"}{"constant_value"};
+    
+    Parse::RecDescent::_trace(q{Trying rule: [constant_value]},
+                  Parse::RecDescent::_tracefirst($_[1]),
+                  q{constant_value},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
 
-	
-	my $err_at = @{$thisparser->{errors}};
+    
+    my $err_at = @{$thisparser->{errors}};
 
-	my $score;
-	my $score_return;
-	my $_tok;
-	my $return = undef;
-	my $_matched=0;
-	my $commit=0;
-	my @item = ();
-	my %item = ();
-	my $repeating =  defined($_[2]) && $_[2];
-	my $_noactions = defined($_[3]) && $_[3];
- 	my @arg =        defined $_[4] ? @{ &{$_[4]} } : ();
-	my %arg =        ($#arg & 01) ? @arg : (@arg, undef);
-	my $text;
-	my $lastsep="";
-	my $expectation = new Parse::RecDescent::Expectation($thisrule->expected());
-	$expectation->at($_[1]);
-	
-	my $thisline;
-	tie $thisline, q{Parse::RecDescent::LineCounter}, \$text, $thisparser;
+    my $score;
+    my $score_return;
+    my $_tok;
+    my $return = undef;
+    my $_matched=0;
+    my $commit=0;
+    my @item = ();
+    my %item = ();
+    my $repeating =  defined($_[2]) && $_[2];
+    my $_noactions = defined($_[3]) && $_[3];
+    my @arg =    defined $_[4] ? @{ &{$_[4]} } : ();
+    my %arg =    ($#arg & 01) ? @arg : (@arg, undef);
+    my $text;
+    my $lastsep="";
+    my $current_match;
+    my $expectation = new Parse::RecDescent::Expectation(q{/[^\\n]*/});
+    $expectation->at($_[1]);
+    
+    my $thisline;
+    tie $thisline, q{Parse::RecDescent::LineCounter}, \$text, $thisparser;
 
-	
+    
 
-	while (!$_matched && !$commit)
-	{
-		
-		Parse::RecDescent::_trace(q{Trying production: [/[^\\n]*/]},
-					  Parse::RecDescent::_tracefirst($_[1]),
-					  q{constant_value},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		my $thisprod = $thisrule->{"prods"}[0];
-		$text = $_[1];
-		my $_savetext;
-		@item = (q{constant_value});
-		%item = (__RULE__ => q{constant_value});
-		my $repcount = 0;
-
-
-		Parse::RecDescent::_trace(q{Trying terminal: [/[^\\n]*/]}, Parse::RecDescent::_tracefirst($text),
-					  q{constant_value},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$lastsep = "";
-		$expectation->is(q{})->at($text);
-		
-
-		unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ s/\A(?:[^\n]*)//)
-		{
-			
-			$expectation->failed();
-			Parse::RecDescent::_trace(q{<<Didn't match terminal>>},
-						  Parse::RecDescent::_tracefirst($text))
-					if defined $::RD_TRACE;
-
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
-						. $& . q{])},
-						  Parse::RecDescent::_tracefirst($text))
-					if defined $::RD_TRACE;
-		push @item, $item{__PATTERN1__}=$&;
-		
+    while (!$_matched && !$commit)
+    {
+        
+        Parse::RecDescent::_trace(q{Trying production: [/[^\\n]*/]},
+                      Parse::RecDescent::_tracefirst($_[1]),
+                      q{constant_value},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        my $thisprod = $thisrule->{"prods"}[0];
+        $text = $_[1];
+        my $_savetext;
+        @item = (q{constant_value});
+        %item = (__RULE__ => q{constant_value});
+        my $repcount = 0;
 
 
-		Parse::RecDescent::_trace(q{>>Matched production: [/[^\\n]*/]<<},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{constant_value},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$_matched = 1;
-		last;
-	}
+        Parse::RecDescent::_trace(q{Trying terminal: [/[^\\n]*/]}, Parse::RecDescent::_tracefirst($text),
+                      q{constant_value},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $lastsep = "";
+        $expectation->is(q{})->at($text);
+        
+
+        unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ m/\A(?:[^\n]*)/)
+        {
+            
+            $expectation->failed();
+            Parse::RecDescent::_trace(q{<<Didn't match terminal>>},
+                          Parse::RecDescent::_tracefirst($text))
+                    if defined $::RD_TRACE;
+
+            last;
+        }
+		$current_match = substr($text, $-[0], $+[0] - $-[0]);
+        substr($text,0,length($current_match),q{});
+        Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
+                        . $current_match . q{])},
+                          Parse::RecDescent::_tracefirst($text))
+                    if defined $::RD_TRACE;
+        push @item, $item{__PATTERN1__}=$current_match;
+        
 
 
-        unless ( $_matched || defined($return) || defined($score) )
-	{
-		
+        Parse::RecDescent::_trace(q{>>Matched production: [/[^\\n]*/]<<},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{constant_value},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $_matched = 1;
+        last;
+    }
 
-		$_[1] = $text;	# NOT SURE THIS IS NEEDED
-		Parse::RecDescent::_trace(q{<<Didn't match rule>>},
-					 Parse::RecDescent::_tracefirst($_[1]),
-					 q{constant_value},
-					 $tracelevel)
-					if defined $::RD_TRACE;
-		return undef;
-	}
-	if (!defined($return) && defined($score))
-	{
-		Parse::RecDescent::_trace(q{>>Accepted scored production<<}, "",
-					  q{constant_value},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$return = $score_return;
-	}
-	splice @{$thisparser->{errors}}, $err_at;
-	$return = $item[$#item] unless defined $return;
-	if (defined $::RD_TRACE)
-	{
-		Parse::RecDescent::_trace(q{>>Matched rule<< (return value: [} .
-					  $return . q{])}, "",
-					  q{constant_value},
-					  $tracelevel);
-		Parse::RecDescent::_trace(q{(consumed: [} .
-					  Parse::RecDescent::_tracemax(substr($_[1],0,-length($text))) . q{])}, 
-					  Parse::RecDescent::_tracefirst($text),
-					  , q{constant_value},
-					  $tracelevel)
-	}
-	$_[1] = $text;
-	return $return;
+
+    unless ( $_matched || defined($score) )
+    {
+        
+
+        $_[1] = $text;  # NOT SURE THIS IS NEEDED
+        Parse::RecDescent::_trace(q{<<Didn't match rule>>},
+                     Parse::RecDescent::_tracefirst($_[1]),
+                     q{constant_value},
+                     $tracelevel)
+                    if defined $::RD_TRACE;
+        return undef;
+    }
+    if (!defined($return) && defined($score))
+    {
+        Parse::RecDescent::_trace(q{>>Accepted scored production<<}, "",
+                      q{constant_value},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $return = $score_return;
+    }
+    splice @{$thisparser->{errors}}, $err_at;
+    $return = $item[$#item] unless defined $return;
+    if (defined $::RD_TRACE)
+    {
+        Parse::RecDescent::_trace(q{>>Matched rule<< (return value: [} .
+                      $return . q{])}, "",
+                      q{constant_value},
+                      $tracelevel);
+        Parse::RecDescent::_trace(q{(consumed: [} .
+                      Parse::RecDescent::_tracemax(substr($_[1],0,-length($text))) . q{])}, 
+                      Parse::RecDescent::_tracefirst($text),
+                      , q{constant_value},
+                      $tracelevel)
+    }
+    $_[1] = $text;
+    return $return;
 }
 
 # ARGS ARE: ($parser, $text; $repeating, $_noactions, \@args)
@@ -4857,149 +4940,152 @@ sub Parse::RecDescent::Java::Javap::Grammar::NAME
 	use vars q{$tracelevel};
 	local $tracelevel = ($tracelevel||0)+1;
 	$ERRORS = 0;
-	my $thisrule = $thisparser->{"rules"}{"NAME"};
-	
-	Parse::RecDescent::_trace(q{Trying rule: [NAME]},
-				  Parse::RecDescent::_tracefirst($_[1]),
-				  q{NAME},
-				  $tracelevel)
-					if defined $::RD_TRACE;
+    my $thisrule = $thisparser->{"rules"}{"NAME"};
+    
+    Parse::RecDescent::_trace(q{Trying rule: [NAME]},
+                  Parse::RecDescent::_tracefirst($_[1]),
+                  q{NAME},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
 
-	
-	my $err_at = @{$thisparser->{errors}};
+    
+    my $err_at = @{$thisparser->{errors}};
 
-	my $score;
-	my $score_return;
-	my $_tok;
-	my $return = undef;
-	my $_matched=0;
-	my $commit=0;
-	my @item = ();
-	my %item = ();
-	my $repeating =  defined($_[2]) && $_[2];
-	my $_noactions = defined($_[3]) && $_[3];
- 	my @arg =        defined $_[4] ? @{ &{$_[4]} } : ();
-	my %arg =        ($#arg & 01) ? @arg : (@arg, undef);
-	my $text;
-	my $lastsep="";
-	my $expectation = new Parse::RecDescent::Expectation($thisrule->expected());
-	$expectation->at($_[1]);
-	
-	my $thisline;
-	tie $thisline, q{Parse::RecDescent::LineCounter}, \$text, $thisparser;
+    my $score;
+    my $score_return;
+    my $_tok;
+    my $return = undef;
+    my $_matched=0;
+    my $commit=0;
+    my @item = ();
+    my %item = ();
+    my $repeating =  defined($_[2]) && $_[2];
+    my $_noactions = defined($_[3]) && $_[3];
+    my @arg =    defined $_[4] ? @{ &{$_[4]} } : ();
+    my %arg =    ($#arg & 01) ? @arg : (@arg, undef);
+    my $text;
+    my $lastsep="";
+    my $current_match;
+    my $expectation = new Parse::RecDescent::Expectation(q{/^([\\w\\d\\$]+)/});
+    $expectation->at($_[1]);
+    
+    my $thisline;
+    tie $thisline, q{Parse::RecDescent::LineCounter}, \$text, $thisparser;
 
-	
+    
 
-	while (!$_matched && !$commit)
-	{
-		
-		Parse::RecDescent::_trace(q{Trying production: [/^([\\w\\d\\$]+)/]},
-					  Parse::RecDescent::_tracefirst($_[1]),
-					  q{NAME},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		my $thisprod = $thisrule->{"prods"}[0];
-		$text = $_[1];
-		my $_savetext;
-		@item = (q{NAME});
-		%item = (__RULE__ => q{NAME});
-		my $repcount = 0;
-
-
-		Parse::RecDescent::_trace(q{Trying terminal: [/^([\\w\\d\\$]+)/]}, Parse::RecDescent::_tracefirst($text),
-					  q{NAME},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$lastsep = "";
-		$expectation->is(q{})->at($text);
-		
-
-		unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ s/\A(?:^([\w\d\$]+))//)
-		{
-			
-			$expectation->failed();
-			Parse::RecDescent::_trace(q{<<Didn't match terminal>>},
-						  Parse::RecDescent::_tracefirst($text))
-					if defined $::RD_TRACE;
-
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
-						. $& . q{])},
-						  Parse::RecDescent::_tracefirst($text))
-					if defined $::RD_TRACE;
-		push @item, $item{__PATTERN1__}=$&;
-		
-
-		Parse::RecDescent::_trace(q{Trying action},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{NAME},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		
-
-		$_tok = ($_noactions) ? 0 : do { $1 };
-		unless (defined $_tok)
-		{
-			Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
-					if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
-					  . $_tok . q{])},
-					  Parse::RecDescent::_tracefirst($text))
-						if defined $::RD_TRACE;
-		push @item, $_tok;
-		$item{__ACTION1__}=$_tok;
-		
+    while (!$_matched && !$commit)
+    {
+        
+        Parse::RecDescent::_trace(q{Trying production: [/^([\\w\\d\\$]+)/]},
+                      Parse::RecDescent::_tracefirst($_[1]),
+                      q{NAME},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        my $thisprod = $thisrule->{"prods"}[0];
+        $text = $_[1];
+        my $_savetext;
+        @item = (q{NAME});
+        %item = (__RULE__ => q{NAME});
+        my $repcount = 0;
 
 
-		Parse::RecDescent::_trace(q{>>Matched production: [/^([\\w\\d\\$]+)/]<<},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{NAME},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$_matched = 1;
-		last;
-	}
+        Parse::RecDescent::_trace(q{Trying terminal: [/^([\\w\\d\\$]+)/]}, Parse::RecDescent::_tracefirst($text),
+                      q{NAME},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $lastsep = "";
+        $expectation->is(q{})->at($text);
+        
+
+        unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ m/\A(?:^([\w\d\$]+))/)
+        {
+            
+            $expectation->failed();
+            Parse::RecDescent::_trace(q{<<Didn't match terminal>>},
+                          Parse::RecDescent::_tracefirst($text))
+                    if defined $::RD_TRACE;
+
+            last;
+        }
+		$current_match = substr($text, $-[0], $+[0] - $-[0]);
+        substr($text,0,length($current_match),q{});
+        Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
+                        . $current_match . q{])},
+                          Parse::RecDescent::_tracefirst($text))
+                    if defined $::RD_TRACE;
+        push @item, $item{__PATTERN1__}=$current_match;
+        
+
+        Parse::RecDescent::_trace(q{Trying action},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{NAME},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        
+
+        $_tok = ($_noactions) ? 0 : do { $1 };
+        unless (defined $_tok)
+        {
+            Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
+                    if defined $::RD_TRACE;
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
+                      . $_tok . q{])},
+                      Parse::RecDescent::_tracefirst($text))
+                        if defined $::RD_TRACE;
+        push @item, $_tok;
+        $item{__ACTION1__}=$_tok;
+        
 
 
-        unless ( $_matched || defined($return) || defined($score) )
-	{
-		
+        Parse::RecDescent::_trace(q{>>Matched production: [/^([\\w\\d\\$]+)/]<<},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{NAME},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $_matched = 1;
+        last;
+    }
 
-		$_[1] = $text;	# NOT SURE THIS IS NEEDED
-		Parse::RecDescent::_trace(q{<<Didn't match rule>>},
-					 Parse::RecDescent::_tracefirst($_[1]),
-					 q{NAME},
-					 $tracelevel)
-					if defined $::RD_TRACE;
-		return undef;
-	}
-	if (!defined($return) && defined($score))
-	{
-		Parse::RecDescent::_trace(q{>>Accepted scored production<<}, "",
-					  q{NAME},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$return = $score_return;
-	}
-	splice @{$thisparser->{errors}}, $err_at;
-	$return = $item[$#item] unless defined $return;
-	if (defined $::RD_TRACE)
-	{
-		Parse::RecDescent::_trace(q{>>Matched rule<< (return value: [} .
-					  $return . q{])}, "",
-					  q{NAME},
-					  $tracelevel);
-		Parse::RecDescent::_trace(q{(consumed: [} .
-					  Parse::RecDescent::_tracemax(substr($_[1],0,-length($text))) . q{])}, 
-					  Parse::RecDescent::_tracefirst($text),
-					  , q{NAME},
-					  $tracelevel)
-	}
-	$_[1] = $text;
-	return $return;
+
+    unless ( $_matched || defined($score) )
+    {
+        
+
+        $_[1] = $text;  # NOT SURE THIS IS NEEDED
+        Parse::RecDescent::_trace(q{<<Didn't match rule>>},
+                     Parse::RecDescent::_tracefirst($_[1]),
+                     q{NAME},
+                     $tracelevel)
+                    if defined $::RD_TRACE;
+        return undef;
+    }
+    if (!defined($return) && defined($score))
+    {
+        Parse::RecDescent::_trace(q{>>Accepted scored production<<}, "",
+                      q{NAME},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $return = $score_return;
+    }
+    splice @{$thisparser->{errors}}, $err_at;
+    $return = $item[$#item] unless defined $return;
+    if (defined $::RD_TRACE)
+    {
+        Parse::RecDescent::_trace(q{>>Matched rule<< (return value: [} .
+                      $return . q{])}, "",
+                      q{NAME},
+                      $tracelevel);
+        Parse::RecDescent::_trace(q{(consumed: [} .
+                      Parse::RecDescent::_tracemax(substr($_[1],0,-length($text))) . q{])}, 
+                      Parse::RecDescent::_tracefirst($text),
+                      , q{NAME},
+                      $tracelevel)
+    }
+    $_[1] = $text;
+    return $return;
 }
 
 # ARGS ARE: ($parser, $text; $repeating, $_noactions, \@args)
@@ -5009,157 +5095,160 @@ sub Parse::RecDescent::Java::Javap::Grammar::verbose_exceptions
 	use vars q{$tracelevel};
 	local $tracelevel = ($tracelevel||0)+1;
 	$ERRORS = 0;
-	my $thisrule = $thisparser->{"rules"}{"verbose_exceptions"};
-	
-	Parse::RecDescent::_trace(q{Trying rule: [verbose_exceptions]},
-				  Parse::RecDescent::_tracefirst($_[1]),
-				  q{verbose_exceptions},
-				  $tracelevel)
-					if defined $::RD_TRACE;
+    my $thisrule = $thisparser->{"rules"}{"verbose_exceptions"};
+    
+    Parse::RecDescent::_trace(q{Trying rule: [verbose_exceptions]},
+                  Parse::RecDescent::_tracefirst($_[1]),
+                  q{verbose_exceptions},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
 
-	
-	my $err_at = @{$thisparser->{errors}};
+    
+    my $err_at = @{$thisparser->{errors}};
 
-	my $score;
-	my $score_return;
-	my $_tok;
-	my $return = undef;
-	my $_matched=0;
-	my $commit=0;
-	my @item = ();
-	my %item = ();
-	my $repeating =  defined($_[2]) && $_[2];
-	my $_noactions = defined($_[3]) && $_[3];
- 	my @arg =        defined $_[4] ? @{ &{$_[4]} } : ();
-	my %arg =        ($#arg & 01) ? @arg : (@arg, undef);
-	my $text;
-	my $lastsep="";
-	my $expectation = new Parse::RecDescent::Expectation($thisrule->expected());
-	$expectation->at($_[1]);
-	
-	my $thisline;
-	tie $thisline, q{Parse::RecDescent::LineCounter}, \$text, $thisparser;
+    my $score;
+    my $score_return;
+    my $_tok;
+    my $return = undef;
+    my $_matched=0;
+    my $commit=0;
+    my @item = ();
+    my %item = ();
+    my $repeating =  defined($_[2]) && $_[2];
+    my $_noactions = defined($_[3]) && $_[3];
+    my @arg =    defined $_[4] ? @{ &{$_[4]} } : ();
+    my %arg =    ($#arg & 01) ? @arg : (@arg, undef);
+    my $text;
+    my $lastsep="";
+    my $current_match;
+    my $expectation = new Parse::RecDescent::Expectation(q{'Exceptions:'});
+    $expectation->at($_[1]);
+    
+    my $thisline;
+    tie $thisline, q{Parse::RecDescent::LineCounter}, \$text, $thisparser;
 
-	
+    
 
-	while (!$_matched && !$commit)
-	{
-		
-		Parse::RecDescent::_trace(q{Trying production: ['Exceptions:' throws_clause]},
-					  Parse::RecDescent::_tracefirst($_[1]),
-					  q{verbose_exceptions},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		my $thisprod = $thisrule->{"prods"}[0];
-		$text = $_[1];
-		my $_savetext;
-		@item = (q{verbose_exceptions});
-		%item = (__RULE__ => q{verbose_exceptions});
-		my $repcount = 0;
-
-
-		Parse::RecDescent::_trace(q{Trying terminal: ['Exceptions:']},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{verbose_exceptions},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$lastsep = "";
-		$expectation->is(q{})->at($text);
-		
-
-		unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ s/\AExceptions\://)
-		{
-			
-			$expectation->failed();
-			Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
-						. $& . q{])},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-		push @item, $item{__STRING1__}=$&;
-		
-
-		Parse::RecDescent::_trace(q{Trying subrule: [throws_clause]},
-				  Parse::RecDescent::_tracefirst($text),
-				  q{verbose_exceptions},
-				  $tracelevel)
-					if defined $::RD_TRACE;
-		if (1) { no strict qw{refs};
-		$expectation->is(q{throws_clause})->at($text);
-		unless (defined ($_tok = Parse::RecDescent::Java::Javap::Grammar::throws_clause($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
-		{
-			
-			Parse::RecDescent::_trace(q{<<Didn't match subrule: [throws_clause]>>},
-						  Parse::RecDescent::_tracefirst($text),
-						  q{verbose_exceptions},
-						  $tracelevel)
-							if defined $::RD_TRACE;
-			$expectation->failed();
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched subrule: [throws_clause]<< (return value: [}
-					. $_tok . q{]},
-					  
-					  Parse::RecDescent::_tracefirst($text),
-					  q{verbose_exceptions},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$item{q{throws_clause}} = $_tok;
-		push @item, $_tok;
-		
-		}
+    while (!$_matched && !$commit)
+    {
+        
+        Parse::RecDescent::_trace(q{Trying production: ['Exceptions:' throws_clause]},
+                      Parse::RecDescent::_tracefirst($_[1]),
+                      q{verbose_exceptions},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        my $thisprod = $thisrule->{"prods"}[0];
+        $text = $_[1];
+        my $_savetext;
+        @item = (q{verbose_exceptions});
+        %item = (__RULE__ => q{verbose_exceptions});
+        my $repcount = 0;
 
 
-		Parse::RecDescent::_trace(q{>>Matched production: ['Exceptions:' throws_clause]<<},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{verbose_exceptions},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$_matched = 1;
-		last;
-	}
+        Parse::RecDescent::_trace(q{Trying terminal: ['Exceptions:']},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{verbose_exceptions},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $lastsep = "";
+        $expectation->is(q{})->at($text);
+        
+
+        unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ m/\AExceptions\:/)
+        {
+            
+            $expectation->failed();
+            Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+            last;
+        }
+		$current_match = substr($text, $-[0], $+[0] - $-[0]);
+        substr($text,0,length($current_match),q{});
+        Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
+                        . $current_match . q{])},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+        push @item, $item{__STRING1__}=$current_match;
+        
+
+        Parse::RecDescent::_trace(q{Trying subrule: [throws_clause]},
+                  Parse::RecDescent::_tracefirst($text),
+                  q{verbose_exceptions},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
+        if (1) { no strict qw{refs};
+        $expectation->is(q{throws_clause})->at($text);
+        unless (defined ($_tok = Parse::RecDescent::Java::Javap::Grammar::throws_clause($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
+        {
+            
+            Parse::RecDescent::_trace(q{<<Didn't match subrule: [throws_clause]>>},
+                          Parse::RecDescent::_tracefirst($text),
+                          q{verbose_exceptions},
+                          $tracelevel)
+                            if defined $::RD_TRACE;
+            $expectation->failed();
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched subrule: [throws_clause]<< (return value: [}
+                    . $_tok . q{]},
+                      
+                      Parse::RecDescent::_tracefirst($text),
+                      q{verbose_exceptions},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $item{q{throws_clause}} = $_tok;
+        push @item, $_tok;
+        
+        }
 
 
-        unless ( $_matched || defined($return) || defined($score) )
-	{
-		
+        Parse::RecDescent::_trace(q{>>Matched production: ['Exceptions:' throws_clause]<<},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{verbose_exceptions},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $_matched = 1;
+        last;
+    }
 
-		$_[1] = $text;	# NOT SURE THIS IS NEEDED
-		Parse::RecDescent::_trace(q{<<Didn't match rule>>},
-					 Parse::RecDescent::_tracefirst($_[1]),
-					 q{verbose_exceptions},
-					 $tracelevel)
-					if defined $::RD_TRACE;
-		return undef;
-	}
-	if (!defined($return) && defined($score))
-	{
-		Parse::RecDescent::_trace(q{>>Accepted scored production<<}, "",
-					  q{verbose_exceptions},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$return = $score_return;
-	}
-	splice @{$thisparser->{errors}}, $err_at;
-	$return = $item[$#item] unless defined $return;
-	if (defined $::RD_TRACE)
-	{
-		Parse::RecDescent::_trace(q{>>Matched rule<< (return value: [} .
-					  $return . q{])}, "",
-					  q{verbose_exceptions},
-					  $tracelevel);
-		Parse::RecDescent::_trace(q{(consumed: [} .
-					  Parse::RecDescent::_tracemax(substr($_[1],0,-length($text))) . q{])}, 
-					  Parse::RecDescent::_tracefirst($text),
-					  , q{verbose_exceptions},
-					  $tracelevel)
-	}
-	$_[1] = $text;
-	return $return;
+
+    unless ( $_matched || defined($score) )
+    {
+        
+
+        $_[1] = $text;  # NOT SURE THIS IS NEEDED
+        Parse::RecDescent::_trace(q{<<Didn't match rule>>},
+                     Parse::RecDescent::_tracefirst($_[1]),
+                     q{verbose_exceptions},
+                     $tracelevel)
+                    if defined $::RD_TRACE;
+        return undef;
+    }
+    if (!defined($return) && defined($score))
+    {
+        Parse::RecDescent::_trace(q{>>Accepted scored production<<}, "",
+                      q{verbose_exceptions},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $return = $score_return;
+    }
+    splice @{$thisparser->{errors}}, $err_at;
+    $return = $item[$#item] unless defined $return;
+    if (defined $::RD_TRACE)
+    {
+        Parse::RecDescent::_trace(q{>>Matched rule<< (return value: [} .
+                      $return . q{])}, "",
+                      q{verbose_exceptions},
+                      $tracelevel);
+        Parse::RecDescent::_trace(q{(consumed: [} .
+                      Parse::RecDescent::_tracemax(substr($_[1],0,-length($text))) . q{])}, 
+                      Parse::RecDescent::_tracefirst($text),
+                      , q{verbose_exceptions},
+                      $tracelevel)
+    }
+    $_[1] = $text;
+    return $return;
 }
 
 # ARGS ARE: ($parser, $text; $repeating, $_noactions, \@args)
@@ -5169,236 +5258,241 @@ sub Parse::RecDescent::Java::Javap::Grammar::verbose_constant_details
 	use vars q{$tracelevel};
 	local $tracelevel = ($tracelevel||0)+1;
 	$ERRORS = 0;
-	my $thisrule = $thisparser->{"rules"}{"verbose_constant_details"};
-	
-	Parse::RecDescent::_trace(q{Trying rule: [verbose_constant_details]},
-				  Parse::RecDescent::_tracefirst($_[1]),
-				  q{verbose_constant_details},
-				  $tracelevel)
-					if defined $::RD_TRACE;
+    my $thisrule = $thisparser->{"rules"}{"verbose_constant_details"};
+    
+    Parse::RecDescent::_trace(q{Trying rule: [verbose_constant_details]},
+                  Parse::RecDescent::_tracefirst($_[1]),
+                  q{verbose_constant_details},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
 
-	
-	my $err_at = @{$thisparser->{errors}};
+    
+    my $err_at = @{$thisparser->{errors}};
 
-	my $score;
-	my $score_return;
-	my $_tok;
-	my $return = undef;
-	my $_matched=0;
-	my $commit=0;
-	my @item = ();
-	my %item = ();
-	my $repeating =  defined($_[2]) && $_[2];
-	my $_noactions = defined($_[3]) && $_[3];
- 	my @arg =        defined $_[4] ? @{ &{$_[4]} } : ();
-	my %arg =        ($#arg & 01) ? @arg : (@arg, undef);
-	my $text;
-	my $lastsep="";
-	my $expectation = new Parse::RecDescent::Expectation($thisrule->expected());
-	$expectation->at($_[1]);
-	
-	my $thisline;
-	tie $thisline, q{Parse::RecDescent::LineCounter}, \$text, $thisparser;
+    my $score;
+    my $score_return;
+    my $_tok;
+    my $return = undef;
+    my $_matched=0;
+    my $commit=0;
+    my @item = ();
+    my %item = ();
+    my $repeating =  defined($_[2]) && $_[2];
+    my $_noactions = defined($_[3]) && $_[3];
+    my @arg =    defined $_[4] ? @{ &{$_[4]} } : ();
+    my %arg =    ($#arg & 01) ? @arg : (@arg, undef);
+    my $text;
+    my $lastsep="";
+    my $current_match;
+    my $expectation = new Parse::RecDescent::Expectation(q{'Constant'});
+    $expectation->at($_[1]);
+    
+    my $thisline;
+    tie $thisline, q{Parse::RecDescent::LineCounter}, \$text, $thisparser;
 
-	
+    
 
-	while (!$_matched && !$commit)
-	{
-		
-		Parse::RecDescent::_trace(q{Trying production: ['Constant' 'value:' arg constant_value]},
-					  Parse::RecDescent::_tracefirst($_[1]),
-					  q{verbose_constant_details},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		my $thisprod = $thisrule->{"prods"}[0];
-		$text = $_[1];
-		my $_savetext;
-		@item = (q{verbose_constant_details});
-		%item = (__RULE__ => q{verbose_constant_details});
-		my $repcount = 0;
+    while (!$_matched && !$commit)
+    {
+        
+        Parse::RecDescent::_trace(q{Trying production: ['Constant' 'value:' arg constant_value]},
+                      Parse::RecDescent::_tracefirst($_[1]),
+                      q{verbose_constant_details},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        my $thisprod = $thisrule->{"prods"}[0];
+        $text = $_[1];
+        my $_savetext;
+        @item = (q{verbose_constant_details});
+        %item = (__RULE__ => q{verbose_constant_details});
+        my $repcount = 0;
 
 
-		Parse::RecDescent::_trace(q{Trying terminal: ['Constant']},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{verbose_constant_details},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$lastsep = "";
-		$expectation->is(q{})->at($text);
-		
+        Parse::RecDescent::_trace(q{Trying terminal: ['Constant']},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{verbose_constant_details},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $lastsep = "";
+        $expectation->is(q{})->at($text);
+        
 
-		unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ s/\AConstant//)
-		{
-			
-			$expectation->failed();
-			Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
-						. $& . q{])},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-		push @item, $item{__STRING1__}=$&;
-		
+        unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ m/\AConstant/)
+        {
+            
+            $expectation->failed();
+            Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+            last;
+        }
+		$current_match = substr($text, $-[0], $+[0] - $-[0]);
+        substr($text,0,length($current_match),q{});
+        Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
+                        . $current_match . q{])},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+        push @item, $item{__STRING1__}=$current_match;
+        
 
-		Parse::RecDescent::_trace(q{Trying terminal: ['value:']},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{verbose_constant_details},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$lastsep = "";
-		$expectation->is(q{'value:'})->at($text);
-		
+        Parse::RecDescent::_trace(q{Trying terminal: ['value:']},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{verbose_constant_details},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $lastsep = "";
+        $expectation->is(q{'value:'})->at($text);
+        
 
-		unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ s/\Avalue\://)
-		{
-			
-			$expectation->failed();
-			Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
-						. $& . q{])},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-		push @item, $item{__STRING2__}=$&;
-		
+        unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ m/\Avalue\:/)
+        {
+            
+            $expectation->failed();
+            Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+            last;
+        }
+		$current_match = substr($text, $-[0], $+[0] - $-[0]);
+        substr($text,0,length($current_match),q{});
+        Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
+                        . $current_match . q{])},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+        push @item, $item{__STRING2__}=$current_match;
+        
 
-		Parse::RecDescent::_trace(q{Trying subrule: [arg]},
-				  Parse::RecDescent::_tracefirst($text),
-				  q{verbose_constant_details},
-				  $tracelevel)
-					if defined $::RD_TRACE;
-		if (1) { no strict qw{refs};
-		$expectation->is(q{arg})->at($text);
-		unless (defined ($_tok = Parse::RecDescent::Java::Javap::Grammar::arg($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
-		{
-			
-			Parse::RecDescent::_trace(q{<<Didn't match subrule: [arg]>>},
-						  Parse::RecDescent::_tracefirst($text),
-						  q{verbose_constant_details},
-						  $tracelevel)
-							if defined $::RD_TRACE;
-			$expectation->failed();
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched subrule: [arg]<< (return value: [}
-					. $_tok . q{]},
-					  
-					  Parse::RecDescent::_tracefirst($text),
-					  q{verbose_constant_details},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$item{q{arg}} = $_tok;
-		push @item, $_tok;
-		
-		}
+        Parse::RecDescent::_trace(q{Trying subrule: [arg]},
+                  Parse::RecDescent::_tracefirst($text),
+                  q{verbose_constant_details},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
+        if (1) { no strict qw{refs};
+        $expectation->is(q{arg})->at($text);
+        unless (defined ($_tok = Parse::RecDescent::Java::Javap::Grammar::arg($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
+        {
+            
+            Parse::RecDescent::_trace(q{<<Didn't match subrule: [arg]>>},
+                          Parse::RecDescent::_tracefirst($text),
+                          q{verbose_constant_details},
+                          $tracelevel)
+                            if defined $::RD_TRACE;
+            $expectation->failed();
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched subrule: [arg]<< (return value: [}
+                    . $_tok . q{]},
+                      
+                      Parse::RecDescent::_tracefirst($text),
+                      q{verbose_constant_details},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $item{q{arg}} = $_tok;
+        push @item, $_tok;
+        
+        }
 
-		Parse::RecDescent::_trace(q{Trying subrule: [constant_value]},
-				  Parse::RecDescent::_tracefirst($text),
-				  q{verbose_constant_details},
-				  $tracelevel)
-					if defined $::RD_TRACE;
-		if (1) { no strict qw{refs};
-		$expectation->is(q{constant_value})->at($text);
-		unless (defined ($_tok = Parse::RecDescent::Java::Javap::Grammar::constant_value($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
-		{
-			
-			Parse::RecDescent::_trace(q{<<Didn't match subrule: [constant_value]>>},
-						  Parse::RecDescent::_tracefirst($text),
-						  q{verbose_constant_details},
-						  $tracelevel)
-							if defined $::RD_TRACE;
-			$expectation->failed();
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched subrule: [constant_value]<< (return value: [}
-					. $_tok . q{]},
-					  
-					  Parse::RecDescent::_tracefirst($text),
-					  q{verbose_constant_details},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$item{q{constant_value}} = $_tok;
-		push @item, $_tok;
-		
-		}
+        Parse::RecDescent::_trace(q{Trying subrule: [constant_value]},
+                  Parse::RecDescent::_tracefirst($text),
+                  q{verbose_constant_details},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
+        if (1) { no strict qw{refs};
+        $expectation->is(q{constant_value})->at($text);
+        unless (defined ($_tok = Parse::RecDescent::Java::Javap::Grammar::constant_value($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
+        {
+            
+            Parse::RecDescent::_trace(q{<<Didn't match subrule: [constant_value]>>},
+                          Parse::RecDescent::_tracefirst($text),
+                          q{verbose_constant_details},
+                          $tracelevel)
+                            if defined $::RD_TRACE;
+            $expectation->failed();
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched subrule: [constant_value]<< (return value: [}
+                    . $_tok . q{]},
+                      
+                      Parse::RecDescent::_tracefirst($text),
+                      q{verbose_constant_details},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $item{q{constant_value}} = $_tok;
+        push @item, $_tok;
+        
+        }
 
-		Parse::RecDescent::_trace(q{Trying action},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{verbose_constant_details},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		
+        Parse::RecDescent::_trace(q{Trying action},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{verbose_constant_details},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        
 
-		$_tok = ($_noactions) ? 0 : do {
+        $_tok = ($_noactions) ? 0 : do {
     $item{ constant_value }
 };
-		unless (defined $_tok)
-		{
-			Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
-					if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
-					  . $_tok . q{])},
-					  Parse::RecDescent::_tracefirst($text))
-						if defined $::RD_TRACE;
-		push @item, $_tok;
-		$item{__ACTION1__}=$_tok;
-		
+        unless (defined $_tok)
+        {
+            Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
+                    if defined $::RD_TRACE;
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
+                      . $_tok . q{])},
+                      Parse::RecDescent::_tracefirst($text))
+                        if defined $::RD_TRACE;
+        push @item, $_tok;
+        $item{__ACTION1__}=$_tok;
+        
 
 
-		Parse::RecDescent::_trace(q{>>Matched production: ['Constant' 'value:' arg constant_value]<<},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{verbose_constant_details},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$_matched = 1;
-		last;
-	}
+        Parse::RecDescent::_trace(q{>>Matched production: ['Constant' 'value:' arg constant_value]<<},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{verbose_constant_details},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $_matched = 1;
+        last;
+    }
 
 
-        unless ( $_matched || defined($return) || defined($score) )
-	{
-		
+    unless ( $_matched || defined($score) )
+    {
+        
 
-		$_[1] = $text;	# NOT SURE THIS IS NEEDED
-		Parse::RecDescent::_trace(q{<<Didn't match rule>>},
-					 Parse::RecDescent::_tracefirst($_[1]),
-					 q{verbose_constant_details},
-					 $tracelevel)
-					if defined $::RD_TRACE;
-		return undef;
-	}
-	if (!defined($return) && defined($score))
-	{
-		Parse::RecDescent::_trace(q{>>Accepted scored production<<}, "",
-					  q{verbose_constant_details},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$return = $score_return;
-	}
-	splice @{$thisparser->{errors}}, $err_at;
-	$return = $item[$#item] unless defined $return;
-	if (defined $::RD_TRACE)
-	{
-		Parse::RecDescent::_trace(q{>>Matched rule<< (return value: [} .
-					  $return . q{])}, "",
-					  q{verbose_constant_details},
-					  $tracelevel);
-		Parse::RecDescent::_trace(q{(consumed: [} .
-					  Parse::RecDescent::_tracemax(substr($_[1],0,-length($text))) . q{])}, 
-					  Parse::RecDescent::_tracefirst($text),
-					  , q{verbose_constant_details},
-					  $tracelevel)
-	}
-	$_[1] = $text;
-	return $return;
+        $_[1] = $text;  # NOT SURE THIS IS NEEDED
+        Parse::RecDescent::_trace(q{<<Didn't match rule>>},
+                     Parse::RecDescent::_tracefirst($_[1]),
+                     q{verbose_constant_details},
+                     $tracelevel)
+                    if defined $::RD_TRACE;
+        return undef;
+    }
+    if (!defined($return) && defined($score))
+    {
+        Parse::RecDescent::_trace(q{>>Accepted scored production<<}, "",
+                      q{verbose_constant_details},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $return = $score_return;
+    }
+    splice @{$thisparser->{errors}}, $err_at;
+    $return = $item[$#item] unless defined $return;
+    if (defined $::RD_TRACE)
+    {
+        Parse::RecDescent::_trace(q{>>Matched rule<< (return value: [} .
+                      $return . q{])}, "",
+                      q{verbose_constant_details},
+                      $tracelevel);
+        Parse::RecDescent::_trace(q{(consumed: [} .
+                      Parse::RecDescent::_tracemax(substr($_[1],0,-length($text))) . q{])}, 
+                      Parse::RecDescent::_tracefirst($text),
+                      , q{verbose_constant_details},
+                      $tracelevel)
+    }
+    $_[1] = $text;
+    return $return;
 }
 
 # ARGS ARE: ($parser, $text; $repeating, $_noactions, \@args)
@@ -5408,179 +5502,182 @@ sub Parse::RecDescent::Java::Javap::Grammar::implements_clause
 	use vars q{$tracelevel};
 	local $tracelevel = ($tracelevel||0)+1;
 	$ERRORS = 0;
-	my $thisrule = $thisparser->{"rules"}{"implements_clause"};
-	
-	Parse::RecDescent::_trace(q{Trying rule: [implements_clause]},
-				  Parse::RecDescent::_tracefirst($_[1]),
-				  q{implements_clause},
-				  $tracelevel)
-					if defined $::RD_TRACE;
+    my $thisrule = $thisparser->{"rules"}{"implements_clause"};
+    
+    Parse::RecDescent::_trace(q{Trying rule: [implements_clause]},
+                  Parse::RecDescent::_tracefirst($_[1]),
+                  q{implements_clause},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
 
-	
-	my $err_at = @{$thisparser->{errors}};
+    
+    my $err_at = @{$thisparser->{errors}};
 
-	my $score;
-	my $score_return;
-	my $_tok;
-	my $return = undef;
-	my $_matched=0;
-	my $commit=0;
-	my @item = ();
-	my %item = ();
-	my $repeating =  defined($_[2]) && $_[2];
-	my $_noactions = defined($_[3]) && $_[3];
- 	my @arg =        defined $_[4] ? @{ &{$_[4]} } : ();
-	my %arg =        ($#arg & 01) ? @arg : (@arg, undef);
-	my $text;
-	my $lastsep="";
-	my $expectation = new Parse::RecDescent::Expectation($thisrule->expected());
-	$expectation->at($_[1]);
-	
-	my $thisline;
-	tie $thisline, q{Parse::RecDescent::LineCounter}, \$text, $thisparser;
+    my $score;
+    my $score_return;
+    my $_tok;
+    my $return = undef;
+    my $_matched=0;
+    my $commit=0;
+    my @item = ();
+    my %item = ();
+    my $repeating =  defined($_[2]) && $_[2];
+    my $_noactions = defined($_[3]) && $_[3];
+    my @arg =    defined $_[4] ? @{ &{$_[4]} } : ();
+    my %arg =    ($#arg & 01) ? @arg : (@arg, undef);
+    my $text;
+    my $lastsep="";
+    my $current_match;
+    my $expectation = new Parse::RecDescent::Expectation(q{'implements'});
+    $expectation->at($_[1]);
+    
+    my $thisline;
+    tie $thisline, q{Parse::RecDescent::LineCounter}, \$text, $thisparser;
 
-	
+    
 
-	while (!$_matched && !$commit)
-	{
-		
-		Parse::RecDescent::_trace(q{Trying production: ['implements' comma_list]},
-					  Parse::RecDescent::_tracefirst($_[1]),
-					  q{implements_clause},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		my $thisprod = $thisrule->{"prods"}[0];
-		$text = $_[1];
-		my $_savetext;
-		@item = (q{implements_clause});
-		%item = (__RULE__ => q{implements_clause});
-		my $repcount = 0;
-
-
-		Parse::RecDescent::_trace(q{Trying terminal: ['implements']},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{implements_clause},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$lastsep = "";
-		$expectation->is(q{})->at($text);
-		
-
-		unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ s/\Aimplements//)
-		{
-			
-			$expectation->failed();
-			Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
-						. $& . q{])},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-		push @item, $item{__STRING1__}=$&;
-		
-
-		Parse::RecDescent::_trace(q{Trying subrule: [comma_list]},
-				  Parse::RecDescent::_tracefirst($text),
-				  q{implements_clause},
-				  $tracelevel)
-					if defined $::RD_TRACE;
-		if (1) { no strict qw{refs};
-		$expectation->is(q{comma_list})->at($text);
-		unless (defined ($_tok = Parse::RecDescent::Java::Javap::Grammar::comma_list($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
-		{
-			
-			Parse::RecDescent::_trace(q{<<Didn't match subrule: [comma_list]>>},
-						  Parse::RecDescent::_tracefirst($text),
-						  q{implements_clause},
-						  $tracelevel)
-							if defined $::RD_TRACE;
-			$expectation->failed();
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched subrule: [comma_list]<< (return value: [}
-					. $_tok . q{]},
-					  
-					  Parse::RecDescent::_tracefirst($text),
-					  q{implements_clause},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$item{q{comma_list}} = $_tok;
-		push @item, $_tok;
-		
-		}
-
-		Parse::RecDescent::_trace(q{Trying action},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{implements_clause},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		
-
-		$_tok = ($_noactions) ? 0 : do { $item{ comma_list } };
-		unless (defined $_tok)
-		{
-			Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
-					if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
-					  . $_tok . q{])},
-					  Parse::RecDescent::_tracefirst($text))
-						if defined $::RD_TRACE;
-		push @item, $_tok;
-		$item{__ACTION1__}=$_tok;
-		
+    while (!$_matched && !$commit)
+    {
+        
+        Parse::RecDescent::_trace(q{Trying production: ['implements' comma_list]},
+                      Parse::RecDescent::_tracefirst($_[1]),
+                      q{implements_clause},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        my $thisprod = $thisrule->{"prods"}[0];
+        $text = $_[1];
+        my $_savetext;
+        @item = (q{implements_clause});
+        %item = (__RULE__ => q{implements_clause});
+        my $repcount = 0;
 
 
-		Parse::RecDescent::_trace(q{>>Matched production: ['implements' comma_list]<<},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{implements_clause},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$_matched = 1;
-		last;
-	}
+        Parse::RecDescent::_trace(q{Trying terminal: ['implements']},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{implements_clause},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $lastsep = "";
+        $expectation->is(q{})->at($text);
+        
+
+        unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ m/\Aimplements/)
+        {
+            
+            $expectation->failed();
+            Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+            last;
+        }
+		$current_match = substr($text, $-[0], $+[0] - $-[0]);
+        substr($text,0,length($current_match),q{});
+        Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
+                        . $current_match . q{])},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+        push @item, $item{__STRING1__}=$current_match;
+        
+
+        Parse::RecDescent::_trace(q{Trying subrule: [comma_list]},
+                  Parse::RecDescent::_tracefirst($text),
+                  q{implements_clause},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
+        if (1) { no strict qw{refs};
+        $expectation->is(q{comma_list})->at($text);
+        unless (defined ($_tok = Parse::RecDescent::Java::Javap::Grammar::comma_list($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
+        {
+            
+            Parse::RecDescent::_trace(q{<<Didn't match subrule: [comma_list]>>},
+                          Parse::RecDescent::_tracefirst($text),
+                          q{implements_clause},
+                          $tracelevel)
+                            if defined $::RD_TRACE;
+            $expectation->failed();
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched subrule: [comma_list]<< (return value: [}
+                    . $_tok . q{]},
+                      
+                      Parse::RecDescent::_tracefirst($text),
+                      q{implements_clause},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $item{q{comma_list}} = $_tok;
+        push @item, $_tok;
+        
+        }
+
+        Parse::RecDescent::_trace(q{Trying action},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{implements_clause},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        
+
+        $_tok = ($_noactions) ? 0 : do { $item{ comma_list } };
+        unless (defined $_tok)
+        {
+            Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
+                    if defined $::RD_TRACE;
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
+                      . $_tok . q{])},
+                      Parse::RecDescent::_tracefirst($text))
+                        if defined $::RD_TRACE;
+        push @item, $_tok;
+        $item{__ACTION1__}=$_tok;
+        
 
 
-        unless ( $_matched || defined($return) || defined($score) )
-	{
-		
+        Parse::RecDescent::_trace(q{>>Matched production: ['implements' comma_list]<<},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{implements_clause},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $_matched = 1;
+        last;
+    }
 
-		$_[1] = $text;	# NOT SURE THIS IS NEEDED
-		Parse::RecDescent::_trace(q{<<Didn't match rule>>},
-					 Parse::RecDescent::_tracefirst($_[1]),
-					 q{implements_clause},
-					 $tracelevel)
-					if defined $::RD_TRACE;
-		return undef;
-	}
-	if (!defined($return) && defined($score))
-	{
-		Parse::RecDescent::_trace(q{>>Accepted scored production<<}, "",
-					  q{implements_clause},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$return = $score_return;
-	}
-	splice @{$thisparser->{errors}}, $err_at;
-	$return = $item[$#item] unless defined $return;
-	if (defined $::RD_TRACE)
-	{
-		Parse::RecDescent::_trace(q{>>Matched rule<< (return value: [} .
-					  $return . q{])}, "",
-					  q{implements_clause},
-					  $tracelevel);
-		Parse::RecDescent::_trace(q{(consumed: [} .
-					  Parse::RecDescent::_tracemax(substr($_[1],0,-length($text))) . q{])}, 
-					  Parse::RecDescent::_tracefirst($text),
-					  , q{implements_clause},
-					  $tracelevel)
-	}
-	$_[1] = $text;
-	return $return;
+
+    unless ( $_matched || defined($score) )
+    {
+        
+
+        $_[1] = $text;  # NOT SURE THIS IS NEEDED
+        Parse::RecDescent::_trace(q{<<Didn't match rule>>},
+                     Parse::RecDescent::_tracefirst($_[1]),
+                     q{implements_clause},
+                     $tracelevel)
+                    if defined $::RD_TRACE;
+        return undef;
+    }
+    if (!defined($return) && defined($score))
+    {
+        Parse::RecDescent::_trace(q{>>Accepted scored production<<}, "",
+                      q{implements_clause},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $return = $score_return;
+    }
+    splice @{$thisparser->{errors}}, $err_at;
+    $return = $item[$#item] unless defined $return;
+    if (defined $::RD_TRACE)
+    {
+        Parse::RecDescent::_trace(q{>>Matched rule<< (return value: [} .
+                      $return . q{])}, "",
+                      q{implements_clause},
+                      $tracelevel);
+        Parse::RecDescent::_trace(q{(consumed: [} .
+                      Parse::RecDescent::_tracemax(substr($_[1],0,-length($text))) . q{])}, 
+                      Parse::RecDescent::_tracefirst($text),
+                      , q{implements_clause},
+                      $tracelevel)
+    }
+    $_[1] = $text;
+    return $return;
 }
 
 # ARGS ARE: ($parser, $text; $repeating, $_noactions, \@args)
@@ -5590,519 +5687,535 @@ sub Parse::RecDescent::Java::Javap::Grammar::constant
 	use vars q{$tracelevel};
 	local $tracelevel = ($tracelevel||0)+1;
 	$ERRORS = 0;
-	my $thisrule = $thisparser->{"rules"}{"constant"};
-	
-	Parse::RecDescent::_trace(q{Trying rule: [constant]},
-				  Parse::RecDescent::_tracefirst($_[1]),
-				  q{constant},
-				  $tracelevel)
-					if defined $::RD_TRACE;
+    my $thisrule = $thisparser->{"rules"}{"constant"};
+    
+    Parse::RecDescent::_trace(q{Trying rule: [constant]},
+                  Parse::RecDescent::_tracefirst($_[1]),
+                  q{constant},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
 
-	
-	my $err_at = @{$thisparser->{errors}};
+    
+    my $err_at = @{$thisparser->{errors}};
 
-	my $score;
-	my $score_return;
-	my $_tok;
-	my $return = undef;
-	my $_matched=0;
-	my $commit=0;
-	my @item = ();
-	my %item = ();
-	my $repeating =  defined($_[2]) && $_[2];
-	my $_noactions = defined($_[3]) && $_[3];
- 	my @arg =        defined $_[4] ? @{ &{$_[4]} } : ();
-	my %arg =        ($#arg & 01) ? @arg : (@arg, undef);
-	my $text;
-	my $lastsep="";
-	my $expectation = new Parse::RecDescent::Expectation($thisrule->expected());
-	$expectation->at($_[1]);
-	
-	my $thisline;
-	tie $thisline, q{Parse::RecDescent::LineCounter}, \$text, $thisparser;
+    my $score;
+    my $score_return;
+    my $_tok;
+    my $return = undef;
+    my $_matched=0;
+    my $commit=0;
+    my @item = ();
+    my %item = ();
+    my $repeating =  defined($_[2]) && $_[2];
+    my $_noactions = defined($_[3]) && $_[3];
+    my @arg =    defined $_[4] ? @{ &{$_[4]} } : ();
+    my %arg =    ($#arg & 01) ? @arg : (@arg, undef);
+    my $text;
+    my $lastsep="";
+    my $current_match;
+    my $expectation = new Parse::RecDescent::Expectation(q{ACCESS, or 'static'});
+    $expectation->at($_[1]);
+    
+    my $thisline;
+    tie $thisline, q{Parse::RecDescent::LineCounter}, \$text, $thisparser;
 
-	
+    
 
-	while (!$_matched && !$commit)
-	{
-		
-		Parse::RecDescent::_trace(q{Trying production: [ACCESS 'static' constant_modifier arg NAME ';' verbose_constant_details]},
-					  Parse::RecDescent::_tracefirst($_[1]),
-					  q{constant},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		my $thisprod = $thisrule->{"prods"}[0];
-		$text = $_[1];
-		my $_savetext;
-		@item = (q{constant});
-		%item = (__RULE__ => q{constant});
-		my $repcount = 0;
-
-
-		Parse::RecDescent::_trace(q{Trying subrule: [ACCESS]},
-				  Parse::RecDescent::_tracefirst($text),
-				  q{constant},
-				  $tracelevel)
-					if defined $::RD_TRACE;
-		if (1) { no strict qw{refs};
-		$expectation->is(q{})->at($text);
-		unless (defined ($_tok = Parse::RecDescent::Java::Javap::Grammar::ACCESS($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
-		{
-			
-			Parse::RecDescent::_trace(q{<<Didn't match subrule: [ACCESS]>>},
-						  Parse::RecDescent::_tracefirst($text),
-						  q{constant},
-						  $tracelevel)
-							if defined $::RD_TRACE;
-			$expectation->failed();
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched subrule: [ACCESS]<< (return value: [}
-					. $_tok . q{]},
-					  
-					  Parse::RecDescent::_tracefirst($text),
-					  q{constant},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$item{q{ACCESS}} = $_tok;
-		push @item, $_tok;
-		
-		}
-
-		Parse::RecDescent::_trace(q{Trying terminal: ['static']},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{constant},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$lastsep = "";
-		$expectation->is(q{'static'})->at($text);
-		
-
-		unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ s/\Astatic//)
-		{
-			
-			$expectation->failed();
-			Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
-						. $& . q{])},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-		push @item, $item{__STRING1__}=$&;
-		
-
-		Parse::RecDescent::_trace(q{Trying repeated subrule: [constant_modifier]},
-				  Parse::RecDescent::_tracefirst($text),
-				  q{constant},
-				  $tracelevel)
-					if defined $::RD_TRACE;
-		$expectation->is(q{constant_modifier})->at($text);
-		
-		unless (defined ($_tok = $thisparser->_parserepeat($text, \&Parse::RecDescent::Java::Javap::Grammar::constant_modifier, 0, 100000000, $_noactions,$expectation,undef))) 
-		{
-			Parse::RecDescent::_trace(q{<<Didn't match repeated subrule: [constant_modifier]>>},
-						  Parse::RecDescent::_tracefirst($text),
-						  q{constant},
-						  $tracelevel)
-							if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched repeated subrule: [constant_modifier]<< (}
-					. @$_tok . q{ times)},
-					  
-					  Parse::RecDescent::_tracefirst($text),
-					  q{constant},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$item{q{constant_modifier(s?)}} = $_tok;
-		push @item, $_tok;
-		
+    while (!$_matched && !$commit)
+    {
+        
+        Parse::RecDescent::_trace(q{Trying production: [ACCESS 'static' constant_modifier arg NAME ';' verbose_constant_details]},
+                      Parse::RecDescent::_tracefirst($_[1]),
+                      q{constant},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        my $thisprod = $thisrule->{"prods"}[0];
+        $text = $_[1];
+        my $_savetext;
+        @item = (q{constant});
+        %item = (__RULE__ => q{constant});
+        my $repcount = 0;
 
 
-		Parse::RecDescent::_trace(q{Trying subrule: [arg]},
-				  Parse::RecDescent::_tracefirst($text),
-				  q{constant},
-				  $tracelevel)
-					if defined $::RD_TRACE;
-		if (1) { no strict qw{refs};
-		$expectation->is(q{arg})->at($text);
-		unless (defined ($_tok = Parse::RecDescent::Java::Javap::Grammar::arg($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
-		{
-			
-			Parse::RecDescent::_trace(q{<<Didn't match subrule: [arg]>>},
-						  Parse::RecDescent::_tracefirst($text),
-						  q{constant},
-						  $tracelevel)
-							if defined $::RD_TRACE;
-			$expectation->failed();
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched subrule: [arg]<< (return value: [}
-					. $_tok . q{]},
-					  
-					  Parse::RecDescent::_tracefirst($text),
-					  q{constant},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$item{q{arg}} = $_tok;
-		push @item, $_tok;
-		
-		}
+        Parse::RecDescent::_trace(q{Trying subrule: [ACCESS]},
+                  Parse::RecDescent::_tracefirst($text),
+                  q{constant},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
+        if (1) { no strict qw{refs};
+        $expectation->is(q{})->at($text);
+        unless (defined ($_tok = Parse::RecDescent::Java::Javap::Grammar::ACCESS($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
+        {
+            
+            Parse::RecDescent::_trace(q{<<Didn't match subrule: [ACCESS]>>},
+                          Parse::RecDescent::_tracefirst($text),
+                          q{constant},
+                          $tracelevel)
+                            if defined $::RD_TRACE;
+            $expectation->failed();
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched subrule: [ACCESS]<< (return value: [}
+                    . $_tok . q{]},
+                      
+                      Parse::RecDescent::_tracefirst($text),
+                      q{constant},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $item{q{ACCESS}} = $_tok;
+        push @item, $_tok;
+        
+        }
 
-		Parse::RecDescent::_trace(q{Trying subrule: [NAME]},
-				  Parse::RecDescent::_tracefirst($text),
-				  q{constant},
-				  $tracelevel)
-					if defined $::RD_TRACE;
-		if (1) { no strict qw{refs};
-		$expectation->is(q{NAME})->at($text);
-		unless (defined ($_tok = Parse::RecDescent::Java::Javap::Grammar::NAME($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
-		{
-			
-			Parse::RecDescent::_trace(q{<<Didn't match subrule: [NAME]>>},
-						  Parse::RecDescent::_tracefirst($text),
-						  q{constant},
-						  $tracelevel)
-							if defined $::RD_TRACE;
-			$expectation->failed();
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched subrule: [NAME]<< (return value: [}
-					. $_tok . q{]},
-					  
-					  Parse::RecDescent::_tracefirst($text),
-					  q{constant},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$item{q{NAME}} = $_tok;
-		push @item, $_tok;
-		
-		}
+        Parse::RecDescent::_trace(q{Trying terminal: ['static']},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{constant},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $lastsep = "";
+        $expectation->is(q{'static'})->at($text);
+        
 
-		Parse::RecDescent::_trace(q{Trying terminal: [';']},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{constant},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$lastsep = "";
-		$expectation->is(q{';'})->at($text);
-		
+        unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ m/\Astatic/)
+        {
+            
+            $expectation->failed();
+            Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+            last;
+        }
+		$current_match = substr($text, $-[0], $+[0] - $-[0]);
+        substr($text,0,length($current_match),q{});
+        Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
+                        . $current_match . q{])},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+        push @item, $item{__STRING1__}=$current_match;
+        
 
-		unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ s/\A\;//)
-		{
-			
-			$expectation->failed();
-			Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
-						. $& . q{])},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-		push @item, $item{__STRING2__}=$&;
-		
-
-		Parse::RecDescent::_trace(q{Trying repeated subrule: [verbose_constant_details]},
-				  Parse::RecDescent::_tracefirst($text),
-				  q{constant},
-				  $tracelevel)
-					if defined $::RD_TRACE;
-		$expectation->is(q{verbose_constant_details})->at($text);
-		
-		unless (defined ($_tok = $thisparser->_parserepeat($text, \&Parse::RecDescent::Java::Javap::Grammar::verbose_constant_details, 0, 1, $_noactions,$expectation,undef))) 
-		{
-			Parse::RecDescent::_trace(q{<<Didn't match repeated subrule: [verbose_constant_details]>>},
-						  Parse::RecDescent::_tracefirst($text),
-						  q{constant},
-						  $tracelevel)
-							if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched repeated subrule: [verbose_constant_details]<< (}
-					. @$_tok . q{ times)},
-					  
-					  Parse::RecDescent::_tracefirst($text),
-					  q{constant},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$item{q{verbose_constant_details(?)}} = $_tok;
-		push @item, $_tok;
-		
+        Parse::RecDescent::_trace(q{Trying repeated subrule: [constant_modifier]},
+                  Parse::RecDescent::_tracefirst($text),
+                  q{constant},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
+        $expectation->is(q{constant_modifier})->at($text);
+        
+        unless (defined ($_tok = $thisparser->_parserepeat($text, \&Parse::RecDescent::Java::Javap::Grammar::constant_modifier, 0, 100000000, $_noactions,$expectation,sub { \@arg }))) 
+        {
+            Parse::RecDescent::_trace(q{<<Didn't match repeated subrule: [constant_modifier]>>},
+                          Parse::RecDescent::_tracefirst($text),
+                          q{constant},
+                          $tracelevel)
+                            if defined $::RD_TRACE;
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched repeated subrule: [constant_modifier]<< (}
+                    . @$_tok . q{ times)},
+                      
+                      Parse::RecDescent::_tracefirst($text),
+                      q{constant},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $item{q{constant_modifier(s?)}} = $_tok;
+        push @item, $_tok;
+        
 
 
-		Parse::RecDescent::_trace(q{Trying action},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{constant},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		
+        Parse::RecDescent::_trace(q{Trying subrule: [arg]},
+                  Parse::RecDescent::_tracefirst($text),
+                  q{constant},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
+        if (1) { no strict qw{refs};
+        $expectation->is(q{arg})->at($text);
+        unless (defined ($_tok = Parse::RecDescent::Java::Javap::Grammar::arg($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
+        {
+            
+            Parse::RecDescent::_trace(q{<<Didn't match subrule: [arg]>>},
+                          Parse::RecDescent::_tracefirst($text),
+                          q{constant},
+                          $tracelevel)
+                            if defined $::RD_TRACE;
+            $expectation->failed();
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched subrule: [arg]<< (return value: [}
+                    . $_tok . q{]},
+                      
+                      Parse::RecDescent::_tracefirst($text),
+                      q{constant},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $item{q{arg}} = $_tok;
+        push @item, $_tok;
+        
+        }
 
-		$_tok = ($_noactions) ? 0 : do {
+        Parse::RecDescent::_trace(q{Trying subrule: [NAME]},
+                  Parse::RecDescent::_tracefirst($text),
+                  q{constant},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
+        if (1) { no strict qw{refs};
+        $expectation->is(q{NAME})->at($text);
+        unless (defined ($_tok = Parse::RecDescent::Java::Javap::Grammar::NAME($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
+        {
+            
+            Parse::RecDescent::_trace(q{<<Didn't match subrule: [NAME]>>},
+                          Parse::RecDescent::_tracefirst($text),
+                          q{constant},
+                          $tracelevel)
+                            if defined $::RD_TRACE;
+            $expectation->failed();
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched subrule: [NAME]<< (return value: [}
+                    . $_tok . q{]},
+                      
+                      Parse::RecDescent::_tracefirst($text),
+                      q{constant},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $item{q{NAME}} = $_tok;
+        push @item, $_tok;
+        
+        }
+
+        Parse::RecDescent::_trace(q{Trying terminal: [';']},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{constant},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $lastsep = "";
+        $expectation->is(q{';'})->at($text);
+        
+
+        unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ m/\A\;/)
+        {
+            
+            $expectation->failed();
+            Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+            last;
+        }
+		$current_match = substr($text, $-[0], $+[0] - $-[0]);
+        substr($text,0,length($current_match),q{});
+        Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
+                        . $current_match . q{])},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+        push @item, $item{__STRING2__}=$current_match;
+        
+
+        Parse::RecDescent::_trace(q{Trying repeated subrule: [verbose_constant_details]},
+                  Parse::RecDescent::_tracefirst($text),
+                  q{constant},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
+        $expectation->is(q{verbose_constant_details})->at($text);
+        
+        unless (defined ($_tok = $thisparser->_parserepeat($text, \&Parse::RecDescent::Java::Javap::Grammar::verbose_constant_details, 0, 1, $_noactions,$expectation,sub { \@arg }))) 
+        {
+            Parse::RecDescent::_trace(q{<<Didn't match repeated subrule: [verbose_constant_details]>>},
+                          Parse::RecDescent::_tracefirst($text),
+                          q{constant},
+                          $tracelevel)
+                            if defined $::RD_TRACE;
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched repeated subrule: [verbose_constant_details]<< (}
+                    . @$_tok . q{ times)},
+                      
+                      Parse::RecDescent::_tracefirst($text),
+                      q{constant},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $item{q{verbose_constant_details(?)}} = $_tok;
+        push @item, $_tok;
+        
+
+
+        Parse::RecDescent::_trace(q{Trying action},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{constant},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        
+
+        $_tok = ($_noactions) ? 0 : do {
+    my $type = $item{ arg }[0];
+    my $value = $item{ 'verbose_constant_details(?)' }[0];
+    # remove trailing 'd' from double constants
+    $value =~ s/d$// if $type->{name} eq 'double';
+    #warn "constant( $item{ NAME } ) @{[ %$type ]}: '$value'";
     {
         body_element => 'constant',
         access       => $item{ ACCESS },
         modifiers    => $item{ 'constant_modifier(s?)' },
-        type         => $item{ arg }[0],
+        type         => $type,
         name         => $item{ NAME },
-        value        => $item{ 'verbose_constant_details(?)' }[0],
+        value        => $value,
     }
 };
-		unless (defined $_tok)
-		{
-			Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
-					if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
-					  . $_tok . q{])},
-					  Parse::RecDescent::_tracefirst($text))
-						if defined $::RD_TRACE;
-		push @item, $_tok;
-		$item{__ACTION1__}=$_tok;
-		
+        unless (defined $_tok)
+        {
+            Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
+                    if defined $::RD_TRACE;
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
+                      . $_tok . q{])},
+                      Parse::RecDescent::_tracefirst($text))
+                        if defined $::RD_TRACE;
+        push @item, $_tok;
+        $item{__ACTION1__}=$_tok;
+        
 
 
-		Parse::RecDescent::_trace(q{>>Matched production: [ACCESS 'static' constant_modifier arg NAME ';' verbose_constant_details]<<},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{constant},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$_matched = 1;
-		last;
-	}
+        Parse::RecDescent::_trace(q{>>Matched production: [ACCESS 'static' constant_modifier arg NAME ';' verbose_constant_details]<<},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{constant},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $_matched = 1;
+        last;
+    }
 
 
-	while (!$_matched && !$commit)
-	{
-		
-		Parse::RecDescent::_trace(q{Trying production: ['static' 'transient' arg NAME ';']},
-					  Parse::RecDescent::_tracefirst($_[1]),
-					  q{constant},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		my $thisprod = $thisrule->{"prods"}[1];
-		$text = $_[1];
-		my $_savetext;
-		@item = (q{constant});
-		%item = (__RULE__ => q{constant});
-		my $repcount = 0;
+    while (!$_matched && !$commit)
+    {
+        
+        Parse::RecDescent::_trace(q{Trying production: ['static' 'transient' arg NAME ';']},
+                      Parse::RecDescent::_tracefirst($_[1]),
+                      q{constant},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        my $thisprod = $thisrule->{"prods"}[1];
+        $text = $_[1];
+        my $_savetext;
+        @item = (q{constant});
+        %item = (__RULE__ => q{constant});
+        my $repcount = 0;
 
 
-		Parse::RecDescent::_trace(q{Trying terminal: ['static']},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{constant},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$lastsep = "";
-		$expectation->is(q{})->at($text);
-		
+        Parse::RecDescent::_trace(q{Trying terminal: ['static']},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{constant},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $lastsep = "";
+        $expectation->is(q{})->at($text);
+        
 
-		unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ s/\Astatic//)
-		{
-			
-			$expectation->failed();
-			Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
-						. $& . q{])},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-		push @item, $item{__STRING1__}=$&;
-		
+        unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ m/\Astatic/)
+        {
+            
+            $expectation->failed();
+            Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+            last;
+        }
+		$current_match = substr($text, $-[0], $+[0] - $-[0]);
+        substr($text,0,length($current_match),q{});
+        Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
+                        . $current_match . q{])},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+        push @item, $item{__STRING1__}=$current_match;
+        
 
-		Parse::RecDescent::_trace(q{Trying terminal: ['transient']},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{constant},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$lastsep = "";
-		$expectation->is(q{'transient'})->at($text);
-		
+        Parse::RecDescent::_trace(q{Trying terminal: ['transient']},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{constant},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $lastsep = "";
+        $expectation->is(q{'transient'})->at($text);
+        
 
-		unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ s/\Atransient//)
-		{
-			
-			$expectation->failed();
-			Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
-						. $& . q{])},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-		push @item, $item{__STRING2__}=$&;
-		
+        unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ m/\Atransient/)
+        {
+            
+            $expectation->failed();
+            Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+            last;
+        }
+		$current_match = substr($text, $-[0], $+[0] - $-[0]);
+        substr($text,0,length($current_match),q{});
+        Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
+                        . $current_match . q{])},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+        push @item, $item{__STRING2__}=$current_match;
+        
 
-		Parse::RecDescent::_trace(q{Trying subrule: [arg]},
-				  Parse::RecDescent::_tracefirst($text),
-				  q{constant},
-				  $tracelevel)
-					if defined $::RD_TRACE;
-		if (1) { no strict qw{refs};
-		$expectation->is(q{arg})->at($text);
-		unless (defined ($_tok = Parse::RecDescent::Java::Javap::Grammar::arg($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
-		{
-			
-			Parse::RecDescent::_trace(q{<<Didn't match subrule: [arg]>>},
-						  Parse::RecDescent::_tracefirst($text),
-						  q{constant},
-						  $tracelevel)
-							if defined $::RD_TRACE;
-			$expectation->failed();
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched subrule: [arg]<< (return value: [}
-					. $_tok . q{]},
-					  
-					  Parse::RecDescent::_tracefirst($text),
-					  q{constant},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$item{q{arg}} = $_tok;
-		push @item, $_tok;
-		
-		}
+        Parse::RecDescent::_trace(q{Trying subrule: [arg]},
+                  Parse::RecDescent::_tracefirst($text),
+                  q{constant},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
+        if (1) { no strict qw{refs};
+        $expectation->is(q{arg})->at($text);
+        unless (defined ($_tok = Parse::RecDescent::Java::Javap::Grammar::arg($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
+        {
+            
+            Parse::RecDescent::_trace(q{<<Didn't match subrule: [arg]>>},
+                          Parse::RecDescent::_tracefirst($text),
+                          q{constant},
+                          $tracelevel)
+                            if defined $::RD_TRACE;
+            $expectation->failed();
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched subrule: [arg]<< (return value: [}
+                    . $_tok . q{]},
+                      
+                      Parse::RecDescent::_tracefirst($text),
+                      q{constant},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $item{q{arg}} = $_tok;
+        push @item, $_tok;
+        
+        }
 
-		Parse::RecDescent::_trace(q{Trying subrule: [NAME]},
-				  Parse::RecDescent::_tracefirst($text),
-				  q{constant},
-				  $tracelevel)
-					if defined $::RD_TRACE;
-		if (1) { no strict qw{refs};
-		$expectation->is(q{NAME})->at($text);
-		unless (defined ($_tok = Parse::RecDescent::Java::Javap::Grammar::NAME($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
-		{
-			
-			Parse::RecDescent::_trace(q{<<Didn't match subrule: [NAME]>>},
-						  Parse::RecDescent::_tracefirst($text),
-						  q{constant},
-						  $tracelevel)
-							if defined $::RD_TRACE;
-			$expectation->failed();
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched subrule: [NAME]<< (return value: [}
-					. $_tok . q{]},
-					  
-					  Parse::RecDescent::_tracefirst($text),
-					  q{constant},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$item{q{NAME}} = $_tok;
-		push @item, $_tok;
-		
-		}
+        Parse::RecDescent::_trace(q{Trying subrule: [NAME]},
+                  Parse::RecDescent::_tracefirst($text),
+                  q{constant},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
+        if (1) { no strict qw{refs};
+        $expectation->is(q{NAME})->at($text);
+        unless (defined ($_tok = Parse::RecDescent::Java::Javap::Grammar::NAME($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
+        {
+            
+            Parse::RecDescent::_trace(q{<<Didn't match subrule: [NAME]>>},
+                          Parse::RecDescent::_tracefirst($text),
+                          q{constant},
+                          $tracelevel)
+                            if defined $::RD_TRACE;
+            $expectation->failed();
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched subrule: [NAME]<< (return value: [}
+                    . $_tok . q{]},
+                      
+                      Parse::RecDescent::_tracefirst($text),
+                      q{constant},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $item{q{NAME}} = $_tok;
+        push @item, $_tok;
+        
+        }
 
-		Parse::RecDescent::_trace(q{Trying terminal: [';']},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{constant},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$lastsep = "";
-		$expectation->is(q{';'})->at($text);
-		
+        Parse::RecDescent::_trace(q{Trying terminal: [';']},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{constant},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $lastsep = "";
+        $expectation->is(q{';'})->at($text);
+        
 
-		unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ s/\A\;//)
-		{
-			
-			$expectation->failed();
-			Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
-						. $& . q{])},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-		push @item, $item{__STRING3__}=$&;
-		
+        unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ m/\A\;/)
+        {
+            
+            $expectation->failed();
+            Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+            last;
+        }
+		$current_match = substr($text, $-[0], $+[0] - $-[0]);
+        substr($text,0,length($current_match),q{});
+        Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
+                        . $current_match . q{])},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+        push @item, $item{__STRING3__}=$current_match;
+        
 
-		Parse::RecDescent::_trace(q{Trying action},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{constant},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		
+        Parse::RecDescent::_trace(q{Trying action},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{constant},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        
 
-		$_tok = ($_noactions) ? 0 : do {
+        $_tok = ($_noactions) ? 0 : do {
     {
         body_element => 'transient_constant',
         type         => $item{ arg }[0],
         name         => $item{ NAME },
     }
 };
-		unless (defined $_tok)
-		{
-			Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
-					if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
-					  . $_tok . q{])},
-					  Parse::RecDescent::_tracefirst($text))
-						if defined $::RD_TRACE;
-		push @item, $_tok;
-		$item{__ACTION1__}=$_tok;
-		
+        unless (defined $_tok)
+        {
+            Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
+                    if defined $::RD_TRACE;
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
+                      . $_tok . q{])},
+                      Parse::RecDescent::_tracefirst($text))
+                        if defined $::RD_TRACE;
+        push @item, $_tok;
+        $item{__ACTION1__}=$_tok;
+        
 
 
-		Parse::RecDescent::_trace(q{>>Matched production: ['static' 'transient' arg NAME ';']<<},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{constant},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$_matched = 1;
-		last;
-	}
+        Parse::RecDescent::_trace(q{>>Matched production: ['static' 'transient' arg NAME ';']<<},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{constant},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $_matched = 1;
+        last;
+    }
 
 
-        unless ( $_matched || defined($return) || defined($score) )
-	{
-		
+    unless ( $_matched || defined($score) )
+    {
+        
 
-		$_[1] = $text;	# NOT SURE THIS IS NEEDED
-		Parse::RecDescent::_trace(q{<<Didn't match rule>>},
-					 Parse::RecDescent::_tracefirst($_[1]),
-					 q{constant},
-					 $tracelevel)
-					if defined $::RD_TRACE;
-		return undef;
-	}
-	if (!defined($return) && defined($score))
-	{
-		Parse::RecDescent::_trace(q{>>Accepted scored production<<}, "",
-					  q{constant},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$return = $score_return;
-	}
-	splice @{$thisparser->{errors}}, $err_at;
-	$return = $item[$#item] unless defined $return;
-	if (defined $::RD_TRACE)
-	{
-		Parse::RecDescent::_trace(q{>>Matched rule<< (return value: [} .
-					  $return . q{])}, "",
-					  q{constant},
-					  $tracelevel);
-		Parse::RecDescent::_trace(q{(consumed: [} .
-					  Parse::RecDescent::_tracemax(substr($_[1],0,-length($text))) . q{])}, 
-					  Parse::RecDescent::_tracefirst($text),
-					  , q{constant},
-					  $tracelevel)
-	}
-	$_[1] = $text;
-	return $return;
+        $_[1] = $text;  # NOT SURE THIS IS NEEDED
+        Parse::RecDescent::_trace(q{<<Didn't match rule>>},
+                     Parse::RecDescent::_tracefirst($_[1]),
+                     q{constant},
+                     $tracelevel)
+                    if defined $::RD_TRACE;
+        return undef;
+    }
+    if (!defined($return) && defined($score))
+    {
+        Parse::RecDescent::_trace(q{>>Accepted scored production<<}, "",
+                      q{constant},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $return = $score_return;
+    }
+    splice @{$thisparser->{errors}}, $err_at;
+    $return = $item[$#item] unless defined $return;
+    if (defined $::RD_TRACE)
+    {
+        Parse::RecDescent::_trace(q{>>Matched rule<< (return value: [} .
+                      $return . q{])}, "",
+                      q{constant},
+                      $tracelevel);
+        Parse::RecDescent::_trace(q{(consumed: [} .
+                      Parse::RecDescent::_tracemax(substr($_[1],0,-length($text))) . q{])}, 
+                      Parse::RecDescent::_tracefirst($text),
+                      , q{constant},
+                      $tracelevel)
+    }
+    $_[1] = $text;
+    return $return;
 }
 
 # ARGS ARE: ($parser, $text; $repeating, $_noactions, \@args)
@@ -6112,155 +6225,158 @@ sub Parse::RecDescent::Java::Javap::Grammar::verbose_line_number_table
 	use vars q{$tracelevel};
 	local $tracelevel = ($tracelevel||0)+1;
 	$ERRORS = 0;
-	my $thisrule = $thisparser->{"rules"}{"verbose_line_number_table"};
-	
-	Parse::RecDescent::_trace(q{Trying rule: [verbose_line_number_table]},
-				  Parse::RecDescent::_tracefirst($_[1]),
-				  q{verbose_line_number_table},
-				  $tracelevel)
-					if defined $::RD_TRACE;
+    my $thisrule = $thisparser->{"rules"}{"verbose_line_number_table"};
+    
+    Parse::RecDescent::_trace(q{Trying rule: [verbose_line_number_table]},
+                  Parse::RecDescent::_tracefirst($_[1]),
+                  q{verbose_line_number_table},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
 
-	
-	my $err_at = @{$thisparser->{errors}};
+    
+    my $err_at = @{$thisparser->{errors}};
 
-	my $score;
-	my $score_return;
-	my $_tok;
-	my $return = undef;
-	my $_matched=0;
-	my $commit=0;
-	my @item = ();
-	my %item = ();
-	my $repeating =  defined($_[2]) && $_[2];
-	my $_noactions = defined($_[3]) && $_[3];
- 	my @arg =        defined $_[4] ? @{ &{$_[4]} } : ();
-	my %arg =        ($#arg & 01) ? @arg : (@arg, undef);
-	my $text;
-	my $lastsep="";
-	my $expectation = new Parse::RecDescent::Expectation($thisrule->expected());
-	$expectation->at($_[1]);
-	
-	my $thisline;
-	tie $thisline, q{Parse::RecDescent::LineCounter}, \$text, $thisparser;
+    my $score;
+    my $score_return;
+    my $_tok;
+    my $return = undef;
+    my $_matched=0;
+    my $commit=0;
+    my @item = ();
+    my %item = ();
+    my $repeating =  defined($_[2]) && $_[2];
+    my $_noactions = defined($_[3]) && $_[3];
+    my @arg =    defined $_[4] ? @{ &{$_[4]} } : ();
+    my %arg =    ($#arg & 01) ? @arg : (@arg, undef);
+    my $text;
+    my $lastsep="";
+    my $current_match;
+    my $expectation = new Parse::RecDescent::Expectation(q{'LineNumberTable:'});
+    $expectation->at($_[1]);
+    
+    my $thisline;
+    tie $thisline, q{Parse::RecDescent::LineCounter}, \$text, $thisparser;
 
-	
+    
 
-	while (!$_matched && !$commit)
-	{
-		
-		Parse::RecDescent::_trace(q{Trying production: ['LineNumberTable:' number_table_line]},
-					  Parse::RecDescent::_tracefirst($_[1]),
-					  q{verbose_line_number_table},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		my $thisprod = $thisrule->{"prods"}[0];
-		$text = $_[1];
-		my $_savetext;
-		@item = (q{verbose_line_number_table});
-		%item = (__RULE__ => q{verbose_line_number_table});
-		my $repcount = 0;
-
-
-		Parse::RecDescent::_trace(q{Trying terminal: ['LineNumberTable:']},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{verbose_line_number_table},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$lastsep = "";
-		$expectation->is(q{})->at($text);
-		
-
-		unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ s/\ALineNumberTable\://)
-		{
-			
-			$expectation->failed();
-			Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
-						. $& . q{])},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-		push @item, $item{__STRING1__}=$&;
-		
-
-		Parse::RecDescent::_trace(q{Trying repeated subrule: [number_table_line]},
-				  Parse::RecDescent::_tracefirst($text),
-				  q{verbose_line_number_table},
-				  $tracelevel)
-					if defined $::RD_TRACE;
-		$expectation->is(q{number_table_line})->at($text);
-		
-		unless (defined ($_tok = $thisparser->_parserepeat($text, \&Parse::RecDescent::Java::Javap::Grammar::number_table_line, 0, 100000000, $_noactions,$expectation,undef))) 
-		{
-			Parse::RecDescent::_trace(q{<<Didn't match repeated subrule: [number_table_line]>>},
-						  Parse::RecDescent::_tracefirst($text),
-						  q{verbose_line_number_table},
-						  $tracelevel)
-							if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched repeated subrule: [number_table_line]<< (}
-					. @$_tok . q{ times)},
-					  
-					  Parse::RecDescent::_tracefirst($text),
-					  q{verbose_line_number_table},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$item{q{number_table_line(s?)}} = $_tok;
-		push @item, $_tok;
-		
+    while (!$_matched && !$commit)
+    {
+        
+        Parse::RecDescent::_trace(q{Trying production: ['LineNumberTable:' number_table_line]},
+                      Parse::RecDescent::_tracefirst($_[1]),
+                      q{verbose_line_number_table},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        my $thisprod = $thisrule->{"prods"}[0];
+        $text = $_[1];
+        my $_savetext;
+        @item = (q{verbose_line_number_table});
+        %item = (__RULE__ => q{verbose_line_number_table});
+        my $repcount = 0;
 
 
+        Parse::RecDescent::_trace(q{Trying terminal: ['LineNumberTable:']},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{verbose_line_number_table},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $lastsep = "";
+        $expectation->is(q{})->at($text);
+        
 
-		Parse::RecDescent::_trace(q{>>Matched production: ['LineNumberTable:' number_table_line]<<},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{verbose_line_number_table},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$_matched = 1;
-		last;
-	}
+        unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ m/\ALineNumberTable\:/)
+        {
+            
+            $expectation->failed();
+            Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+            last;
+        }
+		$current_match = substr($text, $-[0], $+[0] - $-[0]);
+        substr($text,0,length($current_match),q{});
+        Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
+                        . $current_match . q{])},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+        push @item, $item{__STRING1__}=$current_match;
+        
+
+        Parse::RecDescent::_trace(q{Trying repeated subrule: [number_table_line]},
+                  Parse::RecDescent::_tracefirst($text),
+                  q{verbose_line_number_table},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
+        $expectation->is(q{number_table_line})->at($text);
+        
+        unless (defined ($_tok = $thisparser->_parserepeat($text, \&Parse::RecDescent::Java::Javap::Grammar::number_table_line, 0, 100000000, $_noactions,$expectation,sub { \@arg }))) 
+        {
+            Parse::RecDescent::_trace(q{<<Didn't match repeated subrule: [number_table_line]>>},
+                          Parse::RecDescent::_tracefirst($text),
+                          q{verbose_line_number_table},
+                          $tracelevel)
+                            if defined $::RD_TRACE;
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched repeated subrule: [number_table_line]<< (}
+                    . @$_tok . q{ times)},
+                      
+                      Parse::RecDescent::_tracefirst($text),
+                      q{verbose_line_number_table},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $item{q{number_table_line(s?)}} = $_tok;
+        push @item, $_tok;
+        
 
 
-        unless ( $_matched || defined($return) || defined($score) )
-	{
-		
 
-		$_[1] = $text;	# NOT SURE THIS IS NEEDED
-		Parse::RecDescent::_trace(q{<<Didn't match rule>>},
-					 Parse::RecDescent::_tracefirst($_[1]),
-					 q{verbose_line_number_table},
-					 $tracelevel)
-					if defined $::RD_TRACE;
-		return undef;
-	}
-	if (!defined($return) && defined($score))
-	{
-		Parse::RecDescent::_trace(q{>>Accepted scored production<<}, "",
-					  q{verbose_line_number_table},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$return = $score_return;
-	}
-	splice @{$thisparser->{errors}}, $err_at;
-	$return = $item[$#item] unless defined $return;
-	if (defined $::RD_TRACE)
-	{
-		Parse::RecDescent::_trace(q{>>Matched rule<< (return value: [} .
-					  $return . q{])}, "",
-					  q{verbose_line_number_table},
-					  $tracelevel);
-		Parse::RecDescent::_trace(q{(consumed: [} .
-					  Parse::RecDescent::_tracemax(substr($_[1],0,-length($text))) . q{])}, 
-					  Parse::RecDescent::_tracefirst($text),
-					  , q{verbose_line_number_table},
-					  $tracelevel)
-	}
-	$_[1] = $text;
-	return $return;
+        Parse::RecDescent::_trace(q{>>Matched production: ['LineNumberTable:' number_table_line]<<},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{verbose_line_number_table},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $_matched = 1;
+        last;
+    }
+
+
+    unless ( $_matched || defined($score) )
+    {
+        
+
+        $_[1] = $text;  # NOT SURE THIS IS NEEDED
+        Parse::RecDescent::_trace(q{<<Didn't match rule>>},
+                     Parse::RecDescent::_tracefirst($_[1]),
+                     q{verbose_line_number_table},
+                     $tracelevel)
+                    if defined $::RD_TRACE;
+        return undef;
+    }
+    if (!defined($return) && defined($score))
+    {
+        Parse::RecDescent::_trace(q{>>Accepted scored production<<}, "",
+                      q{verbose_line_number_table},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $return = $score_return;
+    }
+    splice @{$thisparser->{errors}}, $err_at;
+    $return = $item[$#item] unless defined $return;
+    if (defined $::RD_TRACE)
+    {
+        Parse::RecDescent::_trace(q{>>Matched rule<< (return value: [} .
+                      $return . q{])}, "",
+                      q{verbose_line_number_table},
+                      $tracelevel);
+        Parse::RecDescent::_trace(q{(consumed: [} .
+                      Parse::RecDescent::_tracemax(substr($_[1],0,-length($text))) . q{])}, 
+                      Parse::RecDescent::_tracefirst($text),
+                      , q{verbose_line_number_table},
+                      $tracelevel)
+    }
+    $_[1] = $text;
+    return $return;
 }
 
 # ARGS ARE: ($parser, $text; $repeating, $_noactions, \@args)
@@ -6270,445 +6386,456 @@ sub Parse::RecDescent::Java::Javap::Grammar::method_qualifier
 	use vars q{$tracelevel};
 	local $tracelevel = ($tracelevel||0)+1;
 	$ERRORS = 0;
-	my $thisrule = $thisparser->{"rules"}{"method_qualifier"};
-	
-	Parse::RecDescent::_trace(q{Trying rule: [method_qualifier]},
-				  Parse::RecDescent::_tracefirst($_[1]),
-				  q{method_qualifier},
-				  $tracelevel)
-					if defined $::RD_TRACE;
+    my $thisrule = $thisparser->{"rules"}{"method_qualifier"};
+    
+    Parse::RecDescent::_trace(q{Trying rule: [method_qualifier]},
+                  Parse::RecDescent::_tracefirst($_[1]),
+                  q{method_qualifier},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
 
-	
-	my $err_at = @{$thisparser->{errors}};
+    
+    my $err_at = @{$thisparser->{errors}};
 
-	my $score;
-	my $score_return;
-	my $_tok;
-	my $return = undef;
-	my $_matched=0;
-	my $commit=0;
-	my @item = ();
-	my %item = ();
-	my $repeating =  defined($_[2]) && $_[2];
-	my $_noactions = defined($_[3]) && $_[3];
- 	my @arg =        defined $_[4] ? @{ &{$_[4]} } : ();
-	my %arg =        ($#arg & 01) ? @arg : (@arg, undef);
-	my $text;
-	my $lastsep="";
-	my $expectation = new Parse::RecDescent::Expectation($thisrule->expected());
-	$expectation->at($_[1]);
-	
-	my $thisline;
-	tie $thisline, q{Parse::RecDescent::LineCounter}, \$text, $thisparser;
+    my $score;
+    my $score_return;
+    my $_tok;
+    my $return = undef;
+    my $_matched=0;
+    my $commit=0;
+    my @item = ();
+    my %item = ();
+    my $repeating =  defined($_[2]) && $_[2];
+    my $_noactions = defined($_[3]) && $_[3];
+    my @arg =    defined $_[4] ? @{ &{$_[4]} } : ();
+    my %arg =    ($#arg & 01) ? @arg : (@arg, undef);
+    my $text;
+    my $lastsep="";
+    my $current_match;
+    my $expectation = new Parse::RecDescent::Expectation(q{'abstract', or 'native', or 'static', or 'synchronized', or 'final'});
+    $expectation->at($_[1]);
+    
+    my $thisline;
+    tie $thisline, q{Parse::RecDescent::LineCounter}, \$text, $thisparser;
 
-	
+    
 
-	while (!$_matched && !$commit)
-	{
-		
-		Parse::RecDescent::_trace(q{Trying production: ['abstract']},
-					  Parse::RecDescent::_tracefirst($_[1]),
-					  q{method_qualifier},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		my $thisprod = $thisrule->{"prods"}[0];
-		$text = $_[1];
-		my $_savetext;
-		@item = (q{method_qualifier});
-		%item = (__RULE__ => q{method_qualifier});
-		my $repcount = 0;
-
-
-		Parse::RecDescent::_trace(q{Trying terminal: ['abstract']},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{method_qualifier},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$lastsep = "";
-		$expectation->is(q{})->at($text);
-		
-
-		unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ s/\Aabstract//)
-		{
-			
-			$expectation->failed();
-			Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
-						. $& . q{])},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-		push @item, $item{__STRING1__}=$&;
-		
-
-		Parse::RecDescent::_trace(q{Trying action},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{method_qualifier},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		
-
-		$_tok = ($_noactions) ? 0 : do { 'abstract'     };
-		unless (defined $_tok)
-		{
-			Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
-					if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
-					  . $_tok . q{])},
-					  Parse::RecDescent::_tracefirst($text))
-						if defined $::RD_TRACE;
-		push @item, $_tok;
-		$item{__ACTION1__}=$_tok;
-		
+    while (!$_matched && !$commit)
+    {
+        
+        Parse::RecDescent::_trace(q{Trying production: ['abstract']},
+                      Parse::RecDescent::_tracefirst($_[1]),
+                      q{method_qualifier},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        my $thisprod = $thisrule->{"prods"}[0];
+        $text = $_[1];
+        my $_savetext;
+        @item = (q{method_qualifier});
+        %item = (__RULE__ => q{method_qualifier});
+        my $repcount = 0;
 
 
-		Parse::RecDescent::_trace(q{>>Matched production: ['abstract']<<},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{method_qualifier},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$_matched = 1;
-		last;
-	}
+        Parse::RecDescent::_trace(q{Trying terminal: ['abstract']},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{method_qualifier},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $lastsep = "";
+        $expectation->is(q{})->at($text);
+        
+
+        unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ m/\Aabstract/)
+        {
+            
+            $expectation->failed();
+            Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+            last;
+        }
+		$current_match = substr($text, $-[0], $+[0] - $-[0]);
+        substr($text,0,length($current_match),q{});
+        Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
+                        . $current_match . q{])},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+        push @item, $item{__STRING1__}=$current_match;
+        
+
+        Parse::RecDescent::_trace(q{Trying action},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{method_qualifier},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        
+
+        $_tok = ($_noactions) ? 0 : do { 'abstract'     };
+        unless (defined $_tok)
+        {
+            Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
+                    if defined $::RD_TRACE;
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
+                      . $_tok . q{])},
+                      Parse::RecDescent::_tracefirst($text))
+                        if defined $::RD_TRACE;
+        push @item, $_tok;
+        $item{__ACTION1__}=$_tok;
+        
 
 
-	while (!$_matched && !$commit)
-	{
-		
-		Parse::RecDescent::_trace(q{Trying production: ['native']},
-					  Parse::RecDescent::_tracefirst($_[1]),
-					  q{method_qualifier},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		my $thisprod = $thisrule->{"prods"}[1];
-		$text = $_[1];
-		my $_savetext;
-		@item = (q{method_qualifier});
-		%item = (__RULE__ => q{method_qualifier});
-		my $repcount = 0;
+        Parse::RecDescent::_trace(q{>>Matched production: ['abstract']<<},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{method_qualifier},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $_matched = 1;
+        last;
+    }
 
 
-		Parse::RecDescent::_trace(q{Trying terminal: ['native']},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{method_qualifier},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$lastsep = "";
-		$expectation->is(q{})->at($text);
-		
-
-		unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ s/\Anative//)
-		{
-			
-			$expectation->failed();
-			Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
-						. $& . q{])},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-		push @item, $item{__STRING1__}=$&;
-		
-
-		Parse::RecDescent::_trace(q{Trying action},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{method_qualifier},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		
-
-		$_tok = ($_noactions) ? 0 : do { 'native'       };
-		unless (defined $_tok)
-		{
-			Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
-					if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
-					  . $_tok . q{])},
-					  Parse::RecDescent::_tracefirst($text))
-						if defined $::RD_TRACE;
-		push @item, $_tok;
-		$item{__ACTION1__}=$_tok;
-		
+    while (!$_matched && !$commit)
+    {
+        
+        Parse::RecDescent::_trace(q{Trying production: ['native']},
+                      Parse::RecDescent::_tracefirst($_[1]),
+                      q{method_qualifier},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        my $thisprod = $thisrule->{"prods"}[1];
+        $text = $_[1];
+        my $_savetext;
+        @item = (q{method_qualifier});
+        %item = (__RULE__ => q{method_qualifier});
+        my $repcount = 0;
 
 
-		Parse::RecDescent::_trace(q{>>Matched production: ['native']<<},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{method_qualifier},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$_matched = 1;
-		last;
-	}
+        Parse::RecDescent::_trace(q{Trying terminal: ['native']},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{method_qualifier},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $lastsep = "";
+        $expectation->is(q{})->at($text);
+        
+
+        unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ m/\Anative/)
+        {
+            
+            $expectation->failed();
+            Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+            last;
+        }
+		$current_match = substr($text, $-[0], $+[0] - $-[0]);
+        substr($text,0,length($current_match),q{});
+        Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
+                        . $current_match . q{])},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+        push @item, $item{__STRING1__}=$current_match;
+        
+
+        Parse::RecDescent::_trace(q{Trying action},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{method_qualifier},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        
+
+        $_tok = ($_noactions) ? 0 : do { 'native'       };
+        unless (defined $_tok)
+        {
+            Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
+                    if defined $::RD_TRACE;
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
+                      . $_tok . q{])},
+                      Parse::RecDescent::_tracefirst($text))
+                        if defined $::RD_TRACE;
+        push @item, $_tok;
+        $item{__ACTION1__}=$_tok;
+        
 
 
-	while (!$_matched && !$commit)
-	{
-		
-		Parse::RecDescent::_trace(q{Trying production: ['static']},
-					  Parse::RecDescent::_tracefirst($_[1]),
-					  q{method_qualifier},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		my $thisprod = $thisrule->{"prods"}[2];
-		$text = $_[1];
-		my $_savetext;
-		@item = (q{method_qualifier});
-		%item = (__RULE__ => q{method_qualifier});
-		my $repcount = 0;
+        Parse::RecDescent::_trace(q{>>Matched production: ['native']<<},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{method_qualifier},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $_matched = 1;
+        last;
+    }
 
 
-		Parse::RecDescent::_trace(q{Trying terminal: ['static']},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{method_qualifier},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$lastsep = "";
-		$expectation->is(q{})->at($text);
-		
-
-		unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ s/\Astatic//)
-		{
-			
-			$expectation->failed();
-			Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
-						. $& . q{])},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-		push @item, $item{__STRING1__}=$&;
-		
-
-		Parse::RecDescent::_trace(q{Trying action},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{method_qualifier},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		
-
-		$_tok = ($_noactions) ? 0 : do { 'static'       };
-		unless (defined $_tok)
-		{
-			Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
-					if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
-					  . $_tok . q{])},
-					  Parse::RecDescent::_tracefirst($text))
-						if defined $::RD_TRACE;
-		push @item, $_tok;
-		$item{__ACTION1__}=$_tok;
-		
+    while (!$_matched && !$commit)
+    {
+        
+        Parse::RecDescent::_trace(q{Trying production: ['static']},
+                      Parse::RecDescent::_tracefirst($_[1]),
+                      q{method_qualifier},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        my $thisprod = $thisrule->{"prods"}[2];
+        $text = $_[1];
+        my $_savetext;
+        @item = (q{method_qualifier});
+        %item = (__RULE__ => q{method_qualifier});
+        my $repcount = 0;
 
 
-		Parse::RecDescent::_trace(q{>>Matched production: ['static']<<},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{method_qualifier},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$_matched = 1;
-		last;
-	}
+        Parse::RecDescent::_trace(q{Trying terminal: ['static']},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{method_qualifier},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $lastsep = "";
+        $expectation->is(q{})->at($text);
+        
+
+        unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ m/\Astatic/)
+        {
+            
+            $expectation->failed();
+            Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+            last;
+        }
+		$current_match = substr($text, $-[0], $+[0] - $-[0]);
+        substr($text,0,length($current_match),q{});
+        Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
+                        . $current_match . q{])},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+        push @item, $item{__STRING1__}=$current_match;
+        
+
+        Parse::RecDescent::_trace(q{Trying action},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{method_qualifier},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        
+
+        $_tok = ($_noactions) ? 0 : do { 'static'       };
+        unless (defined $_tok)
+        {
+            Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
+                    if defined $::RD_TRACE;
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
+                      . $_tok . q{])},
+                      Parse::RecDescent::_tracefirst($text))
+                        if defined $::RD_TRACE;
+        push @item, $_tok;
+        $item{__ACTION1__}=$_tok;
+        
 
 
-	while (!$_matched && !$commit)
-	{
-		
-		Parse::RecDescent::_trace(q{Trying production: ['synchronized']},
-					  Parse::RecDescent::_tracefirst($_[1]),
-					  q{method_qualifier},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		my $thisprod = $thisrule->{"prods"}[3];
-		$text = $_[1];
-		my $_savetext;
-		@item = (q{method_qualifier});
-		%item = (__RULE__ => q{method_qualifier});
-		my $repcount = 0;
+        Parse::RecDescent::_trace(q{>>Matched production: ['static']<<},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{method_qualifier},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $_matched = 1;
+        last;
+    }
 
 
-		Parse::RecDescent::_trace(q{Trying terminal: ['synchronized']},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{method_qualifier},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$lastsep = "";
-		$expectation->is(q{})->at($text);
-		
-
-		unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ s/\Asynchronized//)
-		{
-			
-			$expectation->failed();
-			Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
-						. $& . q{])},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-		push @item, $item{__STRING1__}=$&;
-		
-
-		Parse::RecDescent::_trace(q{Trying action},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{method_qualifier},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		
-
-		$_tok = ($_noactions) ? 0 : do { 'synchronized' };
-		unless (defined $_tok)
-		{
-			Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
-					if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
-					  . $_tok . q{])},
-					  Parse::RecDescent::_tracefirst($text))
-						if defined $::RD_TRACE;
-		push @item, $_tok;
-		$item{__ACTION1__}=$_tok;
-		
+    while (!$_matched && !$commit)
+    {
+        
+        Parse::RecDescent::_trace(q{Trying production: ['synchronized']},
+                      Parse::RecDescent::_tracefirst($_[1]),
+                      q{method_qualifier},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        my $thisprod = $thisrule->{"prods"}[3];
+        $text = $_[1];
+        my $_savetext;
+        @item = (q{method_qualifier});
+        %item = (__RULE__ => q{method_qualifier});
+        my $repcount = 0;
 
 
-		Parse::RecDescent::_trace(q{>>Matched production: ['synchronized']<<},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{method_qualifier},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$_matched = 1;
-		last;
-	}
+        Parse::RecDescent::_trace(q{Trying terminal: ['synchronized']},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{method_qualifier},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $lastsep = "";
+        $expectation->is(q{})->at($text);
+        
+
+        unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ m/\Asynchronized/)
+        {
+            
+            $expectation->failed();
+            Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+            last;
+        }
+		$current_match = substr($text, $-[0], $+[0] - $-[0]);
+        substr($text,0,length($current_match),q{});
+        Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
+                        . $current_match . q{])},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+        push @item, $item{__STRING1__}=$current_match;
+        
+
+        Parse::RecDescent::_trace(q{Trying action},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{method_qualifier},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        
+
+        $_tok = ($_noactions) ? 0 : do { 'synchronized' };
+        unless (defined $_tok)
+        {
+            Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
+                    if defined $::RD_TRACE;
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
+                      . $_tok . q{])},
+                      Parse::RecDescent::_tracefirst($text))
+                        if defined $::RD_TRACE;
+        push @item, $_tok;
+        $item{__ACTION1__}=$_tok;
+        
 
 
-	while (!$_matched && !$commit)
-	{
-		
-		Parse::RecDescent::_trace(q{Trying production: ['final']},
-					  Parse::RecDescent::_tracefirst($_[1]),
-					  q{method_qualifier},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		my $thisprod = $thisrule->{"prods"}[4];
-		$text = $_[1];
-		my $_savetext;
-		@item = (q{method_qualifier});
-		%item = (__RULE__ => q{method_qualifier});
-		my $repcount = 0;
+        Parse::RecDescent::_trace(q{>>Matched production: ['synchronized']<<},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{method_qualifier},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $_matched = 1;
+        last;
+    }
 
 
-		Parse::RecDescent::_trace(q{Trying terminal: ['final']},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{method_qualifier},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$lastsep = "";
-		$expectation->is(q{})->at($text);
-		
-
-		unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ s/\Afinal//)
-		{
-			
-			$expectation->failed();
-			Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
-						. $& . q{])},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-		push @item, $item{__STRING1__}=$&;
-		
-
-		Parse::RecDescent::_trace(q{Trying action},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{method_qualifier},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		
-
-		$_tok = ($_noactions) ? 0 : do { 'final'        };
-		unless (defined $_tok)
-		{
-			Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
-					if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
-					  . $_tok . q{])},
-					  Parse::RecDescent::_tracefirst($text))
-						if defined $::RD_TRACE;
-		push @item, $_tok;
-		$item{__ACTION1__}=$_tok;
-		
+    while (!$_matched && !$commit)
+    {
+        
+        Parse::RecDescent::_trace(q{Trying production: ['final']},
+                      Parse::RecDescent::_tracefirst($_[1]),
+                      q{method_qualifier},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        my $thisprod = $thisrule->{"prods"}[4];
+        $text = $_[1];
+        my $_savetext;
+        @item = (q{method_qualifier});
+        %item = (__RULE__ => q{method_qualifier});
+        my $repcount = 0;
 
 
-		Parse::RecDescent::_trace(q{>>Matched production: ['final']<<},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{method_qualifier},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$_matched = 1;
-		last;
-	}
+        Parse::RecDescent::_trace(q{Trying terminal: ['final']},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{method_qualifier},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $lastsep = "";
+        $expectation->is(q{})->at($text);
+        
+
+        unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ m/\Afinal/)
+        {
+            
+            $expectation->failed();
+            Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+            last;
+        }
+		$current_match = substr($text, $-[0], $+[0] - $-[0]);
+        substr($text,0,length($current_match),q{});
+        Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
+                        . $current_match . q{])},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+        push @item, $item{__STRING1__}=$current_match;
+        
+
+        Parse::RecDescent::_trace(q{Trying action},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{method_qualifier},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        
+
+        $_tok = ($_noactions) ? 0 : do { 'final'        };
+        unless (defined $_tok)
+        {
+            Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
+                    if defined $::RD_TRACE;
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
+                      . $_tok . q{])},
+                      Parse::RecDescent::_tracefirst($text))
+                        if defined $::RD_TRACE;
+        push @item, $_tok;
+        $item{__ACTION1__}=$_tok;
+        
 
 
-        unless ( $_matched || defined($return) || defined($score) )
-	{
-		
+        Parse::RecDescent::_trace(q{>>Matched production: ['final']<<},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{method_qualifier},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $_matched = 1;
+        last;
+    }
 
-		$_[1] = $text;	# NOT SURE THIS IS NEEDED
-		Parse::RecDescent::_trace(q{<<Didn't match rule>>},
-					 Parse::RecDescent::_tracefirst($_[1]),
-					 q{method_qualifier},
-					 $tracelevel)
-					if defined $::RD_TRACE;
-		return undef;
-	}
-	if (!defined($return) && defined($score))
-	{
-		Parse::RecDescent::_trace(q{>>Accepted scored production<<}, "",
-					  q{method_qualifier},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$return = $score_return;
-	}
-	splice @{$thisparser->{errors}}, $err_at;
-	$return = $item[$#item] unless defined $return;
-	if (defined $::RD_TRACE)
-	{
-		Parse::RecDescent::_trace(q{>>Matched rule<< (return value: [} .
-					  $return . q{])}, "",
-					  q{method_qualifier},
-					  $tracelevel);
-		Parse::RecDescent::_trace(q{(consumed: [} .
-					  Parse::RecDescent::_tracemax(substr($_[1],0,-length($text))) . q{])}, 
-					  Parse::RecDescent::_tracefirst($text),
-					  , q{method_qualifier},
-					  $tracelevel)
-	}
-	$_[1] = $text;
-	return $return;
+
+    unless ( $_matched || defined($score) )
+    {
+        
+
+        $_[1] = $text;  # NOT SURE THIS IS NEEDED
+        Parse::RecDescent::_trace(q{<<Didn't match rule>>},
+                     Parse::RecDescent::_tracefirst($_[1]),
+                     q{method_qualifier},
+                     $tracelevel)
+                    if defined $::RD_TRACE;
+        return undef;
+    }
+    if (!defined($return) && defined($score))
+    {
+        Parse::RecDescent::_trace(q{>>Accepted scored production<<}, "",
+                      q{method_qualifier},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $return = $score_return;
+    }
+    splice @{$thisparser->{errors}}, $err_at;
+    $return = $item[$#item] unless defined $return;
+    if (defined $::RD_TRACE)
+    {
+        Parse::RecDescent::_trace(q{>>Matched rule<< (return value: [} .
+                      $return . q{])}, "",
+                      q{method_qualifier},
+                      $tracelevel);
+        Parse::RecDescent::_trace(q{(consumed: [} .
+                      Parse::RecDescent::_tracemax(substr($_[1],0,-length($text))) . q{])}, 
+                      Parse::RecDescent::_tracefirst($text),
+                      , q{method_qualifier},
+                      $tracelevel)
+    }
+    $_[1] = $text;
+    return $return;
 }
 
 # ARGS ARE: ($parser, $text; $repeating, $_noactions, \@args)
@@ -6718,127 +6845,130 @@ sub Parse::RecDescent::Java::Javap::Grammar::verbose_class_details
 	use vars q{$tracelevel};
 	local $tracelevel = ($tracelevel||0)+1;
 	$ERRORS = 0;
-	my $thisrule = $thisparser->{"rules"}{"verbose_class_details"};
-	
-	Parse::RecDescent::_trace(q{Trying rule: [verbose_class_details]},
-				  Parse::RecDescent::_tracefirst($_[1]),
-				  q{verbose_class_details},
-				  $tracelevel)
-					if defined $::RD_TRACE;
+    my $thisrule = $thisparser->{"rules"}{"verbose_class_details"};
+    
+    Parse::RecDescent::_trace(q{Trying rule: [verbose_class_details]},
+                  Parse::RecDescent::_tracefirst($_[1]),
+                  q{verbose_class_details},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
 
-	
-	my $err_at = @{$thisparser->{errors}};
+    
+    my $err_at = @{$thisparser->{errors}};
 
-	my $score;
-	my $score_return;
-	my $_tok;
-	my $return = undef;
-	my $_matched=0;
-	my $commit=0;
-	my @item = ();
-	my %item = ();
-	my $repeating =  defined($_[2]) && $_[2];
-	my $_noactions = defined($_[3]) && $_[3];
- 	my @arg =        defined $_[4] ? @{ &{$_[4]} } : ();
-	my %arg =        ($#arg & 01) ? @arg : (@arg, undef);
-	my $text;
-	my $lastsep="";
-	my $expectation = new Parse::RecDescent::Expectation($thisrule->expected());
-	$expectation->at($_[1]);
-	
-	my $thisline;
-	tie $thisline, q{Parse::RecDescent::LineCounter}, \$text, $thisparser;
+    my $score;
+    my $score_return;
+    my $_tok;
+    my $return = undef;
+    my $_matched=0;
+    my $commit=0;
+    my @item = ();
+    my %item = ();
+    my $repeating =  defined($_[2]) && $_[2];
+    my $_noactions = defined($_[3]) && $_[3];
+    my @arg =    defined $_[4] ? @{ &{$_[4]} } : ();
+    my %arg =    ($#arg & 01) ? @arg : (@arg, undef);
+    my $text;
+    my $lastsep="";
+    my $current_match;
+    my $expectation = new Parse::RecDescent::Expectation(q{/[^\{]*/});
+    $expectation->at($_[1]);
+    
+    my $thisline;
+    tie $thisline, q{Parse::RecDescent::LineCounter}, \$text, $thisparser;
 
-	
+    
 
-	while (!$_matched && !$commit)
-	{
-		
-		Parse::RecDescent::_trace(q{Trying production: [/[^\{]*/]},
-					  Parse::RecDescent::_tracefirst($_[1]),
-					  q{verbose_class_details},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		my $thisprod = $thisrule->{"prods"}[0];
-		$text = $_[1];
-		my $_savetext;
-		@item = (q{verbose_class_details});
-		%item = (__RULE__ => q{verbose_class_details});
-		my $repcount = 0;
-
-
-		Parse::RecDescent::_trace(q{Trying terminal: [/[^\{]*/]}, Parse::RecDescent::_tracefirst($text),
-					  q{verbose_class_details},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$lastsep = "";
-		$expectation->is(q{})->at($text);
-		
-
-		unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ s/\A(?:[^{]*)//)
-		{
-			
-			$expectation->failed();
-			Parse::RecDescent::_trace(q{<<Didn't match terminal>>},
-						  Parse::RecDescent::_tracefirst($text))
-					if defined $::RD_TRACE;
-
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
-						. $& . q{])},
-						  Parse::RecDescent::_tracefirst($text))
-					if defined $::RD_TRACE;
-		push @item, $item{__PATTERN1__}=$&;
-		
+    while (!$_matched && !$commit)
+    {
+        
+        Parse::RecDescent::_trace(q{Trying production: [/[^\{]*/]},
+                      Parse::RecDescent::_tracefirst($_[1]),
+                      q{verbose_class_details},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        my $thisprod = $thisrule->{"prods"}[0];
+        $text = $_[1];
+        my $_savetext;
+        @item = (q{verbose_class_details});
+        %item = (__RULE__ => q{verbose_class_details});
+        my $repcount = 0;
 
 
-		Parse::RecDescent::_trace(q{>>Matched production: [/[^\{]*/]<<},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{verbose_class_details},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$_matched = 1;
-		last;
-	}
+        Parse::RecDescent::_trace(q{Trying terminal: [/[^\{]*/]}, Parse::RecDescent::_tracefirst($text),
+                      q{verbose_class_details},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $lastsep = "";
+        $expectation->is(q{})->at($text);
+        
+
+        unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ m/\A(?:[^{]*)/)
+        {
+            
+            $expectation->failed();
+            Parse::RecDescent::_trace(q{<<Didn't match terminal>>},
+                          Parse::RecDescent::_tracefirst($text))
+                    if defined $::RD_TRACE;
+
+            last;
+        }
+		$current_match = substr($text, $-[0], $+[0] - $-[0]);
+        substr($text,0,length($current_match),q{});
+        Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
+                        . $current_match . q{])},
+                          Parse::RecDescent::_tracefirst($text))
+                    if defined $::RD_TRACE;
+        push @item, $item{__PATTERN1__}=$current_match;
+        
 
 
-        unless ( $_matched || defined($return) || defined($score) )
-	{
-		
+        Parse::RecDescent::_trace(q{>>Matched production: [/[^\{]*/]<<},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{verbose_class_details},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $_matched = 1;
+        last;
+    }
 
-		$_[1] = $text;	# NOT SURE THIS IS NEEDED
-		Parse::RecDescent::_trace(q{<<Didn't match rule>>},
-					 Parse::RecDescent::_tracefirst($_[1]),
-					 q{verbose_class_details},
-					 $tracelevel)
-					if defined $::RD_TRACE;
-		return undef;
-	}
-	if (!defined($return) && defined($score))
-	{
-		Parse::RecDescent::_trace(q{>>Accepted scored production<<}, "",
-					  q{verbose_class_details},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$return = $score_return;
-	}
-	splice @{$thisparser->{errors}}, $err_at;
-	$return = $item[$#item] unless defined $return;
-	if (defined $::RD_TRACE)
-	{
-		Parse::RecDescent::_trace(q{>>Matched rule<< (return value: [} .
-					  $return . q{])}, "",
-					  q{verbose_class_details},
-					  $tracelevel);
-		Parse::RecDescent::_trace(q{(consumed: [} .
-					  Parse::RecDescent::_tracemax(substr($_[1],0,-length($text))) . q{])}, 
-					  Parse::RecDescent::_tracefirst($text),
-					  , q{verbose_class_details},
-					  $tracelevel)
-	}
-	$_[1] = $text;
-	return $return;
+
+    unless ( $_matched || defined($score) )
+    {
+        
+
+        $_[1] = $text;  # NOT SURE THIS IS NEEDED
+        Parse::RecDescent::_trace(q{<<Didn't match rule>>},
+                     Parse::RecDescent::_tracefirst($_[1]),
+                     q{verbose_class_details},
+                     $tracelevel)
+                    if defined $::RD_TRACE;
+        return undef;
+    }
+    if (!defined($return) && defined($score))
+    {
+        Parse::RecDescent::_trace(q{>>Accepted scored production<<}, "",
+                      q{verbose_class_details},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $return = $score_return;
+    }
+    splice @{$thisparser->{errors}}, $err_at;
+    $return = $item[$#item] unless defined $return;
+    if (defined $::RD_TRACE)
+    {
+        Parse::RecDescent::_trace(q{>>Matched rule<< (return value: [} .
+                      $return . q{])}, "",
+                      q{verbose_class_details},
+                      $tracelevel);
+        Parse::RecDescent::_trace(q{(consumed: [} .
+                      Parse::RecDescent::_tracemax(substr($_[1],0,-length($text))) . q{])}, 
+                      Parse::RecDescent::_tracefirst($text),
+                      , q{verbose_class_details},
+                      $tracelevel)
+    }
+    $_[1] = $text;
+    return $return;
 }
 
 # ARGS ARE: ($parser, $text; $repeating, $_noactions, \@args)
@@ -6848,461 +6978,470 @@ sub Parse::RecDescent::Java::Javap::Grammar::body_element
 	use vars q{$tracelevel};
 	local $tracelevel = ($tracelevel||0)+1;
 	$ERRORS = 0;
-	my $thisrule = $thisparser->{"rules"}{"body_element"};
-	
-	Parse::RecDescent::_trace(q{Trying rule: [body_element]},
-				  Parse::RecDescent::_tracefirst($_[1]),
-				  q{body_element},
-				  $tracelevel)
-					if defined $::RD_TRACE;
+    my $thisrule = $thisparser->{"rules"}{"body_element"};
+    
+    Parse::RecDescent::_trace(q{Trying rule: [body_element]},
+                  Parse::RecDescent::_tracefirst($_[1]),
+                  q{body_element},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
 
-	
-	my $err_at = @{$thisparser->{errors}};
+    
+    my $err_at = @{$thisparser->{errors}};
 
-	my $score;
-	my $score_return;
-	my $_tok;
-	my $return = undef;
-	my $_matched=0;
-	my $commit=0;
-	my @item = ();
-	my %item = ();
-	my $repeating =  defined($_[2]) && $_[2];
-	my $_noactions = defined($_[3]) && $_[3];
- 	my @arg =        defined $_[4] ? @{ &{$_[4]} } : ();
-	my %arg =        ($#arg & 01) ? @arg : (@arg, undef);
-	my $text;
-	my $lastsep="";
-	my $expectation = new Parse::RecDescent::Expectation($thisrule->expected());
-	$expectation->at($_[1]);
-	
-	my $thisline;
-	tie $thisline, q{Parse::RecDescent::LineCounter}, \$text, $thisparser;
+    my $score;
+    my $score_return;
+    my $_tok;
+    my $return = undef;
+    my $_matched=0;
+    my $commit=0;
+    my @item = ();
+    my %item = ();
+    my $repeating =  defined($_[2]) && $_[2];
+    my $_noactions = defined($_[3]) && $_[3];
+    my @arg =    defined $_[4] ? @{ &{$_[4]} } : ();
+    my %arg =    ($#arg & 01) ? @arg : (@arg, undef);
+    my $text;
+    my $lastsep="";
+    my $current_match;
+    my $expectation = new Parse::RecDescent::Expectation(q{constant, or 'static', or method, or variable});
+    $expectation->at($_[1]);
+    
+    my $thisline;
+    tie $thisline, q{Parse::RecDescent::LineCounter}, \$text, $thisparser;
 
-	
+    
 
-	while (!$_matched && !$commit)
-	{
-		
-		Parse::RecDescent::_trace(q{Trying production: [constant]},
-					  Parse::RecDescent::_tracefirst($_[1]),
-					  q{body_element},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		my $thisprod = $thisrule->{"prods"}[0];
-		$text = $_[1];
-		my $_savetext;
-		@item = (q{body_element});
-		%item = (__RULE__ => q{body_element});
-		my $repcount = 0;
-
-
-		Parse::RecDescent::_trace(q{Trying subrule: [constant]},
-				  Parse::RecDescent::_tracefirst($text),
-				  q{body_element},
-				  $tracelevel)
-					if defined $::RD_TRACE;
-		if (1) { no strict qw{refs};
-		$expectation->is(q{})->at($text);
-		unless (defined ($_tok = Parse::RecDescent::Java::Javap::Grammar::constant($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
-		{
-			
-			Parse::RecDescent::_trace(q{<<Didn't match subrule: [constant]>>},
-						  Parse::RecDescent::_tracefirst($text),
-						  q{body_element},
-						  $tracelevel)
-							if defined $::RD_TRACE;
-			$expectation->failed();
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched subrule: [constant]<< (return value: [}
-					. $_tok . q{]},
-					  
-					  Parse::RecDescent::_tracefirst($text),
-					  q{body_element},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$item{q{constant}} = $_tok;
-		push @item, $_tok;
-		
-		}
-
-		Parse::RecDescent::_trace(q{Trying action},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{body_element},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		
-
-		$_tok = ($_noactions) ? 0 : do { $item[1] };
-		unless (defined $_tok)
-		{
-			Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
-					if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
-					  . $_tok . q{])},
-					  Parse::RecDescent::_tracefirst($text))
-						if defined $::RD_TRACE;
-		push @item, $_tok;
-		$item{__ACTION1__}=$_tok;
-		
+    while (!$_matched && !$commit)
+    {
+        
+        Parse::RecDescent::_trace(q{Trying production: [constant]},
+                      Parse::RecDescent::_tracefirst($_[1]),
+                      q{body_element},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        my $thisprod = $thisrule->{"prods"}[0];
+        $text = $_[1];
+        my $_savetext;
+        @item = (q{body_element});
+        %item = (__RULE__ => q{body_element});
+        my $repcount = 0;
 
 
-		Parse::RecDescent::_trace(q{>>Matched production: [constant]<<},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{body_element},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$_matched = 1;
-		last;
-	}
+        Parse::RecDescent::_trace(q{Trying subrule: [constant]},
+                  Parse::RecDescent::_tracefirst($text),
+                  q{body_element},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
+        if (1) { no strict qw{refs};
+        $expectation->is(q{})->at($text);
+        unless (defined ($_tok = Parse::RecDescent::Java::Javap::Grammar::constant($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
+        {
+            
+            Parse::RecDescent::_trace(q{<<Didn't match subrule: [constant]>>},
+                          Parse::RecDescent::_tracefirst($text),
+                          q{body_element},
+                          $tracelevel)
+                            if defined $::RD_TRACE;
+            $expectation->failed();
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched subrule: [constant]<< (return value: [}
+                    . $_tok . q{]},
+                      
+                      Parse::RecDescent::_tracefirst($text),
+                      q{body_element},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $item{q{constant}} = $_tok;
+        push @item, $_tok;
+        
+        }
+
+        Parse::RecDescent::_trace(q{Trying action},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{body_element},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        
+
+        $_tok = ($_noactions) ? 0 : do { $item[1] };
+        unless (defined $_tok)
+        {
+            Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
+                    if defined $::RD_TRACE;
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
+                      . $_tok . q{])},
+                      Parse::RecDescent::_tracefirst($text))
+                        if defined $::RD_TRACE;
+        push @item, $_tok;
+        $item{__ACTION1__}=$_tok;
+        
 
 
-	while (!$_matched && !$commit)
-	{
-		
-		Parse::RecDescent::_trace(q{Trying production: ['static' '\{' '\}' ';']},
-					  Parse::RecDescent::_tracefirst($_[1]),
-					  q{body_element},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		my $thisprod = $thisrule->{"prods"}[1];
-		$text = $_[1];
-		my $_savetext;
-		@item = (q{body_element});
-		%item = (__RULE__ => q{body_element});
-		my $repcount = 0;
+        Parse::RecDescent::_trace(q{>>Matched production: [constant]<<},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{body_element},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $_matched = 1;
+        last;
+    }
 
 
-		Parse::RecDescent::_trace(q{Trying terminal: ['static']},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{body_element},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$lastsep = "";
-		$expectation->is(q{})->at($text);
-		
-
-		unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ s/\Astatic//)
-		{
-			
-			$expectation->failed();
-			Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
-						. $& . q{])},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-		push @item, $item{__STRING1__}=$&;
-		
-
-		Parse::RecDescent::_trace(q{Trying terminal: ['\{']},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{body_element},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$lastsep = "";
-		$expectation->is(q{'\{'})->at($text);
-		
-
-		unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ s/\A\{//)
-		{
-			
-			$expectation->failed();
-			Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
-						. $& . q{])},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-		push @item, $item{__STRING2__}=$&;
-		
-
-		Parse::RecDescent::_trace(q{Trying terminal: ['\}']},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{body_element},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$lastsep = "";
-		$expectation->is(q{'\}'})->at($text);
-		
-
-		unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ s/\A\}//)
-		{
-			
-			$expectation->failed();
-			Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
-						. $& . q{])},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-		push @item, $item{__STRING3__}=$&;
-		
-
-		Parse::RecDescent::_trace(q{Trying terminal: [';']},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{body_element},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$lastsep = "";
-		$expectation->is(q{';'})->at($text);
-		
-
-		unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ s/\A\;//)
-		{
-			
-			$expectation->failed();
-			Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
-						. $& . q{])},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-		push @item, $item{__STRING4__}=$&;
-		
-
-		Parse::RecDescent::_trace(q{Trying action},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{body_element},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		
-
-		$_tok = ($_noactions) ? 0 : do { { body_element => 'static_block' } };
-		unless (defined $_tok)
-		{
-			Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
-					if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
-					  . $_tok . q{])},
-					  Parse::RecDescent::_tracefirst($text))
-						if defined $::RD_TRACE;
-		push @item, $_tok;
-		$item{__ACTION1__}=$_tok;
-		
+    while (!$_matched && !$commit)
+    {
+        
+        Parse::RecDescent::_trace(q{Trying production: ['static' '\{' '\}' ';']},
+                      Parse::RecDescent::_tracefirst($_[1]),
+                      q{body_element},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        my $thisprod = $thisrule->{"prods"}[1];
+        $text = $_[1];
+        my $_savetext;
+        @item = (q{body_element});
+        %item = (__RULE__ => q{body_element});
+        my $repcount = 0;
 
 
-		Parse::RecDescent::_trace(q{>>Matched production: ['static' '\{' '\}' ';']<<},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{body_element},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$_matched = 1;
-		last;
-	}
+        Parse::RecDescent::_trace(q{Trying terminal: ['static']},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{body_element},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $lastsep = "";
+        $expectation->is(q{})->at($text);
+        
+
+        unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ m/\Astatic/)
+        {
+            
+            $expectation->failed();
+            Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+            last;
+        }
+		$current_match = substr($text, $-[0], $+[0] - $-[0]);
+        substr($text,0,length($current_match),q{});
+        Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
+                        . $current_match . q{])},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+        push @item, $item{__STRING1__}=$current_match;
+        
+
+        Parse::RecDescent::_trace(q{Trying terminal: ['\{']},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{body_element},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $lastsep = "";
+        $expectation->is(q{'\{'})->at($text);
+        
+
+        unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ m/\A\{/)
+        {
+            
+            $expectation->failed();
+            Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+            last;
+        }
+		$current_match = substr($text, $-[0], $+[0] - $-[0]);
+        substr($text,0,length($current_match),q{});
+        Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
+                        . $current_match . q{])},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+        push @item, $item{__STRING2__}=$current_match;
+        
+
+        Parse::RecDescent::_trace(q{Trying terminal: ['\}']},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{body_element},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $lastsep = "";
+        $expectation->is(q{'\}'})->at($text);
+        
+
+        unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ m/\A\}/)
+        {
+            
+            $expectation->failed();
+            Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+            last;
+        }
+		$current_match = substr($text, $-[0], $+[0] - $-[0]);
+        substr($text,0,length($current_match),q{});
+        Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
+                        . $current_match . q{])},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+        push @item, $item{__STRING3__}=$current_match;
+        
+
+        Parse::RecDescent::_trace(q{Trying terminal: [';']},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{body_element},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $lastsep = "";
+        $expectation->is(q{';'})->at($text);
+        
+
+        unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ m/\A\;/)
+        {
+            
+            $expectation->failed();
+            Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+            last;
+        }
+		$current_match = substr($text, $-[0], $+[0] - $-[0]);
+        substr($text,0,length($current_match),q{});
+        Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
+                        . $current_match . q{])},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+        push @item, $item{__STRING4__}=$current_match;
+        
+
+        Parse::RecDescent::_trace(q{Trying action},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{body_element},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        
+
+        $_tok = ($_noactions) ? 0 : do { { body_element => 'static_block' } };
+        unless (defined $_tok)
+        {
+            Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
+                    if defined $::RD_TRACE;
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
+                      . $_tok . q{])},
+                      Parse::RecDescent::_tracefirst($text))
+                        if defined $::RD_TRACE;
+        push @item, $_tok;
+        $item{__ACTION1__}=$_tok;
+        
 
 
-	while (!$_matched && !$commit)
-	{
-		
-		Parse::RecDescent::_trace(q{Trying production: [method]},
-					  Parse::RecDescent::_tracefirst($_[1]),
-					  q{body_element},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		my $thisprod = $thisrule->{"prods"}[2];
-		$text = $_[1];
-		my $_savetext;
-		@item = (q{body_element});
-		%item = (__RULE__ => q{body_element});
-		my $repcount = 0;
+        Parse::RecDescent::_trace(q{>>Matched production: ['static' '\{' '\}' ';']<<},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{body_element},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $_matched = 1;
+        last;
+    }
 
 
-		Parse::RecDescent::_trace(q{Trying subrule: [method]},
-				  Parse::RecDescent::_tracefirst($text),
-				  q{body_element},
-				  $tracelevel)
-					if defined $::RD_TRACE;
-		if (1) { no strict qw{refs};
-		$expectation->is(q{})->at($text);
-		unless (defined ($_tok = Parse::RecDescent::Java::Javap::Grammar::method($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
-		{
-			
-			Parse::RecDescent::_trace(q{<<Didn't match subrule: [method]>>},
-						  Parse::RecDescent::_tracefirst($text),
-						  q{body_element},
-						  $tracelevel)
-							if defined $::RD_TRACE;
-			$expectation->failed();
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched subrule: [method]<< (return value: [}
-					. $_tok . q{]},
-					  
-					  Parse::RecDescent::_tracefirst($text),
-					  q{body_element},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$item{q{method}} = $_tok;
-		push @item, $_tok;
-		
-		}
-
-		Parse::RecDescent::_trace(q{Trying action},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{body_element},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		
-
-		$_tok = ($_noactions) ? 0 : do { $item[1] };
-		unless (defined $_tok)
-		{
-			Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
-					if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
-					  . $_tok . q{])},
-					  Parse::RecDescent::_tracefirst($text))
-						if defined $::RD_TRACE;
-		push @item, $_tok;
-		$item{__ACTION1__}=$_tok;
-		
+    while (!$_matched && !$commit)
+    {
+        
+        Parse::RecDescent::_trace(q{Trying production: [method]},
+                      Parse::RecDescent::_tracefirst($_[1]),
+                      q{body_element},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        my $thisprod = $thisrule->{"prods"}[2];
+        $text = $_[1];
+        my $_savetext;
+        @item = (q{body_element});
+        %item = (__RULE__ => q{body_element});
+        my $repcount = 0;
 
 
-		Parse::RecDescent::_trace(q{>>Matched production: [method]<<},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{body_element},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$_matched = 1;
-		last;
-	}
+        Parse::RecDescent::_trace(q{Trying subrule: [method]},
+                  Parse::RecDescent::_tracefirst($text),
+                  q{body_element},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
+        if (1) { no strict qw{refs};
+        $expectation->is(q{})->at($text);
+        unless (defined ($_tok = Parse::RecDescent::Java::Javap::Grammar::method($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
+        {
+            
+            Parse::RecDescent::_trace(q{<<Didn't match subrule: [method]>>},
+                          Parse::RecDescent::_tracefirst($text),
+                          q{body_element},
+                          $tracelevel)
+                            if defined $::RD_TRACE;
+            $expectation->failed();
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched subrule: [method]<< (return value: [}
+                    . $_tok . q{]},
+                      
+                      Parse::RecDescent::_tracefirst($text),
+                      q{body_element},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $item{q{method}} = $_tok;
+        push @item, $_tok;
+        
+        }
+
+        Parse::RecDescent::_trace(q{Trying action},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{body_element},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        
+
+        $_tok = ($_noactions) ? 0 : do { $item[1] };
+        unless (defined $_tok)
+        {
+            Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
+                    if defined $::RD_TRACE;
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
+                      . $_tok . q{])},
+                      Parse::RecDescent::_tracefirst($text))
+                        if defined $::RD_TRACE;
+        push @item, $_tok;
+        $item{__ACTION1__}=$_tok;
+        
 
 
-	while (!$_matched && !$commit)
-	{
-		
-		Parse::RecDescent::_trace(q{Trying production: [variable]},
-					  Parse::RecDescent::_tracefirst($_[1]),
-					  q{body_element},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		my $thisprod = $thisrule->{"prods"}[3];
-		$text = $_[1];
-		my $_savetext;
-		@item = (q{body_element});
-		%item = (__RULE__ => q{body_element});
-		my $repcount = 0;
+        Parse::RecDescent::_trace(q{>>Matched production: [method]<<},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{body_element},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $_matched = 1;
+        last;
+    }
 
 
-		Parse::RecDescent::_trace(q{Trying subrule: [variable]},
-				  Parse::RecDescent::_tracefirst($text),
-				  q{body_element},
-				  $tracelevel)
-					if defined $::RD_TRACE;
-		if (1) { no strict qw{refs};
-		$expectation->is(q{})->at($text);
-		unless (defined ($_tok = Parse::RecDescent::Java::Javap::Grammar::variable($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
-		{
-			
-			Parse::RecDescent::_trace(q{<<Didn't match subrule: [variable]>>},
-						  Parse::RecDescent::_tracefirst($text),
-						  q{body_element},
-						  $tracelevel)
-							if defined $::RD_TRACE;
-			$expectation->failed();
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched subrule: [variable]<< (return value: [}
-					. $_tok . q{]},
-					  
-					  Parse::RecDescent::_tracefirst($text),
-					  q{body_element},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$item{q{variable}} = $_tok;
-		push @item, $_tok;
-		
-		}
-
-		Parse::RecDescent::_trace(q{Trying action},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{body_element},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		
-
-		$_tok = ($_noactions) ? 0 : do { $item[1] };
-		unless (defined $_tok)
-		{
-			Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
-					if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
-					  . $_tok . q{])},
-					  Parse::RecDescent::_tracefirst($text))
-						if defined $::RD_TRACE;
-		push @item, $_tok;
-		$item{__ACTION1__}=$_tok;
-		
+    while (!$_matched && !$commit)
+    {
+        
+        Parse::RecDescent::_trace(q{Trying production: [variable]},
+                      Parse::RecDescent::_tracefirst($_[1]),
+                      q{body_element},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        my $thisprod = $thisrule->{"prods"}[3];
+        $text = $_[1];
+        my $_savetext;
+        @item = (q{body_element});
+        %item = (__RULE__ => q{body_element});
+        my $repcount = 0;
 
 
-		Parse::RecDescent::_trace(q{>>Matched production: [variable]<<},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{body_element},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$_matched = 1;
-		last;
-	}
+        Parse::RecDescent::_trace(q{Trying subrule: [variable]},
+                  Parse::RecDescent::_tracefirst($text),
+                  q{body_element},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
+        if (1) { no strict qw{refs};
+        $expectation->is(q{})->at($text);
+        unless (defined ($_tok = Parse::RecDescent::Java::Javap::Grammar::variable($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
+        {
+            
+            Parse::RecDescent::_trace(q{<<Didn't match subrule: [variable]>>},
+                          Parse::RecDescent::_tracefirst($text),
+                          q{body_element},
+                          $tracelevel)
+                            if defined $::RD_TRACE;
+            $expectation->failed();
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched subrule: [variable]<< (return value: [}
+                    . $_tok . q{]},
+                      
+                      Parse::RecDescent::_tracefirst($text),
+                      q{body_element},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $item{q{variable}} = $_tok;
+        push @item, $_tok;
+        
+        }
+
+        Parse::RecDescent::_trace(q{Trying action},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{body_element},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        
+
+        $_tok = ($_noactions) ? 0 : do { $item[1] };
+        unless (defined $_tok)
+        {
+            Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
+                    if defined $::RD_TRACE;
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
+                      . $_tok . q{])},
+                      Parse::RecDescent::_tracefirst($text))
+                        if defined $::RD_TRACE;
+        push @item, $_tok;
+        $item{__ACTION1__}=$_tok;
+        
 
 
-        unless ( $_matched || defined($return) || defined($score) )
-	{
-		
+        Parse::RecDescent::_trace(q{>>Matched production: [variable]<<},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{body_element},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $_matched = 1;
+        last;
+    }
 
-		$_[1] = $text;	# NOT SURE THIS IS NEEDED
-		Parse::RecDescent::_trace(q{<<Didn't match rule>>},
-					 Parse::RecDescent::_tracefirst($_[1]),
-					 q{body_element},
-					 $tracelevel)
-					if defined $::RD_TRACE;
-		return undef;
-	}
-	if (!defined($return) && defined($score))
-	{
-		Parse::RecDescent::_trace(q{>>Accepted scored production<<}, "",
-					  q{body_element},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$return = $score_return;
-	}
-	splice @{$thisparser->{errors}}, $err_at;
-	$return = $item[$#item] unless defined $return;
-	if (defined $::RD_TRACE)
-	{
-		Parse::RecDescent::_trace(q{>>Matched rule<< (return value: [} .
-					  $return . q{])}, "",
-					  q{body_element},
-					  $tracelevel);
-		Parse::RecDescent::_trace(q{(consumed: [} .
-					  Parse::RecDescent::_tracemax(substr($_[1],0,-length($text))) . q{])}, 
-					  Parse::RecDescent::_tracefirst($text),
-					  , q{body_element},
-					  $tracelevel)
-	}
-	$_[1] = $text;
-	return $return;
+
+    unless ( $_matched || defined($score) )
+    {
+        
+
+        $_[1] = $text;  # NOT SURE THIS IS NEEDED
+        Parse::RecDescent::_trace(q{<<Didn't match rule>>},
+                     Parse::RecDescent::_tracefirst($_[1]),
+                     q{body_element},
+                     $tracelevel)
+                    if defined $::RD_TRACE;
+        return undef;
+    }
+    if (!defined($return) && defined($score))
+    {
+        Parse::RecDescent::_trace(q{>>Accepted scored production<<}, "",
+                      q{body_element},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $return = $score_return;
+    }
+    splice @{$thisparser->{errors}}, $err_at;
+    $return = $item[$#item] unless defined $return;
+    if (defined $::RD_TRACE)
+    {
+        Parse::RecDescent::_trace(q{>>Matched rule<< (return value: [} .
+                      $return . q{])}, "",
+                      q{body_element},
+                      $tracelevel);
+        Parse::RecDescent::_trace(q{(consumed: [} .
+                      Parse::RecDescent::_tracemax(substr($_[1],0,-length($text))) . q{])}, 
+                      Parse::RecDescent::_tracefirst($text),
+                      , q{body_element},
+                      $tracelevel)
+    }
+    $_[1] = $text;
+    return $return;
 }
 
 # ARGS ARE: ($parser, $text; $repeating, $_noactions, \@args)
@@ -7312,148 +7451,151 @@ sub Parse::RecDescent::Java::Javap::Grammar::comma_list
 	use vars q{$tracelevel};
 	local $tracelevel = ($tracelevel||0)+1;
 	$ERRORS = 0;
-	my $thisrule = $thisparser->{"rules"}{"comma_list"};
-	
-	Parse::RecDescent::_trace(q{Trying rule: [comma_list]},
-				  Parse::RecDescent::_tracefirst($_[1]),
-				  q{comma_list},
-				  $tracelevel)
-					if defined $::RD_TRACE;
+    my $thisrule = $thisparser->{"rules"}{"comma_list"};
+    
+    Parse::RecDescent::_trace(q{Trying rule: [comma_list]},
+                  Parse::RecDescent::_tracefirst($_[1]),
+                  q{comma_list},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
 
-	
-	my $err_at = @{$thisparser->{errors}};
+    
+    my $err_at = @{$thisparser->{errors}};
 
-	my $score;
-	my $score_return;
-	my $_tok;
-	my $return = undef;
-	my $_matched=0;
-	my $commit=0;
-	my @item = ();
-	my %item = ();
-	my $repeating =  defined($_[2]) && $_[2];
-	my $_noactions = defined($_[3]) && $_[3];
- 	my @arg =        defined $_[4] ? @{ &{$_[4]} } : ();
-	my %arg =        ($#arg & 01) ? @arg : (@arg, undef);
-	my $text;
-	my $lastsep="";
-	my $expectation = new Parse::RecDescent::Expectation($thisrule->expected());
-	$expectation->at($_[1]);
-	
-	my $thisline;
-	tie $thisline, q{Parse::RecDescent::LineCounter}, \$text, $thisparser;
+    my $score;
+    my $score_return;
+    my $_tok;
+    my $return = undef;
+    my $_matched=0;
+    my $commit=0;
+    my @item = ();
+    my %item = ();
+    my $repeating =  defined($_[2]) && $_[2];
+    my $_noactions = defined($_[3]) && $_[3];
+    my @arg =    defined $_[4] ? @{ &{$_[4]} } : ();
+    my %arg =    ($#arg & 01) ? @arg : (@arg, undef);
+    my $text;
+    my $lastsep="";
+    my $current_match;
+    my $expectation = new Parse::RecDescent::Expectation(q{qualified_name});
+    $expectation->at($_[1]);
+    
+    my $thisline;
+    tie $thisline, q{Parse::RecDescent::LineCounter}, \$text, $thisparser;
 
-	
+    
 
-	while (!$_matched && !$commit)
-	{
-		
-		Parse::RecDescent::_trace(q{Trying production: [qualified_name ',' comma_list]},
-					  Parse::RecDescent::_tracefirst($_[1]),
-					  q{comma_list},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		my $thisprod = $thisrule->{"prods"}[0];
-		$text = $_[1];
-		my $_savetext;
-		@item = (q{comma_list});
-		%item = (__RULE__ => q{comma_list});
-		my $repcount = 0;
+    while (!$_matched && !$commit)
+    {
+        
+        Parse::RecDescent::_trace(q{Trying production: [qualified_name ',' comma_list]},
+                      Parse::RecDescent::_tracefirst($_[1]),
+                      q{comma_list},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        my $thisprod = $thisrule->{"prods"}[0];
+        $text = $_[1];
+        my $_savetext;
+        @item = (q{comma_list});
+        %item = (__RULE__ => q{comma_list});
+        my $repcount = 0;
 
 
-		Parse::RecDescent::_trace(q{Trying subrule: [qualified_name]},
-				  Parse::RecDescent::_tracefirst($text),
-				  q{comma_list},
-				  $tracelevel)
-					if defined $::RD_TRACE;
-		if (1) { no strict qw{refs};
-		$expectation->is(q{})->at($text);
-		unless (defined ($_tok = Parse::RecDescent::Java::Javap::Grammar::qualified_name($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
-		{
-			
-			Parse::RecDescent::_trace(q{<<Didn't match subrule: [qualified_name]>>},
-						  Parse::RecDescent::_tracefirst($text),
-						  q{comma_list},
-						  $tracelevel)
-							if defined $::RD_TRACE;
-			$expectation->failed();
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched subrule: [qualified_name]<< (return value: [}
-					. $_tok . q{]},
-					  
-					  Parse::RecDescent::_tracefirst($text),
-					  q{comma_list},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$item{q{qualified_name}} = $_tok;
-		push @item, $_tok;
-		
-		}
+        Parse::RecDescent::_trace(q{Trying subrule: [qualified_name]},
+                  Parse::RecDescent::_tracefirst($text),
+                  q{comma_list},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
+        if (1) { no strict qw{refs};
+        $expectation->is(q{})->at($text);
+        unless (defined ($_tok = Parse::RecDescent::Java::Javap::Grammar::qualified_name($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
+        {
+            
+            Parse::RecDescent::_trace(q{<<Didn't match subrule: [qualified_name]>>},
+                          Parse::RecDescent::_tracefirst($text),
+                          q{comma_list},
+                          $tracelevel)
+                            if defined $::RD_TRACE;
+            $expectation->failed();
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched subrule: [qualified_name]<< (return value: [}
+                    . $_tok . q{]},
+                      
+                      Parse::RecDescent::_tracefirst($text),
+                      q{comma_list},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $item{q{qualified_name}} = $_tok;
+        push @item, $_tok;
+        
+        }
 
-		Parse::RecDescent::_trace(q{Trying terminal: [',']},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{comma_list},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$lastsep = "";
-		$expectation->is(q{','})->at($text);
-		
+        Parse::RecDescent::_trace(q{Trying terminal: [',']},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{comma_list},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $lastsep = "";
+        $expectation->is(q{','})->at($text);
+        
 
-		unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ s/\A\,//)
-		{
-			
-			$expectation->failed();
-			Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
-						. $& . q{])},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-		push @item, $item{__STRING1__}=$&;
-		
+        unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ m/\A\,/)
+        {
+            
+            $expectation->failed();
+            Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+            last;
+        }
+		$current_match = substr($text, $-[0], $+[0] - $-[0]);
+        substr($text,0,length($current_match),q{});
+        Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
+                        . $current_match . q{])},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+        push @item, $item{__STRING1__}=$current_match;
+        
 
-		Parse::RecDescent::_trace(q{Trying subrule: [comma_list]},
-				  Parse::RecDescent::_tracefirst($text),
-				  q{comma_list},
-				  $tracelevel)
-					if defined $::RD_TRACE;
-		if (1) { no strict qw{refs};
-		$expectation->is(q{comma_list})->at($text);
-		unless (defined ($_tok = Parse::RecDescent::Java::Javap::Grammar::comma_list($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
-		{
-			
-			Parse::RecDescent::_trace(q{<<Didn't match subrule: [comma_list]>>},
-						  Parse::RecDescent::_tracefirst($text),
-						  q{comma_list},
-						  $tracelevel)
-							if defined $::RD_TRACE;
-			$expectation->failed();
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched subrule: [comma_list]<< (return value: [}
-					. $_tok . q{]},
-					  
-					  Parse::RecDescent::_tracefirst($text),
-					  q{comma_list},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$item{q{comma_list}} = $_tok;
-		push @item, $_tok;
-		
-		}
+        Parse::RecDescent::_trace(q{Trying subrule: [comma_list]},
+                  Parse::RecDescent::_tracefirst($text),
+                  q{comma_list},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
+        if (1) { no strict qw{refs};
+        $expectation->is(q{comma_list})->at($text);
+        unless (defined ($_tok = Parse::RecDescent::Java::Javap::Grammar::comma_list($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
+        {
+            
+            Parse::RecDescent::_trace(q{<<Didn't match subrule: [comma_list]>>},
+                          Parse::RecDescent::_tracefirst($text),
+                          q{comma_list},
+                          $tracelevel)
+                            if defined $::RD_TRACE;
+            $expectation->failed();
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched subrule: [comma_list]<< (return value: [}
+                    . $_tok . q{]},
+                      
+                      Parse::RecDescent::_tracefirst($text),
+                      q{comma_list},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $item{q{comma_list}} = $_tok;
+        push @item, $_tok;
+        
+        }
 
-		Parse::RecDescent::_trace(q{Trying action},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{comma_list},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		
+        Parse::RecDescent::_trace(q{Trying action},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{comma_list},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        
 
-		$_tok = ($_noactions) ? 0 : do {
+        $_tok = ($_noactions) ? 0 : do {
                 my @names = ( $item[1] );
                 if ( ref( $item[3] ) eq 'ARRAY' ) {
                     push @names, @{ $item[3] };
@@ -7463,148 +7605,148 @@ sub Parse::RecDescent::Java::Javap::Grammar::comma_list
                 }
                 \@names;
              };
-		unless (defined $_tok)
-		{
-			Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
-					if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
-					  . $_tok . q{])},
-					  Parse::RecDescent::_tracefirst($text))
-						if defined $::RD_TRACE;
-		push @item, $_tok;
-		$item{__ACTION1__}=$_tok;
-		
+        unless (defined $_tok)
+        {
+            Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
+                    if defined $::RD_TRACE;
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
+                      . $_tok . q{])},
+                      Parse::RecDescent::_tracefirst($text))
+                        if defined $::RD_TRACE;
+        push @item, $_tok;
+        $item{__ACTION1__}=$_tok;
+        
 
 
-		Parse::RecDescent::_trace(q{>>Matched production: [qualified_name ',' comma_list]<<},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{comma_list},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$_matched = 1;
-		last;
-	}
+        Parse::RecDescent::_trace(q{>>Matched production: [qualified_name ',' comma_list]<<},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{comma_list},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $_matched = 1;
+        last;
+    }
 
 
-	while (!$_matched && !$commit)
-	{
-		
-		Parse::RecDescent::_trace(q{Trying production: [qualified_name]},
-					  Parse::RecDescent::_tracefirst($_[1]),
-					  q{comma_list},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		my $thisprod = $thisrule->{"prods"}[1];
-		$text = $_[1];
-		my $_savetext;
-		@item = (q{comma_list});
-		%item = (__RULE__ => q{comma_list});
-		my $repcount = 0;
+    while (!$_matched && !$commit)
+    {
+        
+        Parse::RecDescent::_trace(q{Trying production: [qualified_name]},
+                      Parse::RecDescent::_tracefirst($_[1]),
+                      q{comma_list},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        my $thisprod = $thisrule->{"prods"}[1];
+        $text = $_[1];
+        my $_savetext;
+        @item = (q{comma_list});
+        %item = (__RULE__ => q{comma_list});
+        my $repcount = 0;
 
 
-		Parse::RecDescent::_trace(q{Trying subrule: [qualified_name]},
-				  Parse::RecDescent::_tracefirst($text),
-				  q{comma_list},
-				  $tracelevel)
-					if defined $::RD_TRACE;
-		if (1) { no strict qw{refs};
-		$expectation->is(q{})->at($text);
-		unless (defined ($_tok = Parse::RecDescent::Java::Javap::Grammar::qualified_name($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
-		{
-			
-			Parse::RecDescent::_trace(q{<<Didn't match subrule: [qualified_name]>>},
-						  Parse::RecDescent::_tracefirst($text),
-						  q{comma_list},
-						  $tracelevel)
-							if defined $::RD_TRACE;
-			$expectation->failed();
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched subrule: [qualified_name]<< (return value: [}
-					. $_tok . q{]},
-					  
-					  Parse::RecDescent::_tracefirst($text),
-					  q{comma_list},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$item{q{qualified_name}} = $_tok;
-		push @item, $_tok;
-		
-		}
+        Parse::RecDescent::_trace(q{Trying subrule: [qualified_name]},
+                  Parse::RecDescent::_tracefirst($text),
+                  q{comma_list},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
+        if (1) { no strict qw{refs};
+        $expectation->is(q{})->at($text);
+        unless (defined ($_tok = Parse::RecDescent::Java::Javap::Grammar::qualified_name($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
+        {
+            
+            Parse::RecDescent::_trace(q{<<Didn't match subrule: [qualified_name]>>},
+                          Parse::RecDescent::_tracefirst($text),
+                          q{comma_list},
+                          $tracelevel)
+                            if defined $::RD_TRACE;
+            $expectation->failed();
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched subrule: [qualified_name]<< (return value: [}
+                    . $_tok . q{]},
+                      
+                      Parse::RecDescent::_tracefirst($text),
+                      q{comma_list},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $item{q{qualified_name}} = $_tok;
+        push @item, $_tok;
+        
+        }
 
-		Parse::RecDescent::_trace(q{Trying action},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{comma_list},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		
+        Parse::RecDescent::_trace(q{Trying action},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{comma_list},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        
 
-		$_tok = ($_noactions) ? 0 : do {
+        $_tok = ($_noactions) ? 0 : do {
                 [ $item[1] ]
             };
-		unless (defined $_tok)
-		{
-			Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
-					if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
-					  . $_tok . q{])},
-					  Parse::RecDescent::_tracefirst($text))
-						if defined $::RD_TRACE;
-		push @item, $_tok;
-		$item{__ACTION1__}=$_tok;
-		
+        unless (defined $_tok)
+        {
+            Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
+                    if defined $::RD_TRACE;
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
+                      . $_tok . q{])},
+                      Parse::RecDescent::_tracefirst($text))
+                        if defined $::RD_TRACE;
+        push @item, $_tok;
+        $item{__ACTION1__}=$_tok;
+        
 
 
-		Parse::RecDescent::_trace(q{>>Matched production: [qualified_name]<<},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{comma_list},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$_matched = 1;
-		last;
-	}
+        Parse::RecDescent::_trace(q{>>Matched production: [qualified_name]<<},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{comma_list},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $_matched = 1;
+        last;
+    }
 
 
-        unless ( $_matched || defined($return) || defined($score) )
-	{
-		
+    unless ( $_matched || defined($score) )
+    {
+        
 
-		$_[1] = $text;	# NOT SURE THIS IS NEEDED
-		Parse::RecDescent::_trace(q{<<Didn't match rule>>},
-					 Parse::RecDescent::_tracefirst($_[1]),
-					 q{comma_list},
-					 $tracelevel)
-					if defined $::RD_TRACE;
-		return undef;
-	}
-	if (!defined($return) && defined($score))
-	{
-		Parse::RecDescent::_trace(q{>>Accepted scored production<<}, "",
-					  q{comma_list},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$return = $score_return;
-	}
-	splice @{$thisparser->{errors}}, $err_at;
-	$return = $item[$#item] unless defined $return;
-	if (defined $::RD_TRACE)
-	{
-		Parse::RecDescent::_trace(q{>>Matched rule<< (return value: [} .
-					  $return . q{])}, "",
-					  q{comma_list},
-					  $tracelevel);
-		Parse::RecDescent::_trace(q{(consumed: [} .
-					  Parse::RecDescent::_tracemax(substr($_[1],0,-length($text))) . q{])}, 
-					  Parse::RecDescent::_tracefirst($text),
-					  , q{comma_list},
-					  $tracelevel)
-	}
-	$_[1] = $text;
-	return $return;
+        $_[1] = $text;  # NOT SURE THIS IS NEEDED
+        Parse::RecDescent::_trace(q{<<Didn't match rule>>},
+                     Parse::RecDescent::_tracefirst($_[1]),
+                     q{comma_list},
+                     $tracelevel)
+                    if defined $::RD_TRACE;
+        return undef;
+    }
+    if (!defined($return) && defined($score))
+    {
+        Parse::RecDescent::_trace(q{>>Accepted scored production<<}, "",
+                      q{comma_list},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $return = $score_return;
+    }
+    splice @{$thisparser->{errors}}, $err_at;
+    $return = $item[$#item] unless defined $return;
+    if (defined $::RD_TRACE)
+    {
+        Parse::RecDescent::_trace(q{>>Matched rule<< (return value: [} .
+                      $return . q{])}, "",
+                      q{comma_list},
+                      $tracelevel);
+        Parse::RecDescent::_trace(q{(consumed: [} .
+                      Parse::RecDescent::_tracemax(substr($_[1],0,-length($text))) . q{])}, 
+                      Parse::RecDescent::_tracefirst($text),
+                      , q{comma_list},
+                      $tracelevel)
+    }
+    $_[1] = $text;
+    return $return;
 }
 
 # ARGS ARE: ($parser, $text; $repeating, $_noactions, \@args)
@@ -7614,226 +7756,233 @@ sub Parse::RecDescent::Java::Javap::Grammar::comment
 	use vars q{$tracelevel};
 	local $tracelevel = ($tracelevel||0)+1;
 	$ERRORS = 0;
-	my $thisrule = $thisparser->{"rules"}{"comment"};
-	
-	Parse::RecDescent::_trace(q{Trying rule: [comment]},
-				  Parse::RecDescent::_tracefirst($_[1]),
-				  q{comment},
-				  $tracelevel)
-					if defined $::RD_TRACE;
+    my $thisrule = $thisparser->{"rules"}{"comment"};
+    
+    Parse::RecDescent::_trace(q{Trying rule: [comment]},
+                  Parse::RecDescent::_tracefirst($_[1]),
+                  q{comment},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
 
-	
-	my $err_at = @{$thisparser->{errors}};
+    
+    my $err_at = @{$thisparser->{errors}};
 
-	my $score;
-	my $score_return;
-	my $_tok;
-	my $return = undef;
-	my $_matched=0;
-	my $commit=0;
-	my @item = ();
-	my %item = ();
-	my $repeating =  defined($_[2]) && $_[2];
-	my $_noactions = defined($_[3]) && $_[3];
- 	my @arg =        defined $_[4] ? @{ &{$_[4]} } : ();
-	my %arg =        ($#arg & 01) ? @arg : (@arg, undef);
-	my $text;
-	my $lastsep="";
-	my $expectation = new Parse::RecDescent::Expectation($thisrule->expected());
-	$expectation->at($_[1]);
-	
-	my $thisline;
-	tie $thisline, q{Parse::RecDescent::LineCounter}, \$text, $thisparser;
+    my $score;
+    my $score_return;
+    my $_tok;
+    my $return = undef;
+    my $_matched=0;
+    my $commit=0;
+    my @item = ();
+    my %item = ();
+    my $repeating =  defined($_[2]) && $_[2];
+    my $_noactions = defined($_[3]) && $_[3];
+    my @arg =    defined $_[4] ? @{ &{$_[4]} } : ();
+    my %arg =    ($#arg & 01) ? @arg : (@arg, undef);
+    my $text;
+    my $lastsep="";
+    my $current_match;
+    my $expectation = new Parse::RecDescent::Expectation(q{'/*'});
+    $expectation->at($_[1]);
+    
+    my $thisline;
+    tie $thisline, q{Parse::RecDescent::LineCounter}, \$text, $thisparser;
 
-	
+    
 
-	while (!$_matched && !$commit)
-	{
-		
-		Parse::RecDescent::_trace(q{Trying production: ['/*' /[^*]*/ '*/']},
-					  Parse::RecDescent::_tracefirst($_[1]),
-					  q{comment},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		my $thisprod = $thisrule->{"prods"}[0];
-		$text = $_[1];
-		my $_savetext;
-		@item = (q{comment});
-		%item = (__RULE__ => q{comment});
-		my $repcount = 0;
-
-
-		Parse::RecDescent::_trace(q{Trying terminal: ['/*']},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{comment},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$lastsep = "";
-		$expectation->is(q{})->at($text);
-		
-
-		unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ s/\A\/\*//)
-		{
-			
-			$expectation->failed();
-			Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
-						. $& . q{])},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-		push @item, $item{__STRING1__}=$&;
-		
-
-		Parse::RecDescent::_trace(q{Trying terminal: [/[^*]*/]}, Parse::RecDescent::_tracefirst($text),
-					  q{comment},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$lastsep = "";
-		$expectation->is(q{/[^*]*/})->at($text);
-		
-
-		unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ s/\A(?:[^*]*)//)
-		{
-			
-			$expectation->failed();
-			Parse::RecDescent::_trace(q{<<Didn't match terminal>>},
-						  Parse::RecDescent::_tracefirst($text))
-					if defined $::RD_TRACE;
-
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
-						. $& . q{])},
-						  Parse::RecDescent::_tracefirst($text))
-					if defined $::RD_TRACE;
-		push @item, $item{__PATTERN1__}=$&;
-		
-
-		Parse::RecDescent::_trace(q{Trying terminal: ['*/']},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{comment},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$lastsep = "";
-		$expectation->is(q{'*/'})->at($text);
-		
-
-		unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ s/\A\*\///)
-		{
-			
-			$expectation->failed();
-			Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
-						. $& . q{])},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-		push @item, $item{__STRING2__}=$&;
-		
-
-		Parse::RecDescent::_trace(q{Trying action},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{comment},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		
-
-		$_tok = ($_noactions) ? 0 : do {};
-		unless (defined $_tok)
-		{
-			Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
-					if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
-					  . $_tok . q{])},
-					  Parse::RecDescent::_tracefirst($text))
-						if defined $::RD_TRACE;
-		push @item, $_tok;
-		$item{__ACTION1__}=$_tok;
-		
+    while (!$_matched && !$commit)
+    {
+        
+        Parse::RecDescent::_trace(q{Trying production: ['/*' /[^*]*/ '*/']},
+                      Parse::RecDescent::_tracefirst($_[1]),
+                      q{comment},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        my $thisprod = $thisrule->{"prods"}[0];
+        $text = $_[1];
+        my $_savetext;
+        @item = (q{comment});
+        %item = (__RULE__ => q{comment});
+        my $repcount = 0;
 
 
-		Parse::RecDescent::_trace(q{>>Matched production: ['/*' /[^*]*/ '*/']<<},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{comment},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$_matched = 1;
-		last;
-	}
+        Parse::RecDescent::_trace(q{Trying terminal: ['/*']},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{comment},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $lastsep = "";
+        $expectation->is(q{})->at($text);
+        
+
+        unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ m/\A\/\*/)
+        {
+            
+            $expectation->failed();
+            Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+            last;
+        }
+		$current_match = substr($text, $-[0], $+[0] - $-[0]);
+        substr($text,0,length($current_match),q{});
+        Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
+                        . $current_match . q{])},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+        push @item, $item{__STRING1__}=$current_match;
+        
+
+        Parse::RecDescent::_trace(q{Trying terminal: [/[^*]*/]}, Parse::RecDescent::_tracefirst($text),
+                      q{comment},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $lastsep = "";
+        $expectation->is(q{/[^*]*/})->at($text);
+        
+
+        unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ m/\A(?:[^*]*)/)
+        {
+            
+            $expectation->failed();
+            Parse::RecDescent::_trace(q{<<Didn't match terminal>>},
+                          Parse::RecDescent::_tracefirst($text))
+                    if defined $::RD_TRACE;
+
+            last;
+        }
+		$current_match = substr($text, $-[0], $+[0] - $-[0]);
+        substr($text,0,length($current_match),q{});
+        Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
+                        . $current_match . q{])},
+                          Parse::RecDescent::_tracefirst($text))
+                    if defined $::RD_TRACE;
+        push @item, $item{__PATTERN1__}=$current_match;
+        
+
+        Parse::RecDescent::_trace(q{Trying terminal: ['*/']},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{comment},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $lastsep = "";
+        $expectation->is(q{'*/'})->at($text);
+        
+
+        unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ m/\A\*\//)
+        {
+            
+            $expectation->failed();
+            Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+            last;
+        }
+		$current_match = substr($text, $-[0], $+[0] - $-[0]);
+        substr($text,0,length($current_match),q{});
+        Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
+                        . $current_match . q{])},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+        push @item, $item{__STRING2__}=$current_match;
+        
+
+        Parse::RecDescent::_trace(q{Trying action},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{comment},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        
+
+        $_tok = ($_noactions) ? 0 : do {};
+        unless (defined $_tok)
+        {
+            Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
+                    if defined $::RD_TRACE;
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
+                      . $_tok . q{])},
+                      Parse::RecDescent::_tracefirst($text))
+                        if defined $::RD_TRACE;
+        push @item, $_tok;
+        $item{__ACTION1__}=$_tok;
+        
 
 
-	while (!$_matched && !$commit)
-	{
-		
-		Parse::RecDescent::_trace(q{Trying production: []},
-					  Parse::RecDescent::_tracefirst($_[1]),
-					  q{comment},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		my $thisprod = $thisrule->{"prods"}[1];
-		$text = $_[1];
-		my $_savetext;
-		@item = (q{comment});
-		%item = (__RULE__ => q{comment});
-		my $repcount = 0;
+        Parse::RecDescent::_trace(q{>>Matched production: ['/*' /[^*]*/ '*/']<<},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{comment},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $_matched = 1;
+        last;
+    }
+
+
+    while (!$_matched && !$commit)
+    {
+        
+        Parse::RecDescent::_trace(q{Trying production: []},
+                      Parse::RecDescent::_tracefirst($_[1]),
+                      q{comment},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        my $thisprod = $thisrule->{"prods"}[1];
+        $text = $_[1];
+        my $_savetext;
+        @item = (q{comment});
+        %item = (__RULE__ => q{comment});
+        my $repcount = 0;
 
 
 
-		Parse::RecDescent::_trace(q{>>Matched production: []<<},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{comment},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$_matched = 1;
-		last;
-	}
+        Parse::RecDescent::_trace(q{>>Matched production: []<<},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{comment},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $_matched = 1;
+        last;
+    }
 
 
-        unless ( $_matched || defined($return) || defined($score) )
-	{
-		
+    unless ( $_matched || defined($score) )
+    {
+        
 
-		$_[1] = $text;	# NOT SURE THIS IS NEEDED
-		Parse::RecDescent::_trace(q{<<Didn't match rule>>},
-					 Parse::RecDescent::_tracefirst($_[1]),
-					 q{comment},
-					 $tracelevel)
-					if defined $::RD_TRACE;
-		return undef;
-	}
-	if (!defined($return) && defined($score))
-	{
-		Parse::RecDescent::_trace(q{>>Accepted scored production<<}, "",
-					  q{comment},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$return = $score_return;
-	}
-	splice @{$thisparser->{errors}}, $err_at;
-	$return = $item[$#item] unless defined $return;
-	if (defined $::RD_TRACE)
-	{
-		Parse::RecDescent::_trace(q{>>Matched rule<< (return value: [} .
-					  $return . q{])}, "",
-					  q{comment},
-					  $tracelevel);
-		Parse::RecDescent::_trace(q{(consumed: [} .
-					  Parse::RecDescent::_tracemax(substr($_[1],0,-length($text))) . q{])}, 
-					  Parse::RecDescent::_tracefirst($text),
-					  , q{comment},
-					  $tracelevel)
-	}
-	$_[1] = $text;
-	return $return;
+        $_[1] = $text;  # NOT SURE THIS IS NEEDED
+        Parse::RecDescent::_trace(q{<<Didn't match rule>>},
+                     Parse::RecDescent::_tracefirst($_[1]),
+                     q{comment},
+                     $tracelevel)
+                    if defined $::RD_TRACE;
+        return undef;
+    }
+    if (!defined($return) && defined($score))
+    {
+        Parse::RecDescent::_trace(q{>>Accepted scored production<<}, "",
+                      q{comment},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $return = $score_return;
+    }
+    splice @{$thisparser->{errors}}, $err_at;
+    $return = $item[$#item] unless defined $return;
+    if (defined $::RD_TRACE)
+    {
+        Parse::RecDescent::_trace(q{>>Matched rule<< (return value: [} .
+                      $return . q{])}, "",
+                      q{comment},
+                      $tracelevel);
+        Parse::RecDescent::_trace(q{(consumed: [} .
+                      Parse::RecDescent::_tracemax(substr($_[1],0,-length($text))) . q{])}, 
+                      Parse::RecDescent::_tracefirst($text),
+                      , q{comment},
+                      $tracelevel)
+    }
+    $_[1] = $text;
+    return $return;
 }
 
 # ARGS ARE: ($parser, $text; $repeating, $_noactions, \@args)
@@ -7843,179 +7992,182 @@ sub Parse::RecDescent::Java::Javap::Grammar::extends_clause
 	use vars q{$tracelevel};
 	local $tracelevel = ($tracelevel||0)+1;
 	$ERRORS = 0;
-	my $thisrule = $thisparser->{"rules"}{"extends_clause"};
-	
-	Parse::RecDescent::_trace(q{Trying rule: [extends_clause]},
-				  Parse::RecDescent::_tracefirst($_[1]),
-				  q{extends_clause},
-				  $tracelevel)
-					if defined $::RD_TRACE;
+    my $thisrule = $thisparser->{"rules"}{"extends_clause"};
+    
+    Parse::RecDescent::_trace(q{Trying rule: [extends_clause]},
+                  Parse::RecDescent::_tracefirst($_[1]),
+                  q{extends_clause},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
 
-	
-	my $err_at = @{$thisparser->{errors}};
+    
+    my $err_at = @{$thisparser->{errors}};
 
-	my $score;
-	my $score_return;
-	my $_tok;
-	my $return = undef;
-	my $_matched=0;
-	my $commit=0;
-	my @item = ();
-	my %item = ();
-	my $repeating =  defined($_[2]) && $_[2];
-	my $_noactions = defined($_[3]) && $_[3];
- 	my @arg =        defined $_[4] ? @{ &{$_[4]} } : ();
-	my %arg =        ($#arg & 01) ? @arg : (@arg, undef);
-	my $text;
-	my $lastsep="";
-	my $expectation = new Parse::RecDescent::Expectation($thisrule->expected());
-	$expectation->at($_[1]);
-	
-	my $thisline;
-	tie $thisline, q{Parse::RecDescent::LineCounter}, \$text, $thisparser;
+    my $score;
+    my $score_return;
+    my $_tok;
+    my $return = undef;
+    my $_matched=0;
+    my $commit=0;
+    my @item = ();
+    my %item = ();
+    my $repeating =  defined($_[2]) && $_[2];
+    my $_noactions = defined($_[3]) && $_[3];
+    my @arg =    defined $_[4] ? @{ &{$_[4]} } : ();
+    my %arg =    ($#arg & 01) ? @arg : (@arg, undef);
+    my $text;
+    my $lastsep="";
+    my $current_match;
+    my $expectation = new Parse::RecDescent::Expectation(q{'extends'});
+    $expectation->at($_[1]);
+    
+    my $thisline;
+    tie $thisline, q{Parse::RecDescent::LineCounter}, \$text, $thisparser;
 
-	
+    
 
-	while (!$_matched && !$commit)
-	{
-		
-		Parse::RecDescent::_trace(q{Trying production: ['extends' qualified_name]},
-					  Parse::RecDescent::_tracefirst($_[1]),
-					  q{extends_clause},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		my $thisprod = $thisrule->{"prods"}[0];
-		$text = $_[1];
-		my $_savetext;
-		@item = (q{extends_clause});
-		%item = (__RULE__ => q{extends_clause});
-		my $repcount = 0;
-
-
-		Parse::RecDescent::_trace(q{Trying terminal: ['extends']},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{extends_clause},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$lastsep = "";
-		$expectation->is(q{})->at($text);
-		
-
-		unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ s/\Aextends//)
-		{
-			
-			$expectation->failed();
-			Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
-						. $& . q{])},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-		push @item, $item{__STRING1__}=$&;
-		
-
-		Parse::RecDescent::_trace(q{Trying subrule: [qualified_name]},
-				  Parse::RecDescent::_tracefirst($text),
-				  q{extends_clause},
-				  $tracelevel)
-					if defined $::RD_TRACE;
-		if (1) { no strict qw{refs};
-		$expectation->is(q{qualified_name})->at($text);
-		unless (defined ($_tok = Parse::RecDescent::Java::Javap::Grammar::qualified_name($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
-		{
-			
-			Parse::RecDescent::_trace(q{<<Didn't match subrule: [qualified_name]>>},
-						  Parse::RecDescent::_tracefirst($text),
-						  q{extends_clause},
-						  $tracelevel)
-							if defined $::RD_TRACE;
-			$expectation->failed();
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched subrule: [qualified_name]<< (return value: [}
-					. $_tok . q{]},
-					  
-					  Parse::RecDescent::_tracefirst($text),
-					  q{extends_clause},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$item{q{qualified_name}} = $_tok;
-		push @item, $_tok;
-		
-		}
-
-		Parse::RecDescent::_trace(q{Trying action},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{extends_clause},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		
-
-		$_tok = ($_noactions) ? 0 : do { $item{ qualified_name } };
-		unless (defined $_tok)
-		{
-			Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
-					if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
-					  . $_tok . q{])},
-					  Parse::RecDescent::_tracefirst($text))
-						if defined $::RD_TRACE;
-		push @item, $_tok;
-		$item{__ACTION1__}=$_tok;
-		
+    while (!$_matched && !$commit)
+    {
+        
+        Parse::RecDescent::_trace(q{Trying production: ['extends' qualified_name]},
+                      Parse::RecDescent::_tracefirst($_[1]),
+                      q{extends_clause},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        my $thisprod = $thisrule->{"prods"}[0];
+        $text = $_[1];
+        my $_savetext;
+        @item = (q{extends_clause});
+        %item = (__RULE__ => q{extends_clause});
+        my $repcount = 0;
 
 
-		Parse::RecDescent::_trace(q{>>Matched production: ['extends' qualified_name]<<},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{extends_clause},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$_matched = 1;
-		last;
-	}
+        Parse::RecDescent::_trace(q{Trying terminal: ['extends']},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{extends_clause},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $lastsep = "";
+        $expectation->is(q{})->at($text);
+        
+
+        unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ m/\Aextends/)
+        {
+            
+            $expectation->failed();
+            Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+            last;
+        }
+		$current_match = substr($text, $-[0], $+[0] - $-[0]);
+        substr($text,0,length($current_match),q{});
+        Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
+                        . $current_match . q{])},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+        push @item, $item{__STRING1__}=$current_match;
+        
+
+        Parse::RecDescent::_trace(q{Trying subrule: [qualified_name]},
+                  Parse::RecDescent::_tracefirst($text),
+                  q{extends_clause},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
+        if (1) { no strict qw{refs};
+        $expectation->is(q{qualified_name})->at($text);
+        unless (defined ($_tok = Parse::RecDescent::Java::Javap::Grammar::qualified_name($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
+        {
+            
+            Parse::RecDescent::_trace(q{<<Didn't match subrule: [qualified_name]>>},
+                          Parse::RecDescent::_tracefirst($text),
+                          q{extends_clause},
+                          $tracelevel)
+                            if defined $::RD_TRACE;
+            $expectation->failed();
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched subrule: [qualified_name]<< (return value: [}
+                    . $_tok . q{]},
+                      
+                      Parse::RecDescent::_tracefirst($text),
+                      q{extends_clause},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $item{q{qualified_name}} = $_tok;
+        push @item, $_tok;
+        
+        }
+
+        Parse::RecDescent::_trace(q{Trying action},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{extends_clause},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        
+
+        $_tok = ($_noactions) ? 0 : do { $item{ qualified_name } };
+        unless (defined $_tok)
+        {
+            Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
+                    if defined $::RD_TRACE;
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
+                      . $_tok . q{])},
+                      Parse::RecDescent::_tracefirst($text))
+                        if defined $::RD_TRACE;
+        push @item, $_tok;
+        $item{__ACTION1__}=$_tok;
+        
 
 
-        unless ( $_matched || defined($return) || defined($score) )
-	{
-		
+        Parse::RecDescent::_trace(q{>>Matched production: ['extends' qualified_name]<<},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{extends_clause},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $_matched = 1;
+        last;
+    }
 
-		$_[1] = $text;	# NOT SURE THIS IS NEEDED
-		Parse::RecDescent::_trace(q{<<Didn't match rule>>},
-					 Parse::RecDescent::_tracefirst($_[1]),
-					 q{extends_clause},
-					 $tracelevel)
-					if defined $::RD_TRACE;
-		return undef;
-	}
-	if (!defined($return) && defined($score))
-	{
-		Parse::RecDescent::_trace(q{>>Accepted scored production<<}, "",
-					  q{extends_clause},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$return = $score_return;
-	}
-	splice @{$thisparser->{errors}}, $err_at;
-	$return = $item[$#item] unless defined $return;
-	if (defined $::RD_TRACE)
-	{
-		Parse::RecDescent::_trace(q{>>Matched rule<< (return value: [} .
-					  $return . q{])}, "",
-					  q{extends_clause},
-					  $tracelevel);
-		Parse::RecDescent::_trace(q{(consumed: [} .
-					  Parse::RecDescent::_tracemax(substr($_[1],0,-length($text))) . q{])}, 
-					  Parse::RecDescent::_tracefirst($text),
-					  , q{extends_clause},
-					  $tracelevel)
-	}
-	$_[1] = $text;
-	return $return;
+
+    unless ( $_matched || defined($score) )
+    {
+        
+
+        $_[1] = $text;  # NOT SURE THIS IS NEEDED
+        Parse::RecDescent::_trace(q{<<Didn't match rule>>},
+                     Parse::RecDescent::_tracefirst($_[1]),
+                     q{extends_clause},
+                     $tracelevel)
+                    if defined $::RD_TRACE;
+        return undef;
+    }
+    if (!defined($return) && defined($score))
+    {
+        Parse::RecDescent::_trace(q{>>Accepted scored production<<}, "",
+                      q{extends_clause},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $return = $score_return;
+    }
+    splice @{$thisparser->{errors}}, $err_at;
+    $return = $item[$#item] unless defined $return;
+    if (defined $::RD_TRACE)
+    {
+        Parse::RecDescent::_trace(q{>>Matched rule<< (return value: [} .
+                      $return . q{])}, "",
+                      q{extends_clause},
+                      $tracelevel);
+        Parse::RecDescent::_trace(q{(consumed: [} .
+                      Parse::RecDescent::_tracemax(substr($_[1],0,-length($text))) . q{])}, 
+                      Parse::RecDescent::_tracefirst($text),
+                      , q{extends_clause},
+                      $tracelevel)
+    }
+    $_[1] = $text;
+    return $return;
 }
 
 # ARGS ARE: ($parser, $text; $repeating, $_noactions, \@args)
@@ -8025,288 +8177,291 @@ sub Parse::RecDescent::Java::Javap::Grammar::qualified_name
 	use vars q{$tracelevel};
 	local $tracelevel = ($tracelevel||0)+1;
 	$ERRORS = 0;
-	my $thisrule = $thisparser->{"rules"}{"qualified_name"};
-	
-	Parse::RecDescent::_trace(q{Trying rule: [qualified_name]},
-				  Parse::RecDescent::_tracefirst($_[1]),
-				  q{qualified_name},
-				  $tracelevel)
-					if defined $::RD_TRACE;
+    my $thisrule = $thisparser->{"rules"}{"qualified_name"};
+    
+    Parse::RecDescent::_trace(q{Trying rule: [qualified_name]},
+                  Parse::RecDescent::_tracefirst($_[1]),
+                  q{qualified_name},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
 
-	
-	my $err_at = @{$thisparser->{errors}};
+    
+    my $err_at = @{$thisparser->{errors}};
 
-	my $score;
-	my $score_return;
-	my $_tok;
-	my $return = undef;
-	my $_matched=0;
-	my $commit=0;
-	my @item = ();
-	my %item = ();
-	my $repeating =  defined($_[2]) && $_[2];
-	my $_noactions = defined($_[3]) && $_[3];
- 	my @arg =        defined $_[4] ? @{ &{$_[4]} } : ();
-	my %arg =        ($#arg & 01) ? @arg : (@arg, undef);
-	my $text;
-	my $lastsep="";
-	my $expectation = new Parse::RecDescent::Expectation($thisrule->expected());
-	$expectation->at($_[1]);
-	
-	my $thisline;
-	tie $thisline, q{Parse::RecDescent::LineCounter}, \$text, $thisparser;
+    my $score;
+    my $score_return;
+    my $_tok;
+    my $return = undef;
+    my $_matched=0;
+    my $commit=0;
+    my @item = ();
+    my %item = ();
+    my $repeating =  defined($_[2]) && $_[2];
+    my $_noactions = defined($_[3]) && $_[3];
+    my @arg =    defined $_[4] ? @{ &{$_[4]} } : ();
+    my %arg =    ($#arg & 01) ? @arg : (@arg, undef);
+    my $text;
+    my $lastsep="";
+    my $current_match;
+    my $expectation = new Parse::RecDescent::Expectation(q{NAME});
+    $expectation->at($_[1]);
+    
+    my $thisline;
+    tie $thisline, q{Parse::RecDescent::LineCounter}, \$text, $thisparser;
 
-	
+    
 
-	while (!$_matched && !$commit)
-	{
-		
-		Parse::RecDescent::_trace(q{Trying production: [NAME '.' qualified_name]},
-					  Parse::RecDescent::_tracefirst($_[1]),
-					  q{qualified_name},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		my $thisprod = $thisrule->{"prods"}[0];
-		$text = $_[1];
-		my $_savetext;
-		@item = (q{qualified_name});
-		%item = (__RULE__ => q{qualified_name});
-		my $repcount = 0;
-
-
-		Parse::RecDescent::_trace(q{Trying subrule: [NAME]},
-				  Parse::RecDescent::_tracefirst($text),
-				  q{qualified_name},
-				  $tracelevel)
-					if defined $::RD_TRACE;
-		if (1) { no strict qw{refs};
-		$expectation->is(q{})->at($text);
-		unless (defined ($_tok = Parse::RecDescent::Java::Javap::Grammar::NAME($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
-		{
-			
-			Parse::RecDescent::_trace(q{<<Didn't match subrule: [NAME]>>},
-						  Parse::RecDescent::_tracefirst($text),
-						  q{qualified_name},
-						  $tracelevel)
-							if defined $::RD_TRACE;
-			$expectation->failed();
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched subrule: [NAME]<< (return value: [}
-					. $_tok . q{]},
-					  
-					  Parse::RecDescent::_tracefirst($text),
-					  q{qualified_name},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$item{q{NAME}} = $_tok;
-		push @item, $_tok;
-		
-		}
-
-		Parse::RecDescent::_trace(q{Trying terminal: ['.']},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{qualified_name},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$lastsep = "";
-		$expectation->is(q{'.'})->at($text);
-		
-
-		unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ s/\A\.//)
-		{
-			
-			$expectation->failed();
-			Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
-						. $& . q{])},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-		push @item, $item{__STRING1__}=$&;
-		
-
-		Parse::RecDescent::_trace(q{Trying subrule: [qualified_name]},
-				  Parse::RecDescent::_tracefirst($text),
-				  q{qualified_name},
-				  $tracelevel)
-					if defined $::RD_TRACE;
-		if (1) { no strict qw{refs};
-		$expectation->is(q{qualified_name})->at($text);
-		unless (defined ($_tok = Parse::RecDescent::Java::Javap::Grammar::qualified_name($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
-		{
-			
-			Parse::RecDescent::_trace(q{<<Didn't match subrule: [qualified_name]>>},
-						  Parse::RecDescent::_tracefirst($text),
-						  q{qualified_name},
-						  $tracelevel)
-							if defined $::RD_TRACE;
-			$expectation->failed();
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched subrule: [qualified_name]<< (return value: [}
-					. $_tok . q{]},
-					  
-					  Parse::RecDescent::_tracefirst($text),
-					  q{qualified_name},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$item{q{qualified_name}} = $_tok;
-		push @item, $_tok;
-		
-		}
-
-		Parse::RecDescent::_trace(q{Trying action},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{qualified_name},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		
-
-		$_tok = ($_noactions) ? 0 : do { "$item{NAME}.$item{qualified_name}" };
-		unless (defined $_tok)
-		{
-			Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
-					if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
-					  . $_tok . q{])},
-					  Parse::RecDescent::_tracefirst($text))
-						if defined $::RD_TRACE;
-		push @item, $_tok;
-		$item{__ACTION1__}=$_tok;
-		
+    while (!$_matched && !$commit)
+    {
+        
+        Parse::RecDescent::_trace(q{Trying production: [NAME '.' qualified_name]},
+                      Parse::RecDescent::_tracefirst($_[1]),
+                      q{qualified_name},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        my $thisprod = $thisrule->{"prods"}[0];
+        $text = $_[1];
+        my $_savetext;
+        @item = (q{qualified_name});
+        %item = (__RULE__ => q{qualified_name});
+        my $repcount = 0;
 
 
-		Parse::RecDescent::_trace(q{>>Matched production: [NAME '.' qualified_name]<<},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{qualified_name},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$_matched = 1;
-		last;
-	}
+        Parse::RecDescent::_trace(q{Trying subrule: [NAME]},
+                  Parse::RecDescent::_tracefirst($text),
+                  q{qualified_name},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
+        if (1) { no strict qw{refs};
+        $expectation->is(q{})->at($text);
+        unless (defined ($_tok = Parse::RecDescent::Java::Javap::Grammar::NAME($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
+        {
+            
+            Parse::RecDescent::_trace(q{<<Didn't match subrule: [NAME]>>},
+                          Parse::RecDescent::_tracefirst($text),
+                          q{qualified_name},
+                          $tracelevel)
+                            if defined $::RD_TRACE;
+            $expectation->failed();
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched subrule: [NAME]<< (return value: [}
+                    . $_tok . q{]},
+                      
+                      Parse::RecDescent::_tracefirst($text),
+                      q{qualified_name},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $item{q{NAME}} = $_tok;
+        push @item, $_tok;
+        
+        }
+
+        Parse::RecDescent::_trace(q{Trying terminal: ['.']},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{qualified_name},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $lastsep = "";
+        $expectation->is(q{'.'})->at($text);
+        
+
+        unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ m/\A\./)
+        {
+            
+            $expectation->failed();
+            Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+            last;
+        }
+		$current_match = substr($text, $-[0], $+[0] - $-[0]);
+        substr($text,0,length($current_match),q{});
+        Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
+                        . $current_match . q{])},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+        push @item, $item{__STRING1__}=$current_match;
+        
+
+        Parse::RecDescent::_trace(q{Trying subrule: [qualified_name]},
+                  Parse::RecDescent::_tracefirst($text),
+                  q{qualified_name},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
+        if (1) { no strict qw{refs};
+        $expectation->is(q{qualified_name})->at($text);
+        unless (defined ($_tok = Parse::RecDescent::Java::Javap::Grammar::qualified_name($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
+        {
+            
+            Parse::RecDescent::_trace(q{<<Didn't match subrule: [qualified_name]>>},
+                          Parse::RecDescent::_tracefirst($text),
+                          q{qualified_name},
+                          $tracelevel)
+                            if defined $::RD_TRACE;
+            $expectation->failed();
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched subrule: [qualified_name]<< (return value: [}
+                    . $_tok . q{]},
+                      
+                      Parse::RecDescent::_tracefirst($text),
+                      q{qualified_name},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $item{q{qualified_name}} = $_tok;
+        push @item, $_tok;
+        
+        }
+
+        Parse::RecDescent::_trace(q{Trying action},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{qualified_name},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        
+
+        $_tok = ($_noactions) ? 0 : do { "$item{NAME}.$item{qualified_name}" };
+        unless (defined $_tok)
+        {
+            Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
+                    if defined $::RD_TRACE;
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
+                      . $_tok . q{])},
+                      Parse::RecDescent::_tracefirst($text))
+                        if defined $::RD_TRACE;
+        push @item, $_tok;
+        $item{__ACTION1__}=$_tok;
+        
 
 
-	while (!$_matched && !$commit)
-	{
-		
-		Parse::RecDescent::_trace(q{Trying production: [NAME]},
-					  Parse::RecDescent::_tracefirst($_[1]),
-					  q{qualified_name},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		my $thisprod = $thisrule->{"prods"}[1];
-		$text = $_[1];
-		my $_savetext;
-		@item = (q{qualified_name});
-		%item = (__RULE__ => q{qualified_name});
-		my $repcount = 0;
+        Parse::RecDescent::_trace(q{>>Matched production: [NAME '.' qualified_name]<<},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{qualified_name},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $_matched = 1;
+        last;
+    }
 
 
-		Parse::RecDescent::_trace(q{Trying subrule: [NAME]},
-				  Parse::RecDescent::_tracefirst($text),
-				  q{qualified_name},
-				  $tracelevel)
-					if defined $::RD_TRACE;
-		if (1) { no strict qw{refs};
-		$expectation->is(q{})->at($text);
-		unless (defined ($_tok = Parse::RecDescent::Java::Javap::Grammar::NAME($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
-		{
-			
-			Parse::RecDescent::_trace(q{<<Didn't match subrule: [NAME]>>},
-						  Parse::RecDescent::_tracefirst($text),
-						  q{qualified_name},
-						  $tracelevel)
-							if defined $::RD_TRACE;
-			$expectation->failed();
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched subrule: [NAME]<< (return value: [}
-					. $_tok . q{]},
-					  
-					  Parse::RecDescent::_tracefirst($text),
-					  q{qualified_name},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$item{q{NAME}} = $_tok;
-		push @item, $_tok;
-		
-		}
-
-		Parse::RecDescent::_trace(q{Trying action},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{qualified_name},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		
-
-		$_tok = ($_noactions) ? 0 : do { $item[1] };
-		unless (defined $_tok)
-		{
-			Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
-					if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
-					  . $_tok . q{])},
-					  Parse::RecDescent::_tracefirst($text))
-						if defined $::RD_TRACE;
-		push @item, $_tok;
-		$item{__ACTION1__}=$_tok;
-		
+    while (!$_matched && !$commit)
+    {
+        
+        Parse::RecDescent::_trace(q{Trying production: [NAME]},
+                      Parse::RecDescent::_tracefirst($_[1]),
+                      q{qualified_name},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        my $thisprod = $thisrule->{"prods"}[1];
+        $text = $_[1];
+        my $_savetext;
+        @item = (q{qualified_name});
+        %item = (__RULE__ => q{qualified_name});
+        my $repcount = 0;
 
 
-		Parse::RecDescent::_trace(q{>>Matched production: [NAME]<<},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{qualified_name},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$_matched = 1;
-		last;
-	}
+        Parse::RecDescent::_trace(q{Trying subrule: [NAME]},
+                  Parse::RecDescent::_tracefirst($text),
+                  q{qualified_name},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
+        if (1) { no strict qw{refs};
+        $expectation->is(q{})->at($text);
+        unless (defined ($_tok = Parse::RecDescent::Java::Javap::Grammar::NAME($thisparser,$text,$repeating,$_noactions,sub { \@arg })))
+        {
+            
+            Parse::RecDescent::_trace(q{<<Didn't match subrule: [NAME]>>},
+                          Parse::RecDescent::_tracefirst($text),
+                          q{qualified_name},
+                          $tracelevel)
+                            if defined $::RD_TRACE;
+            $expectation->failed();
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched subrule: [NAME]<< (return value: [}
+                    . $_tok . q{]},
+                      
+                      Parse::RecDescent::_tracefirst($text),
+                      q{qualified_name},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $item{q{NAME}} = $_tok;
+        push @item, $_tok;
+        
+        }
+
+        Parse::RecDescent::_trace(q{Trying action},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{qualified_name},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        
+
+        $_tok = ($_noactions) ? 0 : do { $item[1] };
+        unless (defined $_tok)
+        {
+            Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
+                    if defined $::RD_TRACE;
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
+                      . $_tok . q{])},
+                      Parse::RecDescent::_tracefirst($text))
+                        if defined $::RD_TRACE;
+        push @item, $_tok;
+        $item{__ACTION1__}=$_tok;
+        
 
 
-        unless ( $_matched || defined($return) || defined($score) )
-	{
-		
+        Parse::RecDescent::_trace(q{>>Matched production: [NAME]<<},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{qualified_name},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $_matched = 1;
+        last;
+    }
 
-		$_[1] = $text;	# NOT SURE THIS IS NEEDED
-		Parse::RecDescent::_trace(q{<<Didn't match rule>>},
-					 Parse::RecDescent::_tracefirst($_[1]),
-					 q{qualified_name},
-					 $tracelevel)
-					if defined $::RD_TRACE;
-		return undef;
-	}
-	if (!defined($return) && defined($score))
-	{
-		Parse::RecDescent::_trace(q{>>Accepted scored production<<}, "",
-					  q{qualified_name},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$return = $score_return;
-	}
-	splice @{$thisparser->{errors}}, $err_at;
-	$return = $item[$#item] unless defined $return;
-	if (defined $::RD_TRACE)
-	{
-		Parse::RecDescent::_trace(q{>>Matched rule<< (return value: [} .
-					  $return . q{])}, "",
-					  q{qualified_name},
-					  $tracelevel);
-		Parse::RecDescent::_trace(q{(consumed: [} .
-					  Parse::RecDescent::_tracemax(substr($_[1],0,-length($text))) . q{])}, 
-					  Parse::RecDescent::_tracefirst($text),
-					  , q{qualified_name},
-					  $tracelevel)
-	}
-	$_[1] = $text;
-	return $return;
+
+    unless ( $_matched || defined($score) )
+    {
+        
+
+        $_[1] = $text;  # NOT SURE THIS IS NEEDED
+        Parse::RecDescent::_trace(q{<<Didn't match rule>>},
+                     Parse::RecDescent::_tracefirst($_[1]),
+                     q{qualified_name},
+                     $tracelevel)
+                    if defined $::RD_TRACE;
+        return undef;
+    }
+    if (!defined($return) && defined($score))
+    {
+        Parse::RecDescent::_trace(q{>>Accepted scored production<<}, "",
+                      q{qualified_name},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $return = $score_return;
+    }
+    splice @{$thisparser->{errors}}, $err_at;
+    $return = $item[$#item] unless defined $return;
+    if (defined $::RD_TRACE)
+    {
+        Parse::RecDescent::_trace(q{>>Matched rule<< (return value: [} .
+                      $return . q{])}, "",
+                      q{qualified_name},
+                      $tracelevel);
+        Parse::RecDescent::_trace(q{(consumed: [} .
+                      Parse::RecDescent::_tracemax(substr($_[1],0,-length($text))) . q{])}, 
+                      Parse::RecDescent::_tracefirst($text),
+                      , q{qualified_name},
+                      $tracelevel)
+    }
+    $_[1] = $text;
+    return $return;
 }
 
 # ARGS ARE: ($parser, $text; $repeating, $_noactions, \@args)
@@ -8316,239 +8471,235 @@ sub Parse::RecDescent::Java::Javap::Grammar::CLASS_OR_INTERFACE
 	use vars q{$tracelevel};
 	local $tracelevel = ($tracelevel||0)+1;
 	$ERRORS = 0;
-	my $thisrule = $thisparser->{"rules"}{"CLASS_OR_INTERFACE"};
-	
-	Parse::RecDescent::_trace(q{Trying rule: [CLASS_OR_INTERFACE]},
-				  Parse::RecDescent::_tracefirst($_[1]),
-				  q{CLASS_OR_INTERFACE},
-				  $tracelevel)
-					if defined $::RD_TRACE;
+    my $thisrule = $thisparser->{"rules"}{"CLASS_OR_INTERFACE"};
+    
+    Parse::RecDescent::_trace(q{Trying rule: [CLASS_OR_INTERFACE]},
+                  Parse::RecDescent::_tracefirst($_[1]),
+                  q{CLASS_OR_INTERFACE},
+                  $tracelevel)
+                    if defined $::RD_TRACE;
 
-	
-	my $err_at = @{$thisparser->{errors}};
+    
+    my $err_at = @{$thisparser->{errors}};
 
-	my $score;
-	my $score_return;
-	my $_tok;
-	my $return = undef;
-	my $_matched=0;
-	my $commit=0;
-	my @item = ();
-	my %item = ();
-	my $repeating =  defined($_[2]) && $_[2];
-	my $_noactions = defined($_[3]) && $_[3];
- 	my @arg =        defined $_[4] ? @{ &{$_[4]} } : ();
-	my %arg =        ($#arg & 01) ? @arg : (@arg, undef);
-	my $text;
-	my $lastsep="";
-	my $expectation = new Parse::RecDescent::Expectation($thisrule->expected());
-	$expectation->at($_[1]);
-	
-	my $thisline;
-	tie $thisline, q{Parse::RecDescent::LineCounter}, \$text, $thisparser;
+    my $score;
+    my $score_return;
+    my $_tok;
+    my $return = undef;
+    my $_matched=0;
+    my $commit=0;
+    my @item = ();
+    my %item = ();
+    my $repeating =  defined($_[2]) && $_[2];
+    my $_noactions = defined($_[3]) && $_[3];
+    my @arg =    defined $_[4] ? @{ &{$_[4]} } : ();
+    my %arg =    ($#arg & 01) ? @arg : (@arg, undef);
+    my $text;
+    my $lastsep="";
+    my $current_match;
+    my $expectation = new Parse::RecDescent::Expectation(q{'class', or 'interface'});
+    $expectation->at($_[1]);
+    
+    my $thisline;
+    tie $thisline, q{Parse::RecDescent::LineCounter}, \$text, $thisparser;
 
-	
+    
 
-	while (!$_matched && !$commit)
-	{
-		
-		Parse::RecDescent::_trace(q{Trying production: ['class']},
-					  Parse::RecDescent::_tracefirst($_[1]),
-					  q{CLASS_OR_INTERFACE},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		my $thisprod = $thisrule->{"prods"}[0];
-		$text = $_[1];
-		my $_savetext;
-		@item = (q{CLASS_OR_INTERFACE});
-		%item = (__RULE__ => q{CLASS_OR_INTERFACE});
-		my $repcount = 0;
-
-
-		Parse::RecDescent::_trace(q{Trying terminal: ['class']},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{CLASS_OR_INTERFACE},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$lastsep = "";
-		$expectation->is(q{})->at($text);
-		
-
-		unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ s/\Aclass//)
-		{
-			
-			$expectation->failed();
-			Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
-						. $& . q{])},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-		push @item, $item{__STRING1__}=$&;
-		
-
-		Parse::RecDescent::_trace(q{Trying action},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{CLASS_OR_INTERFACE},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		
-
-		$_tok = ($_noactions) ? 0 : do { $item[1] };
-		unless (defined $_tok)
-		{
-			Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
-					if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
-					  . $_tok . q{])},
-					  Parse::RecDescent::_tracefirst($text))
-						if defined $::RD_TRACE;
-		push @item, $_tok;
-		$item{__ACTION1__}=$_tok;
-		
+    while (!$_matched && !$commit)
+    {
+        
+        Parse::RecDescent::_trace(q{Trying production: ['class']},
+                      Parse::RecDescent::_tracefirst($_[1]),
+                      q{CLASS_OR_INTERFACE},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        my $thisprod = $thisrule->{"prods"}[0];
+        $text = $_[1];
+        my $_savetext;
+        @item = (q{CLASS_OR_INTERFACE});
+        %item = (__RULE__ => q{CLASS_OR_INTERFACE});
+        my $repcount = 0;
 
 
-		Parse::RecDescent::_trace(q{>>Matched production: ['class']<<},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{CLASS_OR_INTERFACE},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$_matched = 1;
-		last;
-	}
+        Parse::RecDescent::_trace(q{Trying terminal: ['class']},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{CLASS_OR_INTERFACE},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $lastsep = "";
+        $expectation->is(q{})->at($text);
+        
+
+        unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ m/\Aclass/)
+        {
+            
+            $expectation->failed();
+            Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+            last;
+        }
+		$current_match = substr($text, $-[0], $+[0] - $-[0]);
+        substr($text,0,length($current_match),q{});
+        Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
+                        . $current_match . q{])},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+        push @item, $item{__STRING1__}=$current_match;
+        
+
+        Parse::RecDescent::_trace(q{Trying action},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{CLASS_OR_INTERFACE},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        
+
+        $_tok = ($_noactions) ? 0 : do { $item[1] };
+        unless (defined $_tok)
+        {
+            Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
+                    if defined $::RD_TRACE;
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
+                      . $_tok . q{])},
+                      Parse::RecDescent::_tracefirst($text))
+                        if defined $::RD_TRACE;
+        push @item, $_tok;
+        $item{__ACTION1__}=$_tok;
+        
 
 
-	while (!$_matched && !$commit)
-	{
-		
-		Parse::RecDescent::_trace(q{Trying production: ['interface']},
-					  Parse::RecDescent::_tracefirst($_[1]),
-					  q{CLASS_OR_INTERFACE},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		my $thisprod = $thisrule->{"prods"}[1];
-		$text = $_[1];
-		my $_savetext;
-		@item = (q{CLASS_OR_INTERFACE});
-		%item = (__RULE__ => q{CLASS_OR_INTERFACE});
-		my $repcount = 0;
+        Parse::RecDescent::_trace(q{>>Matched production: ['class']<<},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{CLASS_OR_INTERFACE},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $_matched = 1;
+        last;
+    }
 
 
-		Parse::RecDescent::_trace(q{Trying terminal: ['interface']},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{CLASS_OR_INTERFACE},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$lastsep = "";
-		$expectation->is(q{})->at($text);
-		
-
-		unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ s/\Ainterface//)
-		{
-			
-			$expectation->failed();
-			Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
-						. $& . q{])},
-						  Parse::RecDescent::_tracefirst($text))
-							if defined $::RD_TRACE;
-		push @item, $item{__STRING1__}=$&;
-		
-
-		Parse::RecDescent::_trace(q{Trying action},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{CLASS_OR_INTERFACE},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		
-
-		$_tok = ($_noactions) ? 0 : do { $item[1] };
-		unless (defined $_tok)
-		{
-			Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
-					if defined $::RD_TRACE;
-			last;
-		}
-		Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
-					  . $_tok . q{])},
-					  Parse::RecDescent::_tracefirst($text))
-						if defined $::RD_TRACE;
-		push @item, $_tok;
-		$item{__ACTION1__}=$_tok;
-		
+    while (!$_matched && !$commit)
+    {
+        
+        Parse::RecDescent::_trace(q{Trying production: ['interface']},
+                      Parse::RecDescent::_tracefirst($_[1]),
+                      q{CLASS_OR_INTERFACE},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        my $thisprod = $thisrule->{"prods"}[1];
+        $text = $_[1];
+        my $_savetext;
+        @item = (q{CLASS_OR_INTERFACE});
+        %item = (__RULE__ => q{CLASS_OR_INTERFACE});
+        my $repcount = 0;
 
 
-		Parse::RecDescent::_trace(q{>>Matched production: ['interface']<<},
-					  Parse::RecDescent::_tracefirst($text),
-					  q{CLASS_OR_INTERFACE},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$_matched = 1;
-		last;
-	}
+        Parse::RecDescent::_trace(q{Trying terminal: ['interface']},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{CLASS_OR_INTERFACE},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $lastsep = "";
+        $expectation->is(q{})->at($text);
+        
+
+        unless ($text =~ s/\A($skip)/$lastsep=$1 and ""/e and   $text =~ m/\Ainterface/)
+        {
+            
+            $expectation->failed();
+            Parse::RecDescent::_trace(qq{<<Didn't match terminal>>},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+            last;
+        }
+		$current_match = substr($text, $-[0], $+[0] - $-[0]);
+        substr($text,0,length($current_match),q{});
+        Parse::RecDescent::_trace(q{>>Matched terminal<< (return value: [}
+                        . $current_match . q{])},
+                          Parse::RecDescent::_tracefirst($text))
+                            if defined $::RD_TRACE;
+        push @item, $item{__STRING1__}=$current_match;
+        
+
+        Parse::RecDescent::_trace(q{Trying action},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{CLASS_OR_INTERFACE},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        
+
+        $_tok = ($_noactions) ? 0 : do { $item[1] };
+        unless (defined $_tok)
+        {
+            Parse::RecDescent::_trace(q{<<Didn't match action>> (return value: [undef])})
+                    if defined $::RD_TRACE;
+            last;
+        }
+        Parse::RecDescent::_trace(q{>>Matched action<< (return value: [}
+                      . $_tok . q{])},
+                      Parse::RecDescent::_tracefirst($text))
+                        if defined $::RD_TRACE;
+        push @item, $_tok;
+        $item{__ACTION1__}=$_tok;
+        
 
 
-        unless ( $_matched || defined($return) || defined($score) )
-	{
-		
+        Parse::RecDescent::_trace(q{>>Matched production: ['interface']<<},
+                      Parse::RecDescent::_tracefirst($text),
+                      q{CLASS_OR_INTERFACE},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $_matched = 1;
+        last;
+    }
 
-		$_[1] = $text;	# NOT SURE THIS IS NEEDED
-		Parse::RecDescent::_trace(q{<<Didn't match rule>>},
-					 Parse::RecDescent::_tracefirst($_[1]),
-					 q{CLASS_OR_INTERFACE},
-					 $tracelevel)
-					if defined $::RD_TRACE;
-		return undef;
-	}
-	if (!defined($return) && defined($score))
-	{
-		Parse::RecDescent::_trace(q{>>Accepted scored production<<}, "",
-					  q{CLASS_OR_INTERFACE},
-					  $tracelevel)
-						if defined $::RD_TRACE;
-		$return = $score_return;
-	}
-	splice @{$thisparser->{errors}}, $err_at;
-	$return = $item[$#item] unless defined $return;
-	if (defined $::RD_TRACE)
-	{
-		Parse::RecDescent::_trace(q{>>Matched rule<< (return value: [} .
-					  $return . q{])}, "",
-					  q{CLASS_OR_INTERFACE},
-					  $tracelevel);
-		Parse::RecDescent::_trace(q{(consumed: [} .
-					  Parse::RecDescent::_tracemax(substr($_[1],0,-length($text))) . q{])}, 
-					  Parse::RecDescent::_tracefirst($text),
-					  , q{CLASS_OR_INTERFACE},
-					  $tracelevel)
-	}
-	$_[1] = $text;
-	return $return;
+
+    unless ( $_matched || defined($score) )
+    {
+        
+
+        $_[1] = $text;  # NOT SURE THIS IS NEEDED
+        Parse::RecDescent::_trace(q{<<Didn't match rule>>},
+                     Parse::RecDescent::_tracefirst($_[1]),
+                     q{CLASS_OR_INTERFACE},
+                     $tracelevel)
+                    if defined $::RD_TRACE;
+        return undef;
+    }
+    if (!defined($return) && defined($score))
+    {
+        Parse::RecDescent::_trace(q{>>Accepted scored production<<}, "",
+                      q{CLASS_OR_INTERFACE},
+                      $tracelevel)
+                        if defined $::RD_TRACE;
+        $return = $score_return;
+    }
+    splice @{$thisparser->{errors}}, $err_at;
+    $return = $item[$#item] unless defined $return;
+    if (defined $::RD_TRACE)
+    {
+        Parse::RecDescent::_trace(q{>>Matched rule<< (return value: [} .
+                      $return . q{])}, "",
+                      q{CLASS_OR_INTERFACE},
+                      $tracelevel);
+        Parse::RecDescent::_trace(q{(consumed: [} .
+                      Parse::RecDescent::_tracemax(substr($_[1],0,-length($text))) . q{])}, 
+                      Parse::RecDescent::_tracefirst($text),
+                      , q{CLASS_OR_INTERFACE},
+                      $tracelevel)
+    }
+    $_[1] = $text;
+    return $return;
 }
 }
 package Java::Javap::Grammar; sub new { my $self = bless( {
-                 '_AUTOTREE' => undef,
+                 '_precompiled' => 1,
                  'localvars' => '',
                  'startcode' => '',
-                 '_check' => {
-                               'thisoffset' => '',
-                               'itempos' => '',
-                               'prevoffset' => '',
-                               'prevline' => '',
-                               'prevcolumn' => '',
-                               'thiscolumn' => ''
-                             },
                  'namespace' => 'Parse::RecDescent::Java::Javap::Grammar',
-                 '_AUTOACTION' => undef,
                  'rules' => {
                               'arg' => bless( {
                                                 'impcount' => 0,
@@ -8560,7 +8711,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                 'opcount' => 0,
                                                 'prods' => [
                                                              bless( {
-                                                                      'number' => '0',
+                                                                      'number' => 0,
                                                                       'strcount' => 0,
                                                                       'dircount' => 0,
                                                                       'uncommit' => undef,
@@ -8574,7 +8725,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                             'implicit' => undef,
                                                                                             'argcode' => undef,
                                                                                             'lookahead' => 0,
-                                                                                            'line' => 179
+                                                                                            'line' => 184
                                                                                           }, 'Parse::RecDescent::Subrule' ),
                                                                                    bless( {
                                                                                             'subrule' => 'array_depth',
@@ -8582,12 +8733,12 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                             'implicit' => undef,
                                                                                             'argcode' => undef,
                                                                                             'lookahead' => 0,
-                                                                                            'line' => 179
+                                                                                            'line' => 184
                                                                                           }, 'Parse::RecDescent::Subrule' ),
                                                                                    bless( {
                                                                                             'hashname' => '__ACTION1__',
                                                                                             'lookahead' => 0,
-                                                                                            'line' => 179,
+                                                                                            'line' => 184,
                                                                                             'code' => '{
     my $array_text = \'\';
     foreach my $i ( 1 .. $item[2] ) {
@@ -8608,7 +8759,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                            ],
                                                 'name' => 'arg',
                                                 'vars' => '',
-                                                'line' => 179
+                                                'line' => 184
                                               }, 'Parse::RecDescent::Rule' ),
                               'verbose_method_code' => bless( {
                                                                 'impcount' => 0,
@@ -8619,7 +8770,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                 'opcount' => 0,
                                                                 'prods' => [
                                                                              bless( {
-                                                                                      'number' => '0',
+                                                                                      'number' => 0,
                                                                                       'strcount' => 1,
                                                                                       'dircount' => 0,
                                                                                       'uncommit' => undef,
@@ -8632,7 +8783,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                             'hashname' => '__STRING1__',
                                                                                                             'description' => '\'Code:\'',
                                                                                                             'lookahead' => 0,
-                                                                                                            'line' => 133
+                                                                                                            'line' => 138
                                                                                                           }, 'Parse::RecDescent::Literal' ),
                                                                                                    bless( {
                                                                                                             'pattern' => 'Stack.*=\\d+',
@@ -8640,7 +8791,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                             'description' => '/Stack.*=\\\\d+/',
                                                                                                             'lookahead' => 0,
                                                                                                             'rdelim' => '/',
-                                                                                                            'line' => 133,
+                                                                                                            'line' => 138,
                                                                                                             'mod' => '',
                                                                                                             'ldelim' => '/'
                                                                                                           }, 'Parse::RecDescent::Token' ),
@@ -8653,7 +8804,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                             'matchrule' => 0,
                                                                                                             'repspec' => 's?',
                                                                                                             'lookahead' => 0,
-                                                                                                            'line' => 133
+                                                                                                            'line' => 138
                                                                                                           }, 'Parse::RecDescent::Repetition' )
                                                                                                  ],
                                                                                       'line' => undef
@@ -8661,7 +8812,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                            ],
                                                                 'name' => 'verbose_method_code',
                                                                 'vars' => '',
-                                                                'line' => 133
+                                                                'line' => 138
                                                               }, 'Parse::RecDescent::Rule' ),
                               'var_modifier' => bless( {
                                                          'impcount' => 0,
@@ -8670,7 +8821,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                          'opcount' => 0,
                                                          'prods' => [
                                                                       bless( {
-                                                                               'number' => '0',
+                                                                               'number' => 0,
                                                                                'strcount' => 1,
                                                                                'dircount' => 0,
                                                                                'uncommit' => undef,
@@ -8683,13 +8834,13 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                      'hashname' => '__STRING1__',
                                                                                                      'description' => '\'volatile\'',
                                                                                                      'lookahead' => 0,
-                                                                                                     'line' => 156
+                                                                                                     'line' => 161
                                                                                                    }, 'Parse::RecDescent::Literal' )
                                                                                           ],
                                                                                'line' => undef
                                                                              }, 'Parse::RecDescent::Production' ),
                                                                       bless( {
-                                                                               'number' => '1',
+                                                                               'number' => 1,
                                                                                'strcount' => 1,
                                                                                'dircount' => 0,
                                                                                'uncommit' => undef,
@@ -8702,13 +8853,13 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                      'hashname' => '__STRING1__',
                                                                                                      'description' => '\'final\'',
                                                                                                      'lookahead' => 0,
-                                                                                                     'line' => 156
+                                                                                                     'line' => 161
                                                                                                    }, 'Parse::RecDescent::Literal' )
                                                                                           ],
-                                                                               'line' => 156
+                                                                               'line' => 161
                                                                              }, 'Parse::RecDescent::Production' ),
                                                                       bless( {
-                                                                               'number' => '2',
+                                                                               'number' => 2,
                                                                                'strcount' => 1,
                                                                                'dircount' => 0,
                                                                                'uncommit' => undef,
@@ -8721,15 +8872,15 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                      'hashname' => '__STRING1__',
                                                                                                      'description' => '\'transient\'',
                                                                                                      'lookahead' => 0,
-                                                                                                     'line' => 156
+                                                                                                     'line' => 161
                                                                                                    }, 'Parse::RecDescent::Literal' )
                                                                                           ],
-                                                                               'line' => 156
+                                                                               'line' => 161
                                                                              }, 'Parse::RecDescent::Production' )
                                                                     ],
                                                          'name' => 'var_modifier',
                                                          'vars' => '',
-                                                         'line' => 156
+                                                         'line' => 161
                                                        }, 'Parse::RecDescent::Rule' ),
                               'comp_unit_decl' => bless( {
                                                            'impcount' => 0,
@@ -8746,7 +8897,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                            'opcount' => 0,
                                                            'prods' => [
                                                                         bless( {
-                                                                                 'number' => '0',
+                                                                                 'number' => 0,
                                                                                  'strcount' => 0,
                                                                                  'dircount' => 0,
                                                                                  'uncommit' => undef,
@@ -8855,7 +9006,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                    'opcount' => 0,
                                                    'prods' => [
                                                                 bless( {
-                                                                         'number' => '0',
+                                                                         'number' => 0,
                                                                          'strcount' => 1,
                                                                          'dircount' => 0,
                                                                          'uncommit' => undef,
@@ -8868,19 +9019,19 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                'hashname' => '__STRING1__',
                                                                                                'description' => '\'public\'',
                                                                                                'lookahead' => 0,
-                                                                                               'line' => 202
+                                                                                               'line' => 207
                                                                                              }, 'Parse::RecDescent::Literal' ),
                                                                                       bless( {
                                                                                                'hashname' => '__ACTION1__',
                                                                                                'lookahead' => 0,
-                                                                                               'line' => 202,
+                                                                                               'line' => 207,
                                                                                                'code' => '{ $item[1] }'
                                                                                              }, 'Parse::RecDescent::Action' )
                                                                                     ],
                                                                          'line' => undef
                                                                        }, 'Parse::RecDescent::Production' ),
                                                                 bless( {
-                                                                         'number' => '1',
+                                                                         'number' => 1,
                                                                          'strcount' => 1,
                                                                          'dircount' => 0,
                                                                          'uncommit' => undef,
@@ -8893,19 +9044,19 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                'hashname' => '__STRING1__',
                                                                                                'description' => '\'protected\'',
                                                                                                'lookahead' => 0,
-                                                                                               'line' => 203
+                                                                                               'line' => 208
                                                                                              }, 'Parse::RecDescent::Literal' ),
                                                                                       bless( {
                                                                                                'hashname' => '__ACTION1__',
                                                                                                'lookahead' => 0,
-                                                                                               'line' => 203,
+                                                                                               'line' => 208,
                                                                                                'code' => '{ $item[1] }'
                                                                                              }, 'Parse::RecDescent::Action' )
                                                                                     ],
-                                                                         'line' => 203
+                                                                         'line' => 208
                                                                        }, 'Parse::RecDescent::Production' ),
                                                                 bless( {
-                                                                         'number' => '2',
+                                                                         'number' => 2,
                                                                          'strcount' => 1,
                                                                          'dircount' => 0,
                                                                          'uncommit' => undef,
@@ -8918,19 +9069,19 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                'hashname' => '__STRING1__',
                                                                                                'description' => '\'private\'',
                                                                                                'lookahead' => 0,
-                                                                                               'line' => 204
+                                                                                               'line' => 209
                                                                                              }, 'Parse::RecDescent::Literal' ),
                                                                                       bless( {
                                                                                                'hashname' => '__ACTION1__',
                                                                                                'lookahead' => 0,
-                                                                                               'line' => 204,
+                                                                                               'line' => 209,
                                                                                                'code' => '{ $item[1] }'
                                                                                              }, 'Parse::RecDescent::Action' )
                                                                                     ],
-                                                                         'line' => 204
+                                                                         'line' => 209
                                                                        }, 'Parse::RecDescent::Production' ),
                                                                 bless( {
-                                                                         'number' => '3',
+                                                                         'number' => 3,
                                                                          'strcount' => 0,
                                                                          'dircount' => 0,
                                                                          'uncommit' => undef,
@@ -8941,16 +9092,16 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                       bless( {
                                                                                                'hashname' => '__ACTION1__',
                                                                                                'lookahead' => 0,
-                                                                                               'line' => 205,
+                                                                                               'line' => 210,
                                                                                                'code' => '{ \'\' }'
                                                                                              }, 'Parse::RecDescent::Action' )
                                                                                     ],
-                                                                         'line' => 205
+                                                                         'line' => 210
                                                                        }, 'Parse::RecDescent::Production' )
                                                               ],
                                                    'name' => 'ACCESS',
                                                    'vars' => '',
-                                                   'line' => 202
+                                                   'line' => 207
                                                  }, 'Parse::RecDescent::Rule' ),
                               'ARRAY_LEVEL' => bless( {
                                                         'impcount' => 0,
@@ -8959,7 +9110,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                         'opcount' => 0,
                                                         'prods' => [
                                                                      bless( {
-                                                                              'number' => '0',
+                                                                              'number' => 0,
                                                                               'strcount' => 1,
                                                                               'dircount' => 0,
                                                                               'uncommit' => undef,
@@ -8972,12 +9123,12 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                     'hashname' => '__STRING1__',
                                                                                                     'description' => '\'[]\'',
                                                                                                     'lookahead' => 0,
-                                                                                                    'line' => 198
+                                                                                                    'line' => 203
                                                                                                   }, 'Parse::RecDescent::Literal' ),
                                                                                            bless( {
                                                                                                     'hashname' => '__ACTION1__',
                                                                                                     'lookahead' => 0,
-                                                                                                    'line' => 198,
+                                                                                                    'line' => 203,
                                                                                                     'code' => '{ 1 }'
                                                                                                   }, 'Parse::RecDescent::Action' )
                                                                                          ],
@@ -8986,7 +9137,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                    ],
                                                         'name' => 'ARRAY_LEVEL',
                                                         'vars' => '',
-                                                        'line' => 198
+                                                        'line' => 203
                                                       }, 'Parse::RecDescent::Rule' ),
                               'number_table_line' => bless( {
                                                               'impcount' => 0,
@@ -8995,7 +9146,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                               'opcount' => 0,
                                                               'prods' => [
                                                                            bless( {
-                                                                                    'number' => '0',
+                                                                                    'number' => 0,
                                                                                     'strcount' => 0,
                                                                                     'dircount' => 0,
                                                                                     'uncommit' => undef,
@@ -9009,7 +9160,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                           'description' => '/line \\\\d+:[^\\\\n]*/',
                                                                                                           'lookahead' => 0,
                                                                                                           'rdelim' => '/',
-                                                                                                          'line' => 137,
+                                                                                                          'line' => 142,
                                                                                                           'mod' => '',
                                                                                                           'ldelim' => '/'
                                                                                                         }, 'Parse::RecDescent::Token' )
@@ -9019,7 +9170,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                          ],
                                                               'name' => 'number_table_line',
                                                               'vars' => '',
-                                                              'line' => 137
+                                                              'line' => 142
                                                             }, 'Parse::RecDescent::Rule' ),
                               'throws_clause' => bless( {
                                                           'impcount' => 0,
@@ -9030,7 +9181,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                           'opcount' => 0,
                                                           'prods' => [
                                                                        bless( {
-                                                                                'number' => '0',
+                                                                                'number' => 0,
                                                                                 'strcount' => 1,
                                                                                 'dircount' => 0,
                                                                                 'uncommit' => undef,
@@ -9043,7 +9194,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                       'hashname' => '__STRING1__',
                                                                                                       'description' => '\'throws\'',
                                                                                                       'lookahead' => 0,
-                                                                                                      'line' => 145
+                                                                                                      'line' => 150
                                                                                                     }, 'Parse::RecDescent::Literal' ),
                                                                                              bless( {
                                                                                                       'subrule' => 'comma_list',
@@ -9051,12 +9202,12 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                       'implicit' => undef,
                                                                                                       'argcode' => undef,
                                                                                                       'lookahead' => 0,
-                                                                                                      'line' => 145
+                                                                                                      'line' => 150
                                                                                                     }, 'Parse::RecDescent::Subrule' ),
                                                                                              bless( {
                                                                                                       'hashname' => '__ACTION1__',
                                                                                                       'lookahead' => 0,
-                                                                                                      'line' => 145,
+                                                                                                      'line' => 150,
                                                                                                       'code' => '{ $item{comma_list} }'
                                                                                                     }, 'Parse::RecDescent::Action' )
                                                                                            ],
@@ -9065,7 +9216,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                      ],
                                                           'name' => 'throws_clause',
                                                           'vars' => '',
-                                                          'line' => 145
+                                                          'line' => 150
                                                         }, 'Parse::RecDescent::Rule' ),
                               'verbose_method_details' => bless( {
                                                                    'impcount' => 0,
@@ -9078,7 +9229,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                    'opcount' => 0,
                                                                    'prods' => [
                                                                                 bless( {
-                                                                                         'number' => '0',
+                                                                                         'number' => 0,
                                                                                          'strcount' => 0,
                                                                                          'dircount' => 0,
                                                                                          'uncommit' => undef,
@@ -9095,7 +9246,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                                'matchrule' => 0,
                                                                                                                'repspec' => '?',
                                                                                                                'lookahead' => 0,
-                                                                                                               'line' => 128
+                                                                                                               'line' => 133
                                                                                                              }, 'Parse::RecDescent::Repetition' ),
                                                                                                       bless( {
                                                                                                                'subrule' => 'verbose_method_code',
@@ -9106,7 +9257,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                                'matchrule' => 0,
                                                                                                                'repspec' => '?',
                                                                                                                'lookahead' => 0,
-                                                                                                               'line' => 129
+                                                                                                               'line' => 134
                                                                                                              }, 'Parse::RecDescent::Repetition' ),
                                                                                                       bless( {
                                                                                                                'subrule' => 'verbose_line_number_table',
@@ -9117,7 +9268,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                                'matchrule' => 0,
                                                                                                                'repspec' => '?',
                                                                                                                'lookahead' => 0,
-                                                                                                               'line' => 130
+                                                                                                               'line' => 135
                                                                                                              }, 'Parse::RecDescent::Repetition' )
                                                                                                     ],
                                                                                          'line' => undef
@@ -9125,7 +9276,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                               ],
                                                                    'name' => 'verbose_method_details',
                                                                    'vars' => '',
-                                                                   'line' => 128
+                                                                   'line' => 133
                                                                  }, 'Parse::RecDescent::Rule' ),
                               'class_qualifier' => bless( {
                                                             'impcount' => 0,
@@ -9134,7 +9285,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                             'opcount' => 0,
                                                             'prods' => [
                                                                          bless( {
-                                                                                  'number' => '0',
+                                                                                  'number' => 0,
                                                                                   'strcount' => 1,
                                                                                   'dircount' => 0,
                                                                                   'uncommit' => undef,
@@ -9159,7 +9310,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                   'line' => undef
                                                                                 }, 'Parse::RecDescent::Production' ),
                                                                          bless( {
-                                                                                  'number' => '1',
+                                                                                  'number' => 1,
                                                                                   'strcount' => 1,
                                                                                   'dircount' => 0,
                                                                                   'uncommit' => undef,
@@ -9197,7 +9348,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                       'opcount' => 0,
                                                       'prods' => [
                                                                    bless( {
-                                                                            'number' => '0',
+                                                                            'number' => 0,
                                                                             'strcount' => 2,
                                                                             'dircount' => 0,
                                                                             'uncommit' => undef,
@@ -9253,7 +9404,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                      'opcount' => 0,
                                                      'prods' => [
                                                                   bless( {
-                                                                           'number' => '0',
+                                                                           'number' => 0,
                                                                            'strcount' => 1,
                                                                            'dircount' => 0,
                                                                            'uncommit' => undef,
@@ -9267,7 +9418,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                  'implicit' => undef,
                                                                                                  'argcode' => undef,
                                                                                                  'lookahead' => 0,
-                                                                                                 'line' => 147
+                                                                                                 'line' => 152
                                                                                                }, 'Parse::RecDescent::Subrule' ),
                                                                                         bless( {
                                                                                                  'subrule' => 'var_modifier',
@@ -9278,7 +9429,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                  'matchrule' => 0,
                                                                                                  'repspec' => 's?',
                                                                                                  'lookahead' => 0,
-                                                                                                 'line' => 147
+                                                                                                 'line' => 152
                                                                                                }, 'Parse::RecDescent::Repetition' ),
                                                                                         bless( {
                                                                                                  'subrule' => 'arg',
@@ -9286,7 +9437,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                  'implicit' => undef,
                                                                                                  'argcode' => undef,
                                                                                                  'lookahead' => 0,
-                                                                                                 'line' => 147
+                                                                                                 'line' => 152
                                                                                                }, 'Parse::RecDescent::Subrule' ),
                                                                                         bless( {
                                                                                                  'subrule' => 'NAME',
@@ -9294,19 +9445,19 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                  'implicit' => undef,
                                                                                                  'argcode' => undef,
                                                                                                  'lookahead' => 0,
-                                                                                                 'line' => 147
+                                                                                                 'line' => 152
                                                                                                }, 'Parse::RecDescent::Subrule' ),
                                                                                         bless( {
                                                                                                  'pattern' => ';',
                                                                                                  'hashname' => '__STRING1__',
                                                                                                  'description' => '\';\'',
                                                                                                  'lookahead' => 0,
-                                                                                                 'line' => 147
+                                                                                                 'line' => 152
                                                                                                }, 'Parse::RecDescent::Literal' ),
                                                                                         bless( {
                                                                                                  'hashname' => '__ACTION1__',
                                                                                                  'lookahead' => 0,
-                                                                                                 'line' => 147,
+                                                                                                 'line' => 152,
                                                                                                  'code' => '{
     {
         body_element => \'variable\',
@@ -9322,7 +9473,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                 ],
                                                      'name' => 'variable',
                                                      'vars' => '',
-                                                     'line' => 147
+                                                     'line' => 152
                                                    }, 'Parse::RecDescent::Rule' ),
                               'constant_modifier' => bless( {
                                                               'impcount' => 0,
@@ -9331,7 +9482,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                               'opcount' => 0,
                                                               'prods' => [
                                                                            bless( {
-                                                                                    'number' => '0',
+                                                                                    'number' => 0,
                                                                                     'strcount' => 1,
                                                                                     'dircount' => 0,
                                                                                     'uncommit' => undef,
@@ -9344,13 +9495,13 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                           'hashname' => '__STRING1__',
                                                                                                           'description' => '\'final\'',
                                                                                                           'lookahead' => 0,
-                                                                                                          'line' => 90
+                                                                                                          'line' => 95
                                                                                                         }, 'Parse::RecDescent::Literal' )
                                                                                                ],
                                                                                     'line' => undef
                                                                                   }, 'Parse::RecDescent::Production' ),
                                                                            bless( {
-                                                                                    'number' => '1',
+                                                                                    'number' => 1,
                                                                                     'strcount' => 1,
                                                                                     'dircount' => 0,
                                                                                     'uncommit' => undef,
@@ -9363,13 +9514,13 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                           'hashname' => '__STRING1__',
                                                                                                           'description' => '\'transient\'',
                                                                                                           'lookahead' => 0,
-                                                                                                          'line' => 90
+                                                                                                          'line' => 95
                                                                                                         }, 'Parse::RecDescent::Literal' )
                                                                                                ],
-                                                                                    'line' => 90
+                                                                                    'line' => 95
                                                                                   }, 'Parse::RecDescent::Production' ),
                                                                            bless( {
-                                                                                    'number' => '2',
+                                                                                    'number' => 2,
                                                                                     'strcount' => 1,
                                                                                     'dircount' => 0,
                                                                                     'uncommit' => undef,
@@ -9382,15 +9533,15 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                           'hashname' => '__STRING1__',
                                                                                                           'description' => '\'volatile\'',
                                                                                                           'lookahead' => 0,
-                                                                                                          'line' => 90
+                                                                                                          'line' => 95
                                                                                                         }, 'Parse::RecDescent::Literal' )
                                                                                                ],
-                                                                                    'line' => 90
+                                                                                    'line' => 95
                                                                                   }, 'Parse::RecDescent::Production' )
                                                                          ],
                                                               'name' => 'constant_modifier',
                                                               'vars' => '',
-                                                              'line' => 90
+                                                              'line' => 95
                                                             }, 'Parse::RecDescent::Rule' ),
                               'arg_list' => bless( {
                                                      'impcount' => 0,
@@ -9402,7 +9553,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                      'opcount' => 0,
                                                      'prods' => [
                                                                   bless( {
-                                                                           'number' => '0',
+                                                                           'number' => 0,
                                                                            'strcount' => 1,
                                                                            'dircount' => 0,
                                                                            'uncommit' => undef,
@@ -9416,14 +9567,14 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                  'implicit' => undef,
                                                                                                  'argcode' => undef,
                                                                                                  'lookahead' => 0,
-                                                                                                 'line' => 176
+                                                                                                 'line' => 181
                                                                                                }, 'Parse::RecDescent::Subrule' ),
                                                                                         bless( {
                                                                                                  'pattern' => ',',
                                                                                                  'hashname' => '__STRING1__',
                                                                                                  'description' => '\',\'',
                                                                                                  'lookahead' => 0,
-                                                                                                 'line' => 176
+                                                                                                 'line' => 181
                                                                                                }, 'Parse::RecDescent::Literal' ),
                                                                                         bless( {
                                                                                                  'subrule' => 'arg_list',
@@ -9431,19 +9582,19 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                  'implicit' => undef,
                                                                                                  'argcode' => undef,
                                                                                                  'lookahead' => 0,
-                                                                                                 'line' => 176
+                                                                                                 'line' => 181
                                                                                                }, 'Parse::RecDescent::Subrule' ),
                                                                                         bless( {
                                                                                                  'hashname' => '__ACTION1__',
                                                                                                  'lookahead' => 0,
-                                                                                                 'line' => 176,
+                                                                                                 'line' => 181,
                                                                                                  'code' => '{ [ @{ $item[1] }, @{ $item[3] } ] }'
                                                                                                }, 'Parse::RecDescent::Action' )
                                                                                       ],
                                                                            'line' => undef
                                                                          }, 'Parse::RecDescent::Production' ),
                                                                   bless( {
-                                                                           'number' => '1',
+                                                                           'number' => 1,
                                                                            'strcount' => 0,
                                                                            'dircount' => 0,
                                                                            'uncommit' => undef,
@@ -9457,21 +9608,21 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                  'implicit' => undef,
                                                                                                  'argcode' => undef,
                                                                                                  'lookahead' => 0,
-                                                                                                 'line' => 177
+                                                                                                 'line' => 182
                                                                                                }, 'Parse::RecDescent::Subrule' ),
                                                                                         bless( {
                                                                                                  'hashname' => '__ACTION1__',
                                                                                                  'lookahead' => 0,
-                                                                                                 'line' => 177,
+                                                                                                 'line' => 182,
                                                                                                  'code' => '{ $item[1] }'
                                                                                                }, 'Parse::RecDescent::Action' )
                                                                                       ],
-                                                                           'line' => 177
+                                                                           'line' => 182
                                                                          }, 'Parse::RecDescent::Production' )
                                                                 ],
                                                      'name' => 'arg_list',
                                                      'vars' => '',
-                                                     'line' => 176
+                                                     'line' => 181
                                                    }, 'Parse::RecDescent::Rule' ),
                               'body' => bless( {
                                                  'impcount' => 0,
@@ -9482,7 +9633,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                  'opcount' => 0,
                                                  'prods' => [
                                                               bless( {
-                                                                       'number' => '0',
+                                                                       'number' => 0,
                                                                        'strcount' => 0,
                                                                        'dircount' => 0,
                                                                        'uncommit' => undef,
@@ -9522,7 +9673,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                            'opcount' => 0,
                                                            'prods' => [
                                                                         bless( {
-                                                                                 'number' => '0',
+                                                                                 'number' => 0,
                                                                                  'strcount' => 0,
                                                                                  'dircount' => 0,
                                                                                  'uncommit' => undef,
@@ -9536,7 +9687,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                        'description' => '/\\\\d+:[^\\\\n]*/',
                                                                                                        'lookahead' => 0,
                                                                                                        'rdelim' => '/',
-                                                                                                       'line' => 136,
+                                                                                                       'line' => 141,
                                                                                                        'mod' => '',
                                                                                                        'ldelim' => '/'
                                                                                                      }, 'Parse::RecDescent::Token' )
@@ -9546,7 +9697,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                       ],
                                                            'name' => 'byte_code_line',
                                                            'vars' => '',
-                                                           'line' => 136
+                                                           'line' => 141
                                                          }, 'Parse::RecDescent::Rule' ),
                               'array_depth' => bless( {
                                                         'impcount' => 0,
@@ -9557,7 +9708,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                         'opcount' => 0,
                                                         'prods' => [
                                                                      bless( {
-                                                                              'number' => '0',
+                                                                              'number' => 0,
                                                                               'strcount' => 0,
                                                                               'dircount' => 0,
                                                                               'uncommit' => undef,
@@ -9574,12 +9725,12 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                     'matchrule' => 0,
                                                                                                     'repspec' => 's?',
                                                                                                     'lookahead' => 0,
-                                                                                                    'line' => 193
+                                                                                                    'line' => 198
                                                                                                   }, 'Parse::RecDescent::Repetition' ),
                                                                                            bless( {
                                                                                                     'hashname' => '__ACTION1__',
                                                                                                     'lookahead' => 0,
-                                                                                                    'line' => 193,
+                                                                                                    'line' => 198,
                                                                                                     'code' => '{
                 my $depth = scalar @{ $item[1] };
                 $depth;
@@ -9591,7 +9742,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                    ],
                                                         'name' => 'array_depth',
                                                         'vars' => '',
-                                                        'line' => 193
+                                                        'line' => 198
                                                       }, 'Parse::RecDescent::Rule' ),
                               'method' => bless( {
                                                    'impcount' => 0,
@@ -9609,7 +9760,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                    'opcount' => 0,
                                                    'prods' => [
                                                                 bless( {
-                                                                         'number' => '0',
+                                                                         'number' => 0,
                                                                          'strcount' => 3,
                                                                          'dircount' => 0,
                                                                          'uncommit' => undef,
@@ -9623,7 +9774,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                'implicit' => undef,
                                                                                                'argcode' => undef,
                                                                                                'lookahead' => 0,
-                                                                                               'line' => 92
+                                                                                               'line' => 97
                                                                                              }, 'Parse::RecDescent::Subrule' ),
                                                                                       bless( {
                                                                                                'subrule' => 'method_qualifier',
@@ -9634,7 +9785,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                'matchrule' => 0,
                                                                                                'repspec' => 's?',
                                                                                                'lookahead' => 0,
-                                                                                               'line' => 92
+                                                                                               'line' => 97
                                                                                              }, 'Parse::RecDescent::Repetition' ),
                                                                                       bless( {
                                                                                                'subrule' => 'arg',
@@ -9642,7 +9793,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                'implicit' => undef,
                                                                                                'argcode' => undef,
                                                                                                'lookahead' => 0,
-                                                                                               'line' => 93
+                                                                                               'line' => 98
                                                                                              }, 'Parse::RecDescent::Subrule' ),
                                                                                       bless( {
                                                                                                'subrule' => 'NAME',
@@ -9650,14 +9801,14 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                'implicit' => undef,
                                                                                                'argcode' => undef,
                                                                                                'lookahead' => 0,
-                                                                                               'line' => 93
+                                                                                               'line' => 98
                                                                                              }, 'Parse::RecDescent::Subrule' ),
                                                                                       bless( {
                                                                                                'pattern' => '(',
                                                                                                'hashname' => '__STRING1__',
                                                                                                'description' => '\'(\'',
                                                                                                'lookahead' => 0,
-                                                                                               'line' => 93
+                                                                                               'line' => 98
                                                                                              }, 'Parse::RecDescent::Literal' ),
                                                                                       bless( {
                                                                                                'subrule' => 'arg_list',
@@ -9668,14 +9819,14 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                'matchrule' => 0,
                                                                                                'repspec' => '?',
                                                                                                'lookahead' => 0,
-                                                                                               'line' => 93
+                                                                                               'line' => 98
                                                                                              }, 'Parse::RecDescent::Repetition' ),
                                                                                       bless( {
                                                                                                'pattern' => ')',
                                                                                                'hashname' => '__STRING2__',
                                                                                                'description' => '\')\'',
                                                                                                'lookahead' => 0,
-                                                                                               'line' => 93
+                                                                                               'line' => 98
                                                                                              }, 'Parse::RecDescent::Literal' ),
                                                                                       bless( {
                                                                                                'subrule' => 'throws_clause',
@@ -9686,14 +9837,14 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                'matchrule' => 0,
                                                                                                'repspec' => '?',
                                                                                                'lookahead' => 0,
-                                                                                               'line' => 94
+                                                                                               'line' => 99
                                                                                              }, 'Parse::RecDescent::Repetition' ),
                                                                                       bless( {
                                                                                                'pattern' => ';',
                                                                                                'hashname' => '__STRING3__',
                                                                                                'description' => '\';\'',
                                                                                                'lookahead' => 0,
-                                                                                               'line' => 94
+                                                                                               'line' => 99
                                                                                              }, 'Parse::RecDescent::Literal' ),
                                                                                       bless( {
                                                                                                'subrule' => 'verbose_method_details',
@@ -9704,12 +9855,12 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                'matchrule' => 0,
                                                                                                'repspec' => '?',
                                                                                                'lookahead' => 0,
-                                                                                               'line' => 95
+                                                                                               'line' => 100
                                                                                              }, 'Parse::RecDescent::Repetition' ),
                                                                                       bless( {
                                                                                                'hashname' => '__ACTION1__',
                                                                                                'lookahead' => 0,
-                                                                                               'line' => 95,
+                                                                                               'line' => 100,
                                                                                                'code' => '{
              $methods{ $item[4] }++;
              {
@@ -9727,7 +9878,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                          'line' => undef
                                                                        }, 'Parse::RecDescent::Production' ),
                                                                 bless( {
-                                                                         'number' => '1',
+                                                                         'number' => 1,
                                                                          'strcount' => 3,
                                                                          'dircount' => 0,
                                                                          'uncommit' => undef,
@@ -9741,7 +9892,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                'implicit' => undef,
                                                                                                'argcode' => undef,
                                                                                                'lookahead' => 0,
-                                                                                               'line' => 107
+                                                                                               'line' => 112
                                                                                              }, 'Parse::RecDescent::Subrule' ),
                                                                                       bless( {
                                                                                                'pattern' => '(native)?',
@@ -9749,7 +9900,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                'description' => '/(native)?/',
                                                                                                'lookahead' => 0,
                                                                                                'rdelim' => '/',
-                                                                                               'line' => 107,
+                                                                                               'line' => 112,
                                                                                                'mod' => '',
                                                                                                'ldelim' => '/'
                                                                                              }, 'Parse::RecDescent::Token' ),
@@ -9759,14 +9910,14 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                'implicit' => undef,
                                                                                                'argcode' => undef,
                                                                                                'lookahead' => 0,
-                                                                                               'line' => 107
+                                                                                               'line' => 112
                                                                                              }, 'Parse::RecDescent::Subrule' ),
                                                                                       bless( {
                                                                                                'pattern' => '(',
                                                                                                'hashname' => '__STRING1__',
                                                                                                'description' => '\'(\'',
                                                                                                'lookahead' => 0,
-                                                                                               'line' => 107
+                                                                                               'line' => 112
                                                                                              }, 'Parse::RecDescent::Literal' ),
                                                                                       bless( {
                                                                                                'subrule' => 'arg_list',
@@ -9777,14 +9928,14 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                'matchrule' => 0,
                                                                                                'repspec' => '?',
                                                                                                'lookahead' => 0,
-                                                                                               'line' => 107
+                                                                                               'line' => 112
                                                                                              }, 'Parse::RecDescent::Repetition' ),
                                                                                       bless( {
                                                                                                'pattern' => ')',
                                                                                                'hashname' => '__STRING2__',
                                                                                                'description' => '\')\'',
                                                                                                'lookahead' => 0,
-                                                                                               'line' => 107
+                                                                                               'line' => 112
                                                                                              }, 'Parse::RecDescent::Literal' ),
                                                                                       bless( {
                                                                                                'subrule' => 'throws_clause',
@@ -9795,14 +9946,14 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                'matchrule' => 0,
                                                                                                'repspec' => '?',
                                                                                                'lookahead' => 0,
-                                                                                               'line' => 108
+                                                                                               'line' => 113
                                                                                              }, 'Parse::RecDescent::Repetition' ),
                                                                                       bless( {
                                                                                                'pattern' => ';',
                                                                                                'hashname' => '__STRING3__',
                                                                                                'description' => '\';\'',
                                                                                                'lookahead' => 0,
-                                                                                               'line' => 108
+                                                                                               'line' => 113
                                                                                              }, 'Parse::RecDescent::Literal' ),
                                                                                       bless( {
                                                                                                'subrule' => 'verbose_method_details',
@@ -9813,12 +9964,12 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                'matchrule' => 0,
                                                                                                'repspec' => '?',
                                                                                                'lookahead' => 0,
-                                                                                               'line' => 109
+                                                                                               'line' => 114
                                                                                              }, 'Parse::RecDescent::Repetition' ),
                                                                                       bless( {
                                                                                                'hashname' => '__ACTION1__',
                                                                                                'lookahead' => 0,
-                                                                                               'line' => 109,
+                                                                                               'line' => 114,
                                                                                                'code' => '{
              $constructors++;
              $methods{ \'new\' }++;
@@ -9839,12 +9990,12 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
          }'
                                                                                              }, 'Parse::RecDescent::Action' )
                                                                                     ],
-                                                                         'line' => 107
+                                                                         'line' => 112
                                                                        }, 'Parse::RecDescent::Production' )
                                                               ],
                                                    'name' => 'method',
                                                    'vars' => '',
-                                                   'line' => 92
+                                                   'line' => 97
                                                  }, 'Parse::RecDescent::Rule' ),
                               'comp_unit' => bless( {
                                                       'impcount' => 0,
@@ -9857,7 +10008,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                       'opcount' => 0,
                                                       'prods' => [
                                                                    bless( {
-                                                                            'number' => '0',
+                                                                            'number' => 0,
                                                                             'strcount' => 2,
                                                                             'dircount' => 0,
                                                                             'uncommit' => undef,
@@ -9925,7 +10076,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                             'line' => undef
                                                                           }, 'Parse::RecDescent::Production' ),
                                                                    bless( {
-                                                                            'number' => '1',
+                                                                            'number' => 1,
                                                                             'strcount' => 0,
                                                                             'dircount' => 1,
                                                                             'uncommit' => 0,
@@ -9955,7 +10106,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                            'opcount' => 0,
                                                            'prods' => [
                                                                         bless( {
-                                                                                 'number' => '0',
+                                                                                 'number' => 0,
                                                                                  'strcount' => 0,
                                                                                  'dircount' => 0,
                                                                                  'uncommit' => undef,
@@ -9969,7 +10120,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                        'description' => '/[^\\\\n]*/',
                                                                                                        'lookahead' => 0,
                                                                                                        'rdelim' => '/',
-                                                                                                       'line' => 88,
+                                                                                                       'line' => 93,
                                                                                                        'mod' => '',
                                                                                                        'ldelim' => '/'
                                                                                                      }, 'Parse::RecDescent::Token' )
@@ -9979,7 +10130,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                       ],
                                                            'name' => 'constant_value',
                                                            'vars' => '',
-                                                           'line' => 88
+                                                           'line' => 93
                                                          }, 'Parse::RecDescent::Rule' ),
                               'NAME' => bless( {
                                                  'impcount' => 0,
@@ -9988,7 +10139,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                  'opcount' => 0,
                                                  'prods' => [
                                                               bless( {
-                                                                       'number' => '0',
+                                                                       'number' => 0,
                                                                        'strcount' => 0,
                                                                        'dircount' => 0,
                                                                        'uncommit' => undef,
@@ -10002,14 +10153,14 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                              'description' => '/^([\\\\w\\\\d\\\\$]+)/',
                                                                                              'lookahead' => 0,
                                                                                              'rdelim' => '/',
-                                                                                             'line' => 200,
+                                                                                             'line' => 205,
                                                                                              'mod' => '',
                                                                                              'ldelim' => '/'
                                                                                            }, 'Parse::RecDescent::Token' ),
                                                                                     bless( {
                                                                                              'hashname' => '__ACTION1__',
                                                                                              'lookahead' => 0,
-                                                                                             'line' => 200,
+                                                                                             'line' => 205,
                                                                                              'code' => '{ $1 }'
                                                                                            }, 'Parse::RecDescent::Action' )
                                                                                   ],
@@ -10018,7 +10169,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                             ],
                                                  'name' => 'NAME',
                                                  'vars' => '',
-                                                 'line' => 200
+                                                 'line' => 205
                                                }, 'Parse::RecDescent::Rule' ),
                               'verbose_exceptions' => bless( {
                                                                'impcount' => 0,
@@ -10029,7 +10180,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                'opcount' => 0,
                                                                'prods' => [
                                                                             bless( {
-                                                                                     'number' => '0',
+                                                                                     'number' => 0,
                                                                                      'strcount' => 1,
                                                                                      'dircount' => 0,
                                                                                      'uncommit' => undef,
@@ -10042,7 +10193,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                            'hashname' => '__STRING1__',
                                                                                                            'description' => '\'Exceptions:\'',
                                                                                                            'lookahead' => 0,
-                                                                                                           'line' => 132
+                                                                                                           'line' => 137
                                                                                                          }, 'Parse::RecDescent::Literal' ),
                                                                                                   bless( {
                                                                                                            'subrule' => 'throws_clause',
@@ -10050,7 +10201,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                            'implicit' => undef,
                                                                                                            'argcode' => undef,
                                                                                                            'lookahead' => 0,
-                                                                                                           'line' => 132
+                                                                                                           'line' => 137
                                                                                                          }, 'Parse::RecDescent::Subrule' )
                                                                                                 ],
                                                                                      'line' => undef
@@ -10058,7 +10209,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                           ],
                                                                'name' => 'verbose_exceptions',
                                                                'vars' => '',
-                                                               'line' => 132
+                                                               'line' => 137
                                                              }, 'Parse::RecDescent::Rule' ),
                               'verbose_constant_details' => bless( {
                                                                      'impcount' => 0,
@@ -10070,7 +10221,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                      'opcount' => 0,
                                                                      'prods' => [
                                                                                   bless( {
-                                                                                           'number' => '0',
+                                                                                           'number' => 0,
                                                                                            'strcount' => 2,
                                                                                            'dircount' => 0,
                                                                                            'uncommit' => undef,
@@ -10083,14 +10234,14 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                                  'hashname' => '__STRING1__',
                                                                                                                  'description' => '\'Constant\'',
                                                                                                                  'lookahead' => 0,
-                                                                                                                 'line' => 84
+                                                                                                                 'line' => 89
                                                                                                                }, 'Parse::RecDescent::Literal' ),
                                                                                                         bless( {
                                                                                                                  'pattern' => 'value:',
                                                                                                                  'hashname' => '__STRING2__',
                                                                                                                  'description' => '\'value:\'',
                                                                                                                  'lookahead' => 0,
-                                                                                                                 'line' => 84
+                                                                                                                 'line' => 89
                                                                                                                }, 'Parse::RecDescent::Literal' ),
                                                                                                         bless( {
                                                                                                                  'subrule' => 'arg',
@@ -10098,7 +10249,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                                  'implicit' => undef,
                                                                                                                  'argcode' => undef,
                                                                                                                  'lookahead' => 0,
-                                                                                                                 'line' => 84
+                                                                                                                 'line' => 89
                                                                                                                }, 'Parse::RecDescent::Subrule' ),
                                                                                                         bless( {
                                                                                                                  'subrule' => 'constant_value',
@@ -10106,12 +10257,12 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                                  'implicit' => undef,
                                                                                                                  'argcode' => undef,
                                                                                                                  'lookahead' => 0,
-                                                                                                                 'line' => 84
+                                                                                                                 'line' => 89
                                                                                                                }, 'Parse::RecDescent::Subrule' ),
                                                                                                         bless( {
                                                                                                                  'hashname' => '__ACTION1__',
                                                                                                                  'lookahead' => 0,
-                                                                                                                 'line' => 84,
+                                                                                                                 'line' => 89,
                                                                                                                  'code' => '{
     $item{ constant_value }
 }'
@@ -10122,7 +10273,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                 ],
                                                                      'name' => 'verbose_constant_details',
                                                                      'vars' => '',
-                                                                     'line' => 84
+                                                                     'line' => 89
                                                                    }, 'Parse::RecDescent::Rule' ),
                               'implements_clause' => bless( {
                                                               'impcount' => 0,
@@ -10133,7 +10284,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                               'opcount' => 0,
                                                               'prods' => [
                                                                            bless( {
-                                                                                    'number' => '0',
+                                                                                    'number' => 0,
                                                                                     'strcount' => 1,
                                                                                     'dircount' => 0,
                                                                                     'uncommit' => undef,
@@ -10183,7 +10334,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                      'opcount' => 0,
                                                      'prods' => [
                                                                   bless( {
-                                                                           'number' => '0',
+                                                                           'number' => 0,
                                                                            'strcount' => 2,
                                                                            'dircount' => 0,
                                                                            'uncommit' => undef,
@@ -10256,13 +10407,18 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                  'lookahead' => 0,
                                                                                                  'line' => 66,
                                                                                                  'code' => '{
+    my $type = $item{ arg }[0];
+    my $value = $item{ \'verbose_constant_details(?)\' }[0];
+    # remove trailing \'d\' from double constants
+    $value =~ s/d$// if $type->{name} eq \'double\';
+    #warn "constant( $item{ NAME } ) @{[ %$type ]}: \'$value\'";
     {
         body_element => \'constant\',
         access       => $item{ ACCESS },
         modifiers    => $item{ \'constant_modifier(s?)\' },
-        type         => $item{ arg }[0],
+        type         => $type,
         name         => $item{ NAME },
-        value        => $item{ \'verbose_constant_details(?)\' }[0],
+        value        => $value,
     }
 }'
                                                                                                }, 'Parse::RecDescent::Action' )
@@ -10270,7 +10426,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                            'line' => undef
                                                                          }, 'Parse::RecDescent::Production' ),
                                                                   bless( {
-                                                                           'number' => '1',
+                                                                           'number' => 1,
                                                                            'strcount' => 3,
                                                                            'dircount' => 0,
                                                                            'uncommit' => undef,
@@ -10283,14 +10439,14 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                  'hashname' => '__STRING1__',
                                                                                                  'description' => '\'static\'',
                                                                                                  'lookahead' => 0,
-                                                                                                 'line' => 76
+                                                                                                 'line' => 81
                                                                                                }, 'Parse::RecDescent::Literal' ),
                                                                                         bless( {
                                                                                                  'pattern' => 'transient',
                                                                                                  'hashname' => '__STRING2__',
                                                                                                  'description' => '\'transient\'',
                                                                                                  'lookahead' => 0,
-                                                                                                 'line' => 76
+                                                                                                 'line' => 81
                                                                                                }, 'Parse::RecDescent::Literal' ),
                                                                                         bless( {
                                                                                                  'subrule' => 'arg',
@@ -10298,7 +10454,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                  'implicit' => undef,
                                                                                                  'argcode' => undef,
                                                                                                  'lookahead' => 0,
-                                                                                                 'line' => 76
+                                                                                                 'line' => 81
                                                                                                }, 'Parse::RecDescent::Subrule' ),
                                                                                         bless( {
                                                                                                  'subrule' => 'NAME',
@@ -10306,19 +10462,19 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                  'implicit' => undef,
                                                                                                  'argcode' => undef,
                                                                                                  'lookahead' => 0,
-                                                                                                 'line' => 76
+                                                                                                 'line' => 81
                                                                                                }, 'Parse::RecDescent::Subrule' ),
                                                                                         bless( {
                                                                                                  'pattern' => ';',
                                                                                                  'hashname' => '__STRING3__',
                                                                                                  'description' => '\';\'',
                                                                                                  'lookahead' => 0,
-                                                                                                 'line' => 76
+                                                                                                 'line' => 81
                                                                                                }, 'Parse::RecDescent::Literal' ),
                                                                                         bless( {
                                                                                                  'hashname' => '__ACTION1__',
                                                                                                  'lookahead' => 0,
-                                                                                                 'line' => 76,
+                                                                                                 'line' => 81,
                                                                                                  'code' => '{
     {
         body_element => \'transient_constant\',
@@ -10328,7 +10484,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
 }'
                                                                                                }, 'Parse::RecDescent::Action' )
                                                                                       ],
-                                                                           'line' => 76
+                                                                           'line' => 81
                                                                          }, 'Parse::RecDescent::Production' )
                                                                 ],
                                                      'name' => 'constant',
@@ -10344,7 +10500,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                       'opcount' => 0,
                                                                       'prods' => [
                                                                                    bless( {
-                                                                                            'number' => '0',
+                                                                                            'number' => 0,
                                                                                             'strcount' => 1,
                                                                                             'dircount' => 0,
                                                                                             'uncommit' => undef,
@@ -10357,7 +10513,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                                   'hashname' => '__STRING1__',
                                                                                                                   'description' => '\'LineNumberTable:\'',
                                                                                                                   'lookahead' => 0,
-                                                                                                                  'line' => 134
+                                                                                                                  'line' => 139
                                                                                                                 }, 'Parse::RecDescent::Literal' ),
                                                                                                          bless( {
                                                                                                                   'subrule' => 'number_table_line',
@@ -10368,7 +10524,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                                   'matchrule' => 0,
                                                                                                                   'repspec' => 's?',
                                                                                                                   'lookahead' => 0,
-                                                                                                                  'line' => 134
+                                                                                                                  'line' => 139
                                                                                                                 }, 'Parse::RecDescent::Repetition' )
                                                                                                        ],
                                                                                             'line' => undef
@@ -10376,7 +10532,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                  ],
                                                                       'name' => 'verbose_line_number_table',
                                                                       'vars' => '',
-                                                                      'line' => 134
+                                                                      'line' => 139
                                                                     }, 'Parse::RecDescent::Rule' ),
                               'method_qualifier' => bless( {
                                                              'impcount' => 0,
@@ -10385,7 +10541,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                              'opcount' => 0,
                                                              'prods' => [
                                                                           bless( {
-                                                                                   'number' => '0',
+                                                                                   'number' => 0,
                                                                                    'strcount' => 1,
                                                                                    'dircount' => 0,
                                                                                    'uncommit' => undef,
@@ -10398,19 +10554,19 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                          'hashname' => '__STRING1__',
                                                                                                          'description' => '\'abstract\'',
                                                                                                          'lookahead' => 0,
-                                                                                                         'line' => 139
+                                                                                                         'line' => 144
                                                                                                        }, 'Parse::RecDescent::Literal' ),
                                                                                                 bless( {
                                                                                                          'hashname' => '__ACTION1__',
                                                                                                          'lookahead' => 0,
-                                                                                                         'line' => 139,
+                                                                                                         'line' => 144,
                                                                                                          'code' => '{ \'abstract\'     }'
                                                                                                        }, 'Parse::RecDescent::Action' )
                                                                                               ],
                                                                                    'line' => undef
                                                                                  }, 'Parse::RecDescent::Production' ),
                                                                           bless( {
-                                                                                   'number' => '1',
+                                                                                   'number' => 1,
                                                                                    'strcount' => 1,
                                                                                    'dircount' => 0,
                                                                                    'uncommit' => undef,
@@ -10423,19 +10579,19 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                          'hashname' => '__STRING1__',
                                                                                                          'description' => '\'native\'',
                                                                                                          'lookahead' => 0,
-                                                                                                         'line' => 140
+                                                                                                         'line' => 145
                                                                                                        }, 'Parse::RecDescent::Literal' ),
                                                                                                 bless( {
                                                                                                          'hashname' => '__ACTION1__',
                                                                                                          'lookahead' => 0,
-                                                                                                         'line' => 140,
+                                                                                                         'line' => 145,
                                                                                                          'code' => '{ \'native\'       }'
                                                                                                        }, 'Parse::RecDescent::Action' )
                                                                                               ],
-                                                                                   'line' => 140
+                                                                                   'line' => 145
                                                                                  }, 'Parse::RecDescent::Production' ),
                                                                           bless( {
-                                                                                   'number' => '2',
+                                                                                   'number' => 2,
                                                                                    'strcount' => 1,
                                                                                    'dircount' => 0,
                                                                                    'uncommit' => undef,
@@ -10448,19 +10604,19 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                          'hashname' => '__STRING1__',
                                                                                                          'description' => '\'static\'',
                                                                                                          'lookahead' => 0,
-                                                                                                         'line' => 141
+                                                                                                         'line' => 146
                                                                                                        }, 'Parse::RecDescent::Literal' ),
                                                                                                 bless( {
                                                                                                          'hashname' => '__ACTION1__',
                                                                                                          'lookahead' => 0,
-                                                                                                         'line' => 141,
+                                                                                                         'line' => 146,
                                                                                                          'code' => '{ \'static\'       }'
                                                                                                        }, 'Parse::RecDescent::Action' )
                                                                                               ],
-                                                                                   'line' => 141
+                                                                                   'line' => 146
                                                                                  }, 'Parse::RecDescent::Production' ),
                                                                           bless( {
-                                                                                   'number' => '3',
+                                                                                   'number' => 3,
                                                                                    'strcount' => 1,
                                                                                    'dircount' => 0,
                                                                                    'uncommit' => undef,
@@ -10473,19 +10629,19 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                          'hashname' => '__STRING1__',
                                                                                                          'description' => '\'synchronized\'',
                                                                                                          'lookahead' => 0,
-                                                                                                         'line' => 142
+                                                                                                         'line' => 147
                                                                                                        }, 'Parse::RecDescent::Literal' ),
                                                                                                 bless( {
                                                                                                          'hashname' => '__ACTION1__',
                                                                                                          'lookahead' => 0,
-                                                                                                         'line' => 142,
+                                                                                                         'line' => 147,
                                                                                                          'code' => '{ \'synchronized\' }'
                                                                                                        }, 'Parse::RecDescent::Action' )
                                                                                               ],
-                                                                                   'line' => 142
+                                                                                   'line' => 147
                                                                                  }, 'Parse::RecDescent::Production' ),
                                                                           bless( {
-                                                                                   'number' => '4',
+                                                                                   'number' => 4,
                                                                                    'strcount' => 1,
                                                                                    'dircount' => 0,
                                                                                    'uncommit' => undef,
@@ -10498,21 +10654,21 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                          'hashname' => '__STRING1__',
                                                                                                          'description' => '\'final\'',
                                                                                                          'lookahead' => 0,
-                                                                                                         'line' => 143
+                                                                                                         'line' => 148
                                                                                                        }, 'Parse::RecDescent::Literal' ),
                                                                                                 bless( {
                                                                                                          'hashname' => '__ACTION1__',
                                                                                                          'lookahead' => 0,
-                                                                                                         'line' => 143,
+                                                                                                         'line' => 148,
                                                                                                          'code' => '{ \'final\'        }'
                                                                                                        }, 'Parse::RecDescent::Action' )
                                                                                               ],
-                                                                                   'line' => 143
+                                                                                   'line' => 148
                                                                                  }, 'Parse::RecDescent::Production' )
                                                                         ],
                                                              'name' => 'method_qualifier',
                                                              'vars' => '',
-                                                             'line' => 139
+                                                             'line' => 144
                                                            }, 'Parse::RecDescent::Rule' ),
                               'verbose_class_details' => bless( {
                                                                   'impcount' => 0,
@@ -10521,7 +10677,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                   'opcount' => 0,
                                                                   'prods' => [
                                                                                bless( {
-                                                                                        'number' => '0',
+                                                                                        'number' => 0,
                                                                                         'strcount' => 0,
                                                                                         'dircount' => 0,
                                                                                         'uncommit' => undef,
@@ -10558,7 +10714,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                          'opcount' => 0,
                                                          'prods' => [
                                                                       bless( {
-                                                                               'number' => '0',
+                                                                               'number' => 0,
                                                                                'strcount' => 0,
                                                                                'dircount' => 0,
                                                                                'uncommit' => undef,
@@ -10584,7 +10740,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                'line' => undef
                                                                              }, 'Parse::RecDescent::Production' ),
                                                                       bless( {
-                                                                               'number' => '1',
+                                                                               'number' => 1,
                                                                                'strcount' => 4,
                                                                                'dircount' => 0,
                                                                                'uncommit' => undef,
@@ -10630,7 +10786,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                'line' => 61
                                                                              }, 'Parse::RecDescent::Production' ),
                                                                       bless( {
-                                                                               'number' => '2',
+                                                                               'number' => 2,
                                                                                'strcount' => 0,
                                                                                'dircount' => 0,
                                                                                'uncommit' => undef,
@@ -10656,7 +10812,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                'line' => 62
                                                                              }, 'Parse::RecDescent::Production' ),
                                                                       bless( {
-                                                                               'number' => '3',
+                                                                               'number' => 3,
                                                                                'strcount' => 0,
                                                                                'dircount' => 0,
                                                                                'uncommit' => undef,
@@ -10696,7 +10852,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                        'opcount' => 0,
                                                        'prods' => [
                                                                     bless( {
-                                                                             'number' => '0',
+                                                                             'number' => 0,
                                                                              'strcount' => 1,
                                                                              'dircount' => 0,
                                                                              'uncommit' => undef,
@@ -10710,14 +10866,14 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                    'implicit' => undef,
                                                                                                    'argcode' => undef,
                                                                                                    'lookahead' => 0,
-                                                                                                   'line' => 162
+                                                                                                   'line' => 167
                                                                                                  }, 'Parse::RecDescent::Subrule' ),
                                                                                           bless( {
                                                                                                    'pattern' => ',',
                                                                                                    'hashname' => '__STRING1__',
                                                                                                    'description' => '\',\'',
                                                                                                    'lookahead' => 0,
-                                                                                                   'line' => 162
+                                                                                                   'line' => 167
                                                                                                  }, 'Parse::RecDescent::Literal' ),
                                                                                           bless( {
                                                                                                    'subrule' => 'comma_list',
@@ -10725,12 +10881,12 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                    'implicit' => undef,
                                                                                                    'argcode' => undef,
                                                                                                    'lookahead' => 0,
-                                                                                                   'line' => 162
+                                                                                                   'line' => 167
                                                                                                  }, 'Parse::RecDescent::Subrule' ),
                                                                                           bless( {
                                                                                                    'hashname' => '__ACTION1__',
                                                                                                    'lookahead' => 0,
-                                                                                                   'line' => 162,
+                                                                                                   'line' => 167,
                                                                                                    'code' => '{
                 my @names = ( $item[1] );
                 if ( ref( $item[3] ) eq \'ARRAY\' ) {
@@ -10746,7 +10902,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                              'line' => undef
                                                                            }, 'Parse::RecDescent::Production' ),
                                                                     bless( {
-                                                                             'number' => '1',
+                                                                             'number' => 1,
                                                                              'strcount' => 0,
                                                                              'dircount' => 0,
                                                                              'uncommit' => undef,
@@ -10760,23 +10916,23 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                    'implicit' => undef,
                                                                                                    'argcode' => undef,
                                                                                                    'lookahead' => 0,
-                                                                                                   'line' => 172
+                                                                                                   'line' => 177
                                                                                                  }, 'Parse::RecDescent::Subrule' ),
                                                                                           bless( {
                                                                                                    'hashname' => '__ACTION1__',
                                                                                                    'lookahead' => 0,
-                                                                                                   'line' => 172,
+                                                                                                   'line' => 177,
                                                                                                    'code' => '{
                 [ $item[1] ]
             }'
                                                                                                  }, 'Parse::RecDescent::Action' )
                                                                                         ],
-                                                                             'line' => 172
+                                                                             'line' => 177
                                                                            }, 'Parse::RecDescent::Production' )
                                                                   ],
                                                        'name' => 'comma_list',
                                                        'vars' => '',
-                                                       'line' => 162
+                                                       'line' => 167
                                                      }, 'Parse::RecDescent::Rule' ),
                               'comment' => bless( {
                                                     'impcount' => 0,
@@ -10785,7 +10941,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                     'opcount' => 0,
                                                     'prods' => [
                                                                  bless( {
-                                                                          'number' => '0',
+                                                                          'number' => 0,
                                                                           'strcount' => 2,
                                                                           'dircount' => 0,
                                                                           'uncommit' => undef,
@@ -10798,7 +10954,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                 'hashname' => '__STRING1__',
                                                                                                 'description' => '\'/*\'',
                                                                                                 'lookahead' => 0,
-                                                                                                'line' => 210
+                                                                                                'line' => 215
                                                                                               }, 'Parse::RecDescent::Literal' ),
                                                                                        bless( {
                                                                                                 'pattern' => '[^*]*',
@@ -10806,7 +10962,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                 'description' => '/[^*]*/',
                                                                                                 'lookahead' => 0,
                                                                                                 'rdelim' => '/',
-                                                                                                'line' => 210,
+                                                                                                'line' => 215,
                                                                                                 'mod' => '',
                                                                                                 'ldelim' => '/'
                                                                                               }, 'Parse::RecDescent::Token' ),
@@ -10815,19 +10971,19 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                 'hashname' => '__STRING2__',
                                                                                                 'description' => '\'*/\'',
                                                                                                 'lookahead' => 0,
-                                                                                                'line' => 210
+                                                                                                'line' => 215
                                                                                               }, 'Parse::RecDescent::Literal' ),
                                                                                        bless( {
                                                                                                 'hashname' => '__ACTION1__',
                                                                                                 'lookahead' => 0,
-                                                                                                'line' => 210,
+                                                                                                'line' => 215,
                                                                                                 'code' => '{}'
                                                                                               }, 'Parse::RecDescent::Action' )
                                                                                      ],
                                                                           'line' => undef
                                                                         }, 'Parse::RecDescent::Production' ),
                                                                  bless( {
-                                                                          'number' => '1',
+                                                                          'number' => 1,
                                                                           'strcount' => 0,
                                                                           'dircount' => 0,
                                                                           'uncommit' => undef,
@@ -10835,12 +10991,12 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                           'patcount' => 0,
                                                                           'actcount' => 0,
                                                                           'items' => [],
-                                                                          'line' => 211
+                                                                          'line' => 216
                                                                         }, 'Parse::RecDescent::Production' )
                                                                ],
                                                     'name' => 'comment',
                                                     'vars' => '',
-                                                    'line' => 210
+                                                    'line' => 215
                                                   }, 'Parse::RecDescent::Rule' ),
                               'extends_clause' => bless( {
                                                            'impcount' => 0,
@@ -10851,7 +11007,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                            'opcount' => 0,
                                                            'prods' => [
                                                                         bless( {
-                                                                                 'number' => '0',
+                                                                                 'number' => 0,
                                                                                  'strcount' => 1,
                                                                                  'dircount' => 0,
                                                                                  'uncommit' => undef,
@@ -10898,7 +11054,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                            'opcount' => 0,
                                                            'prods' => [
                                                                         bless( {
-                                                                                 'number' => '0',
+                                                                                 'number' => 0,
                                                                                  'strcount' => 1,
                                                                                  'dircount' => 0,
                                                                                  'uncommit' => undef,
@@ -10912,14 +11068,14 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                        'implicit' => undef,
                                                                                                        'argcode' => undef,
                                                                                                        'lookahead' => 0,
-                                                                                                       'line' => 158
+                                                                                                       'line' => 163
                                                                                                      }, 'Parse::RecDescent::Subrule' ),
                                                                                               bless( {
                                                                                                        'pattern' => '.',
                                                                                                        'hashname' => '__STRING1__',
                                                                                                        'description' => '\'.\'',
                                                                                                        'lookahead' => 0,
-                                                                                                       'line' => 158
+                                                                                                       'line' => 163
                                                                                                      }, 'Parse::RecDescent::Literal' ),
                                                                                               bless( {
                                                                                                        'subrule' => 'qualified_name',
@@ -10927,19 +11083,19 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                        'implicit' => undef,
                                                                                                        'argcode' => undef,
                                                                                                        'lookahead' => 0,
-                                                                                                       'line' => 158
+                                                                                                       'line' => 163
                                                                                                      }, 'Parse::RecDescent::Subrule' ),
                                                                                               bless( {
                                                                                                        'hashname' => '__ACTION1__',
                                                                                                        'lookahead' => 0,
-                                                                                                       'line' => 159,
+                                                                                                       'line' => 164,
                                                                                                        'code' => '{ "$item{NAME}.$item{qualified_name}" }'
                                                                                                      }, 'Parse::RecDescent::Action' )
                                                                                             ],
                                                                                  'line' => undef
                                                                                }, 'Parse::RecDescent::Production' ),
                                                                         bless( {
-                                                                                 'number' => '1',
+                                                                                 'number' => 1,
                                                                                  'strcount' => 0,
                                                                                  'dircount' => 0,
                                                                                  'uncommit' => undef,
@@ -10953,21 +11109,21 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                        'implicit' => undef,
                                                                                                        'argcode' => undef,
                                                                                                        'lookahead' => 0,
-                                                                                                       'line' => 160
+                                                                                                       'line' => 165
                                                                                                      }, 'Parse::RecDescent::Subrule' ),
                                                                                               bless( {
                                                                                                        'hashname' => '__ACTION1__',
                                                                                                        'lookahead' => 0,
-                                                                                                       'line' => 160,
+                                                                                                       'line' => 165,
                                                                                                        'code' => '{ $item[1] }'
                                                                                                      }, 'Parse::RecDescent::Action' )
                                                                                             ],
-                                                                                 'line' => 160
+                                                                                 'line' => 165
                                                                                }, 'Parse::RecDescent::Production' )
                                                                       ],
                                                            'name' => 'qualified_name',
                                                            'vars' => '',
-                                                           'line' => 158
+                                                           'line' => 163
                                                          }, 'Parse::RecDescent::Rule' ),
                               'CLASS_OR_INTERFACE' => bless( {
                                                                'impcount' => 0,
@@ -10976,7 +11132,7 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                'opcount' => 0,
                                                                'prods' => [
                                                                             bless( {
-                                                                                     'number' => '0',
+                                                                                     'number' => 0,
                                                                                      'strcount' => 1,
                                                                                      'dircount' => 0,
                                                                                      'uncommit' => undef,
@@ -10989,19 +11145,19 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                            'hashname' => '__STRING1__',
                                                                                                            'description' => '\'class\'',
                                                                                                            'lookahead' => 0,
-                                                                                                           'line' => 207
+                                                                                                           'line' => 212
                                                                                                          }, 'Parse::RecDescent::Literal' ),
                                                                                                   bless( {
                                                                                                            'hashname' => '__ACTION1__',
                                                                                                            'lookahead' => 0,
-                                                                                                           'line' => 207,
+                                                                                                           'line' => 212,
                                                                                                            'code' => '{ $item[1] }'
                                                                                                          }, 'Parse::RecDescent::Action' )
                                                                                                 ],
                                                                                      'line' => undef
                                                                                    }, 'Parse::RecDescent::Production' ),
                                                                             bless( {
-                                                                                     'number' => '1',
+                                                                                     'number' => 1,
                                                                                      'strcount' => 1,
                                                                                      'dircount' => 0,
                                                                                      'uncommit' => undef,
@@ -11014,22 +11170,32 @@ package Java::Javap::Grammar; sub new { my $self = bless( {
                                                                                                            'hashname' => '__STRING1__',
                                                                                                            'description' => '\'interface\'',
                                                                                                            'lookahead' => 0,
-                                                                                                           'line' => 208
+                                                                                                           'line' => 213
                                                                                                          }, 'Parse::RecDescent::Literal' ),
                                                                                                   bless( {
                                                                                                            'hashname' => '__ACTION1__',
                                                                                                            'lookahead' => 0,
-                                                                                                           'line' => 208,
+                                                                                                           'line' => 213,
                                                                                                            'code' => '{ $item[1] }'
                                                                                                          }, 'Parse::RecDescent::Action' )
                                                                                                 ],
-                                                                                     'line' => 208
+                                                                                     'line' => 213
                                                                                    }, 'Parse::RecDescent::Production' )
                                                                           ],
                                                                'name' => 'CLASS_OR_INTERFACE',
                                                                'vars' => '',
-                                                               'line' => 207
+                                                               'line' => 212
                                                              }, 'Parse::RecDescent::Rule' )
-                            }
+                            },
+                 '_AUTOTREE' => undef,
+                 '_check' => {
+                               'thisoffset' => '',
+                               'itempos' => '',
+                               'prevoffset' => '',
+                               'prevline' => '',
+                               'prevcolumn' => '',
+                               'thiscolumn' => ''
+                             },
+                 '_AUTOACTION' => undef
                }, 'Parse::RecDescent' );
 }

@@ -341,13 +341,11 @@ method [% elem.name -%]
 
 [% END %]
 [% BLOCK constant_whole %]
-    method [% elem.name %] (--> [% elem.type.perl_type_name %]) is export { [% IF elem.type.perl_type_name == 'Str'
-    %]'[% elem.value %]';[%
-      ELSIF elem.type.perl_type_name == 'Int' or
-            elem.type.perl_type_nmae == 'Num'
-    %][% elem.value %][%
-      ELSE
-    %] ... [% END %] }
+    method [% elem.name %] (--> [% elem.type.perl_type_name %]) is export {
+    [%- IF elem.type.perl_type_name == 'Str' %] '[% elem.value | replace('\'','\\\'') %]'
+    [%- ELSIF elem.type.perl_type_name == 'Int' or elem.type.perl_type_name == 'Num' %] [% elem.value %]
+    [%- ELSE %] ...
+    [% END %] }
 [% END %]
 EO_Template
 }

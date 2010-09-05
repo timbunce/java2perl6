@@ -64,13 +64,18 @@ body_element : constant { $item[1] }
 
 constant : ACCESS 'static' constant_modifier(s?) arg NAME ';'
            verbose_constant_details(?) {
+    my $type = $item{ arg }[0];
+    my $value = $item{ 'verbose_constant_details(?)' }[0];
+    # remove trailing 'd' from double constants
+    $value =~ s/d$// if $type->{name} eq 'double';
+    #warn "constant( $item{ NAME } ) @{[ %$type ]}: '$value'";
     {
         body_element => 'constant',
         access       => $item{ ACCESS },
         modifiers    => $item{ 'constant_modifier(s?)' },
-        type         => $item{ arg }[0],
+        type         => $type,
         name         => $item{ NAME },
-        value        => $item{ 'verbose_constant_details(?)' }[0],
+        value        => $value,
     }
 }
          | 'static' 'transient' arg NAME ';' {
