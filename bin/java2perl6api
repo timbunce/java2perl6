@@ -80,9 +80,9 @@ for my $class (sort keys %java_class_info) {
         push @epilogue, "  $_" for sort @$refs;
         push @epilogue, "\n(Among the set of classes processed at the same time.)\n";
     }
-    if (my @decomp = split /\n/, $info->{decomp}) {
+    if (my @decomp_norm = split /\n/, $info->{decomp_norm}) {
         push @epilogue, "=head1 Java\n";
-        push @epilogue, "  $_" for @decomp;
+        push @epilogue, "  $_" for @decomp_norm;
         push @epilogue, "\n";
     }
     push @epilogue, "=end pod\n";
@@ -140,30 +140,23 @@ exit 0;
 
 sub load_java_class_info {
     my ($class, $recurse) = @_;
-    my $pad = $recurse ? (". " x ($recurse-1)) : "";
 
-    return undef if $java_class_info{$class}->{decomp};
+    return undef if $java_class_info{$class}->{decomp_norm};
 
-    warn "loading $pad$class\n" if $opt_trace;
+    my @javapopts = split / /, $opt_javapopts; # XXX hack
+    my $javap_command = "javap @javapopts $class";
 
-    my $javap_command = "javap $opt_javapopts $class";
-    warn "$javap_command\n" if $opt_trace >= 3;
-    my $decomp = `$javap_command`; # XXX check exit status
+    warn sprintf "loading %s%s%s\n",
+            $recurse ? (". " x ($recurse-1)) : "",
+            $class, " @javapopts"
+        if $opt_trace;
 
-    # XXX temp hacks till parser is taught about these
-    #
-    # public abstract java.math.BigDecimal getBigDecimal(int, int)   throws java.sql.SQLException;
-    #   Exceptions:
-    #      throws java.sql.SQLException  Deprecated: true
-    $decomp =~ s/Deprecated: .*//g;
-    #   public abstract java.lang.Object getObject(int, java.util.Map)   throws java.sql.SQLException;
-    #   Exceptions:
-    #   throws java.sql.SQLException  Signature: length = 0x2
-    #   00 FFFFFFB5
-    $decomp =~ s/Signature: length = .*?\n\n//sg;
+    my $decomp_norm = Java::Javap->javap($class, \@javapopts);
+    warn $decomp_norm if $opt_trace >= 3;
+    my $decomp_verb = Java::Javap->javap($class, [ @javapopts, '-verbose' ]);
+    warn $decomp_verb if $opt_trace >= 9;
 
-    warn $decomp if $opt_trace >= 3;
-    my $tree   = $parser->comp_unit( $decomp )
+    my $tree   = $parser->comp_unit( $decomp_verb )
         or die "Error parsing output of '$javap_command'\n";
 
     # tell them which types are used by this class
@@ -173,7 +166,8 @@ sub load_java_class_info {
         %{ $java_class_info{$class} || {} },
         java_class_name => $class,
         javap_command => $javap_command,
-        decomp => $decomp,
+        decomp_norm => $decomp_norm,
+        decomp_verb => $decomp_verb,
         tree => $tree,
         refers_to_classes => $referenced_classes,
         kind => $tree->{class_or_interface},

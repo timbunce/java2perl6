@@ -20,7 +20,7 @@ plan tests    => 1;
 #--------------------------------------------------------------------
 
 my $parser = Java::Javap::Grammar->new();
-my $decomp = Java::Javap->javap('java.sql.Date');
+my $decomp = Java::Javap->javap('java.sql.Date', [ qw(-verbose) ]);
 
 my $tree   = $parser->comp_unit( $decomp )
     or die "Error parsing:\n$decomp";

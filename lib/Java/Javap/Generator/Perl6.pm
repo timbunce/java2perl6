@@ -96,8 +96,6 @@ if (0) { # check that types actually are built-in to current perl6
 
 sub perl6_string_literal_filter {
     my $value = shift;
-    #$value =~ s/\\/\\\\/g;
-    #$value =~ s/"/\\"/g;
     $value =~ s/([^[:print:]])/ sprintf "\\u%04x", ord($1) /eg;
     return qq{"$value"};
 }
@@ -362,8 +360,7 @@ method [% elem.name -%]
     [%- IF elem.type.perl_type_name == 'Str'
     %] [% elem.value | perl6_string_literal %]
     [%- ELSIF elem.type.perl_type_name == 'Int' or elem.type.perl_type_name == 'Num' %] [% elem.value %]
-    [%- ELSE %] ...
-    [% END %] }
+    [%- ELSE %] ... [% END -%] }
 [% END %]
 EO_Template
 }

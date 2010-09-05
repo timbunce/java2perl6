@@ -15,7 +15,7 @@ my $java_class = 'com.example.NestedIntTest';
 
 my $decomp = Java::Javap->javap(
 	[$java_class],
-	{-classpath=>'testjavas'}
+	[ qw(-verbose -classpath testjavas) ]
 );
 
 note($decomp);

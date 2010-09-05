@@ -42,43 +42,37 @@ sub get_included_types { # XXX change name
 }
 
 
-sub invoke_javap {
-	my ($self, $classes, $options) = @_;
+sub javap {
+    my ($self, $classes, $options) = @_;
+    $options ||= [];
 
-	if (! $classes) {
-		croak "No classes to be parsed";
-	}
+    croak "No classes to be parsed" if not $classes;
+    $classes = [ $classes ] if not ref $classes;
 
-	if (! ref $classes) {
-		$classes = [ $classes ];
-	}
+    # Open the real javap executable and read output from it
+    my @cmd = ($JAVAP_EXECUTABLE, @$options, @$classes);
 
-	$options ||= {};
+    open(my $javap_fh, '-|', @cmd)
+        or croak "@cmd failed: $!";
 
-	# Open the real javap executable and read output from it
-	open(my $javap_fh, '-|', $JAVAP_EXECUTABLE, '-v', %$options, @$classes)
-		or croak "'$JAVAP_EXECUTABLE @{[ %$options ]} @$classes' failed: $!";
+    my $javap_output = q{};
 
-	my $javap_output = q{};
+    while (<$javap_fh>) {
+        $javap_output .= $_;
+    }
 
-	while (<$javap_fh>) {
-		$javap_output .= $_;
-	}
+    # When dealing with a pipe, we also want to get errors from close
+    close $javap_fh
+        or croak "@cmd failed on close: $!";
 
-	# When dealing with a pipe, we also want to get errors from close
-	close $javap_fh
-		or croak "'$JAVAP_EXECUTABLE @{[ %$options ]} @$classes' failed: $!";
-
-	return $javap_output;
+    return $javap_output;
 }
-
-*javap = *invoke_javap;
 
 # Shortcut for the test suite
 sub javap_test {
 	my ($self) = @_;
 	my $output;
-	eval { $output = $self->invoke_javap(['java.lang.String']) };
+	eval { $output = $self->javap(['java.lang.String']) };
 	return $output ? 1 : 0;
 }
 
@@ -111,8 +105,6 @@ an a C<Java::Javap::Grammar> object.
 Returns: an array reference of the types in arguments to methods, or
 return values (thrown types are not reported).
 
-=head2 invoke_javap
-
 =head2 javap
 
 Invokes the C<javap> process and return the output.
@@ -128,7 +120,7 @@ not found.
 List of classes to be decompiled. It can also be supplied as a string,
 if a single class should be decompiled.
 
-=item \%options
+=item \@options
 
 Options to be passed to the C<javap> process.
 
@@ -137,8 +129,8 @@ Options to be passed to the C<javap> process.
 =head3 Example
 
     my @classes = ('java.lang.String');
-    my %options = ();
-    my $output = Java::Javap->javap(\@classes, \%options);
+    my @options = ();
+    my $output = Java::Javap->javap(\@classes, \@options);
 
 	# or ...
 

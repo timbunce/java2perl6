@@ -22,7 +22,7 @@ plan tests    => 3;
 #--------------------------------------------------------------------
 
 my $parser = Java::Javap::Grammar->new();
-my $decomp = Java::Javap->javap('ClassTest', {-classpath=>'testjavas'});
+my $decomp = Java::Javap->javap('ClassTest', [ qw(-verbose -classpath testjavas) ]);
 
 my $tree   = $parser->comp_unit( $decomp )
     or die "Error parsing:\n$decomp";
@@ -225,7 +225,7 @@ eq_or_diff( \@perl_6, \@correct_perl_6, 'emission' )
 #--------------------------------------------------------------------
 {
   my $parser = Java::Javap::Grammar->new();
-  my $decomp = Java::Javap->javap('dupMethodTest', {-classpath=>'testjavas'});
+  my $decomp = Java::Javap->javap('dupMethodTest', [ qw(-verbose -classpath testjavas) ]);
 
   my $tree   = $parser->comp_unit( $decomp );
 

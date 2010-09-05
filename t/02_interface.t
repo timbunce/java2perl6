@@ -18,7 +18,7 @@ plan tests    => 3;
 #--------------------------------------------------------------------
 
 my $parser = Java::Javap::Grammar->new();
-my $decomp = Java::Javap->javap('com.example.NestedIntTest', {-classpath => 'testjavas'});
+my $decomp = Java::Javap->javap('com.example.NestedIntTest', [ qw(-verbose -classpath testjavas) ]);
 #diag("decomp=$decomp");
 
 my $tree   = $parser->comp_unit( $decomp );
